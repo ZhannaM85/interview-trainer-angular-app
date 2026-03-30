@@ -1,8 +1,20 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { Observable, map, shareReplay } from 'rxjs';
 
 import type { Question, QuestionCategory, QuestionDifficulty } from '../../shared/models/question.model';
+
+/** Shape of `questions-updated.json` (interview-oriented fields). */
+interface QuestionUpdatedRow {
+    id: number;
+    topic: string;
+    subtopic: string;
+    question: string;
+    weakAnswer: string;
+    technicalAnswer: string;
+    interviewAnswer: string;
+    difficulty: QuestionDifficulty;
+}
 
 @Injectable({
     providedIn: 'root'
@@ -11,8 +23,11 @@ export class QuestionService {
     private readonly http = inject(HttpClient);
 
     private readonly questions$: Observable<Question[]> = this.http
-        .get<Question[]>('assets/data/questions.json')
-        .pipe(shareReplay(1));
+        .get<QuestionUpdatedRow[]>('assets/data/questions-updated.json')
+        .pipe(
+            map((rows) => rows.map((row) => this.mapUpdatedRowToQuestion(row))),
+            shareReplay(1)
+        );
 
     private queue: Question[] = [];
     private index = -1;
@@ -45,5 +60,36 @@ export class QuestionService {
     resetQueue(): void {
         this.queue = [];
         this.index = -1;
+    }
+
+    private mapUpdatedRowToQuestion(row: QuestionUpdatedRow): Question {
+        return {
+            id: row.id,
+            question: row.question,
+            answer: row.interviewAnswer,
+            explanation: this.buildExplanation(row),
+            category: this.mapTopicToCategory(row.topic, row.subtopic),
+            difficulty: row.difficulty
+        };
+    }
+
+    private buildExplanation(row: QuestionUpdatedRow): string {
+        const parts = [row.technicalAnswer, `Weak answer to avoid: ${row.weakAnswer}`];
+        return parts.join('\n\n');
+    }
+
+    private mapTopicToCategory(topic: string, subtopic: string): QuestionCategory {
+        const t = topic.toLowerCase();
+        const s = subtopic.toLowerCase();
+        if (t === 'javascript') {
+            return 'javascript';
+        }
+        if (t === 'angular') {
+            if (s === 'rxjs' || s === 'observables') {
+                return 'rxjs';
+            }
+            return 'angular';
+        }
+        return 'javascript';
     }
 }

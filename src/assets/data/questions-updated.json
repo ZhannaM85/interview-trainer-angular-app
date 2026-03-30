@@ -1,0 +1,402 @@
+[
+  {
+    "id": 1,
+    "topic": "javascript",
+    "subtopic": "this",
+    "question": "What is 'this' in JavaScript?",
+    "weakAnswer": "It refers to the object… depends.",
+    "technicalAnswer": "'this' refers to the execution context of a function and depends on how it is called.",
+    "interviewAnswer": "'this' depends on how a function is called. In a method, it refers to the object. In a regular function, it is undefined in strict mode.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 2,
+    "topic": "javascript",
+    "subtopic": "closure",
+    "question": "What is a closure?",
+    "weakAnswer": "Function inside another function.",
+    "technicalAnswer": "A closure is a function that retains access to its lexical scope.",
+    "interviewAnswer": "A closure is a function that remembers variables from its outer scope even after that scope has finished executing.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 3,
+    "topic": "javascript",
+    "subtopic": "scope",
+    "question": "What is scope in JavaScript?",
+    "weakAnswer": "Where variables exist.",
+    "technicalAnswer": "Scope defines the accessibility of variables in different parts of code.",
+    "interviewAnswer": "Scope determines where variables can be accessed in your code. JavaScript has global, function, and block scope.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 4,
+    "topic": "javascript",
+    "subtopic": "variables",
+    "question": "Difference between var, let, and const?",
+    "weakAnswer": "They are variables.",
+    "technicalAnswer": "var is function-scoped, let and const are block-scoped.",
+    "interviewAnswer": "var is function-scoped, while let and const are block-scoped. const cannot be reassigned, while let can.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 5,
+    "topic": "javascript",
+    "subtopic": "functions",
+    "question": "What is bind()?",
+    "weakAnswer": "It binds this.",
+    "technicalAnswer": "bind creates a new function with a fixed 'this' value.",
+    "interviewAnswer": "bind returns a new function with 'this' permanently set to a specific value, allowing you to control execution context.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 6,
+    "topic": "javascript",
+    "subtopic": "functions",
+    "question": "Difference between call, apply, and bind?",
+    "weakAnswer": "They are similar.",
+    "technicalAnswer": "call and apply invoke functions immediately, bind returns a new function.",
+    "interviewAnswer": "call and apply execute the function immediately, with call using arguments individually and apply using an array. bind returns a new function without executing it.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 7,
+    "topic": "javascript",
+    "subtopic": "arrays",
+    "question": "Difference between map and forEach?",
+    "weakAnswer": "They loop.",
+    "technicalAnswer": "map returns a new array, forEach does not.",
+    "interviewAnswer": "map returns a new transformed array, while forEach executes a function on each element without returning a new array.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 8,
+    "topic": "javascript",
+    "subtopic": "async",
+    "question": "What is a Promise?",
+    "weakAnswer": "Async thing.",
+    "technicalAnswer": "A Promise represents the result of an asynchronous operation.",
+    "interviewAnswer": "A Promise represents the result of an asynchronous operation and can be pending, fulfilled, or rejected.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 9,
+    "topic": "javascript",
+    "subtopic": "event-loop",
+    "question": "What is the event loop?",
+    "weakAnswer": "Handles async.",
+    "technicalAnswer": "The event loop manages execution of asynchronous callbacks.",
+    "interviewAnswer": "The event loop processes asynchronous callbacks by executing them after the call stack is empty.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 10,
+    "topic": "javascript",
+    "subtopic": "hoisting",
+    "question": "What is hoisting?",
+    "weakAnswer": "Variables move up.",
+    "technicalAnswer": "Hoisting is JavaScript's behavior of moving declarations to the top of scope.",
+    "interviewAnswer": "Hoisting is JavaScript's behavior where variable and function declarations are moved to the top of their scope before execution.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 11,
+    "topic": "angular",
+    "subtopic": "change-detection",
+    "question": "What is change detection in Angular?",
+    "weakAnswer": "Updates UI.",
+    "technicalAnswer": "It is Angular's mechanism to detect changes in data and update the DOM.",
+    "interviewAnswer": "Change detection is Angular’s process of checking component bindings and updating the DOM when application state changes.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 12,
+    "topic": "angular",
+    "subtopic": "lifecycle",
+    "question": "What are lifecycle hooks?",
+    "weakAnswer": "Functions in Angular.",
+    "technicalAnswer": "Lifecycle hooks are methods called during component lifecycle stages.",
+    "interviewAnswer": "Lifecycle hooks are methods Angular calls at different stages of a component’s lifecycle, like initialization and destruction.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 13,
+    "topic": "angular",
+    "subtopic": "di",
+    "question": "What is dependency injection?",
+    "weakAnswer": "Injecting stuff.",
+    "technicalAnswer": "A design pattern where dependencies are provided externally.",
+    "interviewAnswer": "Dependency injection is a pattern where dependencies are provided to a class instead of being created inside it.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 14,
+    "topic": "angular",
+    "subtopic": "rxjs",
+    "question": "What is RxJS?",
+    "weakAnswer": "Library.",
+    "technicalAnswer": "A library for reactive programming using Observables.",
+    "interviewAnswer": "RxJS is a library for reactive programming using Observables to manage asynchronous data streams.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 15,
+    "topic": "angular",
+    "subtopic": "components",
+    "question": "What is a component in Angular?",
+    "weakAnswer": "UI part.",
+    "technicalAnswer": "A component controls a part of the UI.",
+    "interviewAnswer": "A component is a building block of Angular applications that controls a part of the UI using a template and logic.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 16,
+    "topic": "angular",
+    "subtopic": "modules",
+    "question": "What is NgModule?",
+    "weakAnswer": "Module.",
+    "technicalAnswer": "A class that groups components and services.",
+    "interviewAnswer": "NgModule is a class that organizes components, directives, pipes, and services into cohesive blocks.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 17,
+    "topic": "angular",
+    "subtopic": "routing",
+    "question": "What is Angular routing?",
+    "weakAnswer": "Navigation.",
+    "technicalAnswer": "Routing enables navigation between views.",
+    "interviewAnswer": "Angular routing allows navigation between different views in a single-page application using routes.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 18,
+    "topic": "angular",
+    "subtopic": "pipes",
+    "question": "What is a pipe?",
+    "weakAnswer": "Transforms data.",
+    "technicalAnswer": "A pipe transforms data in templates.",
+    "interviewAnswer": "A pipe is used to transform data in Angular templates, such as formatting dates or numbers.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 19,
+    "topic": "javascript",
+    "subtopic": "equality",
+    "question": "Difference between == and ===?",
+    "weakAnswer": "Same but different.",
+    "technicalAnswer": "== compares with type coercion, === without.",
+    "interviewAnswer": "== compares values with type coercion, while === compares both value and type strictly.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 20,
+    "topic": "javascript",
+    "subtopic": "arrow-functions",
+    "question": "What is an arrow function?",
+    "weakAnswer": "Short function.",
+    "technicalAnswer": "A shorter syntax for functions without its own this.",
+    "interviewAnswer": "Arrow functions are a shorter syntax for functions and do not have their own 'this', inheriting it from the parent scope.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 21,
+    "topic": "angular",
+    "subtopic": "services",
+    "question": "What is a service in Angular?",
+    "weakAnswer": "Helper.",
+    "technicalAnswer": "A class for business logic and data sharing.",
+    "interviewAnswer": "A service is a class used to share data and business logic across components using dependency injection.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 22,
+    "topic": "angular",
+    "subtopic": "observables",
+    "question": "What is an Observable?",
+    "weakAnswer": "Async thing.",
+    "technicalAnswer": "A stream of data over time.",
+    "interviewAnswer": "An Observable is a stream of data that can emit multiple values over time and can be subscribed to.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 23,
+    "topic": "javascript",
+    "subtopic": "async",
+    "question": "What is async/await?",
+    "weakAnswer": "Better promises.",
+    "technicalAnswer": "Syntax for handling Promises.",
+    "interviewAnswer": "async/await is syntax that makes working with Promises easier by allowing asynchronous code to look synchronous.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 24,
+    "topic": "javascript",
+    "subtopic": "memory",
+    "question": "What is garbage collection?",
+    "weakAnswer": "Deletes memory.",
+    "technicalAnswer": "Automatic memory management.",
+    "interviewAnswer": "Garbage collection is the automatic process of freeing memory that is no longer in use.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 25,
+    "topic": "angular",
+    "subtopic": "forms",
+    "question": "Difference between template-driven and reactive forms?",
+    "weakAnswer": "Two types.",
+    "technicalAnswer": "Template-driven uses templates, reactive uses code.",
+    "interviewAnswer": "Template-driven forms rely on templates, while reactive forms are defined in code and provide more control and scalability.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 26,
+    "topic": "angular",
+    "subtopic": "change-detection",
+    "question": "What is OnPush change detection?",
+    "weakAnswer": "Faster.",
+    "technicalAnswer": "Change detection runs only on input changes.",
+    "interviewAnswer": "OnPush strategy runs change detection only when input references change, improving performance.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 27,
+    "topic": "javascript",
+    "subtopic": "prototype",
+    "question": "What is prototype?",
+    "weakAnswer": "Inheritance.",
+    "technicalAnswer": "Objects inherit from prototype.",
+    "interviewAnswer": "Prototype is the mechanism by which JavaScript objects inherit properties and methods from other objects.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 28,
+    "topic": "javascript",
+    "subtopic": "execution-context",
+    "question": "What is execution context?",
+    "weakAnswer": "Environment.",
+    "technicalAnswer": "Environment where code runs.",
+    "interviewAnswer": "Execution context is the environment in which JavaScript code runs, including variables, scope, and 'this'.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 29,
+    "topic": "angular",
+    "subtopic": "directives",
+    "question": "What is a directive?",
+    "weakAnswer": "Changes DOM.",
+    "technicalAnswer": "Adds behavior to DOM elements.",
+    "interviewAnswer": "A directive is used to modify the behavior or appearance of DOM elements in Angular.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 30,
+    "topic": "angular",
+    "subtopic": "directives",
+    "question": "Difference between structural and attribute directives?",
+    "weakAnswer": "Different types.",
+    "technicalAnswer": "Structural changes DOM, attribute modifies appearance.",
+    "interviewAnswer": "Structural directives change the DOM structure, like *ngIf, while attribute directives modify appearance or behavior, like ngClass.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 31,
+    "topic": "javascript",
+    "subtopic": "types",
+    "question": "What are primitive types?",
+    "weakAnswer": "Basic types.",
+    "technicalAnswer": "Basic immutable data types.",
+    "interviewAnswer": "Primitive types are basic immutable values like string, number, boolean, null, undefined, symbol, and bigint.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 32,
+    "topic": "javascript",
+    "subtopic": "types",
+    "question": "What is type coercion?",
+    "weakAnswer": "Type conversion.",
+    "technicalAnswer": "Automatic type conversion.",
+    "interviewAnswer": "Type coercion is JavaScript’s automatic conversion of values from one type to another during operations.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 33,
+    "topic": "angular",
+    "subtopic": "zones",
+    "question": "What is Zone.js?",
+    "weakAnswer": "Library.",
+    "technicalAnswer": "Tracks async operations.",
+    "interviewAnswer": "Zone.js patches async APIs to track operations and trigger Angular change detection.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": 34,
+    "topic": "angular",
+    "subtopic": "http",
+    "question": "What is HttpClient?",
+    "weakAnswer": "API calls.",
+    "technicalAnswer": "Service for HTTP requests.",
+    "interviewAnswer": "HttpClient is Angular’s service for making HTTP requests and handling API communication.",
+    "difficulty": "beginner"
+  },
+  {
+    "id": 35,
+    "topic": "javascript",
+    "subtopic": "functions",
+    "question": "What is a higher-order function?",
+    "weakAnswer": "Function function.",
+    "technicalAnswer": "Function that takes or returns functions.",
+    "interviewAnswer": "A higher-order function is a function that takes another function as an argument or returns a function.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 36,
+    "topic": "javascript",
+    "subtopic": "immutability",
+    "question": "What is immutability?",
+    "weakAnswer": "Cannot change.",
+    "technicalAnswer": "Data cannot be modified after creation.",
+    "interviewAnswer": "Immutability means data cannot be changed after it is created, and instead new data is created when updates are needed.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 37,
+    "topic": "angular",
+    "subtopic": "performance",
+    "question": "How to improve Angular performance?",
+    "weakAnswer": "Optimize.",
+    "technicalAnswer": "Use OnPush, trackBy, lazy loading.",
+    "interviewAnswer": "Angular performance can be improved using OnPush change detection, trackBy in ngFor, lazy loading modules, and avoiding unnecessary subscriptions.",
+    "difficulty": "advanced"
+  },
+  {
+    "id": 38,
+    "topic": "javascript",
+    "subtopic": "debounce",
+    "question": "What is debouncing?",
+    "weakAnswer": "Delay.",
+    "technicalAnswer": "Delays execution until inactivity.",
+    "interviewAnswer": "Debouncing delays a function execution until after a certain period of inactivity, useful for optimizing events like input typing.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 39,
+    "topic": "javascript",
+    "subtopic": "throttle",
+    "question": "What is throttling?",
+    "weakAnswer": "Limit.",
+    "technicalAnswer": "Limits function calls over time.",
+    "interviewAnswer": "Throttling limits how often a function can be executed within a specified time interval.",
+    "difficulty": "intermediate"
+  },
+  {
+    "id": 40,
+    "topic": "angular",
+    "subtopic": "architecture",
+    "question": "What is a smart vs dumb component?",
+    "weakAnswer": "Different components.",
+    "technicalAnswer": "Smart handles logic, dumb handles UI.",
+    "interviewAnswer": "Smart components manage state and logic, while dumb components focus on presentation and receive data via inputs.",
+    "difficulty": "intermediate"
+  }
+]
