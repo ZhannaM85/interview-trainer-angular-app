@@ -67,15 +67,13 @@ export class QuestionService {
             id: row.id,
             question: row.question,
             answer: row.interviewAnswer,
-            explanation: this.buildExplanation(row),
+            weakAnswer: row.weakAnswer,
+            technicalAnswer: row.technicalAnswer,
+            interviewAnswer: row.interviewAnswer,
+            subtopic: row.subtopic,
             category: this.mapTopicToCategory(row.topic, row.subtopic),
             difficulty: row.difficulty
         };
-    }
-
-    private buildExplanation(row: QuestionUpdatedRow): string {
-        const parts = [row.technicalAnswer, `Weak answer to avoid: ${row.weakAnswer}`];
-        return parts.join('\n\n');
     }
 
     private mapTopicToCategory(topic: string, subtopic: string): QuestionCategory {

@@ -5,9 +5,12 @@ export type QuestionDifficulty = 'beginner' | 'intermediate' | 'advanced';
 export interface Question {
     id: number;
     question: string;
+    /** Primary interview-ready answer (legacy; same as interviewAnswer when from JSON). */
     answer: string;
-    explanation?: string;
-    example?: string;
+    weakAnswer: string;
+    technicalAnswer: string;
+    interviewAnswer: string;
+    subtopic: string;
     category: QuestionCategory;
     difficulty: QuestionDifficulty;
 }

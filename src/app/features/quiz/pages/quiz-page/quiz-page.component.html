@@ -1,12 +1,12 @@
 <section class="quiz" aria-labelledby="quiz-title">
-    <h1 id="quiz-title" class="quiz__title">Quiz</h1>
+    <h1 id="quiz-title" class="quiz__title visually-hidden">Interview</h1>
 
     @if (loadError()) {
         <p class="quiz__message quiz__message--error" role="alert">Could not load questions. Check that assets are available and try again.</p>
     } @else if (loading()) {
         <p class="quiz__message">Loading questions…</p>
     } @else if (sessionComplete()) {
-        <div class="quiz__done">
+        <div class="quiz__done card-phase">
             <p class="quiz__message">You finished this session.</p>
             @if (usingFallbackQueue()) {
                 <p class="quiz__hint">No questions were due for review, so all questions were shown.</p>
@@ -17,9 +17,37 @@
         @if (usingFallbackQueue()) {
             <p class="quiz__hint">Nothing due right now — practicing from the full set.</p>
         }
-        <app-question-card [question]="q" (flippedChange)="onFlippedChange($event)" />
-        @if (flipped()) {
-            <app-feedback-buttons (answered)="onAnswered($event)" />
-        }
+
+        <div class="quiz__card-wrap" [attr.data-phase]="phase()">
+            @if (phase() === 'question') {
+                <div class="quiz__phase card-phase">
+                    <app-interview-question
+                        [question]="q"
+                        [durationSeconds]="30"
+                        (answered)="goToAnswer()"
+                        (timerExpired)="goToAnswer()"
+                    />
+                </div>
+            }
+            @if (phase() === 'answer') {
+                <div class="quiz__phase card-phase">
+                    <app-interview-answer [question]="q" (rated)="onSelfRated($event)" />
+                </div>
+            }
+            @if (phase() === 'feedback') {
+                @if (feedbackSnapshot(); as snap) {
+                    <div class="quiz__phase card-phase">
+                        <app-interview-feedback
+                            [headline]="snap.headline"
+                            [scoreDelta]="snap.scoreDelta"
+                            [weakArea]="snap.weakArea"
+                            [nextReviewLabel]="snap.nextReviewLabel"
+                            [sessionProgressPct]="sessionProgressPct()"
+                            (next)="onNextQuestion()"
+                        />
+                    </div>
+                }
+            }
+        </div>
     }
 </section>

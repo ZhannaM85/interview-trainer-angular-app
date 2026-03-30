@@ -1,0 +1,75 @@
+.self-eval {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.65rem;
+    width: 100%;
+    margin-top: 0.25rem;
+}
+
+@media (max-width: 640px) {
+    .self-eval {
+        grid-template-columns: 1fr;
+    }
+}
+
+.self-eval__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.35rem;
+    min-height: 2.85rem;
+    padding: 0.55rem 0.75rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card-elevated);
+    color: var(--it-text);
+    font: inherit;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.2s ease,
+        background 0.2s ease;
+}
+
+.self-eval__btn:hover {
+    transform: scale(1.02);
+}
+
+.self-eval__btn:active {
+    transform: scale(0.97);
+}
+
+.self-eval__btn:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.self-eval__btn--no {
+    border-color: rgba(239, 68, 68, 0.45);
+}
+
+.self-eval__btn--no:hover {
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.self-eval__btn--partial {
+    border-color: rgba(234, 179, 8, 0.5);
+}
+
+.self-eval__btn--partial:hover {
+    background: rgba(234, 179, 8, 0.1);
+}
+
+.self-eval__btn--yes {
+    border-color: rgba(34, 197, 94, 0.55);
+}
+
+.self-eval__btn--yes:hover {
+    background: var(--it-accent-dim);
+}
+
+.self-eval__emoji {
+    font-size: 1.1rem;
+}

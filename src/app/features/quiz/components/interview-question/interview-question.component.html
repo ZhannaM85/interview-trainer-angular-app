@@ -1,0 +1,17 @@
+<div class="interview-q">
+    <p class="interview-q__badge">
+        <span>{{ categoryLabel(question().category) }}</span>
+        <span class="interview-q__dot" aria-hidden="true">•</span>
+        <span>{{ difficultyLabel(question().difficulty) }}</span>
+    </p>
+
+    <h1 class="interview-q__title">{{ question().question }}</h1>
+
+    <app-quiz-timer
+        [resetKey]="question().id"
+        [durationSeconds]="durationSeconds()"
+        (expired)="timerExpired.emit()"
+    />
+
+    <button type="button" class="interview-q__cta" (click)="answered.emit()">I answered</button>
+</div>

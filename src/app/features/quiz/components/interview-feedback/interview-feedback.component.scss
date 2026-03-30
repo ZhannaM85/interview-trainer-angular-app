@@ -1,0 +1,79 @@
+.interview-fb {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.1rem;
+    width: 100%;
+    max-width: 560px;
+    margin-inline: auto;
+    text-align: center;
+}
+
+.interview-fb__title {
+    margin: 0;
+    font-size: 1.35rem;
+    font-weight: 700;
+}
+
+.interview-fb__score {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--it-accent);
+}
+
+.interview-fb__progress {
+    text-align: left;
+}
+
+.interview-fb__section {
+    padding: 0.85rem 1rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--it-border);
+    background: rgba(15, 23, 42, 0.4);
+}
+
+.interview-fb__label {
+    margin: 0 0 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--it-text-muted);
+}
+
+.interview-fb__value {
+    margin: 0;
+    font-size: 0.98rem;
+    line-height: 1.45;
+}
+
+.interview-fb__next {
+    margin-top: 0.25rem;
+    min-height: 2.85rem;
+    padding: 0.55rem 1.25rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card-elevated);
+    color: var(--it-text);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    transition:
+        transform 0.12s ease,
+        background 0.2s ease;
+}
+
+.interview-fb__next:hover {
+    background: var(--it-accent-dim);
+    border-color: rgba(34, 197, 94, 0.35);
+}
+
+.interview-fb__next:active {
+    transform: scale(0.98);
+}
+
+.interview-fb__next:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
