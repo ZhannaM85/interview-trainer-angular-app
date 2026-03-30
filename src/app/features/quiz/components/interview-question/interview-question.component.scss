@@ -1,0 +1,82 @@
+.interview-q {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 600px;
+    margin-inline: auto;
+}
+
+.interview-q__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--it-text-muted);
+    background: rgba(148, 163, 184, 0.12);
+    border: 1px solid var(--it-border);
+}
+
+.interview-q__dot {
+    opacity: 0.6;
+}
+
+.interview-q__title {
+    margin: 0;
+    font-size: clamp(1.35rem, 4vw, 1.65rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+}
+
+.interview-q__cta {
+    min-height: 3rem;
+    min-width: 12rem;
+    padding: 0.65rem 1.5rem;
+    border-radius: 0.75rem;
+    border: none;
+    background: var(--it-accent);
+    color: var(--it-on-accent);
+    font: inherit;
+    font-weight: 700;
+    font-size: 1rem;
+    cursor: pointer;
+    transition:
+        transform 0.12s ease,
+        box-shadow 0.2s ease;
+    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+}
+
+.interview-q__cta:hover {
+    transform: scale(1.03);
+}
+
+.interview-q__cta:active {
+    transform: scale(0.97);
+    animation: cta-success-flash 0.35s ease;
+}
+
+@keyframes cta-success-flash {
+    0% {
+        box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+    }
+    40% {
+        box-shadow:
+            0 0 0 3px rgba(34, 197, 94, 0.45),
+            0 8px 24px rgba(34, 197, 94, 0.4);
+    }
+    100% {
+        box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+    }
+}
+
+.interview-q__cta:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 3px;
+}
