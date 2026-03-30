@@ -1,0 +1,56 @@
+.app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.app__header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    border-bottom: 1px solid var(--it-border);
+    background: var(--it-header-bg);
+}
+
+.app__brand {
+    font-weight: 700;
+    font-size: 1.1rem;
+    text-decoration: none;
+    color: inherit;
+}
+
+.app__brand:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}
+
+.app__nav {
+    display: flex;
+    gap: 0.75rem;
+}
+
+.app__nav a {
+    padding: 0.35rem 0.65rem;
+    border-radius: 0.5rem;
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+}
+
+.app__nav a:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.app__link--active {
+    background: var(--it-nav-active-bg);
+}
+
+.app__main {
+    flex: 1;
+    padding: 1.5rem 0;
+}

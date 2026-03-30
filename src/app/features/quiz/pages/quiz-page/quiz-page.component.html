@@ -1,0 +1,25 @@
+<section class="quiz" aria-labelledby="quiz-title">
+    <h1 id="quiz-title" class="quiz__title">Quiz</h1>
+
+    @if (loadError()) {
+        <p class="quiz__message quiz__message--error" role="alert">Could not load questions. Check that assets are available and try again.</p>
+    } @else if (loading()) {
+        <p class="quiz__message">Loading questions…</p>
+    } @else if (sessionComplete()) {
+        <div class="quiz__done">
+            <p class="quiz__message">You finished this session.</p>
+            @if (usingFallbackQueue()) {
+                <p class="quiz__hint">No questions were due for review, so all questions were shown.</p>
+            }
+            <button type="button" class="quiz__restart" (click)="restartSession()">Start another round</button>
+        </div>
+    } @else if (currentQuestion(); as q) {
+        @if (usingFallbackQueue()) {
+            <p class="quiz__hint">Nothing due right now — practicing from the full set.</p>
+        }
+        <app-question-card [question]="q" (flippedChange)="onFlippedChange($event)" />
+        @if (flipped()) {
+            <app-feedback-buttons (answered)="onAnswered($event)" />
+        }
+    }
+</section>

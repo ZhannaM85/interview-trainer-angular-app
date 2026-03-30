@@ -1,0 +1,62 @@
+/* stretch children so width:100% descendants (e.g. the card) resolve to the full quiz column;
+   align-items:center would shrink-wrap to min-content and collapse the flip card */
+.quiz {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5rem;
+    width: 100%;
+    max-width: 42rem;
+    margin: 0 auto;
+    padding: 0 1rem 2rem;
+    box-sizing: border-box;
+}
+
+.quiz__title {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+    align-self: flex-start;
+}
+
+.quiz__message {
+    margin: 0;
+    text-align: center;
+}
+
+.quiz__message--error {
+    color: var(--it-danger);
+}
+
+.quiz__done {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    align-self: center;
+    max-width: 28rem;
+}
+
+.quiz__hint {
+    margin: 0;
+    font-size: 0.9rem;
+    opacity: 0.85;
+    text-align: center;
+}
+
+.quiz__restart {
+    min-height: 2.75rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-surface-2);
+    color: inherit;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.quiz__restart:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}

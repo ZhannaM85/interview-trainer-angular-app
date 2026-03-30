@@ -1,0 +1,12 @@
+<div class="app">
+    <header class="app__header">
+        <a class="app__brand" routerLink="/">Interview Trainer</a>
+        <nav class="app__nav" aria-label="Main">
+            <a routerLink="/quiz" routerLinkActive="app__link--active" [routerLinkActiveOptions]="{ exact: true }">Quiz</a>
+            <a routerLink="/dashboard" routerLinkActive="app__link--active">Dashboard</a>
+        </nav>
+    </header>
+    <main class="app__main">
+        <router-outlet />
+    </main>
+</div>

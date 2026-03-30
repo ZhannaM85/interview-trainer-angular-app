@@ -1,0 +1,41 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
+.feedback {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    justify-content: center;
+}
+
+.feedback__btn {
+    min-height: 2.75rem;
+    padding: 0.5rem 1.25rem;
+    border-radius: 0.5rem;
+    border: 1px solid transparent;
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+    transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.feedback__btn:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: 2px;
+}
+
+.feedback__btn:active {
+    transform: scale(0.98);
+}
+
+.feedback__btn--yes {
+    background: var(--it-accent-yes);
+    color: var(--it-on-accent);
+}
+
+.feedback__btn--no {
+    background: var(--it-accent-no);
+    color: var(--it-on-accent);
+}
