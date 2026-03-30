@@ -998,5 +998,205 @@
         "technicalAnswer": "Cross-origin resource sharing.",
         "interviewAnswer": "CORS is a browser security feature that controls how resources are requested from different domains.",
         "difficulty": "intermediate"
+    },
+    {
+        "id": 101,
+        "topic": "javascript",
+        "subtopic": "closures",
+        "question": "What will this code output?\n\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+        "weakAnswer": "0 1 2",
+        "technicalAnswer": "3 3 3",
+        "interviewAnswer": "It logs 3, 3, 3 because var is function-scoped and the loop finishes before setTimeout executes, so all callbacks reference the final value.",
+        "difficulty": "intermediate"
+    },
+    {
+        "id": 102,
+        "topic": "javascript",
+        "subtopic": "closures",
+        "question": "What will this code output?\n\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+        "weakAnswer": "3 3 3",
+        "technicalAnswer": "0 1 2",
+        "interviewAnswer": "It logs 0, 1, 2 because let is block-scoped and creates a new binding for each iteration.",
+        "difficulty": "intermediate"
+    },
+    {
+        "id": 103,
+        "topic": "javascript",
+        "subtopic": "this",
+        "question": "What will this code output?\n\nconst obj = {\n  name: 'John',\n  greet: function() {\n    return function() {\n      console.log(this.name);\n    }\n  }\n};\nobj.greet()();",
+        "weakAnswer": "John",
+        "technicalAnswer": "undefined",
+        "interviewAnswer": "It logs undefined because the inner function is a regular function and 'this' refers to the global object, not obj.",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 104,
+        "topic": "javascript",
+        "subtopic": "this",
+        "question": "How to fix previous example to print 'John'?",
+        "weakAnswer": "Change something.",
+        "technicalAnswer": "Use arrow function or bind.",
+        "interviewAnswer": "Use an arrow function or bind to preserve 'this', for example returning () => console.log(this.name).",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 105,
+        "topic": "javascript",
+        "subtopic": "hoisting",
+        "question": "What will this output?\n\nconsole.log(a);\nvar a = 5;",
+        "weakAnswer": "5",
+        "technicalAnswer": "undefined",
+        "interviewAnswer": "It logs undefined because variable declarations are hoisted but not their assignments.",
+        "difficulty": "beginner"
+    },
+    {
+        "id": 106,
+        "topic": "javascript",
+        "subtopic": "hoisting",
+        "question": "What will this output?\n\nconsole.log(a);\nlet a = 5;",
+        "weakAnswer": "undefined",
+        "technicalAnswer": "ReferenceError",
+        "interviewAnswer": "It throws a ReferenceError because let variables are in the temporal dead zone until initialized.",
+        "difficulty": "intermediate"
+    },
+    {
+        "id": 107,
+        "topic": "javascript",
+        "subtopic": "async",
+        "question": "What is the output order?\n\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);",
+        "weakAnswer": "1 2 3 4",
+        "technicalAnswer": "1 4 3 2",
+        "interviewAnswer": "It logs 1, 4, 3, 2 because synchronous code runs first, then microtasks (Promises), then macrotasks (setTimeout).",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 108,
+        "topic": "javascript",
+        "subtopic": "arrays",
+        "question": "What will this output?\n\n[1,2,3].map(parseInt)",
+        "weakAnswer": "[1,2,3]",
+        "technicalAnswer": "[1, NaN, NaN]",
+        "interviewAnswer": "map passes index as second argument, so parseInt receives (value, index), causing unexpected NaN results.",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 109,
+        "topic": "javascript",
+        "subtopic": "types",
+        "question": "What will this output?\n\n[] + {}",
+        "weakAnswer": "Error",
+        "technicalAnswer": "[object Object]",
+        "interviewAnswer": "JavaScript coerces both to strings, resulting in '[object Object]'.",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 110,
+        "topic": "javascript",
+        "subtopic": "types",
+        "question": "What will this output?\n\n{} + []",
+        "weakAnswer": "Same as previous",
+        "technicalAnswer": "0",
+        "interviewAnswer": "JavaScript interprets {} as a block, so +[] becomes 0 due to type coercion.",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 111,
+        "topic": "javascript",
+        "subtopic": "functions",
+        "question": "What will this output?\n\nfunction foo() {\n  return\n  {\n    name: 'John'\n  }\n}\nconsole.log(foo());",
+        "weakAnswer": "Object",
+        "technicalAnswer": "undefined",
+        "interviewAnswer": "It returns undefined due to automatic semicolon insertion after return.",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 112,
+        "topic": "javascript",
+        "subtopic": "objects",
+        "question": "What will this output?\n\nconst obj = { a: 1 };\nconst b = obj;\nb.a = 2;\nconsole.log(obj.a);",
+        "weakAnswer": "1",
+        "technicalAnswer": "2",
+        "interviewAnswer": "Objects are referenced, so modifying b also affects obj.",
+        "difficulty": "beginner"
+    },
+    {
+        "id": 113,
+        "topic": "javascript",
+        "subtopic": "closures",
+        "question": "What will this output?\n\nfunction counter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  }\n}\nconst c = counter();\nconsole.log(c());\nconsole.log(c());",
+        "weakAnswer": "1 1",
+        "technicalAnswer": "1 2",
+        "interviewAnswer": "The closure preserves state, so count increments with each call.",
+        "difficulty": "intermediate"
+    },
+    {
+        "id": 114,
+        "topic": "javascript",
+        "subtopic": "async",
+        "question": "What will this output?\n\nasync function test() {\n  return 42;\n}\ntest().then(console.log);",
+        "weakAnswer": "Nothing",
+        "technicalAnswer": "42",
+        "interviewAnswer": "Async functions always return a Promise, so it resolves with 42.",
+        "difficulty": "beginner"
+    },
+    {
+        "id": 115,
+        "topic": "javascript",
+        "subtopic": "this",
+        "question": "What will this output?\n\nconst obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",
+        "weakAnswer": "John",
+        "technicalAnswer": "undefined",
+        "interviewAnswer": "Arrow functions don’t have their own 'this', so it refers to the outer scope, not obj.",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 116,
+        "topic": "javascript",
+        "subtopic": "async",
+        "question": "What will this output?\n\nPromise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw new Error(); })\n  .catch(() => 10)\n  .then(x => console.log(x));",
+        "weakAnswer": "Error",
+        "technicalAnswer": "10",
+        "interviewAnswer": "The error is caught and replaced with 10, which is then logged.",
+        "difficulty": "advanced"
+    },
+    {
+        "id": 117,
+        "topic": "javascript",
+        "subtopic": "async",
+        "question": "What will this output?\n\nsetTimeout(() => console.log('A'), 0);\nconsole.log('B');",
+        "weakAnswer": "A B",
+        "technicalAnswer": "B A",
+        "interviewAnswer": "Synchronous code runs first, so 'B' logs before the async callback.",
+        "difficulty": "beginner"
+    },
+    {
+        "id": 118,
+        "topic": "javascript",
+        "subtopic": "types",
+        "question": "What will this output?\n\nconsole.log(0.1 + 0.2 === 0.3);",
+        "weakAnswer": "true",
+        "technicalAnswer": "false",
+        "interviewAnswer": "Due to floating point precision issues, 0.1 + 0.2 is not exactly 0.3.",
+        "difficulty": "intermediate"
+    },
+    {
+        "id": 119,
+        "topic": "javascript",
+        "subtopic": "objects",
+        "question": "What will this output?\n\nconst a = { x: 1 };\nconst b = { x: 1 };\nconsole.log(a === b);",
+        "weakAnswer": "true",
+        "technicalAnswer": "false",
+        "interviewAnswer": "Objects are compared by reference, not value, so they are not equal.",
+        "difficulty": "beginner"
+    },
+    {
+        "id": 120,
+        "topic": "javascript",
+        "subtopic": "arrays",
+        "question": "What will this output?\n\nconsole.log([1,2] == '1,2');",
+        "weakAnswer": "false",
+        "technicalAnswer": "true",
+        "interviewAnswer": "The array is coerced to a string '1,2', so the comparison returns true.",
+        "difficulty": "advanced"
     }
 ]
