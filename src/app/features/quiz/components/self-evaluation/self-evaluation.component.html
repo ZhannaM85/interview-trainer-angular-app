@@ -1,0 +1,14 @@
+<div class="self-eval" role="group" aria-label="How well did you answer?">
+    <button type="button" class="self-eval__btn self-eval__btn--no" (click)="rated.emit('didntKnow')">
+        <span class="self-eval__emoji" aria-hidden="true">😬</span>
+        Didn’t know
+    </button>
+    <button type="button" class="self-eval__btn self-eval__btn--partial" (click)="rated.emit('partial')">
+        <span class="self-eval__emoji" aria-hidden="true">🤔</span>
+        Partial
+    </button>
+    <button type="button" class="self-eval__btn self-eval__btn--yes" (click)="rated.emit('nailed')">
+        <span class="self-eval__emoji" aria-hidden="true">✅</span>
+        Nailed it
+    </button>
+</div>

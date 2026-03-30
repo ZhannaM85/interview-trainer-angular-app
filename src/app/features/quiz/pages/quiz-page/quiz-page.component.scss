@@ -1,22 +1,33 @@
-/* stretch children so width:100% descendants (e.g. the card) resolve to the full quiz column;
-   align-items:center would shrink-wrap to min-content and collapse the flip card */
 .quiz {
     display: flex;
     flex-direction: column;
     align-items: stretch;
-    gap: 1.5rem;
+    gap: 1.25rem;
     width: 100%;
-    max-width: 42rem;
+    max-width: 700px;
     margin: 0 auto;
     padding: 0 1rem 2rem;
     box-sizing: border-box;
 }
 
-.quiz__title {
+.quiz__title.visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+.quiz__title:not(.visually-hidden) {
     margin: 0;
-    font-size: 1.5rem;
+    font-size: 1.1rem;
     font-weight: 700;
     align-self: flex-start;
+    color: var(--it-text-muted);
 }
 
 .quiz__message {
@@ -25,32 +36,28 @@
 }
 
 .quiz__message--error {
-    color: var(--it-danger);
+    color: var(--it-error);
 }
 
 .quiz__done {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
     align-self: center;
     max-width: 28rem;
 }
 
 .quiz__hint {
     margin: 0;
-    font-size: 0.9rem;
-    opacity: 0.85;
+    font-size: 0.85rem;
+    color: var(--it-text-muted);
     text-align: center;
 }
 
 .quiz__restart {
     min-height: 2.75rem;
     padding: 0.5rem 1.25rem;
-    border-radius: 0.5rem;
+    border-radius: 0.65rem;
     border: 1px solid var(--it-border);
-    background: var(--it-surface-2);
-    color: inherit;
+    background: var(--it-card);
+    color: var(--it-text);
     font: inherit;
     font-weight: 600;
     cursor: pointer;
@@ -59,4 +66,28 @@
 .quiz__restart:focus-visible {
     outline: 2px solid var(--it-focus);
     outline-offset: 2px;
+}
+
+.quiz__card-wrap {
+    width: 100%;
+}
+
+.card-phase {
+    border-radius: 1rem;
+    padding: 1.5rem 1.25rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    box-shadow: var(--it-shadow);
+    animation: quiz-phase-in 0.28s ease;
+}
+
+@keyframes quiz-phase-in {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
 }

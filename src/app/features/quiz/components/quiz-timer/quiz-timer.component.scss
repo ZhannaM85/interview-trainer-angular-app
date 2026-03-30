@@ -1,0 +1,40 @@
+.quiz-timer {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-variant-numeric: tabular-nums;
+    font-weight: 700;
+    font-size: 1.1rem;
+    letter-spacing: 0.02em;
+    transition:
+        color 0.2s ease,
+        transform 0.2s ease;
+}
+
+.quiz-timer__icon {
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.quiz-timer--ok {
+    color: var(--it-timer-green);
+}
+
+.quiz-timer--warn {
+    color: var(--it-timer-yellow);
+}
+
+.quiz-timer--critical {
+    color: var(--it-timer-red);
+    animation: quiz-timer-pulse 0.85s ease-in-out infinite;
+}
+
+@keyframes quiz-timer-pulse {
+    0%,
+    100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.06);
+    }
+}

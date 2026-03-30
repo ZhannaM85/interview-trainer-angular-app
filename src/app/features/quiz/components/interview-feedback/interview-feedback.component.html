@@ -1,0 +1,23 @@
+<div class="interview-fb">
+    <h2 class="interview-fb__title">{{ headline() }}</h2>
+
+    <p class="interview-fb__score">Score: +{{ scoreDelta() }}</p>
+
+    @if (sessionProgressPct() !== null) {
+        <div class="interview-fb__progress">
+            <app-progress-bar [value]="sessionProgressPct()!" [max]="100" label="Session progress" />
+        </div>
+    }
+
+    <div class="interview-fb__section">
+        <p class="interview-fb__label">Weak area</p>
+        <p class="interview-fb__value">"{{ weakArea() }}"</p>
+    </div>
+
+    <div class="interview-fb__section">
+        <p class="interview-fb__label">Next review</p>
+        <p class="interview-fb__value">{{ nextReviewLabel() }}</p>
+    </div>
+
+    <button type="button" class="interview-fb__next" (click)="next.emit()">Next Question →</button>
+</div>
