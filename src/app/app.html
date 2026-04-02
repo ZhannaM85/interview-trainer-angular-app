@@ -4,6 +4,20 @@
         [class.app__header--nav-open]="navMenuOpen()"
     >
         <div class="app__header-top">
+            <button
+                type="button"
+                class="app__menu-btn"
+                (click)="toggleNavMenu()"
+                [attr.aria-expanded]="navMenuOpen()"
+                aria-controls="app-main-nav"
+                [attr.aria-label]="'app.menuToggle' | translate"
+            >
+                <span class="app__menu-icon" aria-hidden="true">
+                    <span class="app__menu-icon-bar"></span>
+                    <span class="app__menu-icon-bar"></span>
+                    <span class="app__menu-icon-bar"></span>
+                </span>
+            </button>
             <a class="app__brand" routerLink="/">
                 <img
                     class="app__brand-mark"
@@ -16,20 +30,6 @@
                 <span class="app__brand-text">{{ 'app.brand' | translate }}</span>
             </a>
             <div class="app__header-actions">
-                <button
-                    type="button"
-                    class="app__menu-btn"
-                    (click)="toggleNavMenu()"
-                    [attr.aria-expanded]="navMenuOpen()"
-                    aria-controls="app-main-nav"
-                    [attr.aria-label]="'app.menuToggle' | translate"
-                >
-                    <span class="app__menu-icon" aria-hidden="true">
-                        <span class="app__menu-icon-bar"></span>
-                        <span class="app__menu-icon-bar"></span>
-                        <span class="app__menu-icon-bar"></span>
-                    </span>
-                </button>
                 <div class="app__locale">
                     <label class="visually-hidden" for="app-locale-select">{{ 'locale.selectLabel' | translate }}</label>
                     <select
