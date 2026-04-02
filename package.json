@@ -6,6 +6,8 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "data:code-examples": "node scripts/build-code-examples.mjs",
+    "data:i18n-questions": "node scripts/apply-russian-translations.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
