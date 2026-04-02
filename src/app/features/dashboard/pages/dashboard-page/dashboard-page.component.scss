@@ -92,17 +92,23 @@
 
 .dashboard__cta-row {
     display: flex;
-    flex-wrap: wrap;
-    align-items: center;
-    gap: 0.65rem 1rem;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: stretch;
+    gap: 0.65rem;
+    width: 100%;
 }
 
 .dashboard__cta-secondary {
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex: 1 1 0;
+    min-width: 0;
+    box-sizing: border-box;
+    text-align: center;
     min-height: 3rem;
-    padding: 0.65rem 1.25rem;
+    padding: 0.65rem 0.75rem;
     border-radius: 0.75rem;
     border: 1px solid var(--it-border);
     background: var(--it-card);
@@ -127,8 +133,12 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
+    flex: 1 1 0;
+    min-width: 0;
+    box-sizing: border-box;
+    text-align: center;
     min-height: 3rem;
-    padding: 0.65rem 1.5rem;
+    padding: 0.65rem 0.75rem;
     border-radius: 0.75rem;
     border: none;
     background: var(--it-accent);
