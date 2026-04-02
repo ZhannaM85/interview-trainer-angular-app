@@ -10,6 +10,8 @@ export interface Question {
     weakAnswer: string;
     technicalAnswer: string;
     interviewAnswer: string;
+    /** Illustrative code shown below the answer blocks (language-agnostic). */
+    codeExample: string;
     subtopic: string;
     category: QuestionCategory;
     difficulty: QuestionDifficulty;

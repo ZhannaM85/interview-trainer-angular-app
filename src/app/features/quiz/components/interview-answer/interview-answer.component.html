@@ -1,7 +1,16 @@
 <div class="interview-answer">
     <app-answer-blocks [question]="question()" [animated]="true" />
 
-    <div class="interview-answer__eval interview-answer__reveal interview-answer__reveal--4">
-        <app-self-evaluation (rated)="rated.emit($event)" />
-    </div>
+    @if (question().codeExample.trim().length > 0) {
+        <div class="interview-answer__code-wrap interview-answer__reveal interview-answer__reveal--4">
+            <p class="interview-answer__label interview-answer__label--code">
+                {{ 'answerBlocks.codeExample' | translate }}
+            </p>
+            <pre
+                class="interview-answer__code"
+                role="region"
+                [attr.aria-label]="'answerBlocks.codeExample' | translate"
+            ><code>{{ question().codeExample }}</code></pre>
+        </div>
+    }
 </div>
