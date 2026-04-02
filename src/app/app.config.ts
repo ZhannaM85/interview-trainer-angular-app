@@ -9,6 +9,14 @@ import { firstValueFrom } from 'rxjs';
 import { LOCALE_STORAGE_KEY } from './core/locale.constants';
 import { routes } from './app.routes';
 
+/** Resolves i18n asset path so GitHub Pages (subpath deploy) and local `/` both work. */
+function translateHttpLoaderConfig(): { prefix: string; suffix: string } {
+    const doc = inject(DOCUMENT);
+    const href = doc.querySelector('base')?.getAttribute('href')?.trim() || '/';
+    const base = href.endsWith('/') ? href : `${href}/`;
+    return { prefix: `${base}assets/i18n/`, suffix: '.json' };
+}
+
 function resolveInitialLang(): 'en' | 'ru' {
     try {
         const saved = localStorage.getItem(LOCALE_STORAGE_KEY);
@@ -28,7 +36,7 @@ export const appConfig: ApplicationConfig = {
     providers: [
         provideBrowserGlobalErrorListeners(),
         provideHttpClient(),
-        { provide: TRANSLATE_HTTP_LOADER_CONFIG, useValue: { prefix: '/assets/i18n/', suffix: '.json' } },
+        { provide: TRANSLATE_HTTP_LOADER_CONFIG, useFactory: translateHttpLoaderConfig },
         ...provideTranslateService({
             fallbackLang: 'en',
             loader: { provide: TranslateLoader, useClass: TranslateHttpLoader }
