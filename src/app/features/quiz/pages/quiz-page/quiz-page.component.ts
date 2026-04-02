@@ -11,6 +11,7 @@ import { ProgressBarComponent } from '../../../../shared/components/progress-bar
 import { InterviewAnswerComponent } from '../../components/interview-answer/interview-answer.component';
 import { InterviewFeedbackComponent } from '../../components/interview-feedback/interview-feedback.component';
 import { InterviewQuestionComponent } from '../../components/interview-question/interview-question.component';
+import { SelfEvaluationComponent } from '../../components/self-evaluation/self-evaluation.component';
 
 export type QuizPhase = 'question' | 'answer' | 'feedback';
 
@@ -34,6 +35,7 @@ export interface SessionProgressCounts {
         InterviewAnswerComponent,
         InterviewFeedbackComponent,
         ProgressBarComponent,
+        SelfEvaluationComponent,
         TranslatePipe
     ],
     templateUrl: './quiz-page.component.html',

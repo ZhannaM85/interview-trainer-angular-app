@@ -14,6 +14,14 @@
     color: var(--it-text);
 }
 
+.about__name {
+    margin: 0 0 1.25rem;
+}
+
+.about__name .about__p:first-of-type {
+    margin-top: 0.35rem;
+}
+
 .about__notice {
     margin: 0 0 1.5rem;
     padding: 1rem 1.1rem;

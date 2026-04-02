@@ -1,8 +1,9 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, inject, signal } from '@angular/core';
+import { Component, HostListener, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
+import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { filter, fromEvent } from 'rxjs';
 
 import { LOCALE_STORAGE_KEY } from './core/locale.constants';
 
@@ -15,8 +16,10 @@ import { LOCALE_STORAGE_KEY } from './core/locale.constants';
 export class App {
     private readonly translate = inject(TranslateService);
     private readonly document = inject(DOCUMENT);
+    private readonly router = inject(Router);
 
     protected readonly currentLang = signal<'en' | 'ru'>('en');
+    protected readonly navMenuOpen = signal(false);
 
     constructor() {
         this.currentLang.set(this.normalizeLang(this.translate.currentLang));
@@ -24,6 +27,36 @@ export class App {
             this.currentLang.set(this.normalizeLang(e.lang));
             this.document.documentElement.lang = e.lang;
         });
+
+        this.router.events
+            .pipe(
+                filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+                takeUntilDestroyed()
+            )
+            .subscribe(() => this.navMenuOpen.set(false));
+
+        fromEvent(window, 'resize')
+            .pipe(takeUntilDestroyed())
+            .subscribe(() => {
+                if (window.matchMedia('(min-width: 768px)').matches) {
+                    this.navMenuOpen.set(false);
+                }
+            });
+    }
+
+    @HostListener('document:keydown.escape')
+    protected onEscapeCloseMenu(): void {
+        if (this.navMenuOpen()) {
+            this.navMenuOpen.set(false);
+        }
+    }
+
+    protected toggleNavMenu(): void {
+        this.navMenuOpen.update((open) => !open);
+    }
+
+    protected closeNavMenu(): void {
+        this.navMenuOpen.set(false);
     }
 
     protected onLocaleChange(raw: string): void {

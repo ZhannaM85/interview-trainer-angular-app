@@ -17,7 +17,8 @@
                 "technicalAnswer": "'this' refers to the execution context of a function and depends on how it is called.",
                 "interviewAnswer": "'this' depends on how a function is called. In a method, it refers to the object. In a regular function, it is undefined in strict mode."
             }
-        }
+        },
+        "codeExample": "'use strict';\nconst obj = { name: 'Ann', greet() { return this.name; } };\nobj.greet();\nfunction loose() { return this; }\nloose(); // undefined in strict mode"
     },
     {
         "id": 2,
@@ -37,7 +38,8 @@
                 "technicalAnswer": "A closure is a function that retains access to its lexical scope.",
                 "interviewAnswer": "A closure is a function that remembers variables from its outer scope even after that scope has finished executing."
             }
-        }
+        },
+        "codeExample": "function outer() {\n    let count = 0;\n    return function inner() {\n        return ++count;\n    };\n}\nconst inc = outer();\ninc(); // 1"
     },
     {
         "id": 3,
@@ -57,7 +59,8 @@
                 "technicalAnswer": "Scope defines the accessibility of variables in different parts of code.",
                 "interviewAnswer": "Scope determines where variables can be accessed in your code. JavaScript has global, function, and block scope."
             }
-        }
+        },
+        "codeExample": "const x = 1;\nfunction f() {\n    const y = 2;\n    if (true) {\n        let z = 3;\n    }\n}"
     },
     {
         "id": 4,
@@ -77,7 +80,8 @@
                 "technicalAnswer": "var is function-scoped, let and const are block-scoped.",
                 "interviewAnswer": "var is function-scoped, while let and const are block-scoped. const cannot be reassigned, while let can."
             }
-        }
+        },
+        "codeExample": "function demo() {\n    console.log(a); // undefined (hoisted)\n    var a = 1;\n    if (true) {\n        let b = 2;\n    }\n}"
     },
     {
         "id": 5,
@@ -97,7 +101,8 @@
                 "technicalAnswer": "bind creates a new function with a fixed 'this' value.",
                 "interviewAnswer": "bind returns a new function with 'this' permanently set to a specific value, allowing you to control execution context."
             }
-        }
+        },
+        "codeExample": "function greet() {\n    return this.name;\n}\nconst bound = greet.bind({ name: 'Ann' });\nbound();"
     },
     {
         "id": 6,
@@ -117,7 +122,8 @@
                 "technicalAnswer": "call and apply invoke functions immediately, bind returns a new function.",
                 "interviewAnswer": "call and apply execute the function immediately, with call using arguments individually and apply using an array. bind returns a new function without executing it."
             }
-        }
+        },
+        "codeExample": "function sum(a, b) {\n    return a + b;\n}\nsum.call(null, 1, 2);\nsum.apply(null, [1, 2]);\nconst later = sum.bind(null, 1);"
     },
     {
         "id": 7,
@@ -137,7 +143,8 @@
                 "technicalAnswer": "map returns a new array, forEach does not.",
                 "interviewAnswer": "map returns a new transformed array, while forEach executes a function on each element without returning a new array."
             }
-        }
+        },
+        "codeExample": "[1, 2, 3].map((x) => x * 2);\n[1, 2, 3].forEach((x) => console.log(x));"
     },
     {
         "id": 8,
@@ -157,7 +164,8 @@
                 "technicalAnswer": "A Promise represents the result of an asynchronous operation.",
                 "interviewAnswer": "A Promise represents the result of an asynchronous operation and can be pending, fulfilled, or rejected."
             }
-        }
+        },
+        "codeExample": "const p = fetch('/api').then((r) => r.json());\nPromise.resolve(1).then(console.log);"
     },
     {
         "id": 9,
@@ -177,7 +185,8 @@
                 "technicalAnswer": "The event loop manages execution of asynchronous callbacks.",
                 "interviewAnswer": "The event loop processes asynchronous callbacks by executing them after the call stack is empty."
             }
-        }
+        },
+        "codeExample": "// macrotasks: setTimeout, I/O\n// microtasks: Promise, queueMicrotask"
     },
     {
         "id": 10,
@@ -197,7 +206,8 @@
                 "technicalAnswer": "Hoisting is JavaScript's behavior of moving declarations to the top of scope.",
                 "interviewAnswer": "Hoisting is JavaScript's behavior where variable and function declarations are moved to the top of their scope before execution."
             }
-        }
+        },
+        "codeExample": "console.log(x); // undefined\nvar x = 1;\nconsole.log(y); // ReferenceError\nlet y = 2;"
     },
     {
         "id": 11,
@@ -217,7 +227,8 @@
                 "technicalAnswer": "It is Angular's mechanism to detect changes in data and update the DOM.",
                 "interviewAnswer": "Change detection is Angular’s process of checking component bindings and updating the DOM when application state changes."
             }
-        }
+        },
+        "codeExample": "@Component({ /* ... */ })\nexport class Demo {\n    cdr = inject(ChangeDetectorRef);\n}"
     },
     {
         "id": 12,
@@ -237,7 +248,8 @@
                 "technicalAnswer": "Lifecycle hooks are methods called during component lifecycle stages.",
                 "interviewAnswer": "Lifecycle hooks are methods Angular calls at different stages of a component’s lifecycle, like initialization and destruction."
             }
-        }
+        },
+        "codeExample": "export class Page implements OnInit {\n    ngOnInit() {\n        this.load();\n    }\n}"
     },
     {
         "id": 13,
@@ -257,7 +269,8 @@
                 "technicalAnswer": "A design pattern where dependencies are provided externally.",
                 "interviewAnswer": "Dependency injection is a pattern where dependencies are provided to a class instead of being created inside it."
             }
-        }
+        },
+        "codeExample": "@Injectable({ providedIn: 'root' })\nexport class Clock {}\n\nexport class App {\n    clock = inject(Clock);\n}"
     },
     {
         "id": 14,
@@ -277,7 +290,8 @@
                 "technicalAnswer": "A library for reactive programming using Observables.",
                 "interviewAnswer": "RxJS is a library for reactive programming using Observables to manage asynchronous data streams."
             }
-        }
+        },
+        "codeExample": "import { map, filter } from 'rxjs/operators';\n\nof(1, 2, 3).pipe(map((x) => x * 2));"
     },
     {
         "id": 15,
@@ -297,7 +311,8 @@
                 "technicalAnswer": "A component controls a part of the UI.",
                 "interviewAnswer": "A component is a building block of Angular applications that controls a part of the UI using a template and logic."
             }
-        }
+        },
+        "codeExample": "@Component({\n    selector: 'app-card',\n    templateUrl: './card.html',\n})\nexport class Card {}"
     },
     {
         "id": 16,
@@ -317,7 +332,8 @@
                 "technicalAnswer": "A class that groups components and services.",
                 "interviewAnswer": "NgModule is a class that organizes components, directives, pipes, and services into cohesive blocks."
             }
-        }
+        },
+        "codeExample": "@NgModule({\n    imports: [BrowserModule],\n    bootstrap: [AppComponent],\n})\nexport class AppModule {}"
     },
     {
         "id": 17,
@@ -337,7 +353,8 @@
                 "technicalAnswer": "Routing enables navigation between views.",
                 "interviewAnswer": "Angular routing allows navigation between different views in a single-page application using routes."
             }
-        }
+        },
+        "codeExample": "RouterModule.forRoot([\n    { path: '', component: HomeComponent },\n    { path: '**', redirectTo: '' },\n])"
     },
     {
         "id": 18,
@@ -357,7 +374,8 @@
                 "technicalAnswer": "A pipe transforms data in templates.",
                 "interviewAnswer": "A pipe is used to transform data in Angular templates, such as formatting dates or numbers."
             }
-        }
+        },
+        "codeExample": "@Component({\n    template: '{{ today | date }}',\n})\nexport class Clock {\n    today = new Date();\n}"
     },
     {
         "id": 19,
@@ -377,7 +395,8 @@
                 "technicalAnswer": "== compares with type coercion, === without.",
                 "interviewAnswer": "== compares values with type coercion, while === compares both value and type strictly."
             }
-        }
+        },
+        "codeExample": "console.log(null == undefined); // true\nconsole.log(null === undefined); // false"
     },
     {
         "id": 20,
@@ -397,7 +416,8 @@
                 "technicalAnswer": "A shorter syntax for functions without its own this.",
                 "interviewAnswer": "Arrow functions are a shorter syntax for functions and do not have their own 'this', inheriting it from the parent scope."
             }
-        }
+        },
+        "codeExample": "const add = (a, b) => a + b;\nconst nums = [1, 2, 3];\nconst doubled = nums.map((n) => n * 2);"
     },
     {
         "id": 21,
@@ -417,7 +437,8 @@
                 "technicalAnswer": "A class for business logic and data sharing.",
                 "interviewAnswer": "A service is a class used to share data and business logic across components using dependency injection."
             }
-        }
+        },
+        "codeExample": "@Injectable({ providedIn: 'root' })\nexport class Api {\n    get() {\n        return this.http.get('/x');\n    }\n}"
     },
     {
         "id": 22,
@@ -437,7 +458,8 @@
                 "technicalAnswer": "A stream of data over time.",
                 "interviewAnswer": "An Observable is a stream of data that can emit multiple values over time and can be subscribed to."
             }
-        }
+        },
+        "codeExample": "const o$ = new Observable<number>((sub) => {\n    sub.next(1);\n    sub.complete();\n});"
     },
     {
         "id": 23,
@@ -457,7 +479,8 @@
                 "technicalAnswer": "Syntax for handling Promises.",
                 "interviewAnswer": "async/await is syntax that makes working with Promises easier by allowing asynchronous code to look synchronous."
             }
-        }
+        },
+        "codeExample": "async function run() {\n    const x = await Promise.resolve(1);\n    return x + 1;\n}"
     },
     {
         "id": 24,
@@ -477,7 +500,8 @@
                 "technicalAnswer": "Automatic memory management.",
                 "interviewAnswer": "Garbage collection is the automatic process of freeing memory that is no longer in use."
             }
-        }
+        },
+        "codeExample": "// GC frees unreachable objects\nlet ref = { big: new Array(1e6) };\nref = null;"
     },
     {
         "id": 25,
@@ -497,7 +521,8 @@
                 "technicalAnswer": "Template-driven uses templates, reactive uses code.",
                 "interviewAnswer": "Template-driven forms rely on templates, while reactive forms are defined in code and provide more control and scalability."
             }
-        }
+        },
+        "codeExample": "@Component({\n    template: '<form [formGroup]=\"f\">',\n})\nexport class Reactive {}\n\n@Component({\n    template: '<form #f=\"ngForm\">',\n})\nexport class TemplateDriven {}"
     },
     {
         "id": 26,
@@ -517,7 +542,8 @@
                 "technicalAnswer": "Change detection runs only on input changes.",
                 "interviewAnswer": "OnPush strategy runs change detection only when input references change, improving performance."
             }
-        }
+        },
+        "codeExample": "@Component({\n    changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class Fast {}"
     },
     {
         "id": 27,
@@ -537,7 +563,8 @@
                 "technicalAnswer": "Objects inherit from prototype.",
                 "interviewAnswer": "Prototype is the mechanism by which JavaScript objects inherit properties and methods from other objects."
             }
-        }
+        },
+        "codeExample": "const parent = { type: 'parent' };\nconst child = Object.create(parent);\nchild.type; // inherited"
     },
     {
         "id": 28,
@@ -557,7 +584,8 @@
                 "technicalAnswer": "Environment where code runs.",
                 "interviewAnswer": "Execution context is the environment in which JavaScript code runs, including variables, scope, and 'this'."
             }
-        }
+        },
+        "codeExample": "function outer() {\n    const x = 1;\n    function inner() {\n        return x;\n    }\n    return inner;\n}"
     },
     {
         "id": 29,
@@ -577,7 +605,8 @@
                 "technicalAnswer": "Adds behavior to DOM elements.",
                 "interviewAnswer": "A directive is used to modify the behavior or appearance of DOM elements in Angular."
             }
-        }
+        },
+        "codeExample": "@Directive({ selector: '[appTooltip]' })\nexport class Tooltip {}"
     },
     {
         "id": 30,
@@ -597,7 +626,8 @@
                 "technicalAnswer": "Structural changes DOM, attribute modifies appearance.",
                 "interviewAnswer": "Structural directives change the DOM structure, like *ngIf, while attribute directives modify appearance or behavior, like ngClass."
             }
-        }
+        },
+        "codeExample": "@Component({\n    template: '<p *ngIf=\"show\">Hi</p><p [class.active]=\"on\">',\n})\nexport class Demo {}"
     },
     {
         "id": 31,
@@ -617,7 +647,8 @@
                 "technicalAnswer": "Basic immutable data types.",
                 "interviewAnswer": "Primitive types are basic immutable values like string, number, boolean, null, undefined, symbol, and bigint."
             }
-        }
+        },
+        "codeExample": "const a = 'text';\nconst b = 42;\nconst c = true;\nconst d = Symbol('id');"
     },
     {
         "id": 32,
@@ -637,7 +668,8 @@
                 "technicalAnswer": "Automatic type conversion.",
                 "interviewAnswer": "Type coercion is JavaScript’s automatic conversion of values from one type to another during operations."
             }
-        }
+        },
+        "codeExample": "console.log('5' - 2); // 3 (coerced)\nconsole.log(Number('5'));"
     },
     {
         "id": 33,
@@ -657,7 +689,8 @@
                 "technicalAnswer": "Tracks async operations.",
                 "interviewAnswer": "Zone.js patches async APIs to track operations and trigger Angular change detection."
             }
-        }
+        },
+        "codeExample": "NgZone.runOutsideAngular(() => {\n    chart.update();\n});"
     },
     {
         "id": 34,
@@ -677,7 +710,8 @@
                 "technicalAnswer": "Service for HTTP requests.",
                 "interviewAnswer": "HttpClient is Angular’s service for making HTTP requests and handling API communication."
             }
-        }
+        },
+        "codeExample": "this.http.post('/login', body).subscribe({\n    next: (r) => console.log(r),\n});"
     },
     {
         "id": 35,
@@ -697,7 +731,8 @@
                 "technicalAnswer": "Function that takes or returns functions.",
                 "interviewAnswer": "A higher-order function is a function that takes another function as an argument or returns a function."
             }
-        }
+        },
+        "codeExample": "function withLog(fn) {\n    return (...args) => {\n        console.log(args);\n        return fn(...args);\n    };\n}"
     },
     {
         "id": 36,
@@ -717,7 +752,8 @@
                 "technicalAnswer": "Data cannot be modified after creation.",
                 "interviewAnswer": "Immutability means data cannot be changed after it is created, and instead new data is created when updates are needed."
             }
-        }
+        },
+        "codeExample": "const next = { ...state, count: state.count + 1 };"
     },
     {
         "id": 37,
@@ -737,7 +773,8 @@
                 "technicalAnswer": "Use OnPush, trackBy, lazy loading.",
                 "interviewAnswer": "Angular performance can be improved using OnPush change detection, trackBy in ngFor, lazy loading modules, and avoiding unnecessary subscriptions."
             }
-        }
+        },
+        "codeExample": "@Component({\n    changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class Leaf {\n    data = input.required<Item>();\n}"
     },
     {
         "id": 38,
@@ -757,7 +794,8 @@
                 "technicalAnswer": "Delays execution until inactivity.",
                 "interviewAnswer": "Debouncing delays a function execution until after a certain period of inactivity, useful for optimizing events like input typing."
             }
-        }
+        },
+        "codeExample": "function debounce(fn, ms) {\n    let t;\n    return (...a) => {\n        clearTimeout(t);\n        t = setTimeout(() => fn(...a), ms);\n    };\n}"
     },
     {
         "id": 39,
@@ -777,7 +815,8 @@
                 "technicalAnswer": "Limits function calls over time.",
                 "interviewAnswer": "Throttling limits how often a function can be executed within a specified time interval."
             }
-        }
+        },
+        "codeExample": "function throttle(fn, ms) {\n    let last = 0;\n    return (...a) => {\n        const n = Date.now();\n        if (n - last >= ms) {\n            last = n;\n            fn(...a);\n        }\n    };\n}"
     },
     {
         "id": 40,
@@ -797,7 +836,8 @@
                 "technicalAnswer": "Smart handles logic, dumb handles UI.",
                 "interviewAnswer": "Smart components manage state and logic, while dumb components focus on presentation and receive data via inputs."
             }
-        }
+        },
+        "codeExample": "@Component({\n    selector: 'app-container',\n    template: '<app-presenter [data]=\"vm()\" />',\n})\nexport class Smart {\n    vm = signal(load());\n}"
     },
     {
         "id": 41,
@@ -817,7 +857,8 @@
                 "technicalAnswer": "Extracting properties from objects into variables.",
                 "interviewAnswer": "Object destructuring allows you to extract properties from an object into variables using a concise syntax."
             }
-        }
+        },
+        "codeExample": "const { name, age } = user;\nconst { x, ...rest } = point;"
     },
     {
         "id": 42,
@@ -837,7 +878,8 @@
                 "technicalAnswer": "Extracting values from arrays into variables.",
                 "interviewAnswer": "Array destructuring allows you to assign array elements to variables based on their position."
             }
-        }
+        },
+        "codeExample": "const [first, second] = pair;\nconst [a, , c] = triple;"
     },
     {
         "id": 43,
@@ -857,7 +899,8 @@
                 "technicalAnswer": "Expands iterable elements.",
                 "interviewAnswer": "The spread operator (...) expands elements of an iterable like arrays or objects into individual elements."
             }
-        }
+        },
+        "codeExample": "const all = [...a, ...b];\nconst cfg = { ...defaults, ...opts };"
     },
     {
         "id": 44,
@@ -877,7 +920,8 @@
                 "technicalAnswer": "Collects arguments into an array.",
                 "interviewAnswer": "The rest operator (...) collects multiple values into a single array, commonly used in function parameters."
             }
-        }
+        },
+        "codeExample": "function sum(...nums) {\n    return nums.reduce((a, n) => a + n, 0);\n}"
     },
     {
         "id": 45,
@@ -897,7 +941,8 @@
                 "technicalAnswer": "JavaScript module system using import/export.",
                 "interviewAnswer": "ES modules allow you to split code into reusable files using import and export statements."
             }
-        }
+        },
+        "codeExample": "export const PI = 3.14;\nimport { PI } from './math.js'; // ES modules"
     },
     {
         "id": 46,
@@ -917,7 +962,8 @@
                 "technicalAnswer": "A restricted variant of JavaScript.",
                 "interviewAnswer": "Strict mode is a way to opt into a stricter version of JavaScript that prevents common mistakes and unsafe actions."
             }
-        }
+        },
+        "codeExample": "'use strict';\nx = 1; // ReferenceError if x undeclared"
     },
     {
         "id": 47,
@@ -937,7 +983,8 @@
                 "technicalAnswer": "Text format for data exchange.",
                 "interviewAnswer": "JSON is a lightweight data format used for storing and transferring data, often between client and server."
             }
-        }
+        },
+        "codeExample": "const payload = { ok: true, n: 1 };\nJSON.stringify(payload);"
     },
     {
         "id": 48,
@@ -957,7 +1004,8 @@
                 "technicalAnswer": "Shallow copies references, deep copies values.",
                 "interviewAnswer": "A shallow copy copies references to nested objects, while a deep copy creates completely independent copies of all nested data."
             }
-        }
+        },
+        "codeExample": "const a = { nested: { x: 1 } };\nconst b = { ...a };\nb.nested.x = 2; // a.nested.x also 2 (shallow)"
     },
     {
         "id": 49,
@@ -977,7 +1025,8 @@
                 "technicalAnswer": "Map allows any key type.",
                 "interviewAnswer": "Map allows keys of any type and preserves insertion order, while Object keys are strings or symbols."
             }
-        }
+        },
+        "codeExample": "const m = new Map();\nm.set(1, 'one');\nm.set({}, 'key');"
     },
     {
         "id": 50,
@@ -997,7 +1046,8 @@
                 "technicalAnswer": "Collection of unique values.",
                 "interviewAnswer": "A Set is a collection of unique values where duplicates are automatically removed."
             }
-        }
+        },
+        "codeExample": "const s = new Set([1, 2, 2, 3]);\ns.has(2);"
     },
     {
         "id": 51,
@@ -1017,7 +1067,8 @@
                 "technicalAnswer": "Reactive state management primitive.",
                 "interviewAnswer": "Angular signals are a reactive primitive used to track state changes and automatically update the UI."
             }
-        }
+        },
+        "codeExample": "const count = signal(0);\nconst label = computed(() => 'n=' + count());"
     },
     {
         "id": 52,
@@ -1037,7 +1088,8 @@
                 "technicalAnswer": "Signals are synchronous, Observables are async streams.",
                 "interviewAnswer": "Signals are synchronous state containers, while Observables handle asynchronous streams of data."
             }
-        }
+        },
+        "codeExample": "const s = signal(1);\nconst o$ = interval(1000); // async stream"
     },
     {
         "id": 53,
@@ -1057,7 +1109,8 @@
                 "technicalAnswer": "Components without NgModules.",
                 "interviewAnswer": "Standalone components are Angular components that don’t require NgModules and can be used independently."
             }
-        }
+        },
+        "codeExample": "@Component({\n    standalone: true,\n    imports: [CommonModule],\n    template: '<p>hi</p>',\n})\nexport class Hi {}"
     },
     {
         "id": 54,
@@ -1077,7 +1130,8 @@
                 "technicalAnswer": "Responsible for creating dependencies.",
                 "interviewAnswer": "An injector is responsible for creating and providing dependencies in Angular’s dependency injection system."
             }
-        }
+        },
+        "codeExample": "const injector = Injector.create({\n    providers: [{ provide: API, useClass: HttpApi }],\n});"
     },
     {
         "id": 55,
@@ -1097,7 +1151,8 @@
                 "technicalAnswer": "Defines how dependency is created.",
                 "interviewAnswer": "A provider tells Angular how to create or supply a dependency in the dependency injection system."
             }
-        }
+        },
+        "codeExample": "bootstrapApplication(App, {\n    providers: [provideHttpClient()],\n});"
     },
     {
         "id": 56,
@@ -1117,7 +1172,8 @@
                 "technicalAnswer": "Modules loaded on demand.",
                 "interviewAnswer": "Lazy loading is a technique where modules are loaded only when needed, improving initial load performance."
             }
-        }
+        },
+        "codeExample": "// route lazy loads feature bundle\nloadChildren: () => import('./admin/admin.routes')"
     },
     {
         "id": 57,
@@ -1137,7 +1193,8 @@
                 "technicalAnswer": "Tracks items by identity.",
                 "interviewAnswer": "trackBy helps Angular track list items by a unique identifier, improving performance during DOM updates."
             }
-        }
+        },
+        "codeExample": "@for (u of users(); track u.id) {\n    <li>{{ u.name }}</li>\n}"
     },
     {
         "id": 58,
@@ -1157,7 +1214,8 @@
                 "technicalAnswer": "Pure pipes run on input change only.",
                 "interviewAnswer": "Pure pipes run only when input changes, while impure pipes run on every change detection cycle."
             }
-        }
+        },
+        "codeExample": "@Pipe({ name: 'double', pure: true })\nexport class DoublePipe implements PipeTransform {\n    transform(v: number) {\n        return v * 2;\n    }\n}"
     },
     {
         "id": 59,
@@ -1177,7 +1235,8 @@
                 "technicalAnswer": "Tracks value and validation.",
                 "interviewAnswer": "FormControl is a class that tracks the value and validation status of an individual form field."
             }
-        }
+        },
+        "codeExample": "const email = new FormControl('', { validators: [Validators.required] });"
     },
     {
         "id": 60,
@@ -1197,7 +1256,8 @@
                 "technicalAnswer": "Collection of controls.",
                 "interviewAnswer": "FormGroup is a collection of FormControls that represents a form structure."
             }
-        }
+        },
+        "codeExample": "const form = new FormGroup({\n    email: new FormControl(''),\n    pwd: new FormControl(''),\n});"
     },
     {
         "id": 61,
@@ -1217,7 +1277,8 @@
                 "technicalAnswer": "Microtasks run before macrotasks.",
                 "interviewAnswer": "Microtasks, like Promises, run immediately after the current execution, while macrotasks, like setTimeout, run in the next event loop cycle."
             }
-        }
+        },
+        "codeExample": "queueMicrotask(() => console.log('micro'));\nsetTimeout(() => console.log('macro'), 0);"
     },
     {
         "id": 62,
@@ -1237,7 +1298,8 @@
                 "technicalAnswer": "Improves readability.",
                 "interviewAnswer": "async/await makes asynchronous code more readable and easier to reason about by avoiding nested promise chains."
             }
-        }
+        },
+        "codeExample": "async function load() {\n    try {\n        const r = await fetch('/a');\n        return await r.json();\n    } catch (e) {\n        console.error(e);\n    }\n}"
     },
     {
         "id": 63,
@@ -1257,7 +1319,8 @@
                 "technicalAnswer": "Encapsulation of state.",
                 "interviewAnswer": "Closures allow data encapsulation and maintaining state across function calls, which is useful for things like private variables."
             }
-        }
+        },
+        "codeExample": "function makeApi(secret) {\n    return {\n        getKey() {\n            return secret;\n        },\n    };\n}"
     },
     {
         "id": 64,
@@ -1277,7 +1340,8 @@
                 "technicalAnswer": "Unreleased references.",
                 "interviewAnswer": "Memory leaks happen when objects are no longer needed but still referenced, preventing garbage collection."
             }
-        }
+        },
+        "codeExample": "const sub = interval(1000).subscribe();\n// on destroy:\nsub.unsubscribe();"
     },
     {
         "id": 65,
@@ -1297,7 +1361,8 @@
                 "technicalAnswer": "It is lexically bound.",
                 "interviewAnswer": "Arrow functions don’t have their own 'this' and instead inherit it from the surrounding scope."
             }
-        }
+        },
+        "codeExample": "const obj = {\n    name: 'Ann',\n    greet: () => this,\n};"
     },
     {
         "id": 66,
@@ -1317,7 +1382,8 @@
                 "technicalAnswer": "Tracks function execution.",
                 "interviewAnswer": "The call stack is a structure that keeps track of function execution order in JavaScript."
             }
-        }
+        },
+        "codeExample": "function a() {\n    b();\n}\nfunction b() {\n    c();\n}\nfunction c() {}"
     },
     {
         "id": 67,
@@ -1337,7 +1403,8 @@
                 "technicalAnswer": "Stack overflow.",
                 "interviewAnswer": "When the call stack exceeds its limit, a stack overflow error occurs, often due to infinite recursion."
             }
-        }
+        },
+        "codeExample": "function recurse() {\n    recurse();\n}\nrecurse(); // stack overflow"
     },
     {
         "id": 68,
@@ -1357,7 +1424,8 @@
                 "technicalAnswer": "Waits for all promises.",
                 "interviewAnswer": "Promise.all waits for all promises to resolve and returns their results, or rejects if any fail."
             }
-        }
+        },
+        "codeExample": "Promise.all([p1, p2]).then(([a, b]) => console.log(a, b));"
     },
     {
         "id": 69,
@@ -1377,7 +1445,8 @@
                 "technicalAnswer": "Resolves with first settled promise.",
                 "interviewAnswer": "Promise.race resolves or rejects as soon as the first promise settles."
             }
-        }
+        },
+        "codeExample": "Promise.race([slow, fast]).then((v) => console.log(v));"
     },
     {
         "id": 70,
@@ -1397,7 +1466,8 @@
                 "technicalAnswer": "Reduces array to single value.",
                 "interviewAnswer": "reduce executes a function on each element to accumulate a single result value."
             }
-        }
+        },
+        "codeExample": "[1, 2, 3].reduce((acc, n) => acc + n, 0);"
     },
     {
         "id": 71,
@@ -1417,7 +1487,8 @@
                 "technicalAnswer": "Async events and bindings.",
                 "interviewAnswer": "Angular change detection is triggered by async events like user input, HTTP calls, timers, and zone.js patches."
             }
-        }
+        },
+        "codeExample": "// Events, XHR/fetch, timers (via Zone.js) schedule CD"
     },
     {
         "id": 72,
@@ -1437,7 +1508,8 @@
                 "technicalAnswer": "Using ChangeDetectorRef.",
                 "interviewAnswer": "You can manually trigger change detection using ChangeDetectorRef methods like detectChanges or markForCheck."
             }
-        }
+        },
+        "codeExample": "this.cdr.detectChanges();\n// or markForCheck() with OnPush"
     },
     {
         "id": 73,
@@ -1457,7 +1529,8 @@
                 "technicalAnswer": "Avoid unnecessary change detection.",
                 "interviewAnswer": "Running code outside Angular’s zone prevents unnecessary change detection cycles and improves performance."
             }
-        }
+        },
+        "codeExample": "this.zone.runOutsideAngular(() => heavyWork());"
     },
     {
         "id": 74,
@@ -1477,7 +1550,8 @@
                 "technicalAnswer": "Both observer and observable.",
                 "interviewAnswer": "A Subject is both an Observable and an Observer, allowing you to multicast values to multiple subscribers."
             }
-        }
+        },
+        "codeExample": "const s = new Subject<number>();\ns.subscribe((v) => console.log(v));\ns.next(1);"
     },
     {
         "id": 75,
@@ -1497,7 +1571,8 @@
                 "technicalAnswer": "BehaviorSubject stores last value.",
                 "interviewAnswer": "BehaviorSubject stores the latest value and emits it to new subscribers, while Subject does not."
             }
-        }
+        },
+        "codeExample": "const b = new BehaviorSubject(0);\nb.subscribe((v) => console.log(v)); // last value replay"
     },
     {
         "id": 76,
@@ -1517,7 +1592,8 @@
                 "technicalAnswer": "Switches to new observable.",
                 "interviewAnswer": "switchMap cancels the previous observable and switches to a new one, useful for handling rapid async requests."
             }
-        }
+        },
+        "codeExample": "search$\n    .pipe(switchMap((q) => this.http.get('/search', { params: { q } })))\n    .subscribe();"
     },
     {
         "id": 77,
@@ -1537,7 +1613,8 @@
                 "technicalAnswer": "Flattens observables.",
                 "interviewAnswer": "mergeMap maps values to inner observables and merges all results without canceling previous ones."
             }
-        }
+        },
+        "codeExample": "of(1, 2, 3).pipe(mergeMap((id) => this.get$(id)));"
     },
     {
         "id": 78,
@@ -1557,7 +1634,8 @@
                 "technicalAnswer": "Delays emissions.",
                 "interviewAnswer": "debounceTime delays emitting values until a specified time passes without new emissions."
             }
-        }
+        },
+        "codeExample": "input$.pipe(debounceTime(300)).subscribe(onQuery);"
     },
     {
         "id": 79,
@@ -1577,7 +1655,8 @@
                 "technicalAnswer": "Stops observable.",
                 "interviewAnswer": "Unsubscribing prevents memory leaks by stopping active subscriptions when they are no longer needed."
             }
-        }
+        },
+        "codeExample": "const sub = stream$.subscribe();\n// later\nsub.unsubscribe();"
     },
     {
         "id": 80,
@@ -1597,7 +1676,8 @@
                 "technicalAnswer": "Leads to nested subscriptions.",
                 "interviewAnswer": "Nested subscriptions make code harder to manage and can lead to memory leaks; operators like switchMap should be used instead."
             }
-        }
+        },
+        "codeExample": "search$.pipe(switchMap((q) => api.search(q))).subscribe();"
     },
     {
         "id": 81,
@@ -1617,7 +1697,8 @@
                 "technicalAnswer": "NaN is not equal to itself.",
                 "interviewAnswer": "NaN is the only value in JavaScript that is not equal to itself, so comparisons must use isNaN."
             }
-        }
+        },
+        "codeExample": "console.log(NaN === NaN); // false\nNumber.isNaN(NaN); // true"
     },
     {
         "id": 82,
@@ -1637,7 +1718,8 @@
                 "technicalAnswer": "Returns object due to bug.",
                 "interviewAnswer": "typeof null returns 'object' due to a historical JavaScript bug."
             }
-        }
+        },
+        "codeExample": "console.log(typeof null); // \"object\" (legacy)"
     },
     {
         "id": 83,
@@ -1657,7 +1739,8 @@
                 "technicalAnswer": "Prevents modifications.",
                 "interviewAnswer": "Object.freeze makes an object immutable by preventing adding, removing, or changing properties."
             }
-        }
+        },
+        "codeExample": "const o = Object.freeze({ x: 1 });\no.x = 2; // silent fail in non-strict"
     },
     {
         "id": 84,
@@ -1677,7 +1760,8 @@
                 "technicalAnswer": "Prevents adding/removing properties.",
                 "interviewAnswer": "Object.seal prevents adding or removing properties but allows modifying existing ones."
             }
-        }
+        },
+        "codeExample": "const o = Object.seal({ x: 1 });\ndelete o.x; // false"
     },
     {
         "id": 85,
@@ -1697,7 +1781,8 @@
                 "technicalAnswer": "Transforming function arguments.",
                 "interviewAnswer": "Currying transforms a function with multiple arguments into a series of functions with one argument each."
             }
-        }
+        },
+        "codeExample": "const add = (a) => (b) => a + b;\nconst add2 = add(2);\nadd2(3); // 5"
     },
     {
         "id": 86,
@@ -1717,7 +1802,8 @@
                 "technicalAnswer": "Fixing some arguments.",
                 "interviewAnswer": "Partial application creates a new function by fixing some arguments of an existing function."
             }
-        }
+        },
+        "codeExample": "function mul(a, b) {\n    return a * b;\n}\nconst double = mul.bind(null, 2);\ndouble(4); // 8"
     },
     {
         "id": 87,
@@ -1737,7 +1823,8 @@
                 "technicalAnswer": "Simplifies access to complex logic.",
                 "interviewAnswer": "Facade pattern provides a simplified interface to complex subsystems, often used to manage state and API calls."
             }
-        }
+        },
+        "codeExample": "@Injectable({ providedIn: 'root' })\nexport class AppFacade {\n    load() {\n        return this.http.get('/x');\n    }\n}"
     },
     {
         "id": 88,
@@ -1757,7 +1844,8 @@
                 "technicalAnswer": "Managing application state.",
                 "interviewAnswer": "State management is the process of controlling and sharing application data across components in a predictable way."
             }
-        }
+        },
+        "codeExample": "const store = signal<State>(initial);\nconst name = computed(() => store().user.name);"
     },
     {
         "id": 89,
@@ -1777,7 +1865,8 @@
                 "technicalAnswer": "For complex state.",
                 "interviewAnswer": "NgRx is used in large applications where state needs to be predictable, centralized, and scalable."
             }
-        }
+        },
+        "codeExample": "// NgRx: single store, actions, reducers, effects"
     },
     {
         "id": 90,
@@ -1797,7 +1886,8 @@
                 "technicalAnswer": "Testing individual units.",
                 "interviewAnswer": "Unit testing verifies that individual pieces of code, like components or services, work as expected in isolation."
             }
-        }
+        },
+        "codeExample": "it('adds numbers', () => expect(add(1, 2)).toBe(3));"
     },
     {
         "id": 91,
@@ -1817,7 +1907,8 @@
                 "technicalAnswer": "Angular testing utility.",
                 "interviewAnswer": "TestBed is Angular’s primary testing utility for configuring and initializing components and services in tests."
             }
-        }
+        },
+        "codeExample": "TestBed.configureTestingModule({ imports: [MyComp] });\nconst fixture = TestBed.createComponent(MyComp);"
     },
     {
         "id": 92,
@@ -1837,7 +1928,8 @@
                 "technicalAnswer": "Caching function results.",
                 "interviewAnswer": "Memoization is an optimization technique that caches function results to avoid repeated calculations."
             }
-        }
+        },
+        "codeExample": "function fib(n, memo = {}) {\n    if (n in memo) return memo[n];\n    memo[n] = n <= 1 ? n : fib(n - 1, memo) + fib(n - 2, memo);\n    return memo[n];\n}"
     },
     {
         "id": 93,
@@ -1857,7 +1949,8 @@
                 "technicalAnswer": "Measures algorithm efficiency.",
                 "interviewAnswer": "Time complexity measures how the runtime of an algorithm grows with input size, often expressed using Big O notation."
             }
-        }
+        },
+        "codeExample": "// O(n) single loop vs O(n^2) nested loops"
     },
     {
         "id": 94,
@@ -1877,7 +1970,8 @@
                 "technicalAnswer": "Describes complexity.",
                 "interviewAnswer": "Big O notation describes the performance or complexity of an algorithm in terms of input size."
             }
-        }
+        },
+        "codeExample": "// O(1) constant, O(n) linear, O(log n) binary search"
     },
     {
         "id": 95,
@@ -1897,7 +1991,8 @@
                 "technicalAnswer": "Tree representation of HTML.",
                 "interviewAnswer": "The DOM is a tree-like representation of a web page that allows JavaScript to manipulate HTML elements."
             }
-        }
+        },
+        "codeExample": "document.querySelectorAll('.item');"
     },
     {
         "id": 96,
@@ -1917,7 +2012,8 @@
                 "technicalAnswer": "Handling events on parent.",
                 "interviewAnswer": "Event delegation is a technique where a parent element handles events for its child elements using event bubbling."
             }
-        }
+        },
+        "codeExample": "list.addEventListener('click', (e) => {\n    if (e.target.matches('button')) handle(e);\n});"
     },
     {
         "id": 97,
@@ -1937,7 +2033,8 @@
                 "technicalAnswer": "Browser storage API.",
                 "interviewAnswer": "localStorage is a browser API that allows storing key-value pairs persistently in the browser."
             }
-        }
+        },
+        "codeExample": "localStorage.setItem('theme', 'dark');\nlocalStorage.getItem('theme');"
     },
     {
         "id": 98,
@@ -1957,7 +2054,8 @@
                 "technicalAnswer": "Persistence difference.",
                 "interviewAnswer": "localStorage persists data indefinitely, while sessionStorage is cleared when the browser session ends."
             }
-        }
+        },
+        "codeExample": "sessionStorage.setItem('tab', '1');\n// cleared when tab closes"
     },
     {
         "id": 99,
@@ -1977,7 +2075,8 @@
                 "technicalAnswer": "Cross-site scripting.",
                 "interviewAnswer": "XSS is a security vulnerability where attackers inject malicious scripts into web pages viewed by other users."
             }
-        }
+        },
+        "codeExample": "div.textContent = userHtml; // avoid innerHTML for untrusted"
     },
     {
         "id": 100,
@@ -1997,7 +2096,8 @@
                 "technicalAnswer": "Cross-origin resource sharing.",
                 "interviewAnswer": "CORS is a browser security feature that controls how resources are requested from different domains."
             }
-        }
+        },
+        "codeExample": "fetch('https://api.example.com/data', {\n    credentials: 'include',\n});"
     },
     {
         "id": 101,
@@ -2017,7 +2117,8 @@
                 "technicalAnswer": "3 3 3",
                 "interviewAnswer": "It logs 3, 3, 3 because var is function-scoped and the loop finishes before setTimeout executes, so all callbacks reference the final value."
             }
-        }
+        },
+        "codeExample": "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}"
     },
     {
         "id": 102,
@@ -2037,7 +2138,8 @@
                 "technicalAnswer": "0 1 2",
                 "interviewAnswer": "It logs 0, 1, 2 because let is block-scoped and creates a new binding for each iteration."
             }
-        }
+        },
+        "codeExample": "for (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}"
     },
     {
         "id": 103,
@@ -2057,7 +2159,8 @@
                 "technicalAnswer": "undefined",
                 "interviewAnswer": "It logs undefined because the inner function is a regular function and 'this' refers to the global object, not obj."
             }
-        }
+        },
+        "codeExample": "const obj = {\n  name: 'John',\n  greet: function() {\n    return function() {\n      console.log(this.name);\n    }\n  }\n};\nobj.greet()();"
     },
     {
         "id": 104,
@@ -2077,7 +2180,8 @@
                 "technicalAnswer": "Use arrow function or bind.",
                 "interviewAnswer": "Use an arrow function or bind to preserve 'this', for example returning () => console.log(this.name)."
             }
-        }
+        },
+        "codeExample": "'use strict';\nconst obj = { name: 'Ann', greet() { return this.name; } };\nobj.greet();\nfunction loose() { return this; }\nloose(); // undefined in strict mode"
     },
     {
         "id": 105,
@@ -2097,7 +2201,8 @@
                 "technicalAnswer": "undefined",
                 "interviewAnswer": "It logs undefined because variable declarations are hoisted but not their assignments."
             }
-        }
+        },
+        "codeExample": "console.log(a);\nvar a = 5;"
     },
     {
         "id": 106,
@@ -2117,7 +2222,8 @@
                 "technicalAnswer": "ReferenceError",
                 "interviewAnswer": "It throws a ReferenceError because let variables are in the temporal dead zone until initialized."
             }
-        }
+        },
+        "codeExample": "console.log(a);\nlet a = 5;"
     },
     {
         "id": 107,
@@ -2137,7 +2243,8 @@
                 "technicalAnswer": "1 4 3 2",
                 "interviewAnswer": "It logs 1, 4, 3, 2 because synchronous code runs first, then microtasks (Promises), then macrotasks (setTimeout)."
             }
-        }
+        },
+        "codeExample": "console.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);"
     },
     {
         "id": 108,
@@ -2157,7 +2264,8 @@
                 "technicalAnswer": "[1, NaN, NaN]",
                 "interviewAnswer": "map passes index as second argument, so parseInt receives (value, index), causing unexpected NaN results."
             }
-        }
+        },
+        "codeExample": "[1,2,3].map(parseInt)"
     },
     {
         "id": 109,
@@ -2177,7 +2285,8 @@
                 "technicalAnswer": "[object Object]",
                 "interviewAnswer": "JavaScript coerces both to strings, resulting in '[object Object]'."
             }
-        }
+        },
+        "codeExample": "[] + {}"
     },
     {
         "id": 110,
@@ -2197,7 +2306,8 @@
                 "technicalAnswer": "0",
                 "interviewAnswer": "JavaScript interprets {} as a block, so +[] becomes 0 due to type coercion."
             }
-        }
+        },
+        "codeExample": "{} + []"
     },
     {
         "id": 111,
@@ -2217,7 +2327,8 @@
                 "technicalAnswer": "undefined",
                 "interviewAnswer": "It returns undefined due to automatic semicolon insertion after return."
             }
-        }
+        },
+        "codeExample": "function foo() {\n  return\n  {\n    name: 'John'\n  }\n}\nconsole.log(foo());"
     },
     {
         "id": 112,
@@ -2237,7 +2348,8 @@
                 "technicalAnswer": "2",
                 "interviewAnswer": "Objects are referenced, so modifying b also affects obj."
             }
-        }
+        },
+        "codeExample": "const obj = { a: 1 };\nconst b = obj;\nb.a = 2;\nconsole.log(obj.a);"
     },
     {
         "id": 113,
@@ -2257,7 +2369,8 @@
                 "technicalAnswer": "1 2",
                 "interviewAnswer": "The closure preserves state, so count increments with each call."
             }
-        }
+        },
+        "codeExample": "function counter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  }\n}\nconst c = counter();\nconsole.log(c());\nconsole.log(c());"
     },
     {
         "id": 114,
@@ -2277,7 +2390,8 @@
                 "technicalAnswer": "42",
                 "interviewAnswer": "Async functions always return a Promise, so it resolves with 42."
             }
-        }
+        },
+        "codeExample": "async function test() {\n  return 42;\n}\ntest().then(console.log);"
     },
     {
         "id": 115,
@@ -2297,7 +2411,8 @@
                 "technicalAnswer": "undefined",
                 "interviewAnswer": "Arrow functions don’t have their own 'this', so it refers to the outer scope, not obj."
             }
-        }
+        },
+        "codeExample": "const obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();"
     },
     {
         "id": 116,
@@ -2317,7 +2432,8 @@
                 "technicalAnswer": "10",
                 "interviewAnswer": "The error is caught and replaced with 10, which is then logged."
             }
-        }
+        },
+        "codeExample": "Promise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw new Error(); })\n  .catch(() => 10)\n  .then(x => console.log(x));"
     },
     {
         "id": 117,
@@ -2337,7 +2453,8 @@
                 "technicalAnswer": "B A",
                 "interviewAnswer": "Synchronous code runs first, so 'B' logs before the async callback."
             }
-        }
+        },
+        "codeExample": "setTimeout(() => console.log('A'), 0);\nconsole.log('B');"
     },
     {
         "id": 118,
@@ -2357,7 +2474,8 @@
                 "technicalAnswer": "false",
                 "interviewAnswer": "Due to floating point precision issues, 0.1 + 0.2 is not exactly 0.3."
             }
-        }
+        },
+        "codeExample": "console.log(0.1 + 0.2 === 0.3);"
     },
     {
         "id": 119,
@@ -2377,7 +2495,8 @@
                 "technicalAnswer": "false",
                 "interviewAnswer": "Objects are compared by reference, not value, so they are not equal."
             }
-        }
+        },
+        "codeExample": "const a = { x: 1 };\nconst b = { x: 1 };\nconsole.log(a === b);"
     },
     {
         "id": 120,
@@ -2397,6 +2516,7 @@
                 "technicalAnswer": "true",
                 "interviewAnswer": "The array is coerced to a string '1,2', so the comparison returns true."
             }
-        }
+        },
+        "codeExample": "console.log([1,2] == '1,2');"
     }
 ]

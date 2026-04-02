@@ -1,7 +1,9 @@
 {
     "app": {
         "brand": "Karkas",
-        "navAria": "Main"
+        "navAria": "Main",
+        "menuToggle": "Open menu",
+        "menuClose": "Close menu"
     },
     "nav": {
         "about": "About",
@@ -32,6 +34,9 @@
     },
     "aboutPage": {
         "title": "About the project",
+        "nameHeading": "Why “Karkas”?",
+        "name1": "The name “Karkas” comes from the idea of a foundation — a structure or framework on which everything else is built.",
+        "name2": "In the context of interviews, it represents the core structure of an answer: once the foundation is clear, the details can be added naturally and confidently.",
         "privacyNotice": "Your practice data is stored in your browser only. Nothing is sent to a server — your progress stays private and visible only to you.",
         "purposeHeading": "What is it for?",
         "purpose1": "Karkas is an interview training application designed to help developers turn knowledge into clear, confident answers.",
@@ -81,7 +86,8 @@
     "answerBlocks": {
         "weak": "Weak answer",
         "technical": "Technical answer",
-        "interview": "Interview answer"
+        "interview": "Interview answer",
+        "codeExample": "Code example"
     },
     "interviewQuestion": {
         "cta": "I answered"

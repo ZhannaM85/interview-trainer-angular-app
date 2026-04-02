@@ -1,6 +1,12 @@
 <article class="about" aria-labelledby="about-title">
     <h1 id="about-title" class="about__title">{{ 'aboutPage.title' | translate }}</h1>
 
+    <section class="about__name" aria-labelledby="about-name-heading">
+        <h2 id="about-name-heading" class="about__heading">{{ 'aboutPage.nameHeading' | translate }}</h2>
+        <p class="about__p">{{ 'aboutPage.name1' | translate }}</p>
+        <p class="about__p">{{ 'aboutPage.name2' | translate }}</p>
+    </section>
+
     <div class="about__notice" role="status">
         <p class="about__notice-text">
             <span class="about__notice-icon" aria-hidden="true">🔒</span>

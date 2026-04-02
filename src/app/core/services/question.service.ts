@@ -22,6 +22,8 @@ interface QuestionBilingualRow {
     subtopic: string;
     difficulty: QuestionDifficulty;
     text: Record<LocaleCode, QuestionLocaleText>;
+    /** Optional; merged from build script into `questions-bilingual.json`. */
+    codeExample?: string;
 }
 
 @Injectable({
@@ -99,6 +101,7 @@ export class QuestionService {
             weakAnswer: t.weakAnswer,
             technicalAnswer: t.technicalAnswer,
             interviewAnswer: t.interviewAnswer,
+            codeExample: row.codeExample ?? '',
             subtopic: row.subtopic,
             category: this.mapTopicToCategory(row.topic, row.subtopic),
             difficulty: row.difficulty
