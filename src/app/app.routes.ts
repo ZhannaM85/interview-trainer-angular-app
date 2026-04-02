@@ -14,5 +14,12 @@ export const routes: Routes = [
                 (m) => m.DashboardPageComponent
             )
     },
+    {
+        path: 'study',
+        loadComponent: () =>
+            import('./features/study/pages/study-guide-page/study-guide-page.component').then(
+                (m) => m.StudyGuidePageComponent
+            )
+    },
     { path: '**', redirectTo: 'quiz' }
 ];

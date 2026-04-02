@@ -1,18 +1,5 @@
 <div class="interview-answer">
-    <div class="interview-answer__block interview-answer__block--weak interview-answer__reveal interview-answer__reveal--1">
-        <p class="interview-answer__label">Weak answer</p>
-        <p class="interview-answer__text interview-answer__text--muted">{{ question().weakAnswer }}</p>
-    </div>
-
-    <div class="interview-answer__block interview-answer__block--technical interview-answer__reveal interview-answer__reveal--2">
-        <p class="interview-answer__label">Technical answer</p>
-        <p class="interview-answer__text">{{ question().technicalAnswer }}</p>
-    </div>
-
-    <div class="interview-answer__block interview-answer__block--interview interview-answer__reveal interview-answer__reveal--3">
-        <p class="interview-answer__label">Interview answer</p>
-        <p class="interview-answer__text interview-answer__text--hero">{{ question().interviewAnswer }}</p>
-    </div>
+    <app-answer-blocks [question]="question()" [animated]="true" />
 
     <div class="interview-answer__eval interview-answer__reveal interview-answer__reveal--4">
         <app-self-evaluation (rated)="rated.emit($event)" />
