@@ -12,10 +12,10 @@
                 "interviewAnswer": "'this' depends on how a function is called. In a method, it refers to the object. In a regular function, it is undefined in strict mode."
             },
             "ru": {
-                "question": "What is 'this' in JavaScript?",
-                "weakAnswer": "It refers to the object… depends.",
-                "technicalAnswer": "'this' refers to the execution context of a function and depends on how it is called.",
-                "interviewAnswer": "'this' depends on how a function is called. In a method, it refers to the object. In a regular function, it is undefined in strict mode."
+                "question": "Что такое «this» в JavaScript?",
+                "weakAnswer": "Ссылается на объект… зависит от контекста.",
+                "technicalAnswer": "«this» указывает на контекст выполнения функции и зависит от того, как она вызвана.",
+                "interviewAnswer": "«this» зависит от способа вызова: в методе объекта это сам объект; в обычной функции в strict mode — undefined."
             }
         },
         "codeExample": "'use strict';\nconst obj = { name: 'Ann', greet() { return this.name; } };\nobj.greet();\nfunction loose() { return this; }\nloose(); // undefined in strict mode"
@@ -33,10 +33,10 @@
                 "interviewAnswer": "A closure is a function that remembers variables from its outer scope even after that scope has finished executing."
             },
             "ru": {
-                "question": "What is a closure?",
-                "weakAnswer": "Function inside another function.",
-                "technicalAnswer": "A closure is a function that retains access to its lexical scope.",
-                "interviewAnswer": "A closure is a function that remembers variables from its outer scope even after that scope has finished executing."
+                "question": "Что такое замыкание (closure)?",
+                "weakAnswer": "Функция внутри другой функции.",
+                "technicalAnswer": "Замыкание — это функция, которая сохраняет доступ к своей лексической области видимости.",
+                "interviewAnswer": "Замыкание «помнит» переменные внешней функции даже после того, как та уже завершилась."
             }
         },
         "codeExample": "function outer() {\n    let count = 0;\n    return function inner() {\n        return ++count;\n    };\n}\nconst inc = outer();\ninc(); // 1"
@@ -54,10 +54,10 @@
                 "interviewAnswer": "Scope determines where variables can be accessed in your code. JavaScript has global, function, and block scope."
             },
             "ru": {
-                "question": "What is scope in JavaScript?",
-                "weakAnswer": "Where variables exist.",
-                "technicalAnswer": "Scope defines the accessibility of variables in different parts of code.",
-                "interviewAnswer": "Scope determines where variables can be accessed in your code. JavaScript has global, function, and block scope."
+                "question": "Что такое область видимости (scope) в JavaScript?",
+                "weakAnswer": "Где существуют переменные.",
+                "technicalAnswer": "Область видимости определяет, где переменные доступны в коде.",
+                "interviewAnswer": "Scope задаёт, откуда можно обратиться к переменной: глобальная, функциональная и блочная области."
             }
         },
         "codeExample": "const x = 1;\nfunction f() {\n    const y = 2;\n    if (true) {\n        let z = 3;\n    }\n}"
@@ -75,10 +75,10 @@
                 "interviewAnswer": "var is function-scoped, while let and const are block-scoped. const cannot be reassigned, while let can."
             },
             "ru": {
-                "question": "Difference between var, let, and const?",
-                "weakAnswer": "They are variables.",
-                "technicalAnswer": "var is function-scoped, let and const are block-scoped.",
-                "interviewAnswer": "var is function-scoped, while let and const are block-scoped. const cannot be reassigned, while let can."
+                "question": "Чем отличаются var, let и const?",
+                "weakAnswer": "Это все переменные.",
+                "technicalAnswer": "var ограничена функцией, let и const — блоком.",
+                "interviewAnswer": "var — function-scoped, let и const — block-scoped; const нельзя переназначить, let можно."
             }
         },
         "codeExample": "function demo() {\n    console.log(a); // undefined (hoisted)\n    var a = 1;\n    if (true) {\n        let b = 2;\n    }\n}"
@@ -96,10 +96,10 @@
                 "interviewAnswer": "bind returns a new function with 'this' permanently set to a specific value, allowing you to control execution context."
             },
             "ru": {
-                "question": "What is bind()?",
-                "weakAnswer": "It binds this.",
-                "technicalAnswer": "bind creates a new function with a fixed 'this' value.",
-                "interviewAnswer": "bind returns a new function with 'this' permanently set to a specific value, allowing you to control execution context."
+                "question": "Что делает bind()?",
+                "weakAnswer": "Привязывает this.",
+                "technicalAnswer": "bind создаёт новую функцию с фиксированным значением this.",
+                "interviewAnswer": "bind возвращает новую функцию с постоянно заданным this, чтобы управлять контекстом вызова."
             }
         },
         "codeExample": "function greet() {\n    return this.name;\n}\nconst bound = greet.bind({ name: 'Ann' });\nbound();"
@@ -117,10 +117,10 @@
                 "interviewAnswer": "call and apply execute the function immediately, with call using arguments individually and apply using an array. bind returns a new function without executing it."
             },
             "ru": {
-                "question": "Difference between call, apply, and bind?",
-                "weakAnswer": "They are similar.",
-                "technicalAnswer": "call and apply invoke functions immediately, bind returns a new function.",
-                "interviewAnswer": "call and apply execute the function immediately, with call using arguments individually and apply using an array. bind returns a new function without executing it."
+                "question": "Чем отличаются call, apply и bind?",
+                "weakAnswer": "Они похожи.",
+                "technicalAnswer": "call и apply сразу вызывают функцию, bind возвращает новую функцию.",
+                "interviewAnswer": "call и apply выполняют функцию немедленно: call — аргументы по одному, apply — массивом; bind только возвращает обёртку без вызова."
             }
         },
         "codeExample": "function sum(a, b) {\n    return a + b;\n}\nsum.call(null, 1, 2);\nsum.apply(null, [1, 2]);\nconst later = sum.bind(null, 1);"
@@ -138,10 +138,10 @@
                 "interviewAnswer": "map returns a new transformed array, while forEach executes a function on each element without returning a new array."
             },
             "ru": {
-                "question": "Difference between map and forEach?",
-                "weakAnswer": "They loop.",
-                "technicalAnswer": "map returns a new array, forEach does not.",
-                "interviewAnswer": "map returns a new transformed array, while forEach executes a function on each element without returning a new array."
+                "question": "Чем отличаются map и forEach?",
+                "weakAnswer": "Оба что-то перебирают.",
+                "technicalAnswer": "map возвращает новый массив, forEach — нет.",
+                "interviewAnswer": "map строит новый массив с преобразованными элементами; forEach только выполняет побочные эффекты для каждого элемента."
             }
         },
         "codeExample": "[1, 2, 3].map((x) => x * 2);\n[1, 2, 3].forEach((x) => console.log(x));"
@@ -159,10 +159,10 @@
                 "interviewAnswer": "A Promise represents the result of an asynchronous operation and can be pending, fulfilled, or rejected."
             },
             "ru": {
-                "question": "What is a Promise?",
-                "weakAnswer": "Async thing.",
-                "technicalAnswer": "A Promise represents the result of an asynchronous operation.",
-                "interviewAnswer": "A Promise represents the result of an asynchronous operation and can be pending, fulfilled, or rejected."
+                "question": "Что такое Promise?",
+                "weakAnswer": "Что-то асинхронное.",
+                "technicalAnswer": "Promise представляет результат асинхронной операции.",
+                "interviewAnswer": "Promise отражает итог асинхронной работы и может быть в состоянии pending, fulfilled или rejected."
             }
         },
         "codeExample": "const p = fetch('/api').then((r) => r.json());\nPromise.resolve(1).then(console.log);"
@@ -180,10 +180,10 @@
                 "interviewAnswer": "The event loop processes asynchronous callbacks by executing them after the call stack is empty."
             },
             "ru": {
-                "question": "What is the event loop?",
-                "weakAnswer": "Handles async.",
-                "technicalAnswer": "The event loop manages execution of asynchronous callbacks.",
-                "interviewAnswer": "The event loop processes asynchronous callbacks by executing them after the call stack is empty."
+                "question": "Что такое event loop?",
+                "weakAnswer": "Обрабатывает асинхронность.",
+                "technicalAnswer": "Цикл событий управляет выполнением асинхронных колбэков.",
+                "interviewAnswer": "Event loop обрабатывает очереди задач и микрозадач после опустошения стека вызовов."
             }
         },
         "codeExample": "// macrotasks: setTimeout, I/O\n// microtasks: Promise, queueMicrotask"
@@ -201,10 +201,10 @@
                 "interviewAnswer": "Hoisting is JavaScript's behavior where variable and function declarations are moved to the top of their scope before execution."
             },
             "ru": {
-                "question": "What is hoisting?",
-                "weakAnswer": "Variables move up.",
-                "technicalAnswer": "Hoisting is JavaScript's behavior of moving declarations to the top of scope.",
-                "interviewAnswer": "Hoisting is JavaScript's behavior where variable and function declarations are moved to the top of their scope before execution."
+                "question": "Что такое hoisting?",
+                "weakAnswer": "Переменные «поднимаются».",
+                "technicalAnswer": "Hoisting — поведение JS: объявления переносятся к началу области.",
+                "interviewAnswer": "Объявления var и function поднимаются вверх области; let/const остаются в «временной мёртвой зоне» до инициализации."
             }
         },
         "codeExample": "console.log(x); // undefined\nvar x = 1;\nconsole.log(y); // ReferenceError\nlet y = 2;"
@@ -222,10 +222,10 @@
                 "interviewAnswer": "Change detection is Angular’s process of checking component bindings and updating the DOM when application state changes."
             },
             "ru": {
-                "question": "What is change detection in Angular?",
-                "weakAnswer": "Updates UI.",
-                "technicalAnswer": "It is Angular's mechanism to detect changes in data and update the DOM.",
-                "interviewAnswer": "Change detection is Angular’s process of checking component bindings and updating the DOM when application state changes."
+                "question": "Что такое change detection в Angular?",
+                "weakAnswer": "Обновляет интерфейс.",
+                "technicalAnswer": "Механизм Angular, который находит изменения данных и обновляет DOM.",
+                "interviewAnswer": "Change detection сравнивает привязки компонентов с моделью и обновляет представление при изменении состояния."
             }
         },
         "codeExample": "@Component({ /* ... */ })\nexport class Demo {\n    cdr = inject(ChangeDetectorRef);\n}"
@@ -243,10 +243,10 @@
                 "interviewAnswer": "Lifecycle hooks are methods Angular calls at different stages of a component’s lifecycle, like initialization and destruction."
             },
             "ru": {
-                "question": "What are lifecycle hooks?",
-                "weakAnswer": "Functions in Angular.",
-                "technicalAnswer": "Lifecycle hooks are methods called during component lifecycle stages.",
-                "interviewAnswer": "Lifecycle hooks are methods Angular calls at different stages of a component’s lifecycle, like initialization and destruction."
+                "question": "Что такое lifecycle hooks?",
+                "weakAnswer": "Методы в Angular.",
+                "technicalAnswer": "Хуки вызываются на этапах жизненного цикла компонента.",
+                "interviewAnswer": "Angular вызывает хуки (например ngOnInit, ngOnDestroy) в ключевые моменты жизни компонента."
             }
         },
         "codeExample": "export class Page implements OnInit {\n    ngOnInit() {\n        this.load();\n    }\n}"
@@ -264,10 +264,10 @@
                 "interviewAnswer": "Dependency injection is a pattern where dependencies are provided to a class instead of being created inside it."
             },
             "ru": {
-                "question": "What is dependency injection?",
-                "weakAnswer": "Injecting stuff.",
-                "technicalAnswer": "A design pattern where dependencies are provided externally.",
-                "interviewAnswer": "Dependency injection is a pattern where dependencies are provided to a class instead of being created inside it."
+                "question": "Что такое внедрение зависимостей (DI)?",
+                "weakAnswer": "«Впрыскивают» зависимости.",
+                "technicalAnswer": "Паттерн: зависимости передаются извне, а не создаются внутри класса.",
+                "interviewAnswer": "DI — зависимости получают через конструктор или inject(), что упрощает тестирование и замену реализаций."
             }
         },
         "codeExample": "@Injectable({ providedIn: 'root' })\nexport class Clock {}\n\nexport class App {\n    clock = inject(Clock);\n}"
@@ -285,10 +285,10 @@
                 "interviewAnswer": "RxJS is a library for reactive programming using Observables to manage asynchronous data streams."
             },
             "ru": {
-                "question": "What is RxJS?",
-                "weakAnswer": "Library.",
-                "technicalAnswer": "A library for reactive programming using Observables.",
-                "interviewAnswer": "RxJS is a library for reactive programming using Observables to manage asynchronous data streams."
+                "question": "Что такое RxJS?",
+                "weakAnswer": "Библиотека.",
+                "technicalAnswer": "Библиотека реактивного программирования на Observables.",
+                "interviewAnswer": "RxJS моделирует асинхронные потоки данных через Observable и операторы (map, filter, switchMap и т.д.)."
             }
         },
         "codeExample": "import { map, filter } from 'rxjs/operators';\n\nof(1, 2, 3).pipe(map((x) => x * 2));"
@@ -306,10 +306,10 @@
                 "interviewAnswer": "A component is a building block of Angular applications that controls a part of the UI using a template and logic."
             },
             "ru": {
-                "question": "What is a component in Angular?",
-                "weakAnswer": "UI part.",
-                "technicalAnswer": "A component controls a part of the UI.",
-                "interviewAnswer": "A component is a building block of Angular applications that controls a part of the UI using a template and logic."
+                "question": "Что такое компонент в Angular?",
+                "weakAnswer": "Часть UI.",
+                "technicalAnswer": "Компонент управляет фрагментом интерфейса.",
+                "interviewAnswer": "Компонент — кирпич приложения: шаблон + класс + стили, инкапсулирует кусок UI и логику."
             }
         },
         "codeExample": "@Component({\n    selector: 'app-card',\n    templateUrl: './card.html',\n})\nexport class Card {}"
@@ -327,10 +327,10 @@
                 "interviewAnswer": "NgModule is a class that organizes components, directives, pipes, and services into cohesive blocks."
             },
             "ru": {
-                "question": "What is NgModule?",
-                "weakAnswer": "Module.",
-                "technicalAnswer": "A class that groups components and services.",
-                "interviewAnswer": "NgModule is a class that organizes components, directives, pipes, and services into cohesive blocks."
+                "question": "Что такое NgModule?",
+                "weakAnswer": "Модуль.",
+                "technicalAnswer": "Класс, группирующий компоненты, директивы и сервисы.",
+                "interviewAnswer": "NgModule объявляет и экспортирует части фичи и настраивает импорты; в новых приложениях чаще используют standalone."
             }
         },
         "codeExample": "@NgModule({\n    imports: [BrowserModule],\n    bootstrap: [AppComponent],\n})\nexport class AppModule {}"
@@ -348,10 +348,10 @@
                 "interviewAnswer": "Angular routing allows navigation between different views in a single-page application using routes."
             },
             "ru": {
-                "question": "What is Angular routing?",
-                "weakAnswer": "Navigation.",
-                "technicalAnswer": "Routing enables navigation between views.",
-                "interviewAnswer": "Angular routing allows navigation between different views in a single-page application using routes."
+                "question": "Что такое маршрутизация в Angular?",
+                "weakAnswer": "Навигация.",
+                "technicalAnswer": "Routing переключает представления по URL.",
+                "interviewAnswer": "Router сопоставляет пути с компонентами и позволяет строить SPA с историей браузера."
             }
         },
         "codeExample": "RouterModule.forRoot([\n    { path: '', component: HomeComponent },\n    { path: '**', redirectTo: '' },\n])"
@@ -369,10 +369,10 @@
                 "interviewAnswer": "A pipe is used to transform data in Angular templates, such as formatting dates or numbers."
             },
             "ru": {
-                "question": "What is a pipe?",
-                "weakAnswer": "Transforms data.",
-                "technicalAnswer": "A pipe transforms data in templates.",
-                "interviewAnswer": "A pipe is used to transform data in Angular templates, such as formatting dates or numbers."
+                "question": "Что такое pipe?",
+                "weakAnswer": "Преобразует данные.",
+                "technicalAnswer": "Pipe преобразует значение в шаблоне.",
+                "interviewAnswer": "В шаблоне pipe форматирует вывод (дата, валюта, регистр) без лишней логики в компоненте."
             }
         },
         "codeExample": "@Component({\n    template: '{{ today | date }}',\n})\nexport class Clock {\n    today = new Date();\n}"
@@ -390,10 +390,10 @@
                 "interviewAnswer": "== compares values with type coercion, while === compares both value and type strictly."
             },
             "ru": {
-                "question": "Difference between == and ===?",
-                "weakAnswer": "Same but different.",
-                "technicalAnswer": "== compares with type coercion, === without.",
-                "interviewAnswer": "== compares values with type coercion, while === compares both value and type strictly."
+                "question": "Чем отличаются == и ===?",
+                "weakAnswer": "Почти одно и то же.",
+                "technicalAnswer": "== с приведением типов, === — строгое сравнение.",
+                "interviewAnswer": "== допускает coercion, === сравнивает и значение, и тип без приведения."
             }
         },
         "codeExample": "console.log(null == undefined); // true\nconsole.log(null === undefined); // false"
@@ -411,10 +411,10 @@
                 "interviewAnswer": "Arrow functions are a shorter syntax for functions and do not have their own 'this', inheriting it from the parent scope."
             },
             "ru": {
-                "question": "What is an arrow function?",
-                "weakAnswer": "Short function.",
-                "technicalAnswer": "A shorter syntax for functions without its own this.",
-                "interviewAnswer": "Arrow functions are a shorter syntax for functions and do not have their own 'this', inheriting it from the parent scope."
+                "question": "Что такое стрелочная функция?",
+                "weakAnswer": "Короткая запись функции.",
+                "technicalAnswer": "Краткий синтаксис без собственного this.",
+                "interviewAnswer": "У стрелки нет своего this/arguments; this берётся из внешней лексической области."
             }
         },
         "codeExample": "const add = (a, b) => a + b;\nconst nums = [1, 2, 3];\nconst doubled = nums.map((n) => n * 2);"
@@ -432,10 +432,10 @@
                 "interviewAnswer": "A service is a class used to share data and business logic across components using dependency injection."
             },
             "ru": {
-                "question": "What is a service in Angular?",
-                "weakAnswer": "Helper.",
-                "technicalAnswer": "A class for business logic and data sharing.",
-                "interviewAnswer": "A service is a class used to share data and business logic across components using dependency injection."
+                "question": "Что такое сервис в Angular?",
+                "weakAnswer": "Вспомогательный класс.",
+                "technicalAnswer": "Класс для бизнес-логики и обмена данными между компонентами.",
+                "interviewAnswer": "Сервисы обычно providedIn: 'root' и инжектятся в компоненты для API, состояния и утилит."
             }
         },
         "codeExample": "@Injectable({ providedIn: 'root' })\nexport class Api {\n    get() {\n        return this.http.get('/x');\n    }\n}"
@@ -453,10 +453,10 @@
                 "interviewAnswer": "An Observable is a stream of data that can emit multiple values over time and can be subscribed to."
             },
             "ru": {
-                "question": "What is an Observable?",
-                "weakAnswer": "Async thing.",
-                "technicalAnswer": "A stream of data over time.",
-                "interviewAnswer": "An Observable is a stream of data that can emit multiple values over time and can be subscribed to."
+                "question": "Что такое Observable?",
+                "weakAnswer": "Что-то асинхронное.",
+                "technicalAnswer": "Поток значений во времени.",
+                "interviewAnswer": "Observable может эмитить несколько значений; подписка управляет жизненным циклом потока."
             }
         },
         "codeExample": "const o$ = new Observable<number>((sub) => {\n    sub.next(1);\n    sub.complete();\n});"
@@ -474,10 +474,10 @@
                 "interviewAnswer": "async/await is syntax that makes working with Promises easier by allowing asynchronous code to look synchronous."
             },
             "ru": {
-                "question": "What is async/await?",
-                "weakAnswer": "Better promises.",
-                "technicalAnswer": "Syntax for handling Promises.",
-                "interviewAnswer": "async/await is syntax that makes working with Promises easier by allowing asynchronous code to look synchronous."
+                "question": "Что такое async/await?",
+                "weakAnswer": "Удобнее промисов.",
+                "technicalAnswer": "Синтаксис для работы с Promise.",
+                "interviewAnswer": "async/await делает асинхронный код линейным: await приостанавливает функцию до разрешения Promise."
             }
         },
         "codeExample": "async function run() {\n    const x = await Promise.resolve(1);\n    return x + 1;\n}"
@@ -495,10 +495,10 @@
                 "interviewAnswer": "Garbage collection is the automatic process of freeing memory that is no longer in use."
             },
             "ru": {
-                "question": "What is garbage collection?",
-                "weakAnswer": "Deletes memory.",
-                "technicalAnswer": "Automatic memory management.",
-                "interviewAnswer": "Garbage collection is the automatic process of freeing memory that is no longer in use."
+                "question": "Что такое сборка мусора (garbage collection)?",
+                "weakAnswer": "Очищает память.",
+                "technicalAnswer": "Автоматическое управление памятью.",
+                "interviewAnswer": "GC освобождает объекты, на которые больше нет ссылок; утечки возникают при «забытых» ссылках."
             }
         },
         "codeExample": "// GC frees unreachable objects\nlet ref = { big: new Array(1e6) };\nref = null;"
@@ -516,10 +516,10 @@
                 "interviewAnswer": "Template-driven forms rely on templates, while reactive forms are defined in code and provide more control and scalability."
             },
             "ru": {
-                "question": "Difference between template-driven and reactive forms?",
-                "weakAnswer": "Two types.",
-                "technicalAnswer": "Template-driven uses templates, reactive uses code.",
-                "interviewAnswer": "Template-driven forms rely on templates, while reactive forms are defined in code and provide more control and scalability."
+                "question": "Чем отличаются template-driven и reactive forms?",
+                "weakAnswer": "Два вида форм.",
+                "technicalAnswer": "Template-driven — в шаблоне; reactive — в коде.",
+                "interviewAnswer": "Reactive даёт явную модель (FormGroup/Control), валидацию и тестируемость; template-driven проще для простых случаев."
             }
         },
         "codeExample": "@Component({\n    template: '<form [formGroup]=\"f\">',\n})\nexport class Reactive {}\n\n@Component({\n    template: '<form #f=\"ngForm\">',\n})\nexport class TemplateDriven {}"
@@ -537,10 +537,10 @@
                 "interviewAnswer": "OnPush strategy runs change detection only when input references change, improving performance."
             },
             "ru": {
-                "question": "What is OnPush change detection?",
-                "weakAnswer": "Faster.",
-                "technicalAnswer": "Change detection runs only on input changes.",
-                "interviewAnswer": "OnPush strategy runs change detection only when input references change, improving performance."
+                "question": "Что такое стратегия OnPush для change detection?",
+                "weakAnswer": "Быстрее.",
+                "technicalAnswer": "Проверка только при смене входных ссылок и событиях.",
+                "interviewAnswer": "OnPush снижает число проверок: CD запускается при новых @Input, событиях в шаблоне или async pipe."
             }
         },
         "codeExample": "@Component({\n    changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class Fast {}"
@@ -558,10 +558,10 @@
                 "interviewAnswer": "Prototype is the mechanism by which JavaScript objects inherit properties and methods from other objects."
             },
             "ru": {
-                "question": "What is prototype?",
-                "weakAnswer": "Inheritance.",
-                "technicalAnswer": "Objects inherit from prototype.",
-                "interviewAnswer": "Prototype is the mechanism by which JavaScript objects inherit properties and methods from other objects."
+                "question": "Что такое prototype?",
+                "weakAnswer": "Наследование.",
+                "technicalAnswer": "Объекты наследуют свойства через цепочку прототипов.",
+                "interviewAnswer": "У объекта есть скрытая ссылка на прототип; поиск свойства идёт вверх по цепочке."
             }
         },
         "codeExample": "const parent = { type: 'parent' };\nconst child = Object.create(parent);\nchild.type; // inherited"
@@ -579,10 +579,10 @@
                 "interviewAnswer": "Execution context is the environment in which JavaScript code runs, including variables, scope, and 'this'."
             },
             "ru": {
-                "question": "What is execution context?",
-                "weakAnswer": "Environment.",
-                "technicalAnswer": "Environment where code runs.",
-                "interviewAnswer": "Execution context is the environment in which JavaScript code runs, including variables, scope, and 'this'."
+                "question": "Что такое execution context?",
+                "weakAnswer": "Среда выполнения.",
+                "technicalAnswer": "Окружение, в котором выполняется код.",
+                "interviewAnswer": "Контекст включает лексическое окружение, this и привязку к стеку вызовов."
             }
         },
         "codeExample": "function outer() {\n    const x = 1;\n    function inner() {\n        return x;\n    }\n    return inner;\n}"
@@ -600,10 +600,10 @@
                 "interviewAnswer": "A directive is used to modify the behavior or appearance of DOM elements in Angular."
             },
             "ru": {
-                "question": "What is a directive?",
-                "weakAnswer": "Changes DOM.",
-                "technicalAnswer": "Adds behavior to DOM elements.",
-                "interviewAnswer": "A directive is used to modify the behavior or appearance of DOM elements in Angular."
+                "question": "Что такое директива?",
+                "weakAnswer": "Меняет DOM.",
+                "technicalAnswer": "Добавляет поведение элементам DOM.",
+                "interviewAnswer": "Директива — класс с селектором, который расширяет разметку (структурные или атрибутные)."
             }
         },
         "codeExample": "@Directive({ selector: '[appTooltip]' })\nexport class Tooltip {}"
@@ -621,10 +621,10 @@
                 "interviewAnswer": "Structural directives change the DOM structure, like *ngIf, while attribute directives modify appearance or behavior, like ngClass."
             },
             "ru": {
-                "question": "Difference between structural and attribute directives?",
-                "weakAnswer": "Different types.",
-                "technicalAnswer": "Structural changes DOM, attribute modifies appearance.",
-                "interviewAnswer": "Structural directives change the DOM structure, like *ngIf, while attribute directives modify appearance or behavior, like ngClass."
+                "question": "Чем отличаются структурные и атрибутные директивы?",
+                "weakAnswer": "Разные типы.",
+                "technicalAnswer": "Структурные меняют DOM; атрибутные — вид или поведение.",
+                "interviewAnswer": "Структурные (*ngIf, @for) добавляют/убирают узлы; атрибутные меняют стили, классы, обработчики."
             }
         },
         "codeExample": "@Component({\n    template: '<p *ngIf=\"show\">Hi</p><p [class.active]=\"on\">',\n})\nexport class Demo {}"
@@ -642,10 +642,10 @@
                 "interviewAnswer": "Primitive types are basic immutable values like string, number, boolean, null, undefined, symbol, and bigint."
             },
             "ru": {
-                "question": "What are primitive types?",
-                "weakAnswer": "Basic types.",
-                "technicalAnswer": "Basic immutable data types.",
-                "interviewAnswer": "Primitive types are basic immutable values like string, number, boolean, null, undefined, symbol, and bigint."
+                "question": "Что такое примитивные типы?",
+                "weakAnswer": "Базовые типы.",
+                "technicalAnswer": "Простые неизменяемые типы данных.",
+                "interviewAnswer": "Примитивы: string, number, boolean, null, undefined, symbol, bigint — хранятся по значению."
             }
         },
         "codeExample": "const a = 'text';\nconst b = 42;\nconst c = true;\nconst d = Symbol('id');"
@@ -663,10 +663,10 @@
                 "interviewAnswer": "Type coercion is JavaScript’s automatic conversion of values from one type to another during operations."
             },
             "ru": {
-                "question": "What is type coercion?",
-                "weakAnswer": "Type conversion.",
-                "technicalAnswer": "Automatic type conversion.",
-                "interviewAnswer": "Type coercion is JavaScript’s automatic conversion of values from one type to another during operations."
+                "question": "Что такое приведение типов (coercion)?",
+                "weakAnswer": "Преобразование типов.",
+                "technicalAnswer": "Автоматическое преобразование типов при операциях.",
+                "interviewAnswer": "JS может неявно привести типы (например + с разными типами); стоит понимать правила ToPrimitive."
             }
         },
         "codeExample": "console.log('5' - 2); // 3 (coerced)\nconsole.log(Number('5'));"
@@ -684,10 +684,10 @@
                 "interviewAnswer": "Zone.js patches async APIs to track operations and trigger Angular change detection."
             },
             "ru": {
-                "question": "What is Zone.js?",
-                "weakAnswer": "Library.",
-                "technicalAnswer": "Tracks async operations.",
-                "interviewAnswer": "Zone.js patches async APIs to track operations and trigger Angular change detection."
+                "question": "Что такое Zone.js?",
+                "weakAnswer": "Библиотека.",
+                "technicalAnswer": "Патчит асинхронные API для отслеживания задач.",
+                "interviewAnswer": "Zone.js позволяет Angular запускать change detection после асинхронных событий (таймеры, XHR и т.д.)."
             }
         },
         "codeExample": "NgZone.runOutsideAngular(() => {\n    chart.update();\n});"
@@ -705,10 +705,10 @@
                 "interviewAnswer": "HttpClient is Angular’s service for making HTTP requests and handling API communication."
             },
             "ru": {
-                "question": "What is HttpClient?",
-                "weakAnswer": "API calls.",
-                "technicalAnswer": "Service for HTTP requests.",
-                "interviewAnswer": "HttpClient is Angular’s service for making HTTP requests and handling API communication."
+                "question": "Что такое HttpClient?",
+                "weakAnswer": "HTTP-запросы.",
+                "technicalAnswer": "Сервис Angular для HTTP.",
+                "interviewAnswer": "HttpClient возвращает Observables, поддерживает interceptors, типизацию ответов и обработку ошибок."
             }
         },
         "codeExample": "this.http.post('/login', body).subscribe({\n    next: (r) => console.log(r),\n});"
@@ -726,10 +726,10 @@
                 "interviewAnswer": "A higher-order function is a function that takes another function as an argument or returns a function."
             },
             "ru": {
-                "question": "What is a higher-order function?",
-                "weakAnswer": "Function function.",
-                "technicalAnswer": "Function that takes or returns functions.",
-                "interviewAnswer": "A higher-order function is a function that takes another function as an argument or returns a function."
+                "question": "Что такое функция высшего порядка?",
+                "weakAnswer": "Функция про функции.",
+                "technicalAnswer": "Принимает функцию или возвращает функцию.",
+                "interviewAnswer": "Например map/filter принимают колбэк; каррирование возвращает новую функцию."
             }
         },
         "codeExample": "function withLog(fn) {\n    return (...args) => {\n        console.log(args);\n        return fn(...args);\n    };\n}"
@@ -747,10 +747,10 @@
                 "interviewAnswer": "Immutability means data cannot be changed after it is created, and instead new data is created when updates are needed."
             },
             "ru": {
-                "question": "What is immutability?",
-                "weakAnswer": "Cannot change.",
-                "technicalAnswer": "Data cannot be modified after creation.",
-                "interviewAnswer": "Immutability means data cannot be changed after it is created, and instead new data is created when updates are needed."
+                "question": "Что такое иммутабельность?",
+                "weakAnswer": "Нельзя менять.",
+                "technicalAnswer": "Данные не мутируют после создания.",
+                "interviewAnswer": "Вместо изменения объекта создают новый (spread, slice) — проще отслеживать изменения и OnPush."
             }
         },
         "codeExample": "const next = { ...state, count: state.count + 1 };"
@@ -768,10 +768,10 @@
                 "interviewAnswer": "Angular performance can be improved using OnPush change detection, trackBy in ngFor, lazy loading modules, and avoiding unnecessary subscriptions."
             },
             "ru": {
-                "question": "How to improve Angular performance?",
-                "weakAnswer": "Optimize.",
-                "technicalAnswer": "Use OnPush, trackBy, lazy loading.",
-                "interviewAnswer": "Angular performance can be improved using OnPush change detection, trackBy in ngFor, lazy loading modules, and avoiding unnecessary subscriptions."
+                "question": "Как улучшить производительность Angular?",
+                "weakAnswer": "Оптимизировать.",
+                "technicalAnswer": "OnPush, trackBy, ленивая загрузка.",
+                "interviewAnswer": "OnPush, track в @for, lazy routes, detach CD где уместно, async pipe вместо ручных подписок."
             }
         },
         "codeExample": "@Component({\n    changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class Leaf {\n    data = input.required<Item>();\n}"
@@ -789,10 +789,10 @@
                 "interviewAnswer": "Debouncing delays a function execution until after a certain period of inactivity, useful for optimizing events like input typing."
             },
             "ru": {
-                "question": "What is debouncing?",
-                "weakAnswer": "Delay.",
-                "technicalAnswer": "Delays execution until inactivity.",
-                "interviewAnswer": "Debouncing delays a function execution until after a certain period of inactivity, useful for optimizing events like input typing."
+                "question": "Что такое debouncing?",
+                "weakAnswer": "Задержка.",
+                "technicalAnswer": "Откладывает вызов до паузы во входных событиях.",
+                "interviewAnswer": "Полезно для поиска по вводу: выполняем запрос после того, как пользователь перестал печатать."
             }
         },
         "codeExample": "function debounce(fn, ms) {\n    let t;\n    return (...a) => {\n        clearTimeout(t);\n        t = setTimeout(() => fn(...a), ms);\n    };\n}"
@@ -810,10 +810,10 @@
                 "interviewAnswer": "Throttling limits how often a function can be executed within a specified time interval."
             },
             "ru": {
-                "question": "What is throttling?",
-                "weakAnswer": "Limit.",
-                "technicalAnswer": "Limits function calls over time.",
-                "interviewAnswer": "Throttling limits how often a function can be executed within a specified time interval."
+                "question": "Что такое throttling?",
+                "weakAnswer": "Ограничение частоты.",
+                "technicalAnswer": "Ограничивает число вызовов за интервал времени.",
+                "interviewAnswer": "Для scroll/resize: обработчик срабатывает не чаще, чем раз в N мс."
             }
         },
         "codeExample": "function throttle(fn, ms) {\n    let last = 0;\n    return (...a) => {\n        const n = Date.now();\n        if (n - last >= ms) {\n            last = n;\n            fn(...a);\n        }\n    };\n}"
@@ -831,10 +831,10 @@
                 "interviewAnswer": "Smart components manage state and logic, while dumb components focus on presentation and receive data via inputs."
             },
             "ru": {
-                "question": "What is a smart vs dumb component?",
-                "weakAnswer": "Different components.",
-                "technicalAnswer": "Smart handles logic, dumb handles UI.",
-                "interviewAnswer": "Smart components manage state and logic, while dumb components focus on presentation and receive data via inputs."
+                "question": "Чем отличаются «умный» и «глупый» компоненты?",
+                "weakAnswer": "Разные компоненты.",
+                "technicalAnswer": "Smart — логика и данные; dumb — только отображение.",
+                "interviewAnswer": "Контейнер загружает состояние и вызывает API; презентационный получает @Input и шлёт @Output."
             }
         },
         "codeExample": "@Component({\n    selector: 'app-container',\n    template: '<app-presenter [data]=\"vm()\" />',\n})\nexport class Smart {\n    vm = signal(load());\n}"
@@ -852,10 +852,10 @@
                 "interviewAnswer": "Object destructuring allows you to extract properties from an object into variables using a concise syntax."
             },
             "ru": {
-                "question": "What is object destructuring?",
-                "weakAnswer": "Getting values.",
-                "technicalAnswer": "Extracting properties from objects into variables.",
-                "interviewAnswer": "Object destructuring allows you to extract properties from an object into variables using a concise syntax."
+                "question": "Что такое деструктуризация объекта?",
+                "weakAnswer": "Достаём поля.",
+                "technicalAnswer": "Извлечение свойств объекта в переменные.",
+                "interviewAnswer": "Синтаксис const { a, b } = obj удобен и читабелен; можно задавать значения по умолчанию и переименовывать."
             }
         },
         "codeExample": "const { name, age } = user;\nconst { x, ...rest } = point;"
@@ -873,10 +873,10 @@
                 "interviewAnswer": "Array destructuring allows you to assign array elements to variables based on their position."
             },
             "ru": {
-                "question": "What is array destructuring?",
-                "weakAnswer": "Same as object.",
-                "technicalAnswer": "Extracting values from arrays into variables.",
-                "interviewAnswer": "Array destructuring allows you to assign array elements to variables based on their position."
+                "question": "Что такое деструктуризация массива?",
+                "weakAnswer": "Как у объекта.",
+                "technicalAnswer": "Присваивание элементов массива переменным по позиции.",
+                "interviewAnswer": "const [first, second] = arr — позиционное сопоставление, пропуск элементов запятыми."
             }
         },
         "codeExample": "const [first, second] = pair;\nconst [a, , c] = triple;"
@@ -894,10 +894,10 @@
                 "interviewAnswer": "The spread operator (...) expands elements of an iterable like arrays or objects into individual elements."
             },
             "ru": {
-                "question": "What is the spread operator?",
-                "weakAnswer": "Three dots.",
-                "technicalAnswer": "Expands iterable elements.",
-                "interviewAnswer": "The spread operator (...) expands elements of an iterable like arrays or objects into individual elements."
+                "question": "Что такое оператор spread?",
+                "weakAnswer": "Три точки.",
+                "technicalAnswer": "Разворачивает итерируемое в отдельные элементы.",
+                "interviewAnswer": "В массивах и объектах ... копирует элементы/свойства (поверхностная копия вложенных ссылок)."
             }
         },
         "codeExample": "const all = [...a, ...b];\nconst cfg = { ...defaults, ...opts };"
@@ -915,10 +915,10 @@
                 "interviewAnswer": "The rest operator (...) collects multiple values into a single array, commonly used in function parameters."
             },
             "ru": {
-                "question": "What is the rest operator?",
-                "weakAnswer": "Also dots.",
-                "technicalAnswer": "Collects arguments into an array.",
-                "interviewAnswer": "The rest operator (...) collects multiple values into a single array, commonly used in function parameters."
+                "question": "Что такое оператор rest?",
+                "weakAnswer": "Тоже точки.",
+                "technicalAnswer": "Собирает оставшиеся аргументы в массив.",
+                "interviewAnswer": "function f(a, ...rest) или деструктуризация [head, ...tail] — rest всегда последний."
             }
         },
         "codeExample": "function sum(...nums) {\n    return nums.reduce((a, n) => a + n, 0);\n}"
@@ -936,10 +936,10 @@
                 "interviewAnswer": "ES modules allow you to split code into reusable files using import and export statements."
             },
             "ru": {
-                "question": "What are ES modules?",
-                "weakAnswer": "Imports.",
-                "technicalAnswer": "JavaScript module system using import/export.",
-                "interviewAnswer": "ES modules allow you to split code into reusable files using import and export statements."
+                "question": "Что такое ES-модули?",
+                "weakAnswer": "import/export.",
+                "technicalAnswer": "Система модулей JavaScript.",
+                "interviewAnswer": "Статический import/export даёт дерево зависимостей и tree-shaking; в браузере нужен type=module."
             }
         },
         "codeExample": "export const PI = 3.14;\nimport { PI } from './math.js'; // ES modules"
@@ -957,10 +957,10 @@
                 "interviewAnswer": "Strict mode is a way to opt into a stricter version of JavaScript that prevents common mistakes and unsafe actions."
             },
             "ru": {
-                "question": "What is strict mode?",
-                "weakAnswer": "Safer mode.",
-                "technicalAnswer": "A restricted variant of JavaScript.",
-                "interviewAnswer": "Strict mode is a way to opt into a stricter version of JavaScript that prevents common mistakes and unsafe actions."
+                "question": "Что такое strict mode?",
+                "weakAnswer": "Более строгий режим.",
+                "technicalAnswer": "Ограниченный вариант языка с более жёсткими ошибками.",
+                "interviewAnswer": "'use strict' ловит опечатки в глобальных переменных, запрещает delete простых имён и другое небезопасное поведение."
             }
         },
         "codeExample": "'use strict';\nx = 1; // ReferenceError if x undeclared"
@@ -978,10 +978,10 @@
                 "interviewAnswer": "JSON is a lightweight data format used for storing and transferring data, often between client and server."
             },
             "ru": {
-                "question": "What is JSON?",
-                "weakAnswer": "Data.",
-                "technicalAnswer": "Text format for data exchange.",
-                "interviewAnswer": "JSON is a lightweight data format used for storing and transferring data, often between client and server."
+                "question": "Что такое JSON?",
+                "weakAnswer": "Формат данных.",
+                "technicalAnswer": "Текстовый формат обмена данными.",
+                "interviewAnswer": "JSON.stringify/parse для сериализации; ключи в кавычках; подмножество синтаксиса объектов JS."
             }
         },
         "codeExample": "const payload = { ok: true, n: 1 };\nJSON.stringify(payload);"
@@ -999,10 +999,10 @@
                 "interviewAnswer": "A shallow copy copies references to nested objects, while a deep copy creates completely independent copies of all nested data."
             },
             "ru": {
-                "question": "Difference between shallow copy and deep copy?",
-                "weakAnswer": "Copy types.",
-                "technicalAnswer": "Shallow copies references, deep copies values.",
-                "interviewAnswer": "A shallow copy copies references to nested objects, while a deep copy creates completely independent copies of all nested data."
+                "question": "Чем отличаются поверхностное и глубокое копирование?",
+                "weakAnswer": "Типы копий.",
+                "technicalAnswer": "Shallow копирует ссылки; deep — рекурсивно значения.",
+                "interviewAnswer": "Spread даёт shallow copy; для глубокой копии — structuredClone, ручная рекурсия или библиотеки."
             }
         },
         "codeExample": "const a = { nested: { x: 1 } };\nconst b = { ...a };\nb.nested.x = 2; // a.nested.x also 2 (shallow)"
@@ -1020,10 +1020,10 @@
                 "interviewAnswer": "Map allows keys of any type and preserves insertion order, while Object keys are strings or symbols."
             },
             "ru": {
-                "question": "What is the difference between Map and Object?",
-                "weakAnswer": "Different.",
-                "technicalAnswer": "Map allows any key type.",
-                "interviewAnswer": "Map allows keys of any type and preserves insertion order, while Object keys are strings or symbols."
+                "question": "Чем Map отличается от Object?",
+                "weakAnswer": "По-разному хранят данные.",
+                "technicalAnswer": "Map допускает любые ключи и сохраняет порядок вставки.",
+                "interviewAnswer": "У Object ключи — string/symbol; Map удобен для частых добавлений/удалений и итерации в порядке вставки."
             }
         },
         "codeExample": "const m = new Map();\nm.set(1, 'one');\nm.set({}, 'key');"
@@ -1041,10 +1041,10 @@
                 "interviewAnswer": "A Set is a collection of unique values where duplicates are automatically removed."
             },
             "ru": {
-                "question": "What is a Set?",
-                "weakAnswer": "Collection.",
-                "technicalAnswer": "Collection of unique values.",
-                "interviewAnswer": "A Set is a collection of unique values where duplicates are automatically removed."
+                "question": "Что такое Set?",
+                "weakAnswer": "Коллекция.",
+                "technicalAnswer": "Множество уникальных значений.",
+                "interviewAnswer": "Set автоматически отбрасывает дубликаты; полезен для проверки уникальности."
             }
         },
         "codeExample": "const s = new Set([1, 2, 2, 3]);\ns.has(2);"
@@ -1062,10 +1062,10 @@
                 "interviewAnswer": "Angular signals are a reactive primitive used to track state changes and automatically update the UI."
             },
             "ru": {
-                "question": "What are Angular signals?",
-                "weakAnswer": "New feature.",
-                "technicalAnswer": "Reactive state management primitive.",
-                "interviewAnswer": "Angular signals are a reactive primitive used to track state changes and automatically update the UI."
+                "question": "Что такое сигналы (signals) в Angular?",
+                "weakAnswer": "Новая фича.",
+                "technicalAnswer": "Реактивный примитив состояния.",
+                "interviewAnswer": "signal()/computed()/effect() дают синхронную модель реактивности, интегрированную с шаблонами."
             }
         },
         "codeExample": "const count = signal(0);\nconst label = computed(() => 'n=' + count());"
@@ -1083,10 +1083,10 @@
                 "interviewAnswer": "Signals are synchronous state containers, while Observables handle asynchronous streams of data."
             },
             "ru": {
-                "question": "How are signals different from Observables?",
-                "weakAnswer": "Different.",
-                "technicalAnswer": "Signals are synchronous, Observables are async streams.",
-                "interviewAnswer": "Signals are synchronous state containers, while Observables handle asynchronous streams of data."
+                "question": "Чем сигналы отличаются от Observables?",
+                "weakAnswer": "По-разному.",
+                "technicalAnswer": "Сигналы синхронны; Observable — асинхронные потоки.",
+                "interviewAnswer": "Signal хранит текущее значение; Observable может эмитить много раз во времени и требует подписки."
             }
         },
         "codeExample": "const s = signal(1);\nconst o$ = interval(1000); // async stream"
@@ -1104,10 +1104,10 @@
                 "interviewAnswer": "Standalone components are Angular components that don’t require NgModules and can be used independently."
             },
             "ru": {
-                "question": "What are standalone components?",
-                "weakAnswer": "Components.",
-                "technicalAnswer": "Components without NgModules.",
-                "interviewAnswer": "Standalone components are Angular components that don’t require NgModules and can be used independently."
+                "question": "Что такое standalone-компоненты?",
+                "weakAnswer": "Компоненты без модуля.",
+                "technicalAnswer": "Компоненты без обязательного NgModule.",
+                "interviewAnswer": "В imports указывают зависимости напрямую; упрощает ленивую загрузку и тесты."
             }
         },
         "codeExample": "@Component({\n    standalone: true,\n    imports: [CommonModule],\n    template: '<p>hi</p>',\n})\nexport class Hi {}"
@@ -1125,10 +1125,10 @@
                 "interviewAnswer": "An injector is responsible for creating and providing dependencies in Angular’s dependency injection system."
             },
             "ru": {
-                "question": "What is an injector?",
-                "weakAnswer": "DI thing.",
-                "technicalAnswer": "Responsible for creating dependencies.",
-                "interviewAnswer": "An injector is responsible for creating and providing dependencies in Angular’s dependency injection system."
+                "question": "Что такое инжектор (injector)?",
+                "weakAnswer": "Часть DI.",
+                "technicalAnswer": "Создаёт и выдаёт зависимости.",
+                "interviewAnswer": "Иерархия инжекторов разрешает токены провайдеров от корня до компонента."
             }
         },
         "codeExample": "const injector = Injector.create({\n    providers: [{ provide: API, useClass: HttpApi }],\n});"
@@ -1146,10 +1146,10 @@
                 "interviewAnswer": "A provider tells Angular how to create or supply a dependency in the dependency injection system."
             },
             "ru": {
-                "question": "What is a provider?",
-                "weakAnswer": "Service.",
-                "technicalAnswer": "Defines how dependency is created.",
-                "interviewAnswer": "A provider tells Angular how to create or supply a dependency in the dependency injection system."
+                "question": "Что такое provider?",
+                "weakAnswer": "Регистрация сервиса.",
+                "technicalAnswer": "Описывает, как создать зависимость.",
+                "interviewAnswer": "useClass/useValue/useFactory задают реализацию токена в DI."
             }
         },
         "codeExample": "bootstrapApplication(App, {\n    providers: [provideHttpClient()],\n});"
@@ -1167,10 +1167,10 @@
                 "interviewAnswer": "Lazy loading is a technique where modules are loaded only when needed, improving initial load performance."
             },
             "ru": {
-                "question": "What is lazy loading?",
-                "weakAnswer": "Load later.",
-                "technicalAnswer": "Modules loaded on demand.",
-                "interviewAnswer": "Lazy loading is a technique where modules are loaded only when needed, improving initial load performance."
+                "question": "Что такое ленивая загрузка (lazy loading)?",
+                "weakAnswer": "Грузим позже.",
+                "technicalAnswer": "Модули/роуты подгружаются по требованию.",
+                "interviewAnswer": "loadChildren/loadComponent уменьшает initial bundle и ускоряет первый рендер."
             }
         },
         "codeExample": "// route lazy loads feature bundle\nloadChildren: () => import('./admin/admin.routes')"
@@ -1188,10 +1188,10 @@
                 "interviewAnswer": "trackBy helps Angular track list items by a unique identifier, improving performance during DOM updates."
             },
             "ru": {
-                "question": "What is trackBy in ngFor?",
-                "weakAnswer": "Optimization.",
-                "technicalAnswer": "Tracks items by identity.",
-                "interviewAnswer": "trackBy helps Angular track list items by a unique identifier, improving performance during DOM updates."
+                "question": "Зачем trackBy в *ngFor / @for?",
+                "weakAnswer": "Оптимизация.",
+                "technicalAnswer": "Идентифицирует элементы списка.",
+                "interviewAnswer": "track по id помогает DOM-диффу: меньше пересозданий узлов при обновлении массива."
             }
         },
         "codeExample": "@for (u of users(); track u.id) {\n    <li>{{ u.name }}</li>\n}"
@@ -1209,10 +1209,10 @@
                 "interviewAnswer": "Pure pipes run only when input changes, while impure pipes run on every change detection cycle."
             },
             "ru": {
-                "question": "Difference between pure and impure pipes?",
-                "weakAnswer": "Types.",
-                "technicalAnswer": "Pure pipes run on input change only.",
-                "interviewAnswer": "Pure pipes run only when input changes, while impure pipes run on every change detection cycle."
+                "question": "Чем отличаются чистые и нечистые pipes?",
+                "weakAnswer": "Типы пайпов.",
+                "technicalAnswer": "Pure вызывается при смене входов.",
+                "interviewAnswer": "Impure pipe выполняется на каждом цикле CD — дорого; pure только при изменении аргументов."
             }
         },
         "codeExample": "@Pipe({ name: 'double', pure: true })\nexport class DoublePipe implements PipeTransform {\n    transform(v: number) {\n        return v * 2;\n    }\n}"
@@ -1230,10 +1230,10 @@
                 "interviewAnswer": "FormControl is a class that tracks the value and validation status of an individual form field."
             },
             "ru": {
-                "question": "What is FormControl?",
-                "weakAnswer": "Form.",
-                "technicalAnswer": "Tracks value and validation.",
-                "interviewAnswer": "FormControl is a class that tracks the value and validation status of an individual form field."
+                "question": "Что такое FormControl?",
+                "weakAnswer": "Поле формы.",
+                "technicalAnswer": "Отслеживает значение и валидацию одного поля.",
+                "interviewAnswer": "Базовый блок reactive forms: value, status, validators, valueChanges."
             }
         },
         "codeExample": "const email = new FormControl('', { validators: [Validators.required] });"
@@ -1251,10 +1251,10 @@
                 "interviewAnswer": "FormGroup is a collection of FormControls that represents a form structure."
             },
             "ru": {
-                "question": "What is FormGroup?",
-                "weakAnswer": "Group.",
-                "technicalAnswer": "Collection of controls.",
-                "interviewAnswer": "FormGroup is a collection of FormControls that represents a form structure."
+                "question": "Что такое FormGroup?",
+                "weakAnswer": "Группа полей.",
+                "technicalAnswer": "Набор FormControl с общим API.",
+                "interviewAnswer": "FormGroup объединяет контролы; вложенные группы моделируют сложные формы."
             }
         },
         "codeExample": "const form = new FormGroup({\n    email: new FormControl(''),\n    pwd: new FormControl(''),\n});"
@@ -1272,10 +1272,10 @@
                 "interviewAnswer": "Microtasks, like Promises, run immediately after the current execution, while macrotasks, like setTimeout, run in the next event loop cycle."
             },
             "ru": {
-                "question": "What is the difference between microtasks and macrotasks?",
-                "weakAnswer": "Different queues.",
-                "technicalAnswer": "Microtasks run before macrotasks.",
-                "interviewAnswer": "Microtasks, like Promises, run immediately after the current execution, while macrotasks, like setTimeout, run in the next event loop cycle."
+                "question": "Чем микрозадачи отличаются от макрозадач?",
+                "weakAnswer": "Разные очереди.",
+                "technicalAnswer": "Микрозадачи выполняются раньше макрозадач.",
+                "interviewAnswer": "После текущего синхронного кода сначала очередь микрозадач (Promise, queueMicrotask), затем macrotask (setTimeout)."
             }
         },
         "codeExample": "queueMicrotask(() => console.log('micro'));\nsetTimeout(() => console.log('macro'), 0);"
@@ -1293,10 +1293,10 @@
                 "interviewAnswer": "async/await makes asynchronous code more readable and easier to reason about by avoiding nested promise chains."
             },
             "ru": {
-                "question": "Why is async/await better than Promises?",
-                "weakAnswer": "Cleaner.",
-                "technicalAnswer": "Improves readability.",
-                "interviewAnswer": "async/await makes asynchronous code more readable and easier to reason about by avoiding nested promise chains."
+                "question": "Почему async/await удобнее цепочек Promise?",
+                "weakAnswer": "Читабельнее.",
+                "technicalAnswer": "Улучшает читаемость асинхронного кода.",
+                "interviewAnswer": "Меньше вложенных then/catch; try/catch вокруг await естественно ловит ошибки."
             }
         },
         "codeExample": "async function load() {\n    try {\n        const r = await fetch('/a');\n        return await r.json();\n    } catch (e) {\n        console.error(e);\n    }\n}"
@@ -1314,10 +1314,10 @@
                 "interviewAnswer": "Closures allow data encapsulation and maintaining state across function calls, which is useful for things like private variables."
             },
             "ru": {
-                "question": "Why are closures useful?",
-                "weakAnswer": "Useful.",
-                "technicalAnswer": "Encapsulation of state.",
-                "interviewAnswer": "Closures allow data encapsulation and maintaining state across function calls, which is useful for things like private variables."
+                "question": "Зачем нужны замыкания?",
+                "weakAnswer": "Полезная штука.",
+                "technicalAnswer": "Инкапсуляция состояния.",
+                "interviewAnswer": "Замыкания дают «приватные» переменные, фабрики, мемоизацию и колбэки с сохранённым контекстом."
             }
         },
         "codeExample": "function makeApi(secret) {\n    return {\n        getKey() {\n            return secret;\n        },\n    };\n}"
@@ -1335,10 +1335,10 @@
                 "interviewAnswer": "Memory leaks happen when objects are no longer needed but still referenced, preventing garbage collection."
             },
             "ru": {
-                "question": "What causes memory leaks in JavaScript?",
-                "weakAnswer": "Memory issues.",
-                "technicalAnswer": "Unreleased references.",
-                "interviewAnswer": "Memory leaks happen when objects are no longer needed but still referenced, preventing garbage collection."
+                "question": "Что вызывает утечки памяти в JavaScript?",
+                "weakAnswer": "Проблемы с памятью.",
+                "technicalAnswer": "Неснятые ссылки на ненужные объекты.",
+                "interviewAnswer": "Забытые подписки, глобальные коллекции, замыкания, держащие большие объекты, detached DOM."
             }
         },
         "codeExample": "const sub = interval(1000).subscribe();\n// on destroy:\nsub.unsubscribe();"
@@ -1356,10 +1356,10 @@
                 "interviewAnswer": "Arrow functions don’t have their own 'this' and instead inherit it from the surrounding scope."
             },
             "ru": {
-                "question": "What happens to 'this' in arrow functions?",
-                "weakAnswer": "Different.",
-                "technicalAnswer": "It is lexically bound.",
-                "interviewAnswer": "Arrow functions don’t have their own 'this' and instead inherit it from the surrounding scope."
+                "question": "Как ведёт себя this в стрелочных функциях?",
+                "weakAnswer": "По-другому.",
+                "technicalAnswer": "Лексически привязан к внешней области.",
+                "interviewAnswer": "У стрелки нет собственного this; нельзя перепривязать через call/bind."
             }
         },
         "codeExample": "const obj = {\n    name: 'Ann',\n    greet: () => this,\n};"
@@ -1377,10 +1377,10 @@
                 "interviewAnswer": "The call stack is a structure that keeps track of function execution order in JavaScript."
             },
             "ru": {
-                "question": "What is the call stack?",
-                "weakAnswer": "Stack.",
-                "technicalAnswer": "Tracks function execution.",
-                "interviewAnswer": "The call stack is a structure that keeps track of function execution order in JavaScript."
+                "question": "Что такое стек вызовов (call stack)?",
+                "weakAnswer": "Стек.",
+                "technicalAnswer": "Структура, отслеживающая порядок вызова функций.",
+                "interviewAnswer": "Каждый вызов кладёт фрейм на стек; return снимает его; переполнение — при бесконечной рекурсии."
             }
         },
         "codeExample": "function a() {\n    b();\n}\nfunction b() {\n    c();\n}\nfunction c() {}"
@@ -1398,10 +1398,10 @@
                 "interviewAnswer": "When the call stack exceeds its limit, a stack overflow error occurs, often due to infinite recursion."
             },
             "ru": {
-                "question": "What happens when the call stack is full?",
-                "weakAnswer": "Error.",
+                "question": "Что происходит, когда стек вызовов переполнен?",
+                "weakAnswer": "Ошибка.",
                 "technicalAnswer": "Stack overflow.",
-                "interviewAnswer": "When the call stack exceeds its limit, a stack overflow error occurs, often due to infinite recursion."
+                "interviewAnswer": "Движок выбрасывает RangeError: Maximum call stack size exceeded."
             }
         },
         "codeExample": "function recurse() {\n    recurse();\n}\nrecurse(); // stack overflow"
@@ -1419,10 +1419,10 @@
                 "interviewAnswer": "Promise.all waits for all promises to resolve and returns their results, or rejects if any fail."
             },
             "ru": {
-                "question": "What is Promise.all?",
-                "weakAnswer": "Multiple promises.",
-                "technicalAnswer": "Waits for all promises.",
-                "interviewAnswer": "Promise.all waits for all promises to resolve and returns their results, or rejects if any fail."
+                "question": "Что делает Promise.all?",
+                "weakAnswer": "Ждёт несколько промисов.",
+                "technicalAnswer": "Ждёт выполнения всех промисов.",
+                "interviewAnswer": "Возвращает массив результатов; при первом reject — отклоняется (если не использовать allSettled)."
             }
         },
         "codeExample": "Promise.all([p1, p2]).then(([a, b]) => console.log(a, b));"
@@ -1440,10 +1440,10 @@
                 "interviewAnswer": "Promise.race resolves or rejects as soon as the first promise settles."
             },
             "ru": {
-                "question": "What is Promise.race?",
-                "weakAnswer": "First promise.",
-                "technicalAnswer": "Resolves with first settled promise.",
-                "interviewAnswer": "Promise.race resolves or rejects as soon as the first promise settles."
+                "question": "Что делает Promise.race?",
+                "weakAnswer": "Первый промис.",
+                "technicalAnswer": "Завершается вместе с первым settled промисом.",
+                "interviewAnswer": "Удобен для таймаутов: гонка между fetch и delay."
             }
         },
         "codeExample": "Promise.race([slow, fast]).then((v) => console.log(v));"
@@ -1461,10 +1461,10 @@
                 "interviewAnswer": "reduce executes a function on each element to accumulate a single result value."
             },
             "ru": {
-                "question": "What does Array.prototype.reduce do?",
-                "weakAnswer": "Loops.",
-                "technicalAnswer": "Reduces array to single value.",
-                "interviewAnswer": "reduce executes a function on each element to accumulate a single result value."
+                "question": "Что делает Array.prototype.reduce?",
+                "weakAnswer": "Перебор.",
+                "technicalAnswer": "Сворачивает массив в одно значение.",
+                "interviewAnswer": "Итеративно передаёт аккумулятор и текущий элемент в функцию; начальное значение задаётся вторым аргументом."
             }
         },
         "codeExample": "[1, 2, 3].reduce((acc, n) => acc + n, 0);"
@@ -1482,10 +1482,10 @@
                 "interviewAnswer": "Angular change detection is triggered by async events like user input, HTTP calls, timers, and zone.js patches."
             },
             "ru": {
-                "question": "What triggers Angular change detection?",
-                "weakAnswer": "Changes.",
-                "technicalAnswer": "Async events and bindings.",
-                "interviewAnswer": "Angular change detection is triggered by async events like user input, HTTP calls, timers, and zone.js patches."
+                "question": "Что запускает change detection в Angular?",
+                "weakAnswer": "Изменения.",
+                "technicalAnswer": "Асинхронные события и привязки.",
+                "interviewAnswer": "События UI, таймеры, HTTP (через Zone) или явный markForCheck/detectChanges в OnPush."
             }
         },
         "codeExample": "// Events, XHR/fetch, timers (via Zone.js) schedule CD"
@@ -1503,10 +1503,10 @@
                 "interviewAnswer": "You can manually trigger change detection using ChangeDetectorRef methods like detectChanges or markForCheck."
             },
             "ru": {
-                "question": "How to manually trigger change detection?",
-                "weakAnswer": "Trigger.",
-                "technicalAnswer": "Using ChangeDetectorRef.",
-                "interviewAnswer": "You can manually trigger change detection using ChangeDetectorRef methods like detectChanges or markForCheck."
+                "question": "Как вручную запустить change detection?",
+                "weakAnswer": "Вызвать метод.",
+                "technicalAnswer": "Через ChangeDetectorRef.",
+                "interviewAnswer": "detectChanges() проверяет компонент сразу; markForCheck() помечает OnPush для следующего цикла."
             }
         },
         "codeExample": "this.cdr.detectChanges();\n// or markForCheck() with OnPush"
@@ -1524,10 +1524,10 @@
                 "interviewAnswer": "Running code outside Angular’s zone prevents unnecessary change detection cycles and improves performance."
             },
             "ru": {
-                "question": "Why might you run code outside Angular zone?",
-                "weakAnswer": "Performance.",
-                "technicalAnswer": "Avoid unnecessary change detection.",
-                "interviewAnswer": "Running code outside Angular’s zone prevents unnecessary change detection cycles and improves performance."
+                "question": "Зачем выполнять код вне зоны Angular?",
+                "weakAnswer": "Производительность.",
+                "technicalAnswer": "Избежать лишних циклов CD.",
+                "interviewAnswer": "runOutsideAngular для частых событий (scroll), затем run() для обновления модели при необходимости."
             }
         },
         "codeExample": "this.zone.runOutsideAngular(() => heavyWork());"
@@ -1545,10 +1545,10 @@
                 "interviewAnswer": "A Subject is both an Observable and an Observer, allowing you to multicast values to multiple subscribers."
             },
             "ru": {
-                "question": "What is a Subject?",
-                "weakAnswer": "Observable.",
-                "technicalAnswer": "Both observer and observable.",
-                "interviewAnswer": "A Subject is both an Observable and an Observer, allowing you to multicast values to multiple subscribers."
+                "question": "Что такое Subject в RxJS?",
+                "weakAnswer": "Разновидность Observable.",
+                "technicalAnswer": "И Observable, и Observer одновременно.",
+                "interviewAnswer": "Мультикаст: next/error/complete вручную; часто через shareReplay для кэша последнего значения."
             }
         },
         "codeExample": "const s = new Subject<number>();\ns.subscribe((v) => console.log(v));\ns.next(1);"
@@ -1566,10 +1566,10 @@
                 "interviewAnswer": "BehaviorSubject stores the latest value and emits it to new subscribers, while Subject does not."
             },
             "ru": {
-                "question": "Difference between Subject and BehaviorSubject?",
-                "weakAnswer": "Different.",
-                "technicalAnswer": "BehaviorSubject stores last value.",
-                "interviewAnswer": "BehaviorSubject stores the latest value and emits it to new subscribers, while Subject does not."
+                "question": "Чем Subject отличается от BehaviorSubject?",
+                "weakAnswer": "По-разному.",
+                "technicalAnswer": "BehaviorSubject хранит последнее значение.",
+                "interviewAnswer": "Новый подписчик у Behavior сразу получает текущее значение; у Subject — только будущие эмиты."
             }
         },
         "codeExample": "const b = new BehaviorSubject(0);\nb.subscribe((v) => console.log(v)); // last value replay"
@@ -1587,10 +1587,10 @@
                 "interviewAnswer": "switchMap cancels the previous observable and switches to a new one, useful for handling rapid async requests."
             },
             "ru": {
-                "question": "What is switchMap?",
-                "weakAnswer": "Operator.",
-                "technicalAnswer": "Switches to new observable.",
-                "interviewAnswer": "switchMap cancels the previous observable and switches to a new one, useful for handling rapid async requests."
+                "question": "Что делает switchMap?",
+                "weakAnswer": "Оператор.",
+                "technicalAnswer": "Переключается на новый внутренний Observable.",
+                "interviewAnswer": "Отменяет предыдущий внутренний поток — удобно для поиска по вводу, чтобы не применять устаревшие ответы."
             }
         },
         "codeExample": "search$\n    .pipe(switchMap((q) => this.http.get('/search', { params: { q } })))\n    .subscribe();"
@@ -1608,10 +1608,10 @@
                 "interviewAnswer": "mergeMap maps values to inner observables and merges all results without canceling previous ones."
             },
             "ru": {
-                "question": "What is mergeMap?",
-                "weakAnswer": "Operator.",
-                "technicalAnswer": "Flattens observables.",
-                "interviewAnswer": "mergeMap maps values to inner observables and merges all results without canceling previous ones."
+                "question": "Что делает mergeMap?",
+                "weakAnswer": "Оператор.",
+                "technicalAnswer": "Сливает внутренние Observable без отмены.",
+                "interviewAnswer": "Параллельные запросы возможны; нужен контроль concurrency (mergeMap с вторым аргументом или другие операторы)."
             }
         },
         "codeExample": "of(1, 2, 3).pipe(mergeMap((id) => this.get$(id)));"
@@ -1629,10 +1629,10 @@
                 "interviewAnswer": "debounceTime delays emitting values until a specified time passes without new emissions."
             },
             "ru": {
-                "question": "What is debounceTime?",
-                "weakAnswer": "Delay.",
-                "technicalAnswer": "Delays emissions.",
-                "interviewAnswer": "debounceTime delays emitting values until a specified time passes without new emissions."
+                "question": "Что делает debounceTime?",
+                "weakAnswer": "Задержка.",
+                "technicalAnswer": "Откладывает эмиссии на указанное время тишины.",
+                "interviewAnswer": "Игнорирует частые значения, пока поток не «успокоится» на N мс."
             }
         },
         "codeExample": "input$.pipe(debounceTime(300)).subscribe(onQuery);"
@@ -1650,10 +1650,10 @@
                 "interviewAnswer": "Unsubscribing prevents memory leaks by stopping active subscriptions when they are no longer needed."
             },
             "ru": {
-                "question": "What is unsubscribe and why is it important?",
-                "weakAnswer": "Stop.",
-                "technicalAnswer": "Stops observable.",
-                "interviewAnswer": "Unsubscribing prevents memory leaks by stopping active subscriptions when they are no longer needed."
+                "question": "Что такое unsubscribe и зачем он нужен?",
+                "weakAnswer": "Остановить подписку.",
+                "technicalAnswer": "Завершает подписку на Observable.",
+                "interviewAnswer": "Предотвращает утечки и лишние сетевые запросы; async pipe отписывается автоматически."
             }
         },
         "codeExample": "const sub = stream$.subscribe();\n// later\nsub.unsubscribe();"
@@ -1671,10 +1671,10 @@
                 "interviewAnswer": "Nested subscriptions make code harder to manage and can lead to memory leaks; operators like switchMap should be used instead."
             },
             "ru": {
-                "question": "Why avoid subscribing inside subscribe?",
-                "weakAnswer": "Bad.",
-                "technicalAnswer": "Leads to nested subscriptions.",
-                "interviewAnswer": "Nested subscriptions make code harder to manage and can lead to memory leaks; operators like switchMap should be used instead."
+                "question": "Почему не стоит подписываться внутри subscribe?",
+                "weakAnswer": "Плохая практика.",
+                "technicalAnswer": "Получаются вложенные подписки.",
+                "interviewAnswer": "Лучше высокоуровневые операторы (switchMap, mergeMap) — плоский поток и проще отписка."
             }
         },
         "codeExample": "search$.pipe(switchMap((q) => api.search(q))).subscribe();"
@@ -1692,10 +1692,10 @@
                 "interviewAnswer": "NaN is the only value in JavaScript that is not equal to itself, so comparisons must use isNaN."
             },
             "ru": {
-                "question": "Why is NaN !== NaN?",
-                "weakAnswer": "Weird.",
-                "technicalAnswer": "NaN is not equal to itself.",
-                "interviewAnswer": "NaN is the only value in JavaScript that is not equal to itself, so comparisons must use isNaN."
+                "question": "Почему NaN !== NaN?",
+                "weakAnswer": "Странность JS.",
+                "technicalAnswer": "NaN не равен самому себе по спецификации.",
+                "interviewAnswer": "Используйте Number.isNaN для проверки; isNaN приводит типы."
             }
         },
         "codeExample": "console.log(NaN === NaN); // false\nNumber.isNaN(NaN); // true"
@@ -1713,10 +1713,10 @@
                 "interviewAnswer": "typeof null returns 'object' due to a historical JavaScript bug."
             },
             "ru": {
-                "question": "What is typeof null?",
-                "weakAnswer": "Object.",
-                "technicalAnswer": "Returns object due to bug.",
-                "interviewAnswer": "typeof null returns 'object' due to a historical JavaScript bug."
+                "question": "Что возвращает typeof null?",
+                "weakAnswer": "object.",
+                "technicalAnswer": "Из-за исторического бага возвращает 'object'.",
+                "interviewAnswer": "Проверка на null: value === null."
             }
         },
         "codeExample": "console.log(typeof null); // \"object\" (legacy)"
@@ -1734,10 +1734,10 @@
                 "interviewAnswer": "Object.freeze makes an object immutable by preventing adding, removing, or changing properties."
             },
             "ru": {
-                "question": "What is Object.freeze?",
-                "weakAnswer": "Freezes.",
-                "technicalAnswer": "Prevents modifications.",
-                "interviewAnswer": "Object.freeze makes an object immutable by preventing adding, removing, or changing properties."
+                "question": "Что делает Object.freeze?",
+                "weakAnswer": "Замораживает.",
+                "technicalAnswer": "Делает объект неизменяемым на поверхности.",
+                "interviewAnswer": "Нельзя менять свойства, добавлять или удалять; вложенные объекты не замораживаются рекурсивно."
             }
         },
         "codeExample": "const o = Object.freeze({ x: 1 });\no.x = 2; // silent fail in non-strict"
@@ -1755,10 +1755,10 @@
                 "interviewAnswer": "Object.seal prevents adding or removing properties but allows modifying existing ones."
             },
             "ru": {
-                "question": "What is Object.seal?",
-                "weakAnswer": "Locks.",
-                "technicalAnswer": "Prevents adding/removing properties.",
-                "interviewAnswer": "Object.seal prevents adding or removing properties but allows modifying existing ones."
+                "question": "Что делает Object.seal?",
+                "weakAnswer": "Запечатывает.",
+                "technicalAnswer": "Запрещает добавлять/удалять свойства.",
+                "interviewAnswer": "Существующие свойства по-прежнему можно менять, в отличие от freeze."
             }
         },
         "codeExample": "const o = Object.seal({ x: 1 });\ndelete o.x; // false"
@@ -1776,10 +1776,10 @@
                 "interviewAnswer": "Currying transforms a function with multiple arguments into a series of functions with one argument each."
             },
             "ru": {
-                "question": "What is currying?",
-                "weakAnswer": "Functions.",
-                "technicalAnswer": "Transforming function arguments.",
-                "interviewAnswer": "Currying transforms a function with multiple arguments into a series of functions with one argument each."
+                "question": "Что такое каррирование (currying)?",
+                "weakAnswer": "Цепочка функций.",
+                "technicalAnswer": "Разбиение функции с несколькими аргументами на цепочку унарных.",
+                "interviewAnswer": "add(a)(b) вместо add(a,b) — удобно для частичного применения и композиции."
             }
         },
         "codeExample": "const add = (a) => (b) => a + b;\nconst add2 = add(2);\nadd2(3); // 5"
@@ -1797,10 +1797,10 @@
                 "interviewAnswer": "Partial application creates a new function by fixing some arguments of an existing function."
             },
             "ru": {
-                "question": "What is partial application?",
-                "weakAnswer": "Same as curry.",
-                "technicalAnswer": "Fixing some arguments.",
-                "interviewAnswer": "Partial application creates a new function by fixing some arguments of an existing function."
+                "question": "Что такое частичное применение (partial application)?",
+                "weakAnswer": "Похоже на карри.",
+                "technicalAnswer": "Фиксация части аргументов функции.",
+                "interviewAnswer": "bind(null, 2) или обёртка создаёт функцию с меньшим числом параметров."
             }
         },
         "codeExample": "function mul(a, b) {\n    return a * b;\n}\nconst double = mul.bind(null, 2);\ndouble(4); // 8"
@@ -1818,10 +1818,10 @@
                 "interviewAnswer": "Facade pattern provides a simplified interface to complex subsystems, often used to manage state and API calls."
             },
             "ru": {
-                "question": "What is a facade pattern?",
-                "weakAnswer": "Pattern.",
-                "technicalAnswer": "Simplifies access to complex logic.",
-                "interviewAnswer": "Facade pattern provides a simplified interface to complex subsystems, often used to manage state and API calls."
+                "question": "Что такое паттерн Facade?",
+                "weakAnswer": "Паттерн.",
+                "technicalAnswer": "Упрощённый интерфейс к сложной подсистеме.",
+                "interviewAnswer": "Сервис-фасад скрывает несколько API/сторов за одним методом для компонентов."
             }
         },
         "codeExample": "@Injectable({ providedIn: 'root' })\nexport class AppFacade {\n    load() {\n        return this.http.get('/x');\n    }\n}"
@@ -1839,10 +1839,10 @@
                 "interviewAnswer": "State management is the process of controlling and sharing application data across components in a predictable way."
             },
             "ru": {
-                "question": "What is state management?",
-                "weakAnswer": "State.",
-                "technicalAnswer": "Managing application state.",
-                "interviewAnswer": "State management is the process of controlling and sharing application data across components in a predictable way."
+                "question": "Что такое управление состоянием (state management)?",
+                "weakAnswer": "Состояние приложения.",
+                "technicalAnswer": "Организация и обновление данных приложения.",
+                "interviewAnswer": "От локальных сервисов и signals до NgRx: единый источник правды и предсказуемые обновления."
             }
         },
         "codeExample": "const store = signal<State>(initial);\nconst name = computed(() => store().user.name);"
@@ -1860,10 +1860,10 @@
                 "interviewAnswer": "NgRx is used in large applications where state needs to be predictable, centralized, and scalable."
             },
             "ru": {
-                "question": "When would you use NgRx?",
-                "weakAnswer": "Big apps.",
-                "technicalAnswer": "For complex state.",
-                "interviewAnswer": "NgRx is used in large applications where state needs to be predictable, centralized, and scalable."
+                "question": "Когда уместен NgRx?",
+                "weakAnswer": "Большие приложения.",
+                "technicalAnswer": "Сложное разделяемое состояние.",
+                "interviewAnswer": "Много экранов, строгие требования к трассировке действий, time-travel отладка, кэш сущностей."
             }
         },
         "codeExample": "// NgRx: single store, actions, reducers, effects"
@@ -1881,10 +1881,10 @@
                 "interviewAnswer": "Unit testing verifies that individual pieces of code, like components or services, work as expected in isolation."
             },
             "ru": {
-                "question": "What is unit testing?",
-                "weakAnswer": "Testing.",
-                "technicalAnswer": "Testing individual units.",
-                "interviewAnswer": "Unit testing verifies that individual pieces of code, like components or services, work as expected in isolation."
+                "question": "Что такое модульное (unit) тестирование?",
+                "weakAnswer": "Тесты.",
+                "technicalAnswer": "Проверка отдельных единиц кода изолированно.",
+                "interviewAnswer": "Один класс/функция с моками зависимостей; быстрая обратная связь при рефакторинге."
             }
         },
         "codeExample": "it('adds numbers', () => expect(add(1, 2)).toBe(3));"
@@ -1902,10 +1902,10 @@
                 "interviewAnswer": "TestBed is Angular’s primary testing utility for configuring and initializing components and services in tests."
             },
             "ru": {
-                "question": "What is TestBed?",
-                "weakAnswer": "Testing tool.",
-                "technicalAnswer": "Angular testing utility.",
-                "interviewAnswer": "TestBed is Angular’s primary testing utility for configuring and initializing components and services in tests."
+                "question": "Что такое TestBed?",
+                "weakAnswer": "Утилита тестов.",
+                "technicalAnswer": "Основной инструмент тестирования Angular.",
+                "interviewAnswer": "configureTestingModule, createComponent, inject — настройка DI и DOM для компонентов."
             }
         },
         "codeExample": "TestBed.configureTestingModule({ imports: [MyComp] });\nconst fixture = TestBed.createComponent(MyComp);"
@@ -1923,10 +1923,10 @@
                 "interviewAnswer": "Memoization is an optimization technique that caches function results to avoid repeated calculations."
             },
             "ru": {
-                "question": "What is memoization?",
-                "weakAnswer": "Cache.",
-                "technicalAnswer": "Caching function results.",
-                "interviewAnswer": "Memoization is an optimization technique that caches function results to avoid repeated calculations."
+                "question": "Что такое мемоизация?",
+                "weakAnswer": "Кэш.",
+                "technicalAnswer": "Кэширование результатов функции.",
+                "interviewAnswer": "Повторные вызовы с теми же аргументами возвращают сохранённый результат — классика для рекурсии (Fibonacci)."
             }
         },
         "codeExample": "function fib(n, memo = {}) {\n    if (n in memo) return memo[n];\n    memo[n] = n <= 1 ? n : fib(n - 1, memo) + fib(n - 2, memo);\n    return memo[n];\n}"
@@ -1944,10 +1944,10 @@
                 "interviewAnswer": "Time complexity measures how the runtime of an algorithm grows with input size, often expressed using Big O notation."
             },
             "ru": {
-                "question": "What is time complexity?",
-                "weakAnswer": "Speed.",
-                "technicalAnswer": "Measures algorithm efficiency.",
-                "interviewAnswer": "Time complexity measures how the runtime of an algorithm grows with input size, often expressed using Big O notation."
+                "question": "Что такое временная сложность?",
+                "weakAnswer": "Скорость.",
+                "technicalAnswer": "Как растёт время работы от размера входа.",
+                "interviewAnswer": "Оценивают через O-нотацию: константная, линейная, логарифмическая, квадратичная и т.д."
             }
         },
         "codeExample": "// O(n) single loop vs O(n^2) nested loops"
@@ -1965,10 +1965,10 @@
                 "interviewAnswer": "Big O notation describes the performance or complexity of an algorithm in terms of input size."
             },
             "ru": {
-                "question": "What is Big O notation?",
-                "weakAnswer": "Math.",
-                "technicalAnswer": "Describes complexity.",
-                "interviewAnswer": "Big O notation describes the performance or complexity of an algorithm in terms of input size."
+                "question": "Что такое Big O?",
+                "weakAnswer": "Математика.",
+                "technicalAnswer": "Описывает асимптотику алгоритма.",
+                "interviewAnswer": "O(n) — линейный проход; O(log n) — деление пополам; важно для выбора структур данных."
             }
         },
         "codeExample": "// O(1) constant, O(n) linear, O(log n) binary search"
@@ -1986,10 +1986,10 @@
                 "interviewAnswer": "The DOM is a tree-like representation of a web page that allows JavaScript to manipulate HTML elements."
             },
             "ru": {
-                "question": "What is the DOM?",
-                "weakAnswer": "HTML.",
-                "technicalAnswer": "Tree representation of HTML.",
-                "interviewAnswer": "The DOM is a tree-like representation of a web page that allows JavaScript to manipulate HTML elements."
+                "question": "Что такое DOM?",
+                "weakAnswer": "HTML-дерево.",
+                "technicalAnswer": "Древовидное представление документа.",
+                "interviewAnswer": "API для чтения и изменения узлов; манипуляции дорогие — минимизируем лишние reflow."
             }
         },
         "codeExample": "document.querySelectorAll('.item');"
@@ -2007,10 +2007,10 @@
                 "interviewAnswer": "Event delegation is a technique where a parent element handles events for its child elements using event bubbling."
             },
             "ru": {
-                "question": "What is event delegation?",
-                "weakAnswer": "Events.",
-                "technicalAnswer": "Handling events on parent.",
-                "interviewAnswer": "Event delegation is a technique where a parent element handles events for its child elements using event bubbling."
+                "question": "Что такое делегирование событий?",
+                "weakAnswer": "События.",
+                "technicalAnswer": "Обработчик на родителе ловит всплытие.",
+                "interviewAnswer": "Один listener на списке вместо сотен на дочерних элементах — меньше памяти, проще динамические элементы."
             }
         },
         "codeExample": "list.addEventListener('click', (e) => {\n    if (e.target.matches('button')) handle(e);\n});"
@@ -2028,10 +2028,10 @@
                 "interviewAnswer": "localStorage is a browser API that allows storing key-value pairs persistently in the browser."
             },
             "ru": {
-                "question": "What is localStorage?",
-                "weakAnswer": "Storage.",
-                "technicalAnswer": "Browser storage API.",
-                "interviewAnswer": "localStorage is a browser API that allows storing key-value pairs persistently in the browser."
+                "question": "Что такое localStorage?",
+                "weakAnswer": "Хранилище.",
+                "technicalAnswer": "Постоянное хранилище ключ–значение в браузере.",
+                "interviewAnswer": "Синхронный API, строки только, лимит ~5 МБ; не для секретов."
             }
         },
         "codeExample": "localStorage.setItem('theme', 'dark');\nlocalStorage.getItem('theme');"
@@ -2049,10 +2049,10 @@
                 "interviewAnswer": "localStorage persists data indefinitely, while sessionStorage is cleared when the browser session ends."
             },
             "ru": {
-                "question": "Difference between localStorage and sessionStorage?",
-                "weakAnswer": "Different.",
-                "technicalAnswer": "Persistence difference.",
-                "interviewAnswer": "localStorage persists data indefinitely, while sessionStorage is cleared when the browser session ends."
+                "question": "Чем localStorage отличается от sessionStorage?",
+                "weakAnswer": "По-разному хранят.",
+                "technicalAnswer": "Срок жизни данных.",
+                "interviewAnswer": "sessionStorage очищается при закрытии вкладки; localStorage живёт до ручной очистки."
             }
         },
         "codeExample": "sessionStorage.setItem('tab', '1');\n// cleared when tab closes"
@@ -2070,10 +2070,10 @@
                 "interviewAnswer": "XSS is a security vulnerability where attackers inject malicious scripts into web pages viewed by other users."
             },
             "ru": {
-                "question": "What is XSS?",
-                "weakAnswer": "Attack.",
-                "technicalAnswer": "Cross-site scripting.",
-                "interviewAnswer": "XSS is a security vulnerability where attackers inject malicious scripts into web pages viewed by other users."
+                "question": "Что такое XSS?",
+                "weakAnswer": "Атака.",
+                "technicalAnswer": "Межсайтовый скриптинг.",
+                "interviewAnswer": "Инъекция скрипта в HTML; защита: экранирование, CSP, избегать innerHTML с пользовательским текстом."
             }
         },
         "codeExample": "div.textContent = userHtml; // avoid innerHTML for untrusted"
@@ -2091,10 +2091,10 @@
                 "interviewAnswer": "CORS is a browser security feature that controls how resources are requested from different domains."
             },
             "ru": {
-                "question": "What is CORS?",
-                "weakAnswer": "Policy.",
-                "technicalAnswer": "Cross-origin resource sharing.",
-                "interviewAnswer": "CORS is a browser security feature that controls how resources are requested from different domains."
+                "question": "Что такое CORS?",
+                "weakAnswer": "Политика браузера.",
+                "technicalAnswer": "Механизм cross-origin доступа к ресурсам.",
+                "interviewAnswer": "Сервер отвечает заголовками Access-Control-*; preflight для непростых запросов."
             }
         },
         "codeExample": "fetch('https://api.example.com/data', {\n    credentials: 'include',\n});"
@@ -2112,10 +2112,10 @@
                 "interviewAnswer": "It logs 3, 3, 3 because var is function-scoped and the loop finishes before setTimeout executes, so all callbacks reference the final value."
             },
             "ru": {
-                "question": "What will this code output?\n\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+                "question": "Что выведет этот код?\n\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
                 "weakAnswer": "0 1 2",
                 "technicalAnswer": "3 3 3",
-                "interviewAnswer": "It logs 3, 3, 3 because var is function-scoped and the loop finishes before setTimeout executes, so all callbacks reference the final value."
+                "interviewAnswer": "Выведет три раза 3: var функционально-скоупед, цикл завершится до таймеров, все колбэки видят финальное i."
             }
         },
         "codeExample": "for (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}"
@@ -2133,10 +2133,10 @@
                 "interviewAnswer": "It logs 0, 1, 2 because let is block-scoped and creates a new binding for each iteration."
             },
             "ru": {
-                "question": "What will this code output?\n\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+                "question": "Что выведет этот код?\n\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
                 "weakAnswer": "3 3 3",
                 "technicalAnswer": "0 1 2",
-                "interviewAnswer": "It logs 0, 1, 2 because let is block-scoped and creates a new binding for each iteration."
+                "interviewAnswer": "0, 1, 2: у let блочная область, на каждой итерации своя ячейка для i."
             }
         },
         "codeExample": "for (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}"
@@ -2154,10 +2154,10 @@
                 "interviewAnswer": "It logs undefined because the inner function is a regular function and 'this' refers to the global object, not obj."
             },
             "ru": {
-                "question": "What will this code output?\n\nconst obj = {\n  name: 'John',\n  greet: function() {\n    return function() {\n      console.log(this.name);\n    }\n  }\n};\nobj.greet()();",
+                "question": "Что выведет этот код?\n\nconst obj = {\n  name: 'John',\n  greet: function() {\n    return function() {\n      console.log(this.name);\n    }\n  }\n};\nobj.greet()();",
                 "weakAnswer": "John",
                 "technicalAnswer": "undefined",
-                "interviewAnswer": "It logs undefined because the inner function is a regular function and 'this' refers to the global object, not obj."
+                "interviewAnswer": "undefined: внутренняя обычная функция, this — глобал/undefined в strict, не obj."
             }
         },
         "codeExample": "const obj = {\n  name: 'John',\n  greet: function() {\n    return function() {\n      console.log(this.name);\n    }\n  }\n};\nobj.greet()();"
@@ -2175,10 +2175,10 @@
                 "interviewAnswer": "Use an arrow function or bind to preserve 'this', for example returning () => console.log(this.name)."
             },
             "ru": {
-                "question": "How to fix previous example to print 'John'?",
-                "weakAnswer": "Change something.",
-                "technicalAnswer": "Use arrow function or bind.",
-                "interviewAnswer": "Use an arrow function or bind to preserve 'this', for example returning () => console.log(this.name)."
+                "question": "Как исправить предыдущий пример, чтобы вывелось 'John'?",
+                "weakAnswer": "Что-то поменять.",
+                "technicalAnswer": "Стрелка или bind.",
+                "interviewAnswer": "Вернуть стрелочную функцию () => console.log(this.name) или .bind(obj) на внутренней функции."
             }
         },
         "codeExample": "'use strict';\nconst obj = { name: 'Ann', greet() { return this.name; } };\nobj.greet();\nfunction loose() { return this; }\nloose(); // undefined in strict mode"
@@ -2196,10 +2196,10 @@
                 "interviewAnswer": "It logs undefined because variable declarations are hoisted but not their assignments."
             },
             "ru": {
-                "question": "What will this output?\n\nconsole.log(a);\nvar a = 5;",
+                "question": "Что выведет этот код?\n\nconsole.log(a);\nvar a = 5;",
                 "weakAnswer": "5",
                 "technicalAnswer": "undefined",
-                "interviewAnswer": "It logs undefined because variable declarations are hoisted but not their assignments."
+                "interviewAnswer": "undefined: объявление var поднято, присваивание — нет."
             }
         },
         "codeExample": "console.log(a);\nvar a = 5;"
@@ -2217,10 +2217,10 @@
                 "interviewAnswer": "It throws a ReferenceError because let variables are in the temporal dead zone until initialized."
             },
             "ru": {
-                "question": "What will this output?\n\nconsole.log(a);\nlet a = 5;",
+                "question": "Что выведет этот код?\n\nconsole.log(a);\nlet a = 5;",
                 "weakAnswer": "undefined",
                 "technicalAnswer": "ReferenceError",
-                "interviewAnswer": "It throws a ReferenceError because let variables are in the temporal dead zone until initialized."
+                "interviewAnswer": "ReferenceError: let в временной мёртвой зоне до строки инициализации."
             }
         },
         "codeExample": "console.log(a);\nlet a = 5;"
@@ -2238,10 +2238,10 @@
                 "interviewAnswer": "It logs 1, 4, 3, 2 because synchronous code runs first, then microtasks (Promises), then macrotasks (setTimeout)."
             },
             "ru": {
-                "question": "What is the output order?\n\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);",
+                "question": "В каком порядке выведутся числа?\n\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);",
                 "weakAnswer": "1 2 3 4",
                 "technicalAnswer": "1 4 3 2",
-                "interviewAnswer": "It logs 1, 4, 3, 2 because synchronous code runs first, then microtasks (Promises), then macrotasks (setTimeout)."
+                "interviewAnswer": "1, 4, 3, 2: сначала синхронный код, затем микрозадачи (Promise), затем macrotask (setTimeout)."
             }
         },
         "codeExample": "console.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);"
@@ -2259,10 +2259,10 @@
                 "interviewAnswer": "map passes index as second argument, so parseInt receives (value, index), causing unexpected NaN results."
             },
             "ru": {
-                "question": "What will this output?\n\n[1,2,3].map(parseInt)",
+                "question": "Что выведет этот код?\n\n[1,2,3].map(parseInt)",
                 "weakAnswer": "[1,2,3]",
                 "technicalAnswer": "[1, NaN, NaN]",
-                "interviewAnswer": "map passes index as second argument, so parseInt receives (value, index), causing unexpected NaN results."
+                "interviewAnswer": "map передаёт (элемент, индекс); parseInt('2',1) и parseInt('3',2) дают NaN."
             }
         },
         "codeExample": "[1,2,3].map(parseInt)"
@@ -2280,10 +2280,10 @@
                 "interviewAnswer": "JavaScript coerces both to strings, resulting in '[object Object]'."
             },
             "ru": {
-                "question": "What will this output?\n\n[] + {}",
-                "weakAnswer": "Error",
+                "question": "Что выведет этот код?\n\n[] + {}",
+                "weakAnswer": "Ошибка",
                 "technicalAnswer": "[object Object]",
-                "interviewAnswer": "JavaScript coerces both to strings, resulting in '[object Object]'."
+                "interviewAnswer": "Строка '[object Object]': оба операнда приводятся к строке."
             }
         },
         "codeExample": "[] + {}"
@@ -2301,10 +2301,10 @@
                 "interviewAnswer": "JavaScript interprets {} as a block, so +[] becomes 0 due to type coercion."
             },
             "ru": {
-                "question": "What will this output?\n\n{} + []",
-                "weakAnswer": "Same as previous",
+                "question": "Что выведет этот код?\n\n{} + []",
+                "weakAnswer": "Как в прошлом примере",
                 "technicalAnswer": "0",
-                "interviewAnswer": "JavaScript interprets {} as a block, so +[] becomes 0 due to type coercion."
+                "interviewAnswer": "В выражении {} может трактоваться как блок, +[] даёт 0 (унарный плюс к пустому массиву)."
             }
         },
         "codeExample": "{} + []"
@@ -2322,10 +2322,10 @@
                 "interviewAnswer": "It returns undefined due to automatic semicolon insertion after return."
             },
             "ru": {
-                "question": "What will this output?\n\nfunction foo() {\n  return\n  {\n    name: 'John'\n  }\n}\nconsole.log(foo());",
-                "weakAnswer": "Object",
+                "question": "Что выведет этот код?\n\nfunction foo() {\n  return\n  {\n    name: 'John'\n  }\n}\nconsole.log(foo());",
+                "weakAnswer": "Объект",
                 "technicalAnswer": "undefined",
-                "interviewAnswer": "It returns undefined due to automatic semicolon insertion after return."
+                "interviewAnswer": "undefined: ASI вставляет точку с запятой после return."
             }
         },
         "codeExample": "function foo() {\n  return\n  {\n    name: 'John'\n  }\n}\nconsole.log(foo());"
@@ -2343,10 +2343,10 @@
                 "interviewAnswer": "Objects are referenced, so modifying b also affects obj."
             },
             "ru": {
-                "question": "What will this output?\n\nconst obj = { a: 1 };\nconst b = obj;\nb.a = 2;\nconsole.log(obj.a);",
+                "question": "Что выведет этот код?\n\nconst obj = { a: 1 };\nconst b = obj;\nb.a = 2;\nconsole.log(obj.a);",
                 "weakAnswer": "1",
                 "technicalAnswer": "2",
-                "interviewAnswer": "Objects are referenced, so modifying b also affects obj."
+                "interviewAnswer": "2: b и obj — одна и та же ссылка на объект."
             }
         },
         "codeExample": "const obj = { a: 1 };\nconst b = obj;\nb.a = 2;\nconsole.log(obj.a);"
@@ -2364,10 +2364,10 @@
                 "interviewAnswer": "The closure preserves state, so count increments with each call."
             },
             "ru": {
-                "question": "What will this output?\n\nfunction counter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  }\n}\nconst c = counter();\nconsole.log(c());\nconsole.log(c());",
+                "question": "Что выведет этот код?\n\nfunction counter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  }\n}\nconst c = counter();\nconsole.log(c());\nconsole.log(c());",
                 "weakAnswer": "1 1",
                 "technicalAnswer": "1 2",
-                "interviewAnswer": "The closure preserves state, so count increments with each call."
+                "interviewAnswer": "1 и 2: замыкание хранит общий count между вызовами."
             }
         },
         "codeExample": "function counter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  }\n}\nconst c = counter();\nconsole.log(c());\nconsole.log(c());"
@@ -2385,10 +2385,10 @@
                 "interviewAnswer": "Async functions always return a Promise, so it resolves with 42."
             },
             "ru": {
-                "question": "What will this output?\n\nasync function test() {\n  return 42;\n}\ntest().then(console.log);",
-                "weakAnswer": "Nothing",
+                "question": "Что выведет этот код?\n\nasync function test() {\n  return 42;\n}\ntest().then(console.log);",
+                "weakAnswer": "Ничего",
                 "technicalAnswer": "42",
-                "interviewAnswer": "Async functions always return a Promise, so it resolves with 42."
+                "interviewAnswer": "42: async-функция возвращает Promise, который резолвится в 42."
             }
         },
         "codeExample": "async function test() {\n  return 42;\n}\ntest().then(console.log);"
@@ -2406,10 +2406,10 @@
                 "interviewAnswer": "Arrow functions don’t have their own 'this', so it refers to the outer scope, not obj."
             },
             "ru": {
-                "question": "What will this output?\n\nconst obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",
+                "question": "Что выведет этот код?\n\nconst obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",
                 "weakAnswer": "John",
                 "technicalAnswer": "undefined",
-                "interviewAnswer": "Arrow functions don’t have their own 'this', so it refers to the outer scope, not obj."
+                "interviewAnswer": "undefined: у стрелки нет своего this, берётся из внешней области, не из obj."
             }
         },
         "codeExample": "const obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();"
@@ -2427,10 +2427,10 @@
                 "interviewAnswer": "The error is caught and replaced with 10, which is then logged."
             },
             "ru": {
-                "question": "What will this output?\n\nPromise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw new Error(); })\n  .catch(() => 10)\n  .then(x => console.log(x));",
-                "weakAnswer": "Error",
+                "question": "Что выведет этот код?\n\nPromise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw new Error(); })\n  .catch(() => 10)\n  .then(x => console.log(x));",
+                "weakAnswer": "Ошибка",
                 "technicalAnswer": "10",
-                "interviewAnswer": "The error is caught and replaced with 10, which is then logged."
+                "interviewAnswer": "10: catch возвращает значение, следующий then его получает."
             }
         },
         "codeExample": "Promise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw new Error(); })\n  .catch(() => 10)\n  .then(x => console.log(x));"
@@ -2448,10 +2448,10 @@
                 "interviewAnswer": "Synchronous code runs first, so 'B' logs before the async callback."
             },
             "ru": {
-                "question": "What will this output?\n\nsetTimeout(() => console.log('A'), 0);\nconsole.log('B');",
+                "question": "Что выведет этот код?\n\nsetTimeout(() => console.log('A'), 0);\nconsole.log('B');",
                 "weakAnswer": "A B",
                 "technicalAnswer": "B A",
-                "interviewAnswer": "Synchronous code runs first, so 'B' logs before the async callback."
+                "interviewAnswer": "Сначала B, потом A: синхронный код раньше macrotask."
             }
         },
         "codeExample": "setTimeout(() => console.log('A'), 0);\nconsole.log('B');"
@@ -2469,10 +2469,10 @@
                 "interviewAnswer": "Due to floating point precision issues, 0.1 + 0.2 is not exactly 0.3."
             },
             "ru": {
-                "question": "What will this output?\n\nconsole.log(0.1 + 0.2 === 0.3);",
+                "question": "Что выведет этот код?\n\nconsole.log(0.1 + 0.2 === 0.3);",
                 "weakAnswer": "true",
                 "technicalAnswer": "false",
-                "interviewAnswer": "Due to floating point precision issues, 0.1 + 0.2 is not exactly 0.3."
+                "interviewAnswer": "false: двоичное представление float, сумма не равна точно 0.3."
             }
         },
         "codeExample": "console.log(0.1 + 0.2 === 0.3);"
@@ -2490,10 +2490,10 @@
                 "interviewAnswer": "Objects are compared by reference, not value, so they are not equal."
             },
             "ru": {
-                "question": "What will this output?\n\nconst a = { x: 1 };\nconst b = { x: 1 };\nconsole.log(a === b);",
+                "question": "Что выведет этот код?\n\nconst a = { x: 1 };\nconst b = { x: 1 };\nconsole.log(a === b);",
                 "weakAnswer": "true",
                 "technicalAnswer": "false",
-                "interviewAnswer": "Objects are compared by reference, not value, so they are not equal."
+                "interviewAnswer": "false: сравниваются ссылки, не содержимое."
             }
         },
         "codeExample": "const a = { x: 1 };\nconst b = { x: 1 };\nconsole.log(a === b);"
@@ -2511,10 +2511,10 @@
                 "interviewAnswer": "The array is coerced to a string '1,2', so the comparison returns true."
             },
             "ru": {
-                "question": "What will this output?\n\nconsole.log([1,2] == '1,2');",
+                "question": "Что выведет этот код?\n\nconsole.log([1,2] == '1,2');",
                 "weakAnswer": "false",
                 "technicalAnswer": "true",
-                "interviewAnswer": "The array is coerced to a string '1,2', so the comparison returns true."
+                "interviewAnswer": "true: массив приводится к строке '1,2'."
             }
         },
         "codeExample": "console.log([1,2] == '1,2');"
