@@ -33,7 +33,7 @@ jobs:
         run: npx ng build --configuration production --base-href /${{ github.event.repository.name }}/
 
       - name: Copy index.html to 404.html for SPA routing
-        run: cp dist/interview-trainer/browser/index.html dist/interview-trainer/browser/404.html
+        run: cp dist/karkas/browser/index.html dist/karkas/browser/404.html
 
       - name: Generate build.txt
         run: |
@@ -51,7 +51,7 @@ jobs:
               'Dependencies:\n' + deps + '\n' +
               '\n' +
               'Deployed: ' + now + '\n';
-            require('fs').writeFileSync('dist/interview-trainer/browser/build.txt', content);
+            require('fs').writeFileSync('dist/karkas/browser/build.txt', content);
           "
 
       - name: Setup Pages
@@ -60,7 +60,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: dist/interview-trainer/browser
+          path: dist/karkas/browser
 
   deploy:
     environment:
