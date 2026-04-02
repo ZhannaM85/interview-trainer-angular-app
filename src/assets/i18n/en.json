@@ -1,7 +1,9 @@
 {
     "app": {
         "brand": "Karkas",
-        "navAria": "Main"
+        "navAria": "Main",
+        "menuToggle": "Open menu",
+        "menuClose": "Close menu"
     },
     "nav": {
         "about": "About",
@@ -81,7 +83,8 @@
     "answerBlocks": {
         "weak": "Weak answer",
         "technical": "Technical answer",
-        "interview": "Interview answer"
+        "interview": "Interview answer",
+        "codeExample": "Code example"
     },
     "interviewQuestion": {
         "cta": "I answered"

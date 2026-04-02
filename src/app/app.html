@@ -1,32 +1,82 @@
 <div class="app">
-    <header class="app__header">
-        <a class="app__brand" routerLink="/">{{ 'app.brand' | translate }}</a>
-        <div class="app__locale">
-            <label class="visually-hidden" for="app-locale-select">{{ 'locale.selectLabel' | translate }}</label>
-            <select
-                id="app-locale-select"
-                class="app__locale-select"
-                [value]="currentLang()"
-                (change)="onLocaleChange(($any($event.target).value))"
-                [attr.aria-label]="'locale.selectLabel' | translate"
-            >
-                <option value="en">{{ 'locale.en' | translate }}</option>
-                <option value="ru">{{ 'locale.ru' | translate }}</option>
-            </select>
+    <header
+        class="app__header"
+        [class.app__header--nav-open]="navMenuOpen()"
+    >
+        <div class="app__header-top">
+            <a class="app__brand" routerLink="/">
+                <img
+                    class="app__brand-mark"
+                    src="/favicon.svg"
+                    width="28"
+                    height="28"
+                    alt=""
+                    decoding="async"
+                />
+                <span class="app__brand-text">{{ 'app.brand' | translate }}</span>
+            </a>
+            <div class="app__header-actions">
+                <button
+                    type="button"
+                    class="app__menu-btn"
+                    (click)="toggleNavMenu()"
+                    [attr.aria-expanded]="navMenuOpen()"
+                    aria-controls="app-main-nav"
+                    [attr.aria-label]="'app.menuToggle' | translate"
+                >
+                    <span class="app__menu-icon" aria-hidden="true">
+                        <span class="app__menu-icon-bar"></span>
+                        <span class="app__menu-icon-bar"></span>
+                        <span class="app__menu-icon-bar"></span>
+                    </span>
+                </button>
+                <div class="app__locale">
+                    <label class="visually-hidden" for="app-locale-select">{{ 'locale.selectLabel' | translate }}</label>
+                    <select
+                        id="app-locale-select"
+                        class="app__locale-select"
+                        [value]="currentLang()"
+                        (change)="onLocaleChange(($any($event.target).value))"
+                        [attr.aria-label]="'locale.selectLabel' | translate"
+                    >
+                        <option value="en">{{ 'locale.en' | translate }}</option>
+                        <option value="ru">{{ 'locale.ru' | translate }}</option>
+                    </select>
+                </div>
+            </div>
         </div>
-        <nav class="app__nav" [attr.aria-label]="'app.navAria' | translate">
-            <a routerLink="/about" routerLinkActive="app__link--active">{{ 'nav.about' | translate }}</a>
-            <a routerLink="/study" routerLinkActive="app__link--active">{{ 'nav.study' | translate }}</a>
+        <nav
+            id="app-main-nav"
+            class="app__nav"
+            [attr.aria-label]="'app.navAria' | translate"
+        >
+            <a routerLink="/about" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                'nav.about' | translate
+            }}</a>
+            <a routerLink="/study" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                'nav.study' | translate
+            }}</a>
             <a
                 routerLink="/quiz"
                 routerLinkActive="app__link--active"
                 [routerLinkActiveOptions]="{ exact: true }"
+                (click)="closeNavMenu()"
             >
                 {{ 'nav.quiz' | translate }}
             </a>
-            <a routerLink="/dashboard" routerLinkActive="app__link--active">{{ 'nav.dashboard' | translate }}</a>
+            <a routerLink="/dashboard" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                'nav.dashboard' | translate
+            }}</a>
         </nav>
     </header>
+    @if (navMenuOpen()) {
+        <button
+            type="button"
+            class="app__nav-backdrop"
+            (click)="closeNavMenu()"
+            [attr.aria-label]="'app.menuClose' | translate"
+        ></button>
+    }
     <main class="app__main">
         <router-outlet />
     </main>

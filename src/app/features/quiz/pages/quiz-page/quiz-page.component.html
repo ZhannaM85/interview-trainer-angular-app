@@ -1,4 +1,8 @@
-<section class="quiz" aria-labelledby="quiz-title">
+<section
+    class="quiz"
+    [class.quiz--answer-footer]="phase() === 'answer'"
+    aria-labelledby="quiz-title"
+>
     <h1 id="quiz-title" class="quiz__title visually-hidden">{{ 'quiz.titleHidden' | translate }}</h1>
 
     @if (loadError()) {
@@ -50,7 +54,7 @@
             }
             @if (phase() === 'answer') {
                 <div class="quiz__phase card-phase">
-                    <app-interview-answer [question]="q" (rated)="onSelfRated($event)" />
+                    <app-interview-answer [question]="q" />
                 </div>
             }
             @if (phase() === 'feedback') {
@@ -67,5 +71,11 @@
                 }
             }
         </div>
+
+        @if (phase() === 'answer') {
+            <footer class="quiz__eval-footer">
+                <app-self-evaluation (rated)="onSelfRated($event)" />
+            </footer>
+        }
     }
 </section>

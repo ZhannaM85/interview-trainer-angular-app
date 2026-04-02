@@ -5,27 +5,50 @@
 }
 
 .app__header {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) auto;
-    grid-template-rows: auto auto;
-    align-items: center;
-    column-gap: 1rem;
-    row-gap: 0.5rem;
+    position: relative;
+    z-index: 100;
     padding: 0.65rem 1rem;
     border-bottom: 1px solid var(--it-border);
     background: var(--it-bg);
+    --app-header-h: 3.45rem;
+}
+
+.app__header-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    min-height: 2.15rem;
+}
+
+.app__header-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-shrink: 0;
 }
 
 .app__brand {
-    grid-column: 1;
-    grid-row: 1;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.45rem;
     min-width: 0;
-    justify-self: start;
     font-weight: 700;
     font-size: 0.95rem;
     letter-spacing: -0.02em;
     text-decoration: none;
     color: var(--it-text);
+}
+
+.app__brand-mark {
+    flex-shrink: 0;
+    width: 1.65rem;
+    height: 1.65rem;
+    display: block;
+}
+
+.app__brand-text {
+    line-height: 1.2;
 }
 
 .app__brand:focus-visible {
@@ -34,10 +57,37 @@
     border-radius: 0.25rem;
 }
 
-.app__locale {
-    grid-column: 2;
-    grid-row: 1;
-    justify-self: end;
+.app__menu-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 2.5rem;
+    height: 2.5rem;
+    padding: 0;
+    border-radius: 0.5rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    color: var(--it-text);
+    cursor: pointer;
+}
+
+.app__menu-btn:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.app__menu-icon {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    width: 1.15rem;
+}
+
+.app__menu-icon-bar {
+    display: block;
+    height: 2px;
+    border-radius: 1px;
+    background: currentColor;
 }
 
 .app__locale-select {
@@ -57,20 +107,31 @@
 }
 
 .app__nav {
-    grid-column: 1 / -1;
-    grid-row: 2;
+    display: none;
+    flex-direction: column;
+    gap: 0.2rem;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    margin: 0;
+    padding: 0.45rem 1rem 0.75rem;
+    border-bottom: 1px solid var(--it-border);
+    background: var(--it-bg);
+    box-shadow: 0 14px 28px rgba(0, 0, 0, 0.38);
+}
+
+.app__header--nav-open .app__nav {
     display: flex;
-    flex-wrap: wrap;
-    gap: 0.35rem;
 }
 
 .app__nav a {
-    padding: 0.35rem 0.6rem;
+    padding: 0.55rem 0.65rem;
     border-radius: 0.5rem;
     text-decoration: none;
     color: var(--it-text-muted);
     font-weight: 600;
-    font-size: 0.85rem;
+    font-size: 0.9rem;
 }
 
 .app__nav a:focus-visible {
@@ -81,6 +142,19 @@
 .app__link--active {
     color: var(--it-accent);
     background: var(--it-nav-active-bg);
+}
+
+.app__nav-backdrop {
+    position: fixed;
+    inset: 0;
+    top: var(--app-header-h);
+    z-index: 50;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    border: none;
+    background: rgba(0, 0, 0, 0.42);
+    cursor: pointer;
 }
 
 .app__main {
@@ -96,4 +170,61 @@
     border-top: 1px solid var(--it-border);
     font-size: 0.75rem;
     color: var(--it-text-muted);
+}
+
+@media (min-width: 768px) {
+    .app__menu-btn {
+        display: none;
+    }
+
+    .app__nav-backdrop {
+        display: none;
+    }
+
+    .app__header {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        grid-template-rows: auto auto;
+        align-items: center;
+        column-gap: 1rem;
+        row-gap: 0.5rem;
+    }
+
+    .app__header-top {
+        display: contents;
+    }
+
+    .app__brand {
+        grid-column: 1;
+        grid-row: 1;
+        justify-self: start;
+    }
+
+    .app__header-actions {
+        grid-column: 2;
+        grid-row: 1;
+        justify-self: end;
+    }
+
+    .app__nav {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        position: static;
+        grid-column: 1 / -1;
+        grid-row: 2;
+        padding: 0;
+        border: none;
+        box-shadow: none;
+        gap: 0.35rem;
+    }
+
+    .app__header--nav-open .app__nav {
+        display: flex;
+    }
+
+    .app__nav a {
+        padding: 0.35rem 0.6rem;
+        font-size: 0.85rem;
+    }
 }

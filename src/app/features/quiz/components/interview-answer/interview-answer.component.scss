@@ -14,8 +14,31 @@
     animation-delay: 0.52s;
 }
 
-.interview-answer__eval {
+.interview-answer__label--code {
+    margin-bottom: 0.5rem;
+}
+
+.interview-answer__code-wrap {
     width: 100%;
+}
+
+.interview-answer__code {
+    margin: 0;
+    padding: 1rem 1.1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--it-border);
+    background: rgba(15, 23, 42, 0.65);
+    overflow-x: auto;
+    font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    color: var(--it-text);
+
+    code {
+        font: inherit;
+        white-space: pre-wrap;
+        word-break: break-word;
+    }
 }
 
 @keyframes interview-reveal {

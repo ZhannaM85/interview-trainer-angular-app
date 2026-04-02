@@ -1,7 +1,9 @@
 {
     "app": {
         "brand": "Karkas",
-        "navAria": "Основная навигация"
+        "navAria": "Основная навигация",
+        "menuToggle": "Открыть меню",
+        "menuClose": "Закрыть меню"
     },
     "nav": {
         "about": "О проекте",
@@ -57,7 +59,8 @@
     "answerBlocks": {
         "weak": "Слабый ответ",
         "technical": "Технический ответ",
-        "interview": "Ответ для собеседования"
+        "interview": "Ответ для собеседования",
+        "codeExample": "Пример кода"
     },
     "interviewQuestion": {
         "cta": "Я ответил(а)"
