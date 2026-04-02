@@ -18,6 +18,21 @@
             <p class="quiz__hint">Nothing due right now — practicing from the full set.</p>
         }
 
+        @if (sessionProgressCounts(); as prog) {
+            <div class="quiz__progress-block">
+                <p class="quiz__progress" aria-live="polite">
+                    {{ prog.answered }} answered · {{ prog.remaining }} to go
+                </p>
+                <div class="quiz__progress-bar">
+                    <app-progress-bar
+                        [value]="prog.answered"
+                        [max]="prog.total"
+                        label="Session progress"
+                    />
+                </div>
+            </div>
+        }
+
         <div class="quiz__card-wrap" [attr.data-phase]="phase()">
             @if (phase() === 'question') {
                 <div class="quiz__phase card-phase">
@@ -42,7 +57,6 @@
                             [scoreDelta]="snap.scoreDelta"
                             [weakArea]="snap.weakArea"
                             [nextReviewLabel]="snap.nextReviewLabel"
-                            [sessionProgressPct]="sessionProgressPct()"
                             (next)="onNextQuestion()"
                         />
                     </div>

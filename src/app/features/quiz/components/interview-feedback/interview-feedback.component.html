@@ -3,12 +3,6 @@
 
     <p class="interview-fb__score">Score: +{{ scoreDelta() }}</p>
 
-    @if (sessionProgressPct() !== null) {
-        <div class="interview-fb__progress">
-            <app-progress-bar [value]="sessionProgressPct()!" [max]="100" label="Session progress" />
-        </div>
-    }
-
     <div class="interview-fb__section">
         <p class="interview-fb__label">Weak area</p>
         <p class="interview-fb__value">"{{ weakArea() }}"</p>
