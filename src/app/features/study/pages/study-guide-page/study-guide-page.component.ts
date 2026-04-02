@@ -9,7 +9,8 @@ import {
     signal
 } from '@angular/core';
 import { RouterLink } from '@angular/router';
-import { take } from 'rxjs';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { QuestionService } from '../../../../core/services/question.service';
 import { AnswerBlocksComponent } from '../../../../shared/components/answer-blocks/answer-blocks.component';
@@ -18,7 +19,7 @@ import { buildStudyGuideSections } from '../../study-guide-grouping';
 
 @Component({
     selector: 'app-study-guide-page',
-    imports: [AnswerBlocksComponent, RouterLink],
+    imports: [AnswerBlocksComponent, RouterLink, TranslatePipe],
     templateUrl: './study-guide-page.component.html',
     styleUrl: './study-guide-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -79,11 +80,12 @@ export class StudyGuidePageComponent {
 
         this.questionService
             .getQuestions()
-            .pipe(take(1))
+            .pipe(takeUntilDestroyed())
             .subscribe({
                 next: (all) => {
                     this.questions.set(all);
                     this.loading.set(false);
+                    this.loadError.set(false);
                 },
                 error: () => {
                     this.loadError.set(true);

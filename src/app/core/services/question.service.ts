@@ -1,19 +1,27 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
-import { Observable, map, shareReplay } from 'rxjs';
+import { TranslateService } from '@ngx-translate/core';
+import { Observable, combineLatest, distinctUntilChanged, map, merge, of, shareReplay } from 'rxjs';
 
 import type { Question, QuestionCategory, QuestionDifficulty } from '../../shared/models/question.model';
 
-/** Shape of `questions-updated.json` (interview-oriented fields). */
-interface QuestionUpdatedRow {
-    id: number;
-    topic: string;
-    subtopic: string;
+type LocaleCode = 'en' | 'ru';
+
+/** Per-locale strings inside `questions-bilingual.json`. */
+interface QuestionLocaleText {
     question: string;
     weakAnswer: string;
     technicalAnswer: string;
     interviewAnswer: string;
+}
+
+/** Shape of `questions-bilingual.json`. */
+interface QuestionBilingualRow {
+    id: number;
+    topic: string;
+    subtopic: string;
     difficulty: QuestionDifficulty;
+    text: Record<LocaleCode, QuestionLocaleText>;
 }
 
 @Injectable({
@@ -21,13 +29,24 @@ interface QuestionUpdatedRow {
 })
 export class QuestionService {
     private readonly http = inject(HttpClient);
+    private readonly translate = inject(TranslateService);
 
-    private readonly questions$: Observable<Question[]> = this.http
-        .get<QuestionUpdatedRow[]>('assets/data/questions-updated.json')
-        .pipe(
-            map((rows) => rows.map((row) => this.mapUpdatedRowToQuestion(row))),
-            shareReplay(1)
-        );
+    private readonly rawQuestions$ = this.http.get<QuestionBilingualRow[]>('assets/data/questions-bilingual.json').pipe(
+        shareReplay(1)
+    );
+
+    private readonly activeLocale$: Observable<LocaleCode> = merge(
+        of(this.resolveLocale(this.translate.currentLang)),
+        this.translate.onLangChange.pipe(map((e) => this.resolveLocale(e.lang)))
+    ).pipe(distinctUntilChanged());
+
+    private readonly questions$: Observable<Question[]> = combineLatest([
+        this.rawQuestions$,
+        this.activeLocale$
+    ]).pipe(
+        map(([rows, lang]) => rows.map((row) => this.mapRowToQuestion(row, lang))),
+        shareReplay(1)
+    );
 
     private queue: Question[] = [];
     private index = -1;
@@ -62,14 +81,24 @@ export class QuestionService {
         this.index = -1;
     }
 
-    private mapUpdatedRowToQuestion(row: QuestionUpdatedRow): Question {
+    /** Find a question by id from the latest mapped list (same order as `getQuestions()` emissions). */
+    getQuestionByIdFromList(questions: Question[], id: number): Question | null {
+        return questions.find((q) => q.id === id) ?? null;
+    }
+
+    private resolveLocale(lang: string | undefined): LocaleCode {
+        return lang === 'ru' ? 'ru' : 'en';
+    }
+
+    private mapRowToQuestion(row: QuestionBilingualRow, lang: LocaleCode): Question {
+        const t = row.text[lang] ?? row.text.en;
         return {
             id: row.id,
-            question: row.question,
-            answer: row.interviewAnswer,
-            weakAnswer: row.weakAnswer,
-            technicalAnswer: row.technicalAnswer,
-            interviewAnswer: row.interviewAnswer,
+            question: t.question,
+            answer: t.interviewAnswer,
+            weakAnswer: t.weakAnswer,
+            technicalAnswer: t.technicalAnswer,
+            interviewAnswer: t.interviewAnswer,
             subtopic: row.subtopic,
             category: this.mapTopicToCategory(row.topic, row.subtopic),
             difficulty: row.difficulty

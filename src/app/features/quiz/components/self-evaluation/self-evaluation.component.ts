@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import type { SelfRating } from '../../../../shared/models/self-rating.model';
 
 @Component({
     selector: 'app-self-evaluation',
+    imports: [TranslatePipe],
     templateUrl: './self-evaluation.component.html',
     styleUrl: './self-evaluation.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

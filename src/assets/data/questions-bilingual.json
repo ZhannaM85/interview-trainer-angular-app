@@ -1,0 +1,2402 @@
+[
+    {
+        "id": 1,
+        "topic": "javascript",
+        "subtopic": "this",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is 'this' in JavaScript?",
+                "weakAnswer": "It refers to the object… depends.",
+                "technicalAnswer": "'this' refers to the execution context of a function and depends on how it is called.",
+                "interviewAnswer": "'this' depends on how a function is called. In a method, it refers to the object. In a regular function, it is undefined in strict mode."
+            },
+            "ru": {
+                "question": "What is 'this' in JavaScript?",
+                "weakAnswer": "It refers to the object… depends.",
+                "technicalAnswer": "'this' refers to the execution context of a function and depends on how it is called.",
+                "interviewAnswer": "'this' depends on how a function is called. In a method, it refers to the object. In a regular function, it is undefined in strict mode."
+            }
+        }
+    },
+    {
+        "id": 2,
+        "topic": "javascript",
+        "subtopic": "closure",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is a closure?",
+                "weakAnswer": "Function inside another function.",
+                "technicalAnswer": "A closure is a function that retains access to its lexical scope.",
+                "interviewAnswer": "A closure is a function that remembers variables from its outer scope even after that scope has finished executing."
+            },
+            "ru": {
+                "question": "What is a closure?",
+                "weakAnswer": "Function inside another function.",
+                "technicalAnswer": "A closure is a function that retains access to its lexical scope.",
+                "interviewAnswer": "A closure is a function that remembers variables from its outer scope even after that scope has finished executing."
+            }
+        }
+    },
+    {
+        "id": 3,
+        "topic": "javascript",
+        "subtopic": "scope",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is scope in JavaScript?",
+                "weakAnswer": "Where variables exist.",
+                "technicalAnswer": "Scope defines the accessibility of variables in different parts of code.",
+                "interviewAnswer": "Scope determines where variables can be accessed in your code. JavaScript has global, function, and block scope."
+            },
+            "ru": {
+                "question": "What is scope in JavaScript?",
+                "weakAnswer": "Where variables exist.",
+                "technicalAnswer": "Scope defines the accessibility of variables in different parts of code.",
+                "interviewAnswer": "Scope determines where variables can be accessed in your code. JavaScript has global, function, and block scope."
+            }
+        }
+    },
+    {
+        "id": 4,
+        "topic": "javascript",
+        "subtopic": "variables",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "Difference between var, let, and const?",
+                "weakAnswer": "They are variables.",
+                "technicalAnswer": "var is function-scoped, let and const are block-scoped.",
+                "interviewAnswer": "var is function-scoped, while let and const are block-scoped. const cannot be reassigned, while let can."
+            },
+            "ru": {
+                "question": "Difference between var, let, and const?",
+                "weakAnswer": "They are variables.",
+                "technicalAnswer": "var is function-scoped, let and const are block-scoped.",
+                "interviewAnswer": "var is function-scoped, while let and const are block-scoped. const cannot be reassigned, while let can."
+            }
+        }
+    },
+    {
+        "id": 5,
+        "topic": "javascript",
+        "subtopic": "functions",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is bind()?",
+                "weakAnswer": "It binds this.",
+                "technicalAnswer": "bind creates a new function with a fixed 'this' value.",
+                "interviewAnswer": "bind returns a new function with 'this' permanently set to a specific value, allowing you to control execution context."
+            },
+            "ru": {
+                "question": "What is bind()?",
+                "weakAnswer": "It binds this.",
+                "technicalAnswer": "bind creates a new function with a fixed 'this' value.",
+                "interviewAnswer": "bind returns a new function with 'this' permanently set to a specific value, allowing you to control execution context."
+            }
+        }
+    },
+    {
+        "id": 6,
+        "topic": "javascript",
+        "subtopic": "functions",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "Difference between call, apply, and bind?",
+                "weakAnswer": "They are similar.",
+                "technicalAnswer": "call and apply invoke functions immediately, bind returns a new function.",
+                "interviewAnswer": "call and apply execute the function immediately, with call using arguments individually and apply using an array. bind returns a new function without executing it."
+            },
+            "ru": {
+                "question": "Difference between call, apply, and bind?",
+                "weakAnswer": "They are similar.",
+                "technicalAnswer": "call and apply invoke functions immediately, bind returns a new function.",
+                "interviewAnswer": "call and apply execute the function immediately, with call using arguments individually and apply using an array. bind returns a new function without executing it."
+            }
+        }
+    },
+    {
+        "id": 7,
+        "topic": "javascript",
+        "subtopic": "arrays",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "Difference between map and forEach?",
+                "weakAnswer": "They loop.",
+                "technicalAnswer": "map returns a new array, forEach does not.",
+                "interviewAnswer": "map returns a new transformed array, while forEach executes a function on each element without returning a new array."
+            },
+            "ru": {
+                "question": "Difference between map and forEach?",
+                "weakAnswer": "They loop.",
+                "technicalAnswer": "map returns a new array, forEach does not.",
+                "interviewAnswer": "map returns a new transformed array, while forEach executes a function on each element without returning a new array."
+            }
+        }
+    },
+    {
+        "id": 8,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is a Promise?",
+                "weakAnswer": "Async thing.",
+                "technicalAnswer": "A Promise represents the result of an asynchronous operation.",
+                "interviewAnswer": "A Promise represents the result of an asynchronous operation and can be pending, fulfilled, or rejected."
+            },
+            "ru": {
+                "question": "What is a Promise?",
+                "weakAnswer": "Async thing.",
+                "technicalAnswer": "A Promise represents the result of an asynchronous operation.",
+                "interviewAnswer": "A Promise represents the result of an asynchronous operation and can be pending, fulfilled, or rejected."
+            }
+        }
+    },
+    {
+        "id": 9,
+        "topic": "javascript",
+        "subtopic": "event-loop",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is the event loop?",
+                "weakAnswer": "Handles async.",
+                "technicalAnswer": "The event loop manages execution of asynchronous callbacks.",
+                "interviewAnswer": "The event loop processes asynchronous callbacks by executing them after the call stack is empty."
+            },
+            "ru": {
+                "question": "What is the event loop?",
+                "weakAnswer": "Handles async.",
+                "technicalAnswer": "The event loop manages execution of asynchronous callbacks.",
+                "interviewAnswer": "The event loop processes asynchronous callbacks by executing them after the call stack is empty."
+            }
+        }
+    },
+    {
+        "id": 10,
+        "topic": "javascript",
+        "subtopic": "hoisting",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is hoisting?",
+                "weakAnswer": "Variables move up.",
+                "technicalAnswer": "Hoisting is JavaScript's behavior of moving declarations to the top of scope.",
+                "interviewAnswer": "Hoisting is JavaScript's behavior where variable and function declarations are moved to the top of their scope before execution."
+            },
+            "ru": {
+                "question": "What is hoisting?",
+                "weakAnswer": "Variables move up.",
+                "technicalAnswer": "Hoisting is JavaScript's behavior of moving declarations to the top of scope.",
+                "interviewAnswer": "Hoisting is JavaScript's behavior where variable and function declarations are moved to the top of their scope before execution."
+            }
+        }
+    },
+    {
+        "id": 11,
+        "topic": "angular",
+        "subtopic": "change-detection",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is change detection in Angular?",
+                "weakAnswer": "Updates UI.",
+                "technicalAnswer": "It is Angular's mechanism to detect changes in data and update the DOM.",
+                "interviewAnswer": "Change detection is Angular’s process of checking component bindings and updating the DOM when application state changes."
+            },
+            "ru": {
+                "question": "What is change detection in Angular?",
+                "weakAnswer": "Updates UI.",
+                "technicalAnswer": "It is Angular's mechanism to detect changes in data and update the DOM.",
+                "interviewAnswer": "Change detection is Angular’s process of checking component bindings and updating the DOM when application state changes."
+            }
+        }
+    },
+    {
+        "id": 12,
+        "topic": "angular",
+        "subtopic": "lifecycle",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What are lifecycle hooks?",
+                "weakAnswer": "Functions in Angular.",
+                "technicalAnswer": "Lifecycle hooks are methods called during component lifecycle stages.",
+                "interviewAnswer": "Lifecycle hooks are methods Angular calls at different stages of a component’s lifecycle, like initialization and destruction."
+            },
+            "ru": {
+                "question": "What are lifecycle hooks?",
+                "weakAnswer": "Functions in Angular.",
+                "technicalAnswer": "Lifecycle hooks are methods called during component lifecycle stages.",
+                "interviewAnswer": "Lifecycle hooks are methods Angular calls at different stages of a component’s lifecycle, like initialization and destruction."
+            }
+        }
+    },
+    {
+        "id": 13,
+        "topic": "angular",
+        "subtopic": "di",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is dependency injection?",
+                "weakAnswer": "Injecting stuff.",
+                "technicalAnswer": "A design pattern where dependencies are provided externally.",
+                "interviewAnswer": "Dependency injection is a pattern where dependencies are provided to a class instead of being created inside it."
+            },
+            "ru": {
+                "question": "What is dependency injection?",
+                "weakAnswer": "Injecting stuff.",
+                "technicalAnswer": "A design pattern where dependencies are provided externally.",
+                "interviewAnswer": "Dependency injection is a pattern where dependencies are provided to a class instead of being created inside it."
+            }
+        }
+    },
+    {
+        "id": 14,
+        "topic": "angular",
+        "subtopic": "rxjs",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is RxJS?",
+                "weakAnswer": "Library.",
+                "technicalAnswer": "A library for reactive programming using Observables.",
+                "interviewAnswer": "RxJS is a library for reactive programming using Observables to manage asynchronous data streams."
+            },
+            "ru": {
+                "question": "What is RxJS?",
+                "weakAnswer": "Library.",
+                "technicalAnswer": "A library for reactive programming using Observables.",
+                "interviewAnswer": "RxJS is a library for reactive programming using Observables to manage asynchronous data streams."
+            }
+        }
+    },
+    {
+        "id": 15,
+        "topic": "angular",
+        "subtopic": "components",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is a component in Angular?",
+                "weakAnswer": "UI part.",
+                "technicalAnswer": "A component controls a part of the UI.",
+                "interviewAnswer": "A component is a building block of Angular applications that controls a part of the UI using a template and logic."
+            },
+            "ru": {
+                "question": "What is a component in Angular?",
+                "weakAnswer": "UI part.",
+                "technicalAnswer": "A component controls a part of the UI.",
+                "interviewAnswer": "A component is a building block of Angular applications that controls a part of the UI using a template and logic."
+            }
+        }
+    },
+    {
+        "id": 16,
+        "topic": "angular",
+        "subtopic": "modules",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is NgModule?",
+                "weakAnswer": "Module.",
+                "technicalAnswer": "A class that groups components and services.",
+                "interviewAnswer": "NgModule is a class that organizes components, directives, pipes, and services into cohesive blocks."
+            },
+            "ru": {
+                "question": "What is NgModule?",
+                "weakAnswer": "Module.",
+                "technicalAnswer": "A class that groups components and services.",
+                "interviewAnswer": "NgModule is a class that organizes components, directives, pipes, and services into cohesive blocks."
+            }
+        }
+    },
+    {
+        "id": 17,
+        "topic": "angular",
+        "subtopic": "routing",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is Angular routing?",
+                "weakAnswer": "Navigation.",
+                "technicalAnswer": "Routing enables navigation between views.",
+                "interviewAnswer": "Angular routing allows navigation between different views in a single-page application using routes."
+            },
+            "ru": {
+                "question": "What is Angular routing?",
+                "weakAnswer": "Navigation.",
+                "technicalAnswer": "Routing enables navigation between views.",
+                "interviewAnswer": "Angular routing allows navigation between different views in a single-page application using routes."
+            }
+        }
+    },
+    {
+        "id": 18,
+        "topic": "angular",
+        "subtopic": "pipes",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is a pipe?",
+                "weakAnswer": "Transforms data.",
+                "technicalAnswer": "A pipe transforms data in templates.",
+                "interviewAnswer": "A pipe is used to transform data in Angular templates, such as formatting dates or numbers."
+            },
+            "ru": {
+                "question": "What is a pipe?",
+                "weakAnswer": "Transforms data.",
+                "technicalAnswer": "A pipe transforms data in templates.",
+                "interviewAnswer": "A pipe is used to transform data in Angular templates, such as formatting dates or numbers."
+            }
+        }
+    },
+    {
+        "id": 19,
+        "topic": "javascript",
+        "subtopic": "equality",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "Difference between == and ===?",
+                "weakAnswer": "Same but different.",
+                "technicalAnswer": "== compares with type coercion, === without.",
+                "interviewAnswer": "== compares values with type coercion, while === compares both value and type strictly."
+            },
+            "ru": {
+                "question": "Difference between == and ===?",
+                "weakAnswer": "Same but different.",
+                "technicalAnswer": "== compares with type coercion, === without.",
+                "interviewAnswer": "== compares values with type coercion, while === compares both value and type strictly."
+            }
+        }
+    },
+    {
+        "id": 20,
+        "topic": "javascript",
+        "subtopic": "arrow-functions",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is an arrow function?",
+                "weakAnswer": "Short function.",
+                "technicalAnswer": "A shorter syntax for functions without its own this.",
+                "interviewAnswer": "Arrow functions are a shorter syntax for functions and do not have their own 'this', inheriting it from the parent scope."
+            },
+            "ru": {
+                "question": "What is an arrow function?",
+                "weakAnswer": "Short function.",
+                "technicalAnswer": "A shorter syntax for functions without its own this.",
+                "interviewAnswer": "Arrow functions are a shorter syntax for functions and do not have their own 'this', inheriting it from the parent scope."
+            }
+        }
+    },
+    {
+        "id": 21,
+        "topic": "angular",
+        "subtopic": "services",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is a service in Angular?",
+                "weakAnswer": "Helper.",
+                "technicalAnswer": "A class for business logic and data sharing.",
+                "interviewAnswer": "A service is a class used to share data and business logic across components using dependency injection."
+            },
+            "ru": {
+                "question": "What is a service in Angular?",
+                "weakAnswer": "Helper.",
+                "technicalAnswer": "A class for business logic and data sharing.",
+                "interviewAnswer": "A service is a class used to share data and business logic across components using dependency injection."
+            }
+        }
+    },
+    {
+        "id": 22,
+        "topic": "angular",
+        "subtopic": "observables",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is an Observable?",
+                "weakAnswer": "Async thing.",
+                "technicalAnswer": "A stream of data over time.",
+                "interviewAnswer": "An Observable is a stream of data that can emit multiple values over time and can be subscribed to."
+            },
+            "ru": {
+                "question": "What is an Observable?",
+                "weakAnswer": "Async thing.",
+                "technicalAnswer": "A stream of data over time.",
+                "interviewAnswer": "An Observable is a stream of data that can emit multiple values over time and can be subscribed to."
+            }
+        }
+    },
+    {
+        "id": 23,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is async/await?",
+                "weakAnswer": "Better promises.",
+                "technicalAnswer": "Syntax for handling Promises.",
+                "interviewAnswer": "async/await is syntax that makes working with Promises easier by allowing asynchronous code to look synchronous."
+            },
+            "ru": {
+                "question": "What is async/await?",
+                "weakAnswer": "Better promises.",
+                "technicalAnswer": "Syntax for handling Promises.",
+                "interviewAnswer": "async/await is syntax that makes working with Promises easier by allowing asynchronous code to look synchronous."
+            }
+        }
+    },
+    {
+        "id": 24,
+        "topic": "javascript",
+        "subtopic": "memory",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is garbage collection?",
+                "weakAnswer": "Deletes memory.",
+                "technicalAnswer": "Automatic memory management.",
+                "interviewAnswer": "Garbage collection is the automatic process of freeing memory that is no longer in use."
+            },
+            "ru": {
+                "question": "What is garbage collection?",
+                "weakAnswer": "Deletes memory.",
+                "technicalAnswer": "Automatic memory management.",
+                "interviewAnswer": "Garbage collection is the automatic process of freeing memory that is no longer in use."
+            }
+        }
+    },
+    {
+        "id": 25,
+        "topic": "angular",
+        "subtopic": "forms",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "Difference between template-driven and reactive forms?",
+                "weakAnswer": "Two types.",
+                "technicalAnswer": "Template-driven uses templates, reactive uses code.",
+                "interviewAnswer": "Template-driven forms rely on templates, while reactive forms are defined in code and provide more control and scalability."
+            },
+            "ru": {
+                "question": "Difference between template-driven and reactive forms?",
+                "weakAnswer": "Two types.",
+                "technicalAnswer": "Template-driven uses templates, reactive uses code.",
+                "interviewAnswer": "Template-driven forms rely on templates, while reactive forms are defined in code and provide more control and scalability."
+            }
+        }
+    },
+    {
+        "id": 26,
+        "topic": "angular",
+        "subtopic": "change-detection",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is OnPush change detection?",
+                "weakAnswer": "Faster.",
+                "technicalAnswer": "Change detection runs only on input changes.",
+                "interviewAnswer": "OnPush strategy runs change detection only when input references change, improving performance."
+            },
+            "ru": {
+                "question": "What is OnPush change detection?",
+                "weakAnswer": "Faster.",
+                "technicalAnswer": "Change detection runs only on input changes.",
+                "interviewAnswer": "OnPush strategy runs change detection only when input references change, improving performance."
+            }
+        }
+    },
+    {
+        "id": 27,
+        "topic": "javascript",
+        "subtopic": "prototype",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is prototype?",
+                "weakAnswer": "Inheritance.",
+                "technicalAnswer": "Objects inherit from prototype.",
+                "interviewAnswer": "Prototype is the mechanism by which JavaScript objects inherit properties and methods from other objects."
+            },
+            "ru": {
+                "question": "What is prototype?",
+                "weakAnswer": "Inheritance.",
+                "technicalAnswer": "Objects inherit from prototype.",
+                "interviewAnswer": "Prototype is the mechanism by which JavaScript objects inherit properties and methods from other objects."
+            }
+        }
+    },
+    {
+        "id": 28,
+        "topic": "javascript",
+        "subtopic": "execution-context",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is execution context?",
+                "weakAnswer": "Environment.",
+                "technicalAnswer": "Environment where code runs.",
+                "interviewAnswer": "Execution context is the environment in which JavaScript code runs, including variables, scope, and 'this'."
+            },
+            "ru": {
+                "question": "What is execution context?",
+                "weakAnswer": "Environment.",
+                "technicalAnswer": "Environment where code runs.",
+                "interviewAnswer": "Execution context is the environment in which JavaScript code runs, including variables, scope, and 'this'."
+            }
+        }
+    },
+    {
+        "id": 29,
+        "topic": "angular",
+        "subtopic": "directives",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is a directive?",
+                "weakAnswer": "Changes DOM.",
+                "technicalAnswer": "Adds behavior to DOM elements.",
+                "interviewAnswer": "A directive is used to modify the behavior or appearance of DOM elements in Angular."
+            },
+            "ru": {
+                "question": "What is a directive?",
+                "weakAnswer": "Changes DOM.",
+                "technicalAnswer": "Adds behavior to DOM elements.",
+                "interviewAnswer": "A directive is used to modify the behavior or appearance of DOM elements in Angular."
+            }
+        }
+    },
+    {
+        "id": 30,
+        "topic": "angular",
+        "subtopic": "directives",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "Difference between structural and attribute directives?",
+                "weakAnswer": "Different types.",
+                "technicalAnswer": "Structural changes DOM, attribute modifies appearance.",
+                "interviewAnswer": "Structural directives change the DOM structure, like *ngIf, while attribute directives modify appearance or behavior, like ngClass."
+            },
+            "ru": {
+                "question": "Difference between structural and attribute directives?",
+                "weakAnswer": "Different types.",
+                "technicalAnswer": "Structural changes DOM, attribute modifies appearance.",
+                "interviewAnswer": "Structural directives change the DOM structure, like *ngIf, while attribute directives modify appearance or behavior, like ngClass."
+            }
+        }
+    },
+    {
+        "id": 31,
+        "topic": "javascript",
+        "subtopic": "types",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What are primitive types?",
+                "weakAnswer": "Basic types.",
+                "technicalAnswer": "Basic immutable data types.",
+                "interviewAnswer": "Primitive types are basic immutable values like string, number, boolean, null, undefined, symbol, and bigint."
+            },
+            "ru": {
+                "question": "What are primitive types?",
+                "weakAnswer": "Basic types.",
+                "technicalAnswer": "Basic immutable data types.",
+                "interviewAnswer": "Primitive types are basic immutable values like string, number, boolean, null, undefined, symbol, and bigint."
+            }
+        }
+    },
+    {
+        "id": 32,
+        "topic": "javascript",
+        "subtopic": "types",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is type coercion?",
+                "weakAnswer": "Type conversion.",
+                "technicalAnswer": "Automatic type conversion.",
+                "interviewAnswer": "Type coercion is JavaScript’s automatic conversion of values from one type to another during operations."
+            },
+            "ru": {
+                "question": "What is type coercion?",
+                "weakAnswer": "Type conversion.",
+                "technicalAnswer": "Automatic type conversion.",
+                "interviewAnswer": "Type coercion is JavaScript’s automatic conversion of values from one type to another during operations."
+            }
+        }
+    },
+    {
+        "id": 33,
+        "topic": "angular",
+        "subtopic": "zones",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What is Zone.js?",
+                "weakAnswer": "Library.",
+                "technicalAnswer": "Tracks async operations.",
+                "interviewAnswer": "Zone.js patches async APIs to track operations and trigger Angular change detection."
+            },
+            "ru": {
+                "question": "What is Zone.js?",
+                "weakAnswer": "Library.",
+                "technicalAnswer": "Tracks async operations.",
+                "interviewAnswer": "Zone.js patches async APIs to track operations and trigger Angular change detection."
+            }
+        }
+    },
+    {
+        "id": 34,
+        "topic": "angular",
+        "subtopic": "http",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is HttpClient?",
+                "weakAnswer": "API calls.",
+                "technicalAnswer": "Service for HTTP requests.",
+                "interviewAnswer": "HttpClient is Angular’s service for making HTTP requests and handling API communication."
+            },
+            "ru": {
+                "question": "What is HttpClient?",
+                "weakAnswer": "API calls.",
+                "technicalAnswer": "Service for HTTP requests.",
+                "interviewAnswer": "HttpClient is Angular’s service for making HTTP requests and handling API communication."
+            }
+        }
+    },
+    {
+        "id": 35,
+        "topic": "javascript",
+        "subtopic": "functions",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is a higher-order function?",
+                "weakAnswer": "Function function.",
+                "technicalAnswer": "Function that takes or returns functions.",
+                "interviewAnswer": "A higher-order function is a function that takes another function as an argument or returns a function."
+            },
+            "ru": {
+                "question": "What is a higher-order function?",
+                "weakAnswer": "Function function.",
+                "technicalAnswer": "Function that takes or returns functions.",
+                "interviewAnswer": "A higher-order function is a function that takes another function as an argument or returns a function."
+            }
+        }
+    },
+    {
+        "id": 36,
+        "topic": "javascript",
+        "subtopic": "immutability",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is immutability?",
+                "weakAnswer": "Cannot change.",
+                "technicalAnswer": "Data cannot be modified after creation.",
+                "interviewAnswer": "Immutability means data cannot be changed after it is created, and instead new data is created when updates are needed."
+            },
+            "ru": {
+                "question": "What is immutability?",
+                "weakAnswer": "Cannot change.",
+                "technicalAnswer": "Data cannot be modified after creation.",
+                "interviewAnswer": "Immutability means data cannot be changed after it is created, and instead new data is created when updates are needed."
+            }
+        }
+    },
+    {
+        "id": 37,
+        "topic": "angular",
+        "subtopic": "performance",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "How to improve Angular performance?",
+                "weakAnswer": "Optimize.",
+                "technicalAnswer": "Use OnPush, trackBy, lazy loading.",
+                "interviewAnswer": "Angular performance can be improved using OnPush change detection, trackBy in ngFor, lazy loading modules, and avoiding unnecessary subscriptions."
+            },
+            "ru": {
+                "question": "How to improve Angular performance?",
+                "weakAnswer": "Optimize.",
+                "technicalAnswer": "Use OnPush, trackBy, lazy loading.",
+                "interviewAnswer": "Angular performance can be improved using OnPush change detection, trackBy in ngFor, lazy loading modules, and avoiding unnecessary subscriptions."
+            }
+        }
+    },
+    {
+        "id": 38,
+        "topic": "javascript",
+        "subtopic": "debounce",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is debouncing?",
+                "weakAnswer": "Delay.",
+                "technicalAnswer": "Delays execution until inactivity.",
+                "interviewAnswer": "Debouncing delays a function execution until after a certain period of inactivity, useful for optimizing events like input typing."
+            },
+            "ru": {
+                "question": "What is debouncing?",
+                "weakAnswer": "Delay.",
+                "technicalAnswer": "Delays execution until inactivity.",
+                "interviewAnswer": "Debouncing delays a function execution until after a certain period of inactivity, useful for optimizing events like input typing."
+            }
+        }
+    },
+    {
+        "id": 39,
+        "topic": "javascript",
+        "subtopic": "throttle",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is throttling?",
+                "weakAnswer": "Limit.",
+                "technicalAnswer": "Limits function calls over time.",
+                "interviewAnswer": "Throttling limits how often a function can be executed within a specified time interval."
+            },
+            "ru": {
+                "question": "What is throttling?",
+                "weakAnswer": "Limit.",
+                "technicalAnswer": "Limits function calls over time.",
+                "interviewAnswer": "Throttling limits how often a function can be executed within a specified time interval."
+            }
+        }
+    },
+    {
+        "id": 40,
+        "topic": "angular",
+        "subtopic": "architecture",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is a smart vs dumb component?",
+                "weakAnswer": "Different components.",
+                "technicalAnswer": "Smart handles logic, dumb handles UI.",
+                "interviewAnswer": "Smart components manage state and logic, while dumb components focus on presentation and receive data via inputs."
+            },
+            "ru": {
+                "question": "What is a smart vs dumb component?",
+                "weakAnswer": "Different components.",
+                "technicalAnswer": "Smart handles logic, dumb handles UI.",
+                "interviewAnswer": "Smart components manage state and logic, while dumb components focus on presentation and receive data via inputs."
+            }
+        }
+    },
+    {
+        "id": 41,
+        "topic": "javascript",
+        "subtopic": "objects",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is object destructuring?",
+                "weakAnswer": "Getting values.",
+                "technicalAnswer": "Extracting properties from objects into variables.",
+                "interviewAnswer": "Object destructuring allows you to extract properties from an object into variables using a concise syntax."
+            },
+            "ru": {
+                "question": "What is object destructuring?",
+                "weakAnswer": "Getting values.",
+                "technicalAnswer": "Extracting properties from objects into variables.",
+                "interviewAnswer": "Object destructuring allows you to extract properties from an object into variables using a concise syntax."
+            }
+        }
+    },
+    {
+        "id": 42,
+        "topic": "javascript",
+        "subtopic": "arrays",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is array destructuring?",
+                "weakAnswer": "Same as object.",
+                "technicalAnswer": "Extracting values from arrays into variables.",
+                "interviewAnswer": "Array destructuring allows you to assign array elements to variables based on their position."
+            },
+            "ru": {
+                "question": "What is array destructuring?",
+                "weakAnswer": "Same as object.",
+                "technicalAnswer": "Extracting values from arrays into variables.",
+                "interviewAnswer": "Array destructuring allows you to assign array elements to variables based on their position."
+            }
+        }
+    },
+    {
+        "id": 43,
+        "topic": "javascript",
+        "subtopic": "spread",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is the spread operator?",
+                "weakAnswer": "Three dots.",
+                "technicalAnswer": "Expands iterable elements.",
+                "interviewAnswer": "The spread operator (...) expands elements of an iterable like arrays or objects into individual elements."
+            },
+            "ru": {
+                "question": "What is the spread operator?",
+                "weakAnswer": "Three dots.",
+                "technicalAnswer": "Expands iterable elements.",
+                "interviewAnswer": "The spread operator (...) expands elements of an iterable like arrays or objects into individual elements."
+            }
+        }
+    },
+    {
+        "id": 44,
+        "topic": "javascript",
+        "subtopic": "rest",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is the rest operator?",
+                "weakAnswer": "Also dots.",
+                "technicalAnswer": "Collects arguments into an array.",
+                "interviewAnswer": "The rest operator (...) collects multiple values into a single array, commonly used in function parameters."
+            },
+            "ru": {
+                "question": "What is the rest operator?",
+                "weakAnswer": "Also dots.",
+                "technicalAnswer": "Collects arguments into an array.",
+                "interviewAnswer": "The rest operator (...) collects multiple values into a single array, commonly used in function parameters."
+            }
+        }
+    },
+    {
+        "id": 45,
+        "topic": "javascript",
+        "subtopic": "modules",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What are ES modules?",
+                "weakAnswer": "Imports.",
+                "technicalAnswer": "JavaScript module system using import/export.",
+                "interviewAnswer": "ES modules allow you to split code into reusable files using import and export statements."
+            },
+            "ru": {
+                "question": "What are ES modules?",
+                "weakAnswer": "Imports.",
+                "technicalAnswer": "JavaScript module system using import/export.",
+                "interviewAnswer": "ES modules allow you to split code into reusable files using import and export statements."
+            }
+        }
+    },
+    {
+        "id": 46,
+        "topic": "javascript",
+        "subtopic": "strict-mode",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is strict mode?",
+                "weakAnswer": "Safer mode.",
+                "technicalAnswer": "A restricted variant of JavaScript.",
+                "interviewAnswer": "Strict mode is a way to opt into a stricter version of JavaScript that prevents common mistakes and unsafe actions."
+            },
+            "ru": {
+                "question": "What is strict mode?",
+                "weakAnswer": "Safer mode.",
+                "technicalAnswer": "A restricted variant of JavaScript.",
+                "interviewAnswer": "Strict mode is a way to opt into a stricter version of JavaScript that prevents common mistakes and unsafe actions."
+            }
+        }
+    },
+    {
+        "id": 47,
+        "topic": "javascript",
+        "subtopic": "json",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is JSON?",
+                "weakAnswer": "Data.",
+                "technicalAnswer": "Text format for data exchange.",
+                "interviewAnswer": "JSON is a lightweight data format used for storing and transferring data, often between client and server."
+            },
+            "ru": {
+                "question": "What is JSON?",
+                "weakAnswer": "Data.",
+                "technicalAnswer": "Text format for data exchange.",
+                "interviewAnswer": "JSON is a lightweight data format used for storing and transferring data, often between client and server."
+            }
+        }
+    },
+    {
+        "id": 48,
+        "topic": "javascript",
+        "subtopic": "deep-copy",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "Difference between shallow copy and deep copy?",
+                "weakAnswer": "Copy types.",
+                "technicalAnswer": "Shallow copies references, deep copies values.",
+                "interviewAnswer": "A shallow copy copies references to nested objects, while a deep copy creates completely independent copies of all nested data."
+            },
+            "ru": {
+                "question": "Difference between shallow copy and deep copy?",
+                "weakAnswer": "Copy types.",
+                "technicalAnswer": "Shallow copies references, deep copies values.",
+                "interviewAnswer": "A shallow copy copies references to nested objects, while a deep copy creates completely independent copies of all nested data."
+            }
+        }
+    },
+    {
+        "id": 49,
+        "topic": "javascript",
+        "subtopic": "set-map",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is the difference between Map and Object?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "Map allows any key type.",
+                "interviewAnswer": "Map allows keys of any type and preserves insertion order, while Object keys are strings or symbols."
+            },
+            "ru": {
+                "question": "What is the difference between Map and Object?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "Map allows any key type.",
+                "interviewAnswer": "Map allows keys of any type and preserves insertion order, while Object keys are strings or symbols."
+            }
+        }
+    },
+    {
+        "id": 50,
+        "topic": "javascript",
+        "subtopic": "set",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is a Set?",
+                "weakAnswer": "Collection.",
+                "technicalAnswer": "Collection of unique values.",
+                "interviewAnswer": "A Set is a collection of unique values where duplicates are automatically removed."
+            },
+            "ru": {
+                "question": "What is a Set?",
+                "weakAnswer": "Collection.",
+                "technicalAnswer": "Collection of unique values.",
+                "interviewAnswer": "A Set is a collection of unique values where duplicates are automatically removed."
+            }
+        }
+    },
+    {
+        "id": 51,
+        "topic": "angular",
+        "subtopic": "signals",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What are Angular signals?",
+                "weakAnswer": "New feature.",
+                "technicalAnswer": "Reactive state management primitive.",
+                "interviewAnswer": "Angular signals are a reactive primitive used to track state changes and automatically update the UI."
+            },
+            "ru": {
+                "question": "What are Angular signals?",
+                "weakAnswer": "New feature.",
+                "technicalAnswer": "Reactive state management primitive.",
+                "interviewAnswer": "Angular signals are a reactive primitive used to track state changes and automatically update the UI."
+            }
+        }
+    },
+    {
+        "id": 52,
+        "topic": "angular",
+        "subtopic": "signals",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "How are signals different from Observables?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "Signals are synchronous, Observables are async streams.",
+                "interviewAnswer": "Signals are synchronous state containers, while Observables handle asynchronous streams of data."
+            },
+            "ru": {
+                "question": "How are signals different from Observables?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "Signals are synchronous, Observables are async streams.",
+                "interviewAnswer": "Signals are synchronous state containers, while Observables handle asynchronous streams of data."
+            }
+        }
+    },
+    {
+        "id": 53,
+        "topic": "angular",
+        "subtopic": "standalone",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What are standalone components?",
+                "weakAnswer": "Components.",
+                "technicalAnswer": "Components without NgModules.",
+                "interviewAnswer": "Standalone components are Angular components that don’t require NgModules and can be used independently."
+            },
+            "ru": {
+                "question": "What are standalone components?",
+                "weakAnswer": "Components.",
+                "technicalAnswer": "Components without NgModules.",
+                "interviewAnswer": "Standalone components are Angular components that don’t require NgModules and can be used independently."
+            }
+        }
+    },
+    {
+        "id": 54,
+        "topic": "angular",
+        "subtopic": "injector",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is an injector?",
+                "weakAnswer": "DI thing.",
+                "technicalAnswer": "Responsible for creating dependencies.",
+                "interviewAnswer": "An injector is responsible for creating and providing dependencies in Angular’s dependency injection system."
+            },
+            "ru": {
+                "question": "What is an injector?",
+                "weakAnswer": "DI thing.",
+                "technicalAnswer": "Responsible for creating dependencies.",
+                "interviewAnswer": "An injector is responsible for creating and providing dependencies in Angular’s dependency injection system."
+            }
+        }
+    },
+    {
+        "id": 55,
+        "topic": "angular",
+        "subtopic": "providers",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is a provider?",
+                "weakAnswer": "Service.",
+                "technicalAnswer": "Defines how dependency is created.",
+                "interviewAnswer": "A provider tells Angular how to create or supply a dependency in the dependency injection system."
+            },
+            "ru": {
+                "question": "What is a provider?",
+                "weakAnswer": "Service.",
+                "technicalAnswer": "Defines how dependency is created.",
+                "interviewAnswer": "A provider tells Angular how to create or supply a dependency in the dependency injection system."
+            }
+        }
+    },
+    {
+        "id": 56,
+        "topic": "angular",
+        "subtopic": "lazy-loading",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is lazy loading?",
+                "weakAnswer": "Load later.",
+                "technicalAnswer": "Modules loaded on demand.",
+                "interviewAnswer": "Lazy loading is a technique where modules are loaded only when needed, improving initial load performance."
+            },
+            "ru": {
+                "question": "What is lazy loading?",
+                "weakAnswer": "Load later.",
+                "technicalAnswer": "Modules loaded on demand.",
+                "interviewAnswer": "Lazy loading is a technique where modules are loaded only when needed, improving initial load performance."
+            }
+        }
+    },
+    {
+        "id": 57,
+        "topic": "angular",
+        "subtopic": "trackby",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is trackBy in ngFor?",
+                "weakAnswer": "Optimization.",
+                "technicalAnswer": "Tracks items by identity.",
+                "interviewAnswer": "trackBy helps Angular track list items by a unique identifier, improving performance during DOM updates."
+            },
+            "ru": {
+                "question": "What is trackBy in ngFor?",
+                "weakAnswer": "Optimization.",
+                "technicalAnswer": "Tracks items by identity.",
+                "interviewAnswer": "trackBy helps Angular track list items by a unique identifier, improving performance during DOM updates."
+            }
+        }
+    },
+    {
+        "id": 58,
+        "topic": "angular",
+        "subtopic": "pipes",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "Difference between pure and impure pipes?",
+                "weakAnswer": "Types.",
+                "technicalAnswer": "Pure pipes run on input change only.",
+                "interviewAnswer": "Pure pipes run only when input changes, while impure pipes run on every change detection cycle."
+            },
+            "ru": {
+                "question": "Difference between pure and impure pipes?",
+                "weakAnswer": "Types.",
+                "technicalAnswer": "Pure pipes run on input change only.",
+                "interviewAnswer": "Pure pipes run only when input changes, while impure pipes run on every change detection cycle."
+            }
+        }
+    },
+    {
+        "id": 59,
+        "topic": "angular",
+        "subtopic": "forms",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is FormControl?",
+                "weakAnswer": "Form.",
+                "technicalAnswer": "Tracks value and validation.",
+                "interviewAnswer": "FormControl is a class that tracks the value and validation status of an individual form field."
+            },
+            "ru": {
+                "question": "What is FormControl?",
+                "weakAnswer": "Form.",
+                "technicalAnswer": "Tracks value and validation.",
+                "interviewAnswer": "FormControl is a class that tracks the value and validation status of an individual form field."
+            }
+        }
+    },
+    {
+        "id": 60,
+        "topic": "angular",
+        "subtopic": "forms",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is FormGroup?",
+                "weakAnswer": "Group.",
+                "technicalAnswer": "Collection of controls.",
+                "interviewAnswer": "FormGroup is a collection of FormControls that represents a form structure."
+            },
+            "ru": {
+                "question": "What is FormGroup?",
+                "weakAnswer": "Group.",
+                "technicalAnswer": "Collection of controls.",
+                "interviewAnswer": "FormGroup is a collection of FormControls that represents a form structure."
+            }
+        }
+    },
+    {
+        "id": 61,
+        "topic": "javascript",
+        "subtopic": "event-loop",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What is the difference between microtasks and macrotasks?",
+                "weakAnswer": "Different queues.",
+                "technicalAnswer": "Microtasks run before macrotasks.",
+                "interviewAnswer": "Microtasks, like Promises, run immediately after the current execution, while macrotasks, like setTimeout, run in the next event loop cycle."
+            },
+            "ru": {
+                "question": "What is the difference between microtasks and macrotasks?",
+                "weakAnswer": "Different queues.",
+                "technicalAnswer": "Microtasks run before macrotasks.",
+                "interviewAnswer": "Microtasks, like Promises, run immediately after the current execution, while macrotasks, like setTimeout, run in the next event loop cycle."
+            }
+        }
+    },
+    {
+        "id": 62,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "Why is async/await better than Promises?",
+                "weakAnswer": "Cleaner.",
+                "technicalAnswer": "Improves readability.",
+                "interviewAnswer": "async/await makes asynchronous code more readable and easier to reason about by avoiding nested promise chains."
+            },
+            "ru": {
+                "question": "Why is async/await better than Promises?",
+                "weakAnswer": "Cleaner.",
+                "technicalAnswer": "Improves readability.",
+                "interviewAnswer": "async/await makes asynchronous code more readable and easier to reason about by avoiding nested promise chains."
+            }
+        }
+    },
+    {
+        "id": 63,
+        "topic": "javascript",
+        "subtopic": "closures",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "Why are closures useful?",
+                "weakAnswer": "Useful.",
+                "technicalAnswer": "Encapsulation of state.",
+                "interviewAnswer": "Closures allow data encapsulation and maintaining state across function calls, which is useful for things like private variables."
+            },
+            "ru": {
+                "question": "Why are closures useful?",
+                "weakAnswer": "Useful.",
+                "technicalAnswer": "Encapsulation of state.",
+                "interviewAnswer": "Closures allow data encapsulation and maintaining state across function calls, which is useful for things like private variables."
+            }
+        }
+    },
+    {
+        "id": 64,
+        "topic": "javascript",
+        "subtopic": "memory",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What causes memory leaks in JavaScript?",
+                "weakAnswer": "Memory issues.",
+                "technicalAnswer": "Unreleased references.",
+                "interviewAnswer": "Memory leaks happen when objects are no longer needed but still referenced, preventing garbage collection."
+            },
+            "ru": {
+                "question": "What causes memory leaks in JavaScript?",
+                "weakAnswer": "Memory issues.",
+                "technicalAnswer": "Unreleased references.",
+                "interviewAnswer": "Memory leaks happen when objects are no longer needed but still referenced, preventing garbage collection."
+            }
+        }
+    },
+    {
+        "id": 65,
+        "topic": "javascript",
+        "subtopic": "context",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What happens to 'this' in arrow functions?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "It is lexically bound.",
+                "interviewAnswer": "Arrow functions don’t have their own 'this' and instead inherit it from the surrounding scope."
+            },
+            "ru": {
+                "question": "What happens to 'this' in arrow functions?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "It is lexically bound.",
+                "interviewAnswer": "Arrow functions don’t have their own 'this' and instead inherit it from the surrounding scope."
+            }
+        }
+    },
+    {
+        "id": 66,
+        "topic": "javascript",
+        "subtopic": "execution",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is the call stack?",
+                "weakAnswer": "Stack.",
+                "technicalAnswer": "Tracks function execution.",
+                "interviewAnswer": "The call stack is a structure that keeps track of function execution order in JavaScript."
+            },
+            "ru": {
+                "question": "What is the call stack?",
+                "weakAnswer": "Stack.",
+                "technicalAnswer": "Tracks function execution.",
+                "interviewAnswer": "The call stack is a structure that keeps track of function execution order in JavaScript."
+            }
+        }
+    },
+    {
+        "id": 67,
+        "topic": "javascript",
+        "subtopic": "execution",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What happens when the call stack is full?",
+                "weakAnswer": "Error.",
+                "technicalAnswer": "Stack overflow.",
+                "interviewAnswer": "When the call stack exceeds its limit, a stack overflow error occurs, often due to infinite recursion."
+            },
+            "ru": {
+                "question": "What happens when the call stack is full?",
+                "weakAnswer": "Error.",
+                "technicalAnswer": "Stack overflow.",
+                "interviewAnswer": "When the call stack exceeds its limit, a stack overflow error occurs, often due to infinite recursion."
+            }
+        }
+    },
+    {
+        "id": 68,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is Promise.all?",
+                "weakAnswer": "Multiple promises.",
+                "technicalAnswer": "Waits for all promises.",
+                "interviewAnswer": "Promise.all waits for all promises to resolve and returns their results, or rejects if any fail."
+            },
+            "ru": {
+                "question": "What is Promise.all?",
+                "weakAnswer": "Multiple promises.",
+                "technicalAnswer": "Waits for all promises.",
+                "interviewAnswer": "Promise.all waits for all promises to resolve and returns their results, or rejects if any fail."
+            }
+        }
+    },
+    {
+        "id": 69,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is Promise.race?",
+                "weakAnswer": "First promise.",
+                "technicalAnswer": "Resolves with first settled promise.",
+                "interviewAnswer": "Promise.race resolves or rejects as soon as the first promise settles."
+            },
+            "ru": {
+                "question": "What is Promise.race?",
+                "weakAnswer": "First promise.",
+                "technicalAnswer": "Resolves with first settled promise.",
+                "interviewAnswer": "Promise.race resolves or rejects as soon as the first promise settles."
+            }
+        }
+    },
+    {
+        "id": 70,
+        "topic": "javascript",
+        "subtopic": "arrays",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What does Array.prototype.reduce do?",
+                "weakAnswer": "Loops.",
+                "technicalAnswer": "Reduces array to single value.",
+                "interviewAnswer": "reduce executes a function on each element to accumulate a single result value."
+            },
+            "ru": {
+                "question": "What does Array.prototype.reduce do?",
+                "weakAnswer": "Loops.",
+                "technicalAnswer": "Reduces array to single value.",
+                "interviewAnswer": "reduce executes a function on each element to accumulate a single result value."
+            }
+        }
+    },
+    {
+        "id": 71,
+        "topic": "angular",
+        "subtopic": "change-detection",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What triggers Angular change detection?",
+                "weakAnswer": "Changes.",
+                "technicalAnswer": "Async events and bindings.",
+                "interviewAnswer": "Angular change detection is triggered by async events like user input, HTTP calls, timers, and zone.js patches."
+            },
+            "ru": {
+                "question": "What triggers Angular change detection?",
+                "weakAnswer": "Changes.",
+                "technicalAnswer": "Async events and bindings.",
+                "interviewAnswer": "Angular change detection is triggered by async events like user input, HTTP calls, timers, and zone.js patches."
+            }
+        }
+    },
+    {
+        "id": 72,
+        "topic": "angular",
+        "subtopic": "change-detection",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "How to manually trigger change detection?",
+                "weakAnswer": "Trigger.",
+                "technicalAnswer": "Using ChangeDetectorRef.",
+                "interviewAnswer": "You can manually trigger change detection using ChangeDetectorRef methods like detectChanges or markForCheck."
+            },
+            "ru": {
+                "question": "How to manually trigger change detection?",
+                "weakAnswer": "Trigger.",
+                "technicalAnswer": "Using ChangeDetectorRef.",
+                "interviewAnswer": "You can manually trigger change detection using ChangeDetectorRef methods like detectChanges or markForCheck."
+            }
+        }
+    },
+    {
+        "id": 73,
+        "topic": "angular",
+        "subtopic": "zones",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "Why might you run code outside Angular zone?",
+                "weakAnswer": "Performance.",
+                "technicalAnswer": "Avoid unnecessary change detection.",
+                "interviewAnswer": "Running code outside Angular’s zone prevents unnecessary change detection cycles and improves performance."
+            },
+            "ru": {
+                "question": "Why might you run code outside Angular zone?",
+                "weakAnswer": "Performance.",
+                "technicalAnswer": "Avoid unnecessary change detection.",
+                "interviewAnswer": "Running code outside Angular’s zone prevents unnecessary change detection cycles and improves performance."
+            }
+        }
+    },
+    {
+        "id": 74,
+        "topic": "angular",
+        "subtopic": "rxjs",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is a Subject?",
+                "weakAnswer": "Observable.",
+                "technicalAnswer": "Both observer and observable.",
+                "interviewAnswer": "A Subject is both an Observable and an Observer, allowing you to multicast values to multiple subscribers."
+            },
+            "ru": {
+                "question": "What is a Subject?",
+                "weakAnswer": "Observable.",
+                "technicalAnswer": "Both observer and observable.",
+                "interviewAnswer": "A Subject is both an Observable and an Observer, allowing you to multicast values to multiple subscribers."
+            }
+        }
+    },
+    {
+        "id": 75,
+        "topic": "angular",
+        "subtopic": "rxjs",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "Difference between Subject and BehaviorSubject?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "BehaviorSubject stores last value.",
+                "interviewAnswer": "BehaviorSubject stores the latest value and emits it to new subscribers, while Subject does not."
+            },
+            "ru": {
+                "question": "Difference between Subject and BehaviorSubject?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "BehaviorSubject stores last value.",
+                "interviewAnswer": "BehaviorSubject stores the latest value and emits it to new subscribers, while Subject does not."
+            }
+        }
+    },
+    {
+        "id": 76,
+        "topic": "angular",
+        "subtopic": "rxjs",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What is switchMap?",
+                "weakAnswer": "Operator.",
+                "technicalAnswer": "Switches to new observable.",
+                "interviewAnswer": "switchMap cancels the previous observable and switches to a new one, useful for handling rapid async requests."
+            },
+            "ru": {
+                "question": "What is switchMap?",
+                "weakAnswer": "Operator.",
+                "technicalAnswer": "Switches to new observable.",
+                "interviewAnswer": "switchMap cancels the previous observable and switches to a new one, useful for handling rapid async requests."
+            }
+        }
+    },
+    {
+        "id": 77,
+        "topic": "angular",
+        "subtopic": "rxjs",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What is mergeMap?",
+                "weakAnswer": "Operator.",
+                "technicalAnswer": "Flattens observables.",
+                "interviewAnswer": "mergeMap maps values to inner observables and merges all results without canceling previous ones."
+            },
+            "ru": {
+                "question": "What is mergeMap?",
+                "weakAnswer": "Operator.",
+                "technicalAnswer": "Flattens observables.",
+                "interviewAnswer": "mergeMap maps values to inner observables and merges all results without canceling previous ones."
+            }
+        }
+    },
+    {
+        "id": 78,
+        "topic": "angular",
+        "subtopic": "rxjs",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is debounceTime?",
+                "weakAnswer": "Delay.",
+                "technicalAnswer": "Delays emissions.",
+                "interviewAnswer": "debounceTime delays emitting values until a specified time passes without new emissions."
+            },
+            "ru": {
+                "question": "What is debounceTime?",
+                "weakAnswer": "Delay.",
+                "technicalAnswer": "Delays emissions.",
+                "interviewAnswer": "debounceTime delays emitting values until a specified time passes without new emissions."
+            }
+        }
+    },
+    {
+        "id": 79,
+        "topic": "angular",
+        "subtopic": "rxjs",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is unsubscribe and why is it important?",
+                "weakAnswer": "Stop.",
+                "technicalAnswer": "Stops observable.",
+                "interviewAnswer": "Unsubscribing prevents memory leaks by stopping active subscriptions when they are no longer needed."
+            },
+            "ru": {
+                "question": "What is unsubscribe and why is it important?",
+                "weakAnswer": "Stop.",
+                "technicalAnswer": "Stops observable.",
+                "interviewAnswer": "Unsubscribing prevents memory leaks by stopping active subscriptions when they are no longer needed."
+            }
+        }
+    },
+    {
+        "id": 80,
+        "topic": "angular",
+        "subtopic": "performance",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "Why avoid subscribing inside subscribe?",
+                "weakAnswer": "Bad.",
+                "technicalAnswer": "Leads to nested subscriptions.",
+                "interviewAnswer": "Nested subscriptions make code harder to manage and can lead to memory leaks; operators like switchMap should be used instead."
+            },
+            "ru": {
+                "question": "Why avoid subscribing inside subscribe?",
+                "weakAnswer": "Bad.",
+                "technicalAnswer": "Leads to nested subscriptions.",
+                "interviewAnswer": "Nested subscriptions make code harder to manage and can lead to memory leaks; operators like switchMap should be used instead."
+            }
+        }
+    },
+    {
+        "id": 81,
+        "topic": "javascript",
+        "subtopic": "equality",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "Why is NaN !== NaN?",
+                "weakAnswer": "Weird.",
+                "technicalAnswer": "NaN is not equal to itself.",
+                "interviewAnswer": "NaN is the only value in JavaScript that is not equal to itself, so comparisons must use isNaN."
+            },
+            "ru": {
+                "question": "Why is NaN !== NaN?",
+                "weakAnswer": "Weird.",
+                "technicalAnswer": "NaN is not equal to itself.",
+                "interviewAnswer": "NaN is the only value in JavaScript that is not equal to itself, so comparisons must use isNaN."
+            }
+        }
+    },
+    {
+        "id": 82,
+        "topic": "javascript",
+        "subtopic": "types",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is typeof null?",
+                "weakAnswer": "Object.",
+                "technicalAnswer": "Returns object due to bug.",
+                "interviewAnswer": "typeof null returns 'object' due to a historical JavaScript bug."
+            },
+            "ru": {
+                "question": "What is typeof null?",
+                "weakAnswer": "Object.",
+                "technicalAnswer": "Returns object due to bug.",
+                "interviewAnswer": "typeof null returns 'object' due to a historical JavaScript bug."
+            }
+        }
+    },
+    {
+        "id": 83,
+        "topic": "javascript",
+        "subtopic": "objects",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is Object.freeze?",
+                "weakAnswer": "Freezes.",
+                "technicalAnswer": "Prevents modifications.",
+                "interviewAnswer": "Object.freeze makes an object immutable by preventing adding, removing, or changing properties."
+            },
+            "ru": {
+                "question": "What is Object.freeze?",
+                "weakAnswer": "Freezes.",
+                "technicalAnswer": "Prevents modifications.",
+                "interviewAnswer": "Object.freeze makes an object immutable by preventing adding, removing, or changing properties."
+            }
+        }
+    },
+    {
+        "id": 84,
+        "topic": "javascript",
+        "subtopic": "objects",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is Object.seal?",
+                "weakAnswer": "Locks.",
+                "technicalAnswer": "Prevents adding/removing properties.",
+                "interviewAnswer": "Object.seal prevents adding or removing properties but allows modifying existing ones."
+            },
+            "ru": {
+                "question": "What is Object.seal?",
+                "weakAnswer": "Locks.",
+                "technicalAnswer": "Prevents adding/removing properties.",
+                "interviewAnswer": "Object.seal prevents adding or removing properties but allows modifying existing ones."
+            }
+        }
+    },
+    {
+        "id": 85,
+        "topic": "javascript",
+        "subtopic": "functions",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What is currying?",
+                "weakAnswer": "Functions.",
+                "technicalAnswer": "Transforming function arguments.",
+                "interviewAnswer": "Currying transforms a function with multiple arguments into a series of functions with one argument each."
+            },
+            "ru": {
+                "question": "What is currying?",
+                "weakAnswer": "Functions.",
+                "technicalAnswer": "Transforming function arguments.",
+                "interviewAnswer": "Currying transforms a function with multiple arguments into a series of functions with one argument each."
+            }
+        }
+    },
+    {
+        "id": 86,
+        "topic": "javascript",
+        "subtopic": "functions",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What is partial application?",
+                "weakAnswer": "Same as curry.",
+                "technicalAnswer": "Fixing some arguments.",
+                "interviewAnswer": "Partial application creates a new function by fixing some arguments of an existing function."
+            },
+            "ru": {
+                "question": "What is partial application?",
+                "weakAnswer": "Same as curry.",
+                "technicalAnswer": "Fixing some arguments.",
+                "interviewAnswer": "Partial application creates a new function by fixing some arguments of an existing function."
+            }
+        }
+    },
+    {
+        "id": 87,
+        "topic": "angular",
+        "subtopic": "architecture",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What is a facade pattern?",
+                "weakAnswer": "Pattern.",
+                "technicalAnswer": "Simplifies access to complex logic.",
+                "interviewAnswer": "Facade pattern provides a simplified interface to complex subsystems, often used to manage state and API calls."
+            },
+            "ru": {
+                "question": "What is a facade pattern?",
+                "weakAnswer": "Pattern.",
+                "technicalAnswer": "Simplifies access to complex logic.",
+                "interviewAnswer": "Facade pattern provides a simplified interface to complex subsystems, often used to manage state and API calls."
+            }
+        }
+    },
+    {
+        "id": 88,
+        "topic": "angular",
+        "subtopic": "state",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is state management?",
+                "weakAnswer": "State.",
+                "technicalAnswer": "Managing application state.",
+                "interviewAnswer": "State management is the process of controlling and sharing application data across components in a predictable way."
+            },
+            "ru": {
+                "question": "What is state management?",
+                "weakAnswer": "State.",
+                "technicalAnswer": "Managing application state.",
+                "interviewAnswer": "State management is the process of controlling and sharing application data across components in a predictable way."
+            }
+        }
+    },
+    {
+        "id": 89,
+        "topic": "angular",
+        "subtopic": "state",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "When would you use NgRx?",
+                "weakAnswer": "Big apps.",
+                "technicalAnswer": "For complex state.",
+                "interviewAnswer": "NgRx is used in large applications where state needs to be predictable, centralized, and scalable."
+            },
+            "ru": {
+                "question": "When would you use NgRx?",
+                "weakAnswer": "Big apps.",
+                "technicalAnswer": "For complex state.",
+                "interviewAnswer": "NgRx is used in large applications where state needs to be predictable, centralized, and scalable."
+            }
+        }
+    },
+    {
+        "id": 90,
+        "topic": "angular",
+        "subtopic": "testing",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is unit testing?",
+                "weakAnswer": "Testing.",
+                "technicalAnswer": "Testing individual units.",
+                "interviewAnswer": "Unit testing verifies that individual pieces of code, like components or services, work as expected in isolation."
+            },
+            "ru": {
+                "question": "What is unit testing?",
+                "weakAnswer": "Testing.",
+                "technicalAnswer": "Testing individual units.",
+                "interviewAnswer": "Unit testing verifies that individual pieces of code, like components or services, work as expected in isolation."
+            }
+        }
+    },
+    {
+        "id": 91,
+        "topic": "angular",
+        "subtopic": "testing",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is TestBed?",
+                "weakAnswer": "Testing tool.",
+                "technicalAnswer": "Angular testing utility.",
+                "interviewAnswer": "TestBed is Angular’s primary testing utility for configuring and initializing components and services in tests."
+            },
+            "ru": {
+                "question": "What is TestBed?",
+                "weakAnswer": "Testing tool.",
+                "technicalAnswer": "Angular testing utility.",
+                "interviewAnswer": "TestBed is Angular’s primary testing utility for configuring and initializing components and services in tests."
+            }
+        }
+    },
+    {
+        "id": 92,
+        "topic": "javascript",
+        "subtopic": "performance",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is memoization?",
+                "weakAnswer": "Cache.",
+                "technicalAnswer": "Caching function results.",
+                "interviewAnswer": "Memoization is an optimization technique that caches function results to avoid repeated calculations."
+            },
+            "ru": {
+                "question": "What is memoization?",
+                "weakAnswer": "Cache.",
+                "technicalAnswer": "Caching function results.",
+                "interviewAnswer": "Memoization is an optimization technique that caches function results to avoid repeated calculations."
+            }
+        }
+    },
+    {
+        "id": 93,
+        "topic": "javascript",
+        "subtopic": "performance",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is time complexity?",
+                "weakAnswer": "Speed.",
+                "technicalAnswer": "Measures algorithm efficiency.",
+                "interviewAnswer": "Time complexity measures how the runtime of an algorithm grows with input size, often expressed using Big O notation."
+            },
+            "ru": {
+                "question": "What is time complexity?",
+                "weakAnswer": "Speed.",
+                "technicalAnswer": "Measures algorithm efficiency.",
+                "interviewAnswer": "Time complexity measures how the runtime of an algorithm grows with input size, often expressed using Big O notation."
+            }
+        }
+    },
+    {
+        "id": 94,
+        "topic": "javascript",
+        "subtopic": "performance",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is Big O notation?",
+                "weakAnswer": "Math.",
+                "technicalAnswer": "Describes complexity.",
+                "interviewAnswer": "Big O notation describes the performance or complexity of an algorithm in terms of input size."
+            },
+            "ru": {
+                "question": "What is Big O notation?",
+                "weakAnswer": "Math.",
+                "technicalAnswer": "Describes complexity.",
+                "interviewAnswer": "Big O notation describes the performance or complexity of an algorithm in terms of input size."
+            }
+        }
+    },
+    {
+        "id": 95,
+        "topic": "javascript",
+        "subtopic": "dom",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is the DOM?",
+                "weakAnswer": "HTML.",
+                "technicalAnswer": "Tree representation of HTML.",
+                "interviewAnswer": "The DOM is a tree-like representation of a web page that allows JavaScript to manipulate HTML elements."
+            },
+            "ru": {
+                "question": "What is the DOM?",
+                "weakAnswer": "HTML.",
+                "technicalAnswer": "Tree representation of HTML.",
+                "interviewAnswer": "The DOM is a tree-like representation of a web page that allows JavaScript to manipulate HTML elements."
+            }
+        }
+    },
+    {
+        "id": 96,
+        "topic": "javascript",
+        "subtopic": "dom",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is event delegation?",
+                "weakAnswer": "Events.",
+                "technicalAnswer": "Handling events on parent.",
+                "interviewAnswer": "Event delegation is a technique where a parent element handles events for its child elements using event bubbling."
+            },
+            "ru": {
+                "question": "What is event delegation?",
+                "weakAnswer": "Events.",
+                "technicalAnswer": "Handling events on parent.",
+                "interviewAnswer": "Event delegation is a technique where a parent element handles events for its child elements using event bubbling."
+            }
+        }
+    },
+    {
+        "id": 97,
+        "topic": "javascript",
+        "subtopic": "browser",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What is localStorage?",
+                "weakAnswer": "Storage.",
+                "technicalAnswer": "Browser storage API.",
+                "interviewAnswer": "localStorage is a browser API that allows storing key-value pairs persistently in the browser."
+            },
+            "ru": {
+                "question": "What is localStorage?",
+                "weakAnswer": "Storage.",
+                "technicalAnswer": "Browser storage API.",
+                "interviewAnswer": "localStorage is a browser API that allows storing key-value pairs persistently in the browser."
+            }
+        }
+    },
+    {
+        "id": 98,
+        "topic": "javascript",
+        "subtopic": "browser",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "Difference between localStorage and sessionStorage?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "Persistence difference.",
+                "interviewAnswer": "localStorage persists data indefinitely, while sessionStorage is cleared when the browser session ends."
+            },
+            "ru": {
+                "question": "Difference between localStorage and sessionStorage?",
+                "weakAnswer": "Different.",
+                "technicalAnswer": "Persistence difference.",
+                "interviewAnswer": "localStorage persists data indefinitely, while sessionStorage is cleared when the browser session ends."
+            }
+        }
+    },
+    {
+        "id": 99,
+        "topic": "javascript",
+        "subtopic": "security",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is XSS?",
+                "weakAnswer": "Attack.",
+                "technicalAnswer": "Cross-site scripting.",
+                "interviewAnswer": "XSS is a security vulnerability where attackers inject malicious scripts into web pages viewed by other users."
+            },
+            "ru": {
+                "question": "What is XSS?",
+                "weakAnswer": "Attack.",
+                "technicalAnswer": "Cross-site scripting.",
+                "interviewAnswer": "XSS is a security vulnerability where attackers inject malicious scripts into web pages viewed by other users."
+            }
+        }
+    },
+    {
+        "id": 100,
+        "topic": "javascript",
+        "subtopic": "security",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What is CORS?",
+                "weakAnswer": "Policy.",
+                "technicalAnswer": "Cross-origin resource sharing.",
+                "interviewAnswer": "CORS is a browser security feature that controls how resources are requested from different domains."
+            },
+            "ru": {
+                "question": "What is CORS?",
+                "weakAnswer": "Policy.",
+                "technicalAnswer": "Cross-origin resource sharing.",
+                "interviewAnswer": "CORS is a browser security feature that controls how resources are requested from different domains."
+            }
+        }
+    },
+    {
+        "id": 101,
+        "topic": "javascript",
+        "subtopic": "closures",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What will this code output?\n\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+                "weakAnswer": "0 1 2",
+                "technicalAnswer": "3 3 3",
+                "interviewAnswer": "It logs 3, 3, 3 because var is function-scoped and the loop finishes before setTimeout executes, so all callbacks reference the final value."
+            },
+            "ru": {
+                "question": "What will this code output?\n\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+                "weakAnswer": "0 1 2",
+                "technicalAnswer": "3 3 3",
+                "interviewAnswer": "It logs 3, 3, 3 because var is function-scoped and the loop finishes before setTimeout executes, so all callbacks reference the final value."
+            }
+        }
+    },
+    {
+        "id": 102,
+        "topic": "javascript",
+        "subtopic": "closures",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What will this code output?\n\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+                "weakAnswer": "3 3 3",
+                "technicalAnswer": "0 1 2",
+                "interviewAnswer": "It logs 0, 1, 2 because let is block-scoped and creates a new binding for each iteration."
+            },
+            "ru": {
+                "question": "What will this code output?\n\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}",
+                "weakAnswer": "3 3 3",
+                "technicalAnswer": "0 1 2",
+                "interviewAnswer": "It logs 0, 1, 2 because let is block-scoped and creates a new binding for each iteration."
+            }
+        }
+    },
+    {
+        "id": 103,
+        "topic": "javascript",
+        "subtopic": "this",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What will this code output?\n\nconst obj = {\n  name: 'John',\n  greet: function() {\n    return function() {\n      console.log(this.name);\n    }\n  }\n};\nobj.greet()();",
+                "weakAnswer": "John",
+                "technicalAnswer": "undefined",
+                "interviewAnswer": "It logs undefined because the inner function is a regular function and 'this' refers to the global object, not obj."
+            },
+            "ru": {
+                "question": "What will this code output?\n\nconst obj = {\n  name: 'John',\n  greet: function() {\n    return function() {\n      console.log(this.name);\n    }\n  }\n};\nobj.greet()();",
+                "weakAnswer": "John",
+                "technicalAnswer": "undefined",
+                "interviewAnswer": "It logs undefined because the inner function is a regular function and 'this' refers to the global object, not obj."
+            }
+        }
+    },
+    {
+        "id": 104,
+        "topic": "javascript",
+        "subtopic": "this",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "How to fix previous example to print 'John'?",
+                "weakAnswer": "Change something.",
+                "technicalAnswer": "Use arrow function or bind.",
+                "interviewAnswer": "Use an arrow function or bind to preserve 'this', for example returning () => console.log(this.name)."
+            },
+            "ru": {
+                "question": "How to fix previous example to print 'John'?",
+                "weakAnswer": "Change something.",
+                "technicalAnswer": "Use arrow function or bind.",
+                "interviewAnswer": "Use an arrow function or bind to preserve 'this', for example returning () => console.log(this.name)."
+            }
+        }
+    },
+    {
+        "id": 105,
+        "topic": "javascript",
+        "subtopic": "hoisting",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nconsole.log(a);\nvar a = 5;",
+                "weakAnswer": "5",
+                "technicalAnswer": "undefined",
+                "interviewAnswer": "It logs undefined because variable declarations are hoisted but not their assignments."
+            },
+            "ru": {
+                "question": "What will this output?\n\nconsole.log(a);\nvar a = 5;",
+                "weakAnswer": "5",
+                "technicalAnswer": "undefined",
+                "interviewAnswer": "It logs undefined because variable declarations are hoisted but not their assignments."
+            }
+        }
+    },
+    {
+        "id": 106,
+        "topic": "javascript",
+        "subtopic": "hoisting",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nconsole.log(a);\nlet a = 5;",
+                "weakAnswer": "undefined",
+                "technicalAnswer": "ReferenceError",
+                "interviewAnswer": "It throws a ReferenceError because let variables are in the temporal dead zone until initialized."
+            },
+            "ru": {
+                "question": "What will this output?\n\nconsole.log(a);\nlet a = 5;",
+                "weakAnswer": "undefined",
+                "technicalAnswer": "ReferenceError",
+                "interviewAnswer": "It throws a ReferenceError because let variables are in the temporal dead zone until initialized."
+            }
+        }
+    },
+    {
+        "id": 107,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What is the output order?\n\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);",
+                "weakAnswer": "1 2 3 4",
+                "technicalAnswer": "1 4 3 2",
+                "interviewAnswer": "It logs 1, 4, 3, 2 because synchronous code runs first, then microtasks (Promises), then macrotasks (setTimeout)."
+            },
+            "ru": {
+                "question": "What is the output order?\n\nconsole.log(1);\nsetTimeout(() => console.log(2), 0);\nPromise.resolve().then(() => console.log(3));\nconsole.log(4);",
+                "weakAnswer": "1 2 3 4",
+                "technicalAnswer": "1 4 3 2",
+                "interviewAnswer": "It logs 1, 4, 3, 2 because synchronous code runs first, then microtasks (Promises), then macrotasks (setTimeout)."
+            }
+        }
+    },
+    {
+        "id": 108,
+        "topic": "javascript",
+        "subtopic": "arrays",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\n[1,2,3].map(parseInt)",
+                "weakAnswer": "[1,2,3]",
+                "technicalAnswer": "[1, NaN, NaN]",
+                "interviewAnswer": "map passes index as second argument, so parseInt receives (value, index), causing unexpected NaN results."
+            },
+            "ru": {
+                "question": "What will this output?\n\n[1,2,3].map(parseInt)",
+                "weakAnswer": "[1,2,3]",
+                "technicalAnswer": "[1, NaN, NaN]",
+                "interviewAnswer": "map passes index as second argument, so parseInt receives (value, index), causing unexpected NaN results."
+            }
+        }
+    },
+    {
+        "id": 109,
+        "topic": "javascript",
+        "subtopic": "types",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\n[] + {}",
+                "weakAnswer": "Error",
+                "technicalAnswer": "[object Object]",
+                "interviewAnswer": "JavaScript coerces both to strings, resulting in '[object Object]'."
+            },
+            "ru": {
+                "question": "What will this output?\n\n[] + {}",
+                "weakAnswer": "Error",
+                "technicalAnswer": "[object Object]",
+                "interviewAnswer": "JavaScript coerces both to strings, resulting in '[object Object]'."
+            }
+        }
+    },
+    {
+        "id": 110,
+        "topic": "javascript",
+        "subtopic": "types",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\n{} + []",
+                "weakAnswer": "Same as previous",
+                "technicalAnswer": "0",
+                "interviewAnswer": "JavaScript interprets {} as a block, so +[] becomes 0 due to type coercion."
+            },
+            "ru": {
+                "question": "What will this output?\n\n{} + []",
+                "weakAnswer": "Same as previous",
+                "technicalAnswer": "0",
+                "interviewAnswer": "JavaScript interprets {} as a block, so +[] becomes 0 due to type coercion."
+            }
+        }
+    },
+    {
+        "id": 111,
+        "topic": "javascript",
+        "subtopic": "functions",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nfunction foo() {\n  return\n  {\n    name: 'John'\n  }\n}\nconsole.log(foo());",
+                "weakAnswer": "Object",
+                "technicalAnswer": "undefined",
+                "interviewAnswer": "It returns undefined due to automatic semicolon insertion after return."
+            },
+            "ru": {
+                "question": "What will this output?\n\nfunction foo() {\n  return\n  {\n    name: 'John'\n  }\n}\nconsole.log(foo());",
+                "weakAnswer": "Object",
+                "technicalAnswer": "undefined",
+                "interviewAnswer": "It returns undefined due to automatic semicolon insertion after return."
+            }
+        }
+    },
+    {
+        "id": 112,
+        "topic": "javascript",
+        "subtopic": "objects",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nconst obj = { a: 1 };\nconst b = obj;\nb.a = 2;\nconsole.log(obj.a);",
+                "weakAnswer": "1",
+                "technicalAnswer": "2",
+                "interviewAnswer": "Objects are referenced, so modifying b also affects obj."
+            },
+            "ru": {
+                "question": "What will this output?\n\nconst obj = { a: 1 };\nconst b = obj;\nb.a = 2;\nconsole.log(obj.a);",
+                "weakAnswer": "1",
+                "technicalAnswer": "2",
+                "interviewAnswer": "Objects are referenced, so modifying b also affects obj."
+            }
+        }
+    },
+    {
+        "id": 113,
+        "topic": "javascript",
+        "subtopic": "closures",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nfunction counter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  }\n}\nconst c = counter();\nconsole.log(c());\nconsole.log(c());",
+                "weakAnswer": "1 1",
+                "technicalAnswer": "1 2",
+                "interviewAnswer": "The closure preserves state, so count increments with each call."
+            },
+            "ru": {
+                "question": "What will this output?\n\nfunction counter() {\n  let count = 0;\n  return function() {\n    return ++count;\n  }\n}\nconst c = counter();\nconsole.log(c());\nconsole.log(c());",
+                "weakAnswer": "1 1",
+                "technicalAnswer": "1 2",
+                "interviewAnswer": "The closure preserves state, so count increments with each call."
+            }
+        }
+    },
+    {
+        "id": 114,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nasync function test() {\n  return 42;\n}\ntest().then(console.log);",
+                "weakAnswer": "Nothing",
+                "technicalAnswer": "42",
+                "interviewAnswer": "Async functions always return a Promise, so it resolves with 42."
+            },
+            "ru": {
+                "question": "What will this output?\n\nasync function test() {\n  return 42;\n}\ntest().then(console.log);",
+                "weakAnswer": "Nothing",
+                "technicalAnswer": "42",
+                "interviewAnswer": "Async functions always return a Promise, so it resolves with 42."
+            }
+        }
+    },
+    {
+        "id": 115,
+        "topic": "javascript",
+        "subtopic": "this",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nconst obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",
+                "weakAnswer": "John",
+                "technicalAnswer": "undefined",
+                "interviewAnswer": "Arrow functions don’t have their own 'this', so it refers to the outer scope, not obj."
+            },
+            "ru": {
+                "question": "What will this output?\n\nconst obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",
+                "weakAnswer": "John",
+                "technicalAnswer": "undefined",
+                "interviewAnswer": "Arrow functions don’t have their own 'this', so it refers to the outer scope, not obj."
+            }
+        }
+    },
+    {
+        "id": 116,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nPromise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw new Error(); })\n  .catch(() => 10)\n  .then(x => console.log(x));",
+                "weakAnswer": "Error",
+                "technicalAnswer": "10",
+                "interviewAnswer": "The error is caught and replaced with 10, which is then logged."
+            },
+            "ru": {
+                "question": "What will this output?\n\nPromise.resolve(1)\n  .then(x => x + 1)\n  .then(x => { throw new Error(); })\n  .catch(() => 10)\n  .then(x => console.log(x));",
+                "weakAnswer": "Error",
+                "technicalAnswer": "10",
+                "interviewAnswer": "The error is caught and replaced with 10, which is then logged."
+            }
+        }
+    },
+    {
+        "id": 117,
+        "topic": "javascript",
+        "subtopic": "async",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nsetTimeout(() => console.log('A'), 0);\nconsole.log('B');",
+                "weakAnswer": "A B",
+                "technicalAnswer": "B A",
+                "interviewAnswer": "Synchronous code runs first, so 'B' logs before the async callback."
+            },
+            "ru": {
+                "question": "What will this output?\n\nsetTimeout(() => console.log('A'), 0);\nconsole.log('B');",
+                "weakAnswer": "A B",
+                "technicalAnswer": "B A",
+                "interviewAnswer": "Synchronous code runs first, so 'B' logs before the async callback."
+            }
+        }
+    },
+    {
+        "id": 118,
+        "topic": "javascript",
+        "subtopic": "types",
+        "difficulty": "intermediate",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nconsole.log(0.1 + 0.2 === 0.3);",
+                "weakAnswer": "true",
+                "technicalAnswer": "false",
+                "interviewAnswer": "Due to floating point precision issues, 0.1 + 0.2 is not exactly 0.3."
+            },
+            "ru": {
+                "question": "What will this output?\n\nconsole.log(0.1 + 0.2 === 0.3);",
+                "weakAnswer": "true",
+                "technicalAnswer": "false",
+                "interviewAnswer": "Due to floating point precision issues, 0.1 + 0.2 is not exactly 0.3."
+            }
+        }
+    },
+    {
+        "id": 119,
+        "topic": "javascript",
+        "subtopic": "objects",
+        "difficulty": "beginner",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nconst a = { x: 1 };\nconst b = { x: 1 };\nconsole.log(a === b);",
+                "weakAnswer": "true",
+                "technicalAnswer": "false",
+                "interviewAnswer": "Objects are compared by reference, not value, so they are not equal."
+            },
+            "ru": {
+                "question": "What will this output?\n\nconst a = { x: 1 };\nconst b = { x: 1 };\nconsole.log(a === b);",
+                "weakAnswer": "true",
+                "technicalAnswer": "false",
+                "interviewAnswer": "Objects are compared by reference, not value, so they are not equal."
+            }
+        }
+    },
+    {
+        "id": 120,
+        "topic": "javascript",
+        "subtopic": "arrays",
+        "difficulty": "advanced",
+        "text": {
+            "en": {
+                "question": "What will this output?\n\nconsole.log([1,2] == '1,2');",
+                "weakAnswer": "false",
+                "technicalAnswer": "true",
+                "interviewAnswer": "The array is coerced to a string '1,2', so the comparison returns true."
+            },
+            "ru": {
+                "question": "What will this output?\n\nconsole.log([1,2] == '1,2');",
+                "weakAnswer": "false",
+                "technicalAnswer": "true",
+                "interviewAnswer": "The array is coerced to a string '1,2', so the comparison returns true."
+            }
+        }
+    }
+]

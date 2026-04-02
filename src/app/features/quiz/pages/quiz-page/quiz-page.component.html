@@ -1,33 +1,37 @@
 <section class="quiz" aria-labelledby="quiz-title">
-    <h1 id="quiz-title" class="quiz__title visually-hidden">Interview</h1>
+    <h1 id="quiz-title" class="quiz__title visually-hidden">{{ 'quiz.titleHidden' | translate }}</h1>
 
     @if (loadError()) {
-        <p class="quiz__message quiz__message--error" role="alert">Could not load questions. Check that assets are available and try again.</p>
+        <p class="quiz__message quiz__message--error" role="alert">{{ 'quiz.loadError' | translate }}</p>
     } @else if (loading()) {
-        <p class="quiz__message">Loading questions…</p>
+        <p class="quiz__message">{{ 'quiz.loading' | translate }}</p>
     } @else if (sessionComplete()) {
         <div class="quiz__done card-phase">
-            <p class="quiz__message">You finished this session.</p>
+            <p class="quiz__message">{{ 'quiz.sessionDone' | translate }}</p>
             @if (usingFallbackQueue()) {
-                <p class="quiz__hint">No questions were due for review, so all questions were shown.</p>
+                <p class="quiz__hint">{{ 'quiz.fallbackHintDone' | translate }}</p>
             }
-            <button type="button" class="quiz__restart" (click)="restartSession()">Start another round</button>
+            <button type="button" class="quiz__restart" (click)="restartSession()">
+                {{ 'quiz.restart' | translate }}
+            </button>
         </div>
     } @else if (currentQuestion(); as q) {
         @if (usingFallbackQueue()) {
-            <p class="quiz__hint">Nothing due right now — practicing from the full set.</p>
+            <p class="quiz__hint">{{ 'quiz.fallbackHintActive' | translate }}</p>
         }
 
         @if (sessionProgressCounts(); as prog) {
             <div class="quiz__progress-block">
                 <p class="quiz__progress" aria-live="polite">
-                    {{ prog.answered }} answered · {{ prog.remaining }} to go
+                    {{ prog.answered }} {{ 'quiz.progressAnswered' | translate }}
+                    {{ 'quiz.progressSep' | translate }}
+                    {{ prog.remaining }} {{ 'quiz.progressToGo' | translate }}
                 </p>
                 <div class="quiz__progress-bar">
                     <app-progress-bar
                         [value]="prog.answered"
                         [max]="prog.total"
-                        label="Session progress"
+                        [label]="'quiz.sessionProgressLabel' | translate"
                     />
                 </div>
             </div>
