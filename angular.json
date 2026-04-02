@@ -7,7 +7,7 @@
   },
   "newProjectRoot": "projects",
   "projects": {
-    "interview-trainer": {
+    "karkas": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
@@ -67,10 +67,10 @@
           "builder": "@angular/build:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "interview-trainer:build:production"
+              "buildTarget": "karkas:build:production"
             },
             "development": {
-              "buildTarget": "interview-trainer:build:development"
+              "buildTarget": "karkas:build:development"
             }
           },
           "defaultConfiguration": "development"
