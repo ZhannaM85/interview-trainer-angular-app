@@ -1,0 +1,87 @@
+<section class="study" aria-labelledby="study-title">
+    <h1 id="study-title" class="study__title">Study guide</h1>
+    <p class="study__intro">
+        Read through every question and model answer, then go to
+        <a routerLink="/quiz" class="study__intro-link">Practice</a>
+        when you are ready.
+    </p>
+
+    @if (loadError()) {
+        <p class="study__message study__message--error" role="alert">
+            Could not load questions. Check that assets are available and try again.
+        </p>
+    } @else if (loading()) {
+        <p class="study__message">Loading…</p>
+    } @else {
+        <div class="study__layout">
+            <details
+                class="study__toc-shell"
+                [open]="tocOpen()"
+                (toggle)="onTocToggle($event)"
+            >
+                <summary class="study__toc-summary">
+                    <span class="study__toc-summary-label">Table of contents</span>
+                    <span class="study__toc-chevron" aria-hidden="true"></span>
+                </summary>
+                <nav class="study__toc" aria-label="Study guide contents">
+                    <h2 class="study__toc-title">Contents</h2>
+                    <ul class="study__toc-cats">
+                        @for (cat of sections(); track cat.anchorId) {
+                            <li class="study__toc-cat">
+                                <a
+                                    class="study__toc-cat-link"
+                                    [href]="'#' + cat.anchorId"
+                                    (click)="scrollToTocAnchor($event, cat.anchorId)"
+                                    >{{ cat.title }}</a>
+                                <ul class="study__toc-subs">
+                                    @for (sub of cat.subtopics; track sub.anchorId) {
+                                        <li>
+                                            <a
+                                                class="study__toc-sub-link"
+                                                [href]="'#' + sub.anchorId"
+                                                (click)="scrollToTocAnchor($event, sub.anchorId)"
+                                                >{{ sub.subtopic }}</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </details>
+
+            <div class="study__main">
+                @for (cat of sections(); track cat.anchorId) {
+                    <section
+                        class="study__cat"
+                        [attr.id]="cat.anchorId"
+                        [attr.aria-labelledby]="cat.anchorId + '__heading'"
+                    >
+                        <h2 class="study__cat-heading" [attr.id]="cat.anchorId + '__heading'">{{ cat.title }}</h2>
+
+                        @for (sub of cat.subtopics; track sub.anchorId) {
+                            <section
+                                class="study__sub"
+                                [attr.id]="sub.anchorId"
+                                [attr.aria-labelledby]="sub.anchorId + '__heading'"
+                            >
+                                <h3 class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
+                                    {{ sub.subtopic }}
+                                </h3>
+
+                                @for (q of sub.questions; track q.id) {
+                                    <article class="study__q" [attr.id]="'study-q-' + q.id">
+                                        <h4 class="study__q-heading">{{ q.question }}</h4>
+                                        <div class="study__q-answers">
+                                            <app-answer-blocks [question]="q" [animated]="false" />
+                                        </div>
+                                    </article>
+                                }
+                            </section>
+                        }
+                    </section>
+                }
+            </div>
+        </div>
+    }
+</section>
