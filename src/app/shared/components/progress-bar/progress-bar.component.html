@@ -1,4 +1,11 @@
-<div class="progress" role="progressbar" [attr.aria-valuenow]="value()" [attr.aria-valuemin]="0" [attr.aria-valuemax]="max()" [attr.aria-label]="label() ?? 'Progress'">
+<div
+    class="progress"
+    role="progressbar"
+    [attr.aria-valuenow]="value()"
+    [attr.aria-valuemin]="0"
+    [attr.aria-valuemax]="max()"
+    [attr.aria-label]="label() ?? ('progressBar.default' | translate)"
+>
     <div class="progress__track">
         <div class="progress__fill" [style.width.%]="percent()"></div>
     </div>

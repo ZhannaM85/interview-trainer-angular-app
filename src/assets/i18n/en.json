@@ -1,0 +1,155 @@
+{
+    "app": {
+        "brand": "Interview Trainer",
+        "navAria": "Main"
+    },
+    "nav": {
+        "study": "Study guide",
+        "quiz": "Practice",
+        "dashboard": "Progress"
+    },
+    "locale": {
+        "selectLabel": "Language",
+        "en": "English",
+        "ru": "Russian"
+    },
+    "study": {
+        "title": "Study guide",
+        "introBefore": "Read through every question and model answer, then go to",
+        "introLink": "Practice",
+        "introAfter": "when you are ready.",
+        "loadError": "Could not load questions. Check that assets are available and try again.",
+        "loading": "Loading…",
+        "tocSummary": "Table of contents",
+        "tocNavAria": "Study guide contents",
+        "contents": "Contents",
+        "category": {
+            "javascript": "JavaScript",
+            "angular": "Angular",
+            "rxjs": "RxJS"
+        }
+    },
+    "quiz": {
+        "titleHidden": "Interview",
+        "loadError": "Could not load questions. Check that assets are available and try again.",
+        "loading": "Loading questions…",
+        "sessionDone": "You finished this session.",
+        "fallbackHintDone": "No questions were due for review, so all questions were shown.",
+        "restart": "Start another round",
+        "fallbackHintActive": "Nothing due right now — practicing from the full set.",
+        "progressAnswered": "answered",
+        "progressToGo": "to go",
+        "progressSep": "·",
+        "sessionProgressLabel": "Session progress"
+    },
+    "dashboard": {
+        "title": "Interview Progress",
+        "loadError": "Could not load stats.",
+        "loading": "Loading…",
+        "accuracy": "Accuracy",
+        "confidence": "Confidence",
+        "weakTopics": "Weak topics",
+        "weakHint": "No weak spots detected yet (need at least 3 attempts on a topic below 60% nailed).",
+        "browseQa": "Browse all Q&A",
+        "startPractice": "Start Practice"
+    },
+    "answerBlocks": {
+        "weak": "Weak answer",
+        "technical": "Technical answer",
+        "interview": "Interview answer"
+    },
+    "interviewQuestion": {
+        "cta": "I answered"
+    },
+    "selfEval": {
+        "ariaLabel": "How well did you answer?",
+        "didntKnow": "Didn’t know",
+        "partial": "Partial",
+        "nailed": "Nailed it"
+    },
+    "feedback": {
+        "score": "Score: +{{value}}",
+        "weakArea": "Weak area",
+        "nextReview": "Next review",
+        "nextQuestion": "Next Question →",
+        "headlineNailed": "Good job!",
+        "headlinePartial": "Nice effort",
+        "headlineWeak": "Keep practicing",
+        "nextReviewToday": "Today",
+        "nextReviewTomorrow": "Tomorrow"
+    },
+    "progressBar": {
+        "default": "Progress"
+    },
+    "quizTimer": {
+        "aria": "Time remaining {{time}}"
+    },
+    "category": {
+        "javascript": "JavaScript",
+        "angular": "Angular",
+        "rxjs": "RxJS"
+    },
+    "difficulty": {
+        "beginner": "Beginner",
+        "intermediate": "Intermediate",
+        "advanced": "Advanced"
+    },
+    "subtopics": {
+        "architecture": "Architecture",
+        "arrays": "Arrays",
+        "arrow-functions": "Arrow functions",
+        "async": "Async",
+        "browser": "Browser",
+        "change-detection": "Change detection",
+        "closure": "Closure",
+        "closures": "Closures",
+        "components": "Components",
+        "context": "Context",
+        "debounce": "Debounce",
+        "deep-copy": "Deep copy",
+        "di": "Dependency injection",
+        "directives": "Directives",
+        "dom": "DOM",
+        "equality": "Equality",
+        "event-loop": "Event loop",
+        "execution": "Execution",
+        "execution-context": "Execution context",
+        "forms": "Forms",
+        "functions": "Functions",
+        "hoisting": "Hoisting",
+        "http": "HTTP",
+        "immutability": "Immutability",
+        "injector": "Injector",
+        "json": "JSON",
+        "lazy-loading": "Lazy loading",
+        "lifecycle": "Lifecycle",
+        "memory": "Memory",
+        "modules": "Modules",
+        "objects": "Objects",
+        "observables": "Observables",
+        "performance": "Performance",
+        "pipes": "Pipes",
+        "prototype": "Prototype",
+        "providers": "Providers",
+        "rest": "Rest",
+        "routing": "Routing",
+        "rxjs": "RxJS",
+        "scope": "Scope",
+        "security": "Security",
+        "services": "Services",
+        "set": "Set",
+        "set-map": "Set & Map",
+        "signals": "Signals",
+        "spread": "Spread",
+        "standalone": "Standalone",
+        "state": "State",
+        "strict-mode": "Strict mode",
+        "testing": "Testing",
+        "this": "this",
+        "throttle": "Throttle",
+        "trackby": "trackBy",
+        "types": "Types",
+        "variables": "Variables",
+        "zones": "Zones"
+    }
+}

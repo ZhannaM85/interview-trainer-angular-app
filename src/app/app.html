@@ -1,10 +1,29 @@
 <div class="app">
     <header class="app__header">
-        <a class="app__brand" routerLink="/">Interview Trainer</a>
-        <nav class="app__nav" aria-label="Main">
-            <a routerLink="/study" routerLinkActive="app__link--active">Study guide</a>
-            <a routerLink="/quiz" routerLinkActive="app__link--active" [routerLinkActiveOptions]="{ exact: true }">Practice</a>
-            <a routerLink="/dashboard" routerLinkActive="app__link--active">Progress</a>
+        <a class="app__brand" routerLink="/">{{ 'app.brand' | translate }}</a>
+        <div class="app__locale">
+            <label class="visually-hidden" for="app-locale-select">{{ 'locale.selectLabel' | translate }}</label>
+            <select
+                id="app-locale-select"
+                class="app__locale-select"
+                [value]="currentLang()"
+                (change)="onLocaleChange(($any($event.target).value))"
+                [attr.aria-label]="'locale.selectLabel' | translate"
+            >
+                <option value="en">{{ 'locale.en' | translate }}</option>
+                <option value="ru">{{ 'locale.ru' | translate }}</option>
+            </select>
+        </div>
+        <nav class="app__nav" [attr.aria-label]="'app.navAria' | translate">
+            <a routerLink="/study" routerLinkActive="app__link--active">{{ 'nav.study' | translate }}</a>
+            <a
+                routerLink="/quiz"
+                routerLinkActive="app__link--active"
+                [routerLinkActiveOptions]="{ exact: true }"
+            >
+                {{ 'nav.quiz' | translate }}
+            </a>
+            <a routerLink="/dashboard" routerLinkActive="app__link--active">{{ 'nav.dashboard' | translate }}</a>
         </nav>
     </header>
     <main class="app__main">

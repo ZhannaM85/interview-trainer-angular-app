@@ -1,9 +1,11 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
 import { ProgressService, SCORE_BY_RATING } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
-import type { Question } from '../../../../shared/models/question.model';
+import type { Question, QuestionCategory } from '../../../../shared/models/question.model';
 import type { SelfRating } from '../../../../shared/models/self-rating.model';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
 import { InterviewAnswerComponent } from '../../components/interview-answer/interview-answer.component';
@@ -25,40 +27,14 @@ export interface SessionProgressCounts {
     total: number;
 }
 
-function formatWeakAreaLabel(subtopic: string): string {
-    if (!subtopic.trim()) {
-        return '';
-    }
-    return subtopic.charAt(0).toUpperCase() + subtopic.slice(1);
-}
-
-function formatCategoryLabel(category: string): string {
-    return category.charAt(0).toUpperCase() + category.slice(1);
-}
-
-function formatNextReviewLabel(iso: string): string {
-    const target = new Date(iso);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    const d = new Date(target);
-    d.setHours(0, 0, 0, 0);
-    const diffDays = Math.round((d.getTime() - today.getTime()) / 86_400_000);
-    if (diffDays <= 0) {
-        return 'Today';
-    }
-    if (diffDays === 1) {
-        return 'Tomorrow';
-    }
-    return target.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' });
-}
-
 @Component({
     selector: 'app-quiz-page',
     imports: [
         InterviewQuestionComponent,
         InterviewAnswerComponent,
         InterviewFeedbackComponent,
-        ProgressBarComponent
+        ProgressBarComponent,
+        TranslatePipe
     ],
     templateUrl: './quiz-page.component.html',
     styleUrl: './quiz-page.component.scss',
@@ -67,6 +43,7 @@ function formatNextReviewLabel(iso: string): string {
 export class QuizPageComponent {
     private readonly questionService = inject(QuestionService);
     private readonly progressService = inject(ProgressService);
+    private readonly translate = inject(TranslateService);
 
     protected readonly currentQuestion = signal<Question | null>(null);
     protected readonly phase = signal<QuizPhase>('question');
@@ -77,6 +54,14 @@ export class QuizPageComponent {
     protected readonly usingFallbackQueue = signal(false);
     protected readonly sessionIndex = signal(0);
     protected readonly sessionTotal = signal(0);
+
+    /** Persisted across language switches while feedback phase is showing. */
+    private readonly feedbackCtx = signal<{
+        rating: SelfRating;
+        subtopic: string;
+        category: QuestionCategory;
+        nextReviewIso: string;
+    } | null>(null);
 
     protected readonly sessionProgressCounts = computed((): SessionProgressCounts | null => {
         const total = this.sessionTotal();
@@ -91,6 +76,30 @@ export class QuizPageComponent {
     });
 
     constructor() {
+        this.questionService
+            .getQuestions()
+            .pipe(takeUntilDestroyed())
+            .subscribe((all) => {
+                if (!this.loading()) {
+                    const cur = this.currentQuestion();
+                    if (cur && !this.sessionComplete()) {
+                        const updated = this.questionService.getQuestionByIdFromList(all, cur.id);
+                        if (updated) {
+                            this.currentQuestion.set(updated);
+                        }
+                    }
+                    if (this.phase() === 'feedback' && this.feedbackCtx()) {
+                        this.rebuildFeedbackSnapshot();
+                    }
+                }
+            });
+
+        this.translate.onLangChange.pipe(takeUntilDestroyed()).subscribe(() => {
+            if (this.phase() === 'feedback' && this.feedbackCtx()) {
+                this.rebuildFeedbackSnapshot();
+            }
+        });
+
         this.loadQuiz();
     }
 
@@ -109,18 +118,13 @@ export class QuizPageComponent {
         this.progressService.recordSelfRating(q.id, rating);
         const updated = this.progressService.getProgress().find((p) => p.questionId === q.id);
         const nextReviewIso = updated?.nextReview ?? new Date().toISOString();
-        const headline =
-            rating === 'nailed'
-                ? 'Good job!'
-                : rating === 'partial'
-                  ? 'Nice effort'
-                  : 'Keep practicing';
-        this.feedbackSnapshot.set({
-            headline,
-            scoreDelta: SCORE_BY_RATING[rating],
-            weakArea: formatWeakAreaLabel(q.subtopic) || formatCategoryLabel(q.category),
-            nextReviewLabel: formatNextReviewLabel(nextReviewIso)
+        this.feedbackCtx.set({
+            rating,
+            subtopic: q.subtopic,
+            category: q.category,
+            nextReviewIso
         });
+        this.rebuildFeedbackSnapshot();
         this.phase.set('feedback');
     }
 
@@ -132,6 +136,45 @@ export class QuizPageComponent {
         this.loadQuiz();
     }
 
+    private rebuildFeedbackSnapshot(): void {
+        const ctx = this.feedbackCtx();
+        if (!ctx) {
+            return;
+        }
+        const headlineKey =
+            ctx.rating === 'nailed'
+                ? 'feedback.headlineNailed'
+                : ctx.rating === 'partial'
+                  ? 'feedback.headlinePartial'
+                  : 'feedback.headlineWeak';
+        const weakKey = ctx.subtopic.trim()
+            ? `subtopics.${ctx.subtopic}`
+            : `category.${ctx.category}`;
+        this.feedbackSnapshot.set({
+            headline: this.translate.instant(headlineKey),
+            scoreDelta: SCORE_BY_RATING[ctx.rating],
+            weakArea: this.translate.instant(weakKey),
+            nextReviewLabel: this.formatNextReviewLabel(ctx.nextReviewIso)
+        });
+    }
+
+    private formatNextReviewLabel(iso: string): string {
+        const target = new Date(iso);
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        const d = new Date(target);
+        d.setHours(0, 0, 0, 0);
+        const diffDays = Math.round((d.getTime() - today.getTime()) / 86_400_000);
+        if (diffDays <= 0) {
+            return this.translate.instant('feedback.nextReviewToday');
+        }
+        if (diffDays === 1) {
+            return this.translate.instant('feedback.nextReviewTomorrow');
+        }
+        const loc = this.translate.currentLang === 'ru' ? 'ru-RU' : 'en-US';
+        return target.toLocaleDateString(loc, { weekday: 'short', month: 'short', day: 'numeric' });
+    }
+
     private loadQuiz(): void {
         this.loading.set(true);
         this.loadError.set(false);
@@ -139,6 +182,7 @@ export class QuizPageComponent {
         this.currentQuestion.set(null);
         this.phase.set('question');
         this.feedbackSnapshot.set(null);
+        this.feedbackCtx.set(null);
         this.questionService
             .getQuestions()
             .pipe(take(1))
@@ -166,6 +210,7 @@ export class QuizPageComponent {
         this.currentQuestion.set(next);
         this.phase.set('question');
         this.feedbackSnapshot.set(null);
+        this.feedbackCtx.set(null);
         if (next) {
             this.sessionIndex.update((i) => i + 1);
         }

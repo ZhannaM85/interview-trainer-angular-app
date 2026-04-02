@@ -1,0 +1,155 @@
+{
+    "app": {
+        "brand": "Тренажёр собеседований",
+        "navAria": "Основная навигация"
+    },
+    "nav": {
+        "study": "Справочник",
+        "quiz": "Практика",
+        "dashboard": "Прогресс"
+    },
+    "locale": {
+        "selectLabel": "Язык",
+        "en": "English",
+        "ru": "Русский"
+    },
+    "study": {
+        "title": "Справочник",
+        "introBefore": "Прочитайте все вопросы и эталонные ответы, затем перейдите к",
+        "introLink": "Практике",
+        "introAfter": ", когда будете готовы.",
+        "loadError": "Не удалось загрузить вопросы. Проверьте доступность ресурсов и попробуйте снова.",
+        "loading": "Загрузка…",
+        "tocSummary": "Содержание",
+        "tocNavAria": "Содержание справочника",
+        "contents": "Содержание",
+        "category": {
+            "javascript": "JavaScript",
+            "angular": "Angular",
+            "rxjs": "RxJS"
+        }
+    },
+    "quiz": {
+        "titleHidden": "Собеседование",
+        "loadError": "Не удалось загрузить вопросы. Проверьте доступность ресурсов и попробуйте снова.",
+        "loading": "Загрузка вопросов…",
+        "sessionDone": "Вы завершили эту сессию.",
+        "fallbackHintDone": "Не было вопросов к повторению, поэтому показан полный список.",
+        "restart": "Начать ещё раунд",
+        "fallbackHintActive": "Сейчас нечего повторять — тренировка по полному набору.",
+        "progressAnswered": "отвечено",
+        "progressToGo": "осталось",
+        "progressSep": "·",
+        "sessionProgressLabel": "Прогресс сессии"
+    },
+    "dashboard": {
+        "title": "Прогресс по собеседованиям",
+        "loadError": "Не удалось загрузить статистику.",
+        "loading": "Загрузка…",
+        "accuracy": "Точность",
+        "confidence": "Уверенность",
+        "weakTopics": "Слабые темы",
+        "weakHint": "Слабых мест пока нет (нужно минимум 3 попытки по теме ниже 60% «отлично»).",
+        "browseQa": "Все вопросы и ответы",
+        "startPractice": "Начать практику"
+    },
+    "answerBlocks": {
+        "weak": "Слабый ответ",
+        "technical": "Технический ответ",
+        "interview": "Ответ для собеседования"
+    },
+    "interviewQuestion": {
+        "cta": "Я ответил(а)"
+    },
+    "selfEval": {
+        "ariaLabel": "Насколько хорошо вы ответили?",
+        "didntKnow": "Не знал(а)",
+        "partial": "Частично",
+        "nailed": "Отлично"
+    },
+    "feedback": {
+        "score": "Очки: +{{value}}",
+        "weakArea": "Слабая зона",
+        "nextReview": "Следующее повторение",
+        "nextQuestion": "Следующий вопрос →",
+        "headlineNailed": "Отлично!",
+        "headlinePartial": "Хорошая попытка",
+        "headlineWeak": "Продолжайте практиковаться",
+        "nextReviewToday": "Сегодня",
+        "nextReviewTomorrow": "Завтра"
+    },
+    "progressBar": {
+        "default": "Прогресс"
+    },
+    "quizTimer": {
+        "aria": "Осталось времени {{time}}"
+    },
+    "category": {
+        "javascript": "JavaScript",
+        "angular": "Angular",
+        "rxjs": "RxJS"
+    },
+    "difficulty": {
+        "beginner": "Начальный",
+        "intermediate": "Средний",
+        "advanced": "Продвинутый"
+    },
+    "subtopics": {
+        "architecture": "Архитектура",
+        "arrays": "Массивы",
+        "arrow-functions": "Стрелочные функции",
+        "async": "Асинхронность",
+        "browser": "Браузер",
+        "change-detection": "Change detection",
+        "closure": "Замыкания",
+        "closures": "Замыкания",
+        "components": "Компоненты",
+        "context": "Контекст",
+        "debounce": "Debounce",
+        "deep-copy": "Глубокое копирование",
+        "di": "Внедрение зависимостей",
+        "directives": "Директивы",
+        "dom": "DOM",
+        "equality": "Сравнение",
+        "event-loop": "Event loop",
+        "execution": "Выполнение",
+        "execution-context": "Контекст выполнения",
+        "forms": "Формы",
+        "functions": "Функции",
+        "hoisting": "Поднятие (hoisting)",
+        "http": "HTTP",
+        "immutability": "Иммутабельность",
+        "injector": "Инжектор",
+        "json": "JSON",
+        "lazy-loading": "Ленивая загрузка",
+        "lifecycle": "Жизненный цикл",
+        "memory": "Память",
+        "modules": "Модули",
+        "objects": "Объекты",
+        "observables": "Observable",
+        "performance": "Производительность",
+        "pipes": "Пайпы",
+        "prototype": "Прототип",
+        "providers": "Провайдеры",
+        "rest": "Rest",
+        "routing": "Роутинг",
+        "rxjs": "RxJS",
+        "scope": "Область видимости",
+        "security": "Безопасность",
+        "services": "Сервисы",
+        "set": "Set",
+        "set-map": "Set и Map",
+        "signals": "Сигналы",
+        "spread": "Spread",
+        "standalone": "Standalone",
+        "state": "Состояние",
+        "strict-mode": "Строгий режим",
+        "testing": "Тестирование",
+        "this": "this",
+        "throttle": "Throttle",
+        "trackby": "trackBy",
+        "types": "Типы",
+        "variables": "Переменные",
+        "zones": "Зоны"
+    }
+}

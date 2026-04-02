@@ -8,9 +8,11 @@ import {
     output,
     signal
 } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-quiz-timer',
+    imports: [TranslatePipe],
     templateUrl: './quiz-timer.component.html',
     styleUrl: './quiz-timer.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,17 +1,17 @@
 <section class="study" aria-labelledby="study-title">
-    <h1 id="study-title" class="study__title">Study guide</h1>
+    <h1 id="study-title" class="study__title">{{ 'study.title' | translate }}</h1>
     <p class="study__intro">
-        Read through every question and model answer, then go to
-        <a routerLink="/quiz" class="study__intro-link">Practice</a>
-        when you are ready.
+        {{ 'study.introBefore' | translate }}
+        <a routerLink="/quiz" class="study__intro-link">{{ 'study.introLink' | translate }}</a>
+        {{ 'study.introAfter' | translate }}
     </p>
 
     @if (loadError()) {
         <p class="study__message study__message--error" role="alert">
-            Could not load questions. Check that assets are available and try again.
+            {{ 'study.loadError' | translate }}
         </p>
     } @else if (loading()) {
-        <p class="study__message">Loading…</p>
+        <p class="study__message">{{ 'study.loading' | translate }}</p>
     } @else {
         <div class="study__layout">
             <details
@@ -20,11 +20,11 @@
                 (toggle)="onTocToggle($event)"
             >
                 <summary class="study__toc-summary">
-                    <span class="study__toc-summary-label">Table of contents</span>
+                    <span class="study__toc-summary-label">{{ 'study.tocSummary' | translate }}</span>
                     <span class="study__toc-chevron" aria-hidden="true"></span>
                 </summary>
-                <nav class="study__toc" aria-label="Study guide contents">
-                    <h2 class="study__toc-title">Contents</h2>
+                <nav class="study__toc" [attr.aria-label]="'study.tocNavAria' | translate">
+                    <h2 class="study__toc-title">{{ 'study.contents' | translate }}</h2>
                     <ul class="study__toc-cats">
                         @for (cat of sections(); track cat.anchorId) {
                             <li class="study__toc-cat">
@@ -32,7 +32,7 @@
                                     class="study__toc-cat-link"
                                     [href]="'#' + cat.anchorId"
                                     (click)="scrollToTocAnchor($event, cat.anchorId)"
-                                    >{{ cat.title }}</a>
+                                    >{{ ('study.category.' + cat.category) | translate }}</a>
                                 <ul class="study__toc-subs">
                                     @for (sub of cat.subtopics; track sub.anchorId) {
                                         <li>
@@ -40,7 +40,7 @@
                                                 class="study__toc-sub-link"
                                                 [href]="'#' + sub.anchorId"
                                                 (click)="scrollToTocAnchor($event, sub.anchorId)"
-                                                >{{ sub.subtopic }}</a>
+                                                >{{ ('subtopics.' + sub.subtopic) | translate }}</a>
                                         </li>
                                     }
                                 </ul>
@@ -57,7 +57,9 @@
                         [attr.id]="cat.anchorId"
                         [attr.aria-labelledby]="cat.anchorId + '__heading'"
                     >
-                        <h2 class="study__cat-heading" [attr.id]="cat.anchorId + '__heading'">{{ cat.title }}</h2>
+                        <h2 class="study__cat-heading" [attr.id]="cat.anchorId + '__heading'">
+                            {{ ('study.category.' + cat.category) | translate }}
+                        </h2>
 
                         @for (sub of cat.subtopics; track sub.anchorId) {
                             <section
@@ -66,7 +68,7 @@
                                 [attr.aria-labelledby]="sub.anchorId + '__heading'"
                             >
                                 <h3 class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
-                                    {{ sub.subtopic }}
+                                    {{ ('subtopics.' + sub.subtopic) | translate }}
                                 </h3>
 
                                 @for (q of sub.questions; track q.id) {

@@ -3,6 +3,7 @@ import type { Question, QuestionCategory } from '../../shared/models/question.mo
 const CATEGORY_ORDER: QuestionCategory[] = ['javascript', 'angular', 'rxjs'];
 
 export interface StudySubtopicSection {
+    /** Stable machine key (English slug source); use `subtopics.<key>` for display. */
     subtopic: string;
     anchorId: string;
     questions: Question[];
@@ -11,7 +12,6 @@ export interface StudySubtopicSection {
 export interface StudyCategorySection {
     category: QuestionCategory;
     anchorId: string;
-    title: string;
     subtopics: StudySubtopicSection[];
 }
 
@@ -23,17 +23,6 @@ export function slugifySubtopic(subtopic: string): string {
         .replace(/^-+|-+$/g, '')
         .replace(/-+/g, '-');
     return s.length > 0 ? s : 'general';
-}
-
-function categoryTitle(category: QuestionCategory): string {
-    switch (category) {
-        case 'javascript':
-            return 'JavaScript';
-        case 'angular':
-            return 'Angular';
-        case 'rxjs':
-            return 'RxJS';
-    }
 }
 
 export function buildStudyGuideSections(questions: Question[]): StudyCategorySection[] {
@@ -68,7 +57,6 @@ export function buildStudyGuideSections(questions: Question[]): StudyCategorySec
         return {
             category,
             anchorId: `study-cat-${category}`,
-            title: categoryTitle(category),
             subtopics
         };
     });

@@ -1,6 +1,7 @@
 import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
-import { take } from 'rxjs';
+import { TranslatePipe } from '@ngx-translate/core';
 
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
@@ -20,7 +21,7 @@ export interface DashboardStats {
 
 @Component({
     selector: 'app-dashboard-page',
-    imports: [ProgressBarComponent, RouterLink],
+    imports: [ProgressBarComponent, RouterLink, TranslatePipe],
     templateUrl: './dashboard-page.component.html',
     styleUrl: './dashboard-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -36,12 +37,13 @@ export class DashboardPageComponent {
     constructor() {
         this.questionService
             .getQuestions()
-            .pipe(take(1))
+            .pipe(takeUntilDestroyed())
             .subscribe({
                 next: (questions) => {
                     const progress = this.progressService.getProgress();
                     this.stats.set(this.computeStats(questions, progress));
                     this.loading.set(false);
+                    this.loadError.set(false);
                 },
                 error: () => {
                     this.loadError.set(true);
@@ -92,10 +94,10 @@ export class DashboardPageComponent {
         const weakTopics: string[] = [];
         for (const [subtopic, agg] of bySubtopic) {
             if (agg.attempts >= 3 && agg.nailed / agg.attempts < 0.6) {
-                weakTopics.push(subtopic.charAt(0).toUpperCase() + subtopic.slice(1));
+                weakTopics.push(subtopic);
             }
         }
-        weakTopics.sort();
+        weakTopics.sort((a, b) => a.localeCompare(b));
 
         return {
             totalAnswered: totalRatings,
