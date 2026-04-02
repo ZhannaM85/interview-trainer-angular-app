@@ -2,6 +2,7 @@
     <header class="app__header">
         <a class="app__brand" routerLink="/">Interview Trainer</a>
         <nav class="app__nav" aria-label="Main">
+            <a routerLink="/study" routerLinkActive="app__link--active">Study guide</a>
             <a routerLink="/quiz" routerLinkActive="app__link--active" [routerLinkActiveOptions]="{ exact: true }">Practice</a>
             <a routerLink="/dashboard" routerLinkActive="app__link--active">Progress</a>
         </nav>

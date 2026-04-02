@@ -94,6 +94,39 @@
     margin-top: 0.5rem;
 }
 
+.dashboard__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.65rem 1rem;
+}
+
+.dashboard__cta-secondary {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 3rem;
+    padding: 0.65rem 1.25rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    color: var(--it-text);
+    font: inherit;
+    font-weight: 600;
+    text-decoration: none;
+    transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.dashboard__cta-secondary:hover {
+    border-color: var(--it-accent);
+    color: var(--it-accent);
+}
+
+.dashboard__cta-secondary:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 3px;
+}
+
 .dashboard__cta {
     display: inline-flex;
     align-items: center;
