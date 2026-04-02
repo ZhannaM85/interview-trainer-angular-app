@@ -1,6 +1,7 @@
 {
-  "name": "interview-trainer",
+  "name": "karkas",
   "version": "0.0.0",
+  "description": "Karkas — interview prep app: study guide, timed practice, and progress in the browser.",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
