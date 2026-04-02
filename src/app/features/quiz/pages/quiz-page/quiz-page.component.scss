@@ -51,6 +51,25 @@
     text-align: center;
 }
 
+.quiz__progress-block {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.quiz__progress {
+    margin: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--it-text-muted);
+    text-align: center;
+}
+
+.quiz__progress-bar {
+    text-align: left;
+}
+
 .quiz__restart {
     min-height: 2.75rem;
     padding: 0.5rem 1.25rem;
