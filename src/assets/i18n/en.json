@@ -1,9 +1,10 @@
 {
     "app": {
-        "brand": "Interview Trainer",
+        "brand": "Karkas",
         "navAria": "Main"
     },
     "nav": {
+        "about": "About",
         "study": "Study guide",
         "quiz": "Practice",
         "dashboard": "Progress"
@@ -28,6 +29,30 @@
             "angular": "Angular",
             "rxjs": "RxJS"
         }
+    },
+    "aboutPage": {
+        "title": "About the project",
+        "privacyNotice": "Your practice data is stored in your browser only. Nothing is sent to a server — your progress stays private and visible only to you.",
+        "purposeHeading": "What is it for?",
+        "purpose1": "Karkas is an interview training application designed to help developers turn knowledge into clear, confident answers.",
+        "purpose2": "Instead of passively learning concepts, you actively practice answering real interview questions under time pressure.",
+        "purpose3": "The goal is to improve recall, structure thinking, and develop the ability to communicate technical ideas effectively — the skill that often determines success in interviews.",
+        "howHeading": "How it works",
+        "howIntro": "The flow is built around short, focused sessions:",
+        "step1Title": "Study guide",
+        "step1Desc": "Read each question with weak, technical, and interview-style model answers so you know what a strong answer sounds like.",
+        "step2Title": "Timed practice",
+        "step2Desc": "In Practice, you get a question and a timer. Answer as you would in a real interview, then compare with the model answers.",
+        "step3Title": "Self-rating",
+        "step3Desc": "Rate how it went: didn’t know, partial, or nailed it. That shapes what you see next and when each question returns for review.",
+        "step4Title": "Progress",
+        "step4Desc": "The Progress view highlights weak topics and uses spaced repetition so harder items come back sooner than easy ones.",
+        "dataHeading": "Where your data lives",
+        "data1": "Stats and ratings are saved only in your browser (local storage). They are not uploaded or synced to the cloud.",
+        "data2": "If you use another device or browser, that copy of the app will not have your history. Clear site data in the browser to reset progress.",
+        "tagline": "Train the habit of speaking your technical knowledge out loud.",
+        "footer": "Designed and implemented by",
+        "footerWith": "with love, passion, and Cursor"
     },
     "quiz": {
         "titleHidden": "Interview",
