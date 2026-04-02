@@ -1,0 +1,67 @@
+<article class="about" aria-labelledby="about-title">
+    <h1 id="about-title" class="about__title">{{ 'aboutPage.title' | translate }}</h1>
+
+    <div class="about__notice" role="status">
+        <p class="about__notice-text">
+            <span class="about__notice-icon" aria-hidden="true">🔒</span>
+            <span>{{ 'aboutPage.privacyNotice' | translate }}</span>
+        </p>
+    </div>
+
+    <section class="about__section" aria-labelledby="about-purpose-heading">
+        <h2 id="about-purpose-heading" class="about__heading">{{ 'aboutPage.purposeHeading' | translate }}</h2>
+        <p class="about__p">{{ 'aboutPage.purpose1' | translate }}</p>
+        <p class="about__p">{{ 'aboutPage.purpose2' | translate }}</p>
+        <p class="about__p">{{ 'aboutPage.purpose3' | translate }}</p>
+    </section>
+
+    <section class="about__section" aria-labelledby="about-how-heading">
+        <h2 id="about-how-heading" class="about__heading">{{ 'aboutPage.howHeading' | translate }}</h2>
+        <p class="about__p">{{ 'aboutPage.howIntro' | translate }}</p>
+        <ol class="about__steps">
+            <li class="about__step">
+                <strong class="about__step-title">{{ 'aboutPage.step1Title' | translate }}</strong>
+                <span class="about__step-desc">{{ 'aboutPage.step1Desc' | translate }}</span>
+            </li>
+            <li class="about__step">
+                <strong class="about__step-title">{{ 'aboutPage.step2Title' | translate }}</strong>
+                <span class="about__step-desc">{{ 'aboutPage.step2Desc' | translate }}</span>
+            </li>
+            <li class="about__step">
+                <strong class="about__step-title">{{ 'aboutPage.step3Title' | translate }}</strong>
+                <span class="about__step-desc">{{ 'aboutPage.step3Desc' | translate }}</span>
+            </li>
+            <li class="about__step">
+                <strong class="about__step-title">{{ 'aboutPage.step4Title' | translate }}</strong>
+                <span class="about__step-desc">{{ 'aboutPage.step4Desc' | translate }}</span>
+            </li>
+        </ol>
+    </section>
+
+    <section class="about__section" aria-labelledby="about-data-heading">
+        <h2 id="about-data-heading" class="about__heading">{{ 'aboutPage.dataHeading' | translate }}</h2>
+        <p class="about__p">{{ 'aboutPage.data1' | translate }}</p>
+        <p class="about__p">{{ 'aboutPage.data2' | translate }}</p>
+    </section>
+
+    <p class="about__tagline">
+        <span aria-hidden="true">✨</span>
+        <em>{{ 'aboutPage.tagline' | translate }}</em>
+    </p>
+
+    <footer class="about__footer">
+        <p class="about__footer-text">
+            {{ 'aboutPage.footer' | translate }}
+            <a
+                href="https://github.com/ZhannaM85"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="about__footer-link"
+            >
+                zhannam85
+            </a>
+            {{ 'aboutPage.footerWith' | translate }}
+            <span class="about__footer-heart" aria-hidden="true">♥</span>.
+        </p>
+    </footer>
+</article>
