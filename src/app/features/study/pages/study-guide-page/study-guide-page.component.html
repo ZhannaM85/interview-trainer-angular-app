@@ -14,31 +14,41 @@
         <p class="study__message">Loading…</p>
     } @else {
         <div class="study__layout">
-            <nav class="study__toc" aria-label="Study guide contents">
-                <h2 class="study__toc-title">Contents</h2>
-                <ul class="study__toc-cats">
-                    @for (cat of sections(); track cat.anchorId) {
-                        <li class="study__toc-cat">
-                            <a
-                                class="study__toc-cat-link"
-                                [href]="'#' + cat.anchorId"
-                                (click)="scrollToTocAnchor($event, cat.anchorId)"
-                                >{{ cat.title }}</a>
-                            <ul class="study__toc-subs">
-                                @for (sub of cat.subtopics; track sub.anchorId) {
-                                    <li>
-                                        <a
-                                            class="study__toc-sub-link"
-                                            [href]="'#' + sub.anchorId"
-                                            (click)="scrollToTocAnchor($event, sub.anchorId)"
-                                            >{{ sub.subtopic }}</a>
-                                    </li>
-                                }
-                            </ul>
-                        </li>
-                    }
-                </ul>
-            </nav>
+            <details
+                class="study__toc-shell"
+                [open]="tocOpen()"
+                (toggle)="onTocToggle($event)"
+            >
+                <summary class="study__toc-summary">
+                    <span class="study__toc-summary-label">Table of contents</span>
+                    <span class="study__toc-chevron" aria-hidden="true"></span>
+                </summary>
+                <nav class="study__toc" aria-label="Study guide contents">
+                    <h2 class="study__toc-title">Contents</h2>
+                    <ul class="study__toc-cats">
+                        @for (cat of sections(); track cat.anchorId) {
+                            <li class="study__toc-cat">
+                                <a
+                                    class="study__toc-cat-link"
+                                    [href]="'#' + cat.anchorId"
+                                    (click)="scrollToTocAnchor($event, cat.anchorId)"
+                                    >{{ cat.title }}</a>
+                                <ul class="study__toc-subs">
+                                    @for (sub of cat.subtopics; track sub.anchorId) {
+                                        <li>
+                                            <a
+                                                class="study__toc-sub-link"
+                                                [href]="'#' + sub.anchorId"
+                                                (click)="scrollToTocAnchor($event, sub.anchorId)"
+                                                >{{ sub.subtopic }}</a>
+                                        </li>
+                                    }
+                                </ul>
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </details>
 
             <div class="study__main">
                 @for (cat of sections(); track cat.anchorId) {

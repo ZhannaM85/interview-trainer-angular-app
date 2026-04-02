@@ -55,26 +55,98 @@
     }
 }
 
-.study__toc {
+.study__toc-shell {
     position: sticky;
     top: 0.75rem;
     z-index: 1;
-    max-height: min(70vh, 32rem);
-    overflow: auto;
-    padding: 1rem 1rem 1.1rem;
     border-radius: 0.85rem;
     border: 1px solid var(--it-border);
     background: var(--it-card);
     box-shadow: var(--it-shadow);
 }
 
+.study__toc-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 1.1rem;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.study__toc-summary::-webkit-details-marker {
+    display: none;
+}
+
+.study__toc-summary::marker {
+    content: '';
+}
+
+.study__toc-summary-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--it-text-muted);
+}
+
+.study__toc-summary:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.35rem;
+}
+
+.study__toc-chevron {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid var(--it-text-muted);
+    border-bottom: 2px solid var(--it-text-muted);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.study__toc-shell[open] .study__toc-chevron {
+    transform: rotate(225deg);
+}
+
+.study__toc {
+    max-height: min(70vh, 32rem);
+    overflow: auto;
+    padding: 0 1rem 1.1rem;
+}
+
+@media (max-width: 899px) {
+    .study__toc-shell[open] .study__toc {
+        border-top: 1px solid var(--it-border);
+    }
+}
+
 .study__toc-title {
+    display: none;
     margin: 0 0 0.65rem;
     font-size: 0.75rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
     color: var(--it-text-muted);
+}
+
+@media (min-width: 900px) {
+    .study__toc-summary {
+        display: none;
+    }
+
+    .study__toc-title {
+        display: block;
+    }
+
+    .study__toc {
+        padding: 1rem 1rem 1.1rem;
+    }
 }
 
 .study__toc-cats {
