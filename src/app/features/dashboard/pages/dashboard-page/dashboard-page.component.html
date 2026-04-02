@@ -1,33 +1,35 @@
 <section class="dashboard" aria-labelledby="dashboard-title">
-    <h1 id="dashboard-title" class="dashboard__title">Interview Progress</h1>
+    <h1 id="dashboard-title" class="dashboard__title">{{ 'dashboard.title' | translate }}</h1>
 
     @if (loadError()) {
-        <p class="dashboard__message dashboard__message--error" role="alert">Could not load stats.</p>
+        <p class="dashboard__message dashboard__message--error" role="alert">
+            {{ 'dashboard.loadError' | translate }}
+        </p>
     } @else if (loading()) {
-        <p class="dashboard__message">Loading…</p>
+        <p class="dashboard__message">{{ 'dashboard.loading' | translate }}</p>
     } @else if (stats(); as s) {
         <div class="dashboard__layout">
             <article class="dashboard__card">
-                <h2 class="dashboard__card-title">Accuracy</h2>
+                <h2 class="dashboard__card-title">{{ 'dashboard.accuracy' | translate }}</h2>
                 <p class="dashboard__metric">{{ s.accuracyPct }}%</p>
-                <app-progress-bar [value]="s.accuracyPct" [max]="100" label="Accuracy" />
+                <app-progress-bar [value]="s.accuracyPct" [max]="100" [label]="'dashboard.accuracy' | translate" />
             </article>
 
             <article class="dashboard__card">
-                <h2 class="dashboard__card-title">Confidence</h2>
+                <h2 class="dashboard__card-title">{{ 'dashboard.confidence' | translate }}</h2>
                 <p class="dashboard__metric">{{ s.confidencePct }}%</p>
-                <app-progress-bar [value]="s.confidencePct" [max]="100" label="Confidence" />
+                <app-progress-bar [value]="s.confidencePct" [max]="100" [label]="'dashboard.confidence' | translate" />
             </article>
 
             <article class="dashboard__card dashboard__card--wide">
-                <h2 class="dashboard__card-title">Weak topics</h2>
+                <h2 class="dashboard__card-title">{{ 'dashboard.weakTopics' | translate }}</h2>
                 @if (s.weakTopics.length === 0) {
-                    <p class="dashboard__hint">No weak spots detected yet (need at least 3 attempts on a topic below 60% nailed).</p>
+                    <p class="dashboard__hint">{{ 'dashboard.weakHint' | translate }}</p>
                 } @else {
                     <ul class="dashboard__list">
                         @for (topic of s.weakTopics; track topic) {
                             <li class="dashboard__topic">
-                                <span class="dashboard__topic-name">{{ topic }}</span>
+                                <span class="dashboard__topic-name">{{ ('subtopics.' + topic) | translate }}</span>
                                 <span class="dashboard__topic-mark" aria-hidden="true">❌</span>
                             </li>
                         }
@@ -37,8 +39,8 @@
 
             <div class="dashboard__cta-wrap">
                 <div class="dashboard__cta-row">
-                    <a routerLink="/study" class="dashboard__cta-secondary">Browse all Q&A</a>
-                    <a routerLink="/quiz" class="dashboard__cta">Start Practice</a>
+                    <a routerLink="/study" class="dashboard__cta-secondary">{{ 'dashboard.browseQa' | translate }}</a>
+                    <a routerLink="/quiz" class="dashboard__cta">{{ 'dashboard.startPractice' | translate }}</a>
                 </div>
             </div>
         </div>

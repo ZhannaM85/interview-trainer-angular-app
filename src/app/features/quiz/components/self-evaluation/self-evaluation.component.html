@@ -1,14 +1,14 @@
-<div class="self-eval" role="group" aria-label="How well did you answer?">
+<div class="self-eval" role="group" [attr.aria-label]="'selfEval.ariaLabel' | translate">
     <button type="button" class="self-eval__btn self-eval__btn--no" (click)="rated.emit('didntKnow')">
         <span class="self-eval__emoji" aria-hidden="true">😬</span>
-        Didn’t know
+        {{ 'selfEval.didntKnow' | translate }}
     </button>
     <button type="button" class="self-eval__btn self-eval__btn--partial" (click)="rated.emit('partial')">
         <span class="self-eval__emoji" aria-hidden="true">🤔</span>
-        Partial
+        {{ 'selfEval.partial' | translate }}
     </button>
     <button type="button" class="self-eval__btn self-eval__btn--yes" (click)="rated.emit('nailed')">
         <span class="self-eval__emoji" aria-hidden="true">✅</span>
-        Nailed it
+        {{ 'selfEval.nailed' | translate }}
     </button>
 </div>

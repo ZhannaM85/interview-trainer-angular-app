@@ -2,7 +2,7 @@
     class="quiz-timer"
     [class]="urgencyClass()"
     role="timer"
-    [attr.aria-label]="'Time remaining ' + formattedTime()"
+    [attr.aria-label]="'quizTimer.aria' | translate: { time: formattedTime() }"
 >
     <span class="quiz-timer__icon" aria-hidden="true">⏱</span>
     <span class="quiz-timer__value">{{ formattedTime() }}</span>

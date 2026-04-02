@@ -1,8 +1,9 @@
 import { ChangeDetectionStrategy, Component, input, output } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
     selector: 'app-interview-feedback',
-    imports: [],
+    imports: [TranslatePipe],
     templateUrl: './interview-feedback.component.html',
     styleUrl: './interview-feedback.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
