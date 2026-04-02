@@ -1,7 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { ApplicationConfig, inject, provideAppInitializer, provideBrowserGlobalErrorListeners } from '@angular/core';
 import { provideHttpClient } from '@angular/common/http';
-import { provideRouter, withInMemoryScrolling } from '@angular/router';
+import { provideRouter, withHashLocation, withInMemoryScrolling } from '@angular/router';
 import { provideTranslateService, TranslateLoader, TranslateService } from '@ngx-translate/core';
 import { TRANSLATE_HTTP_LOADER_CONFIG, TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { firstValueFrom } from 'rxjs';
@@ -50,6 +50,7 @@ export const appConfig: ApplicationConfig = {
         }),
         provideRouter(
             routes,
+            withHashLocation(),
             withInMemoryScrolling({
                 anchorScrolling: 'enabled',
                 scrollPositionRestoration: 'enabled'
