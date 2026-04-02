@@ -1,6 +1,10 @@
 /**
  * Generates `codeExample` for each question id and merges into `questions-bilingual.json`.
  * Run: node scripts/build-code-examples.mjs
+ *
+ * Russian question text lives in `scripts/russian-locale-strings.mjs`; after changing English
+ * prompts in `questions-updated.json`, run `node scripts/apply-russian-translations.mjs` so
+ * `text.ru` stays aligned (edit RU_STRINGS when copy changes).
  */
 import fs from 'node:fs';
 import path from 'node:path';
