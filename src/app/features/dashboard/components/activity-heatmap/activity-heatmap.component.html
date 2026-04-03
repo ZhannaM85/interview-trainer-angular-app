@@ -23,6 +23,7 @@
                             [class.heatmap__cell--l4]="cell.level === 4"
                             [disabled]="cell.isFuture"
                             [attr.aria-label]="cell.label"
+                            (click)="onCellClick(cell)"
                         ></button>
                     }
                 </div>
@@ -39,4 +40,58 @@
         <span class="heatmap__legend-swatch heatmap__legend-swatch--4"></span>
         <span class="heatmap__legend-label">{{ 'heatmap.more' | translate }}</span>
     </div>
+
+    @if (dayDetail(); as day) {
+        <div
+            class="heatmap__backdrop"
+            role="presentation"
+            (click)="closeDayDetail()"
+        ></div>
+        <div
+            class="heatmap__panel"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="heatmap-dialog-title"
+            (click)="$event.stopPropagation()"
+        >
+            <div class="heatmap__panel-header">
+                <h3 id="heatmap-dialog-title" class="heatmap__panel-title">{{ day.dateLabel }}</h3>
+                <button
+                    type="button"
+                    class="heatmap__panel-close"
+                    (click)="closeDayDetail()"
+                    [attr.aria-label]="'heatmap.closeDetail' | translate"
+                >
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <dl class="heatmap__stats">
+                <div class="heatmap__stat-row">
+                    <dt>{{ 'heatmap.statPractice' | translate }}</dt>
+                    <dd>{{ day.questionsAnswered }}</dd>
+                </div>
+                <div class="heatmap__stat-row">
+                    <dt>{{ 'heatmap.statMarkedStudied' | translate }}</dt>
+                    <dd>{{ day.topicsStudied }}</dd>
+                </div>
+            </dl>
+            <h4 class="heatmap__topics-heading">{{ 'heatmap.topicsCovered' | translate }}</h4>
+            @if (day.topicIds.length > 0) {
+                <ul class="heatmap__topic-list">
+                    @for (tid of day.topicIds; track tid) {
+                        <li class="heatmap__topic-item">
+                            {{ ('subtopics.' + subtopicKeyFromTopicId(tid)) | translate }}
+                        </li>
+                    }
+                </ul>
+            } @else if (day.questionsAnswered + day.topicsStudied > 0) {
+                <p class="heatmap__topic-hint">{{ 'heatmap.noTopicHistory' | translate }}</p>
+            } @else {
+                <p class="heatmap__topic-hint">{{ 'heatmap.noActivityThatDay' | translate }}</p>
+            }
+            <button type="button" class="heatmap__panel-done" (click)="closeDayDetail()">
+                {{ 'heatmap.close' | translate }}
+            </button>
+        </div>
+    }
 </section>

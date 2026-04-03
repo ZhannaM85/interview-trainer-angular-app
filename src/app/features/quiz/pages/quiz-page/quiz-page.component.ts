@@ -131,6 +131,7 @@ export class QuizPageComponent {
         }
         this.progressService.recordSelfRating(q.id, rating);
         this.activityService.bumpQuestionsAnswered(1);
+        this.activityService.addCoveredTopic(topicIdFromQuestion(q));
         const updated = this.progressService.getProgress().find((p) => p.questionId === q.id);
         const nextReviewIso = updated?.nextReview ?? new Date().toISOString();
         this.feedbackCtx.set({

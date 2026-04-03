@@ -94,6 +94,7 @@ export class TodayPlanService {
             studiedTopicIds: uniquePush(s.studiedTopicIds, topicId)
         });
         this.activityService.bumpTopicsStudied(1);
+        this.activityService.addCoveredTopic(topicId);
     }
 
     private ensureCurrentDay(): void {

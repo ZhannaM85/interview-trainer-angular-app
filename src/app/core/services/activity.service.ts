@@ -38,9 +38,28 @@ export class ActivityService {
         }));
     }
 
+    /** Records a `category:subtopic` touched on this calendar day (deduped). */
+    addCoveredTopic(topicId: string): void {
+        const trimmed = topicId.trim();
+        if (!trimmed) {
+            return;
+        }
+        this.updateDay(formatLocalYmd(new Date()), (row) => ({
+            ...row,
+            coveredTopicIds: this.mergeTopicIds(row.coveredTopicIds, [trimmed])
+        }));
+    }
+
+    private mergeTopicIds(existing: string[] | undefined, add: string[]): string[] {
+        const s = new Set([...(existing ?? []), ...add]);
+        return [...s].sort((a, b) => a.localeCompare(b));
+    }
+
     private updateDay(date: string, fn: (row: DailyActivity) => DailyActivity): void {
         const map = new Map(this.byDate());
-        const prev = map.get(date) ?? { date, questionsAnswered: 0, topicsStudied: 0 };
+        const prev =
+            map.get(date) ??
+            ({ date, questionsAnswered: 0, topicsStudied: 0, coveredTopicIds: [] } satisfies DailyActivity);
         map.set(date, fn(prev));
         this.persist(map);
         this.byDate.set(map);
@@ -71,7 +90,16 @@ export class ActivityService {
             map.set(row.date, {
                 date: row.date,
                 questionsAnswered: Math.max(0, row.questionsAnswered),
-                topicsStudied: Math.max(0, row.topicsStudied)
+                topicsStudied: Math.max(0, row.topicsStudied),
+                coveredTopicIds: Array.isArray((row as DailyActivity).coveredTopicIds)
+                    ? [
+                          ...new Set(
+                              (row as DailyActivity).coveredTopicIds!.filter(
+                                  (x): x is string => typeof x === 'string'
+                              )
+                          )
+                      ].sort((a, b) => a.localeCompare(b))
+                    : []
             });
         }
         return map;
