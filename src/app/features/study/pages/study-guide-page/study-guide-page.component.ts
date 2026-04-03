@@ -78,6 +78,21 @@ export class StudyGuidePageComponent {
         return this.todayPlan.topicsRemainingToStudy().length > 0;
     });
 
+    /** 1-based index per question in the visible guide (order matches DOM; total count across all topics). */
+    protected readonly globalOrdinalByQuestionId = computed(() => {
+        const map = new Map<number, number>();
+        let n = 0;
+        for (const cat of this.sections()) {
+            for (const sub of cat.subtopics) {
+                for (const q of sub.questions) {
+                    n += 1;
+                    map.set(q.id, n);
+                }
+            }
+        }
+        return map;
+    });
+
     protected onTocToggle(event: Event): void {
         const el = event.target as HTMLDetailsElement;
         if (this.viewportWide()) {

@@ -95,7 +95,10 @@
 
                                 @for (q of sub.questions; track q.id) {
                                     <article class="study__q" [attr.id]="'study-q-' + q.id">
-                                        <h4 class="study__q-heading">{{ q.question }}</h4>
+                                        <h4 class="study__q-heading">
+                                            <span class="study__q-num">{{ globalOrdinalByQuestionId().get(q.id) }}.</span>
+                                            {{ q.question }}
+                                        </h4>
                                         <div class="study__q-answers">
                                             <app-answer-blocks [question]="q" [animated]="false" />
                                         </div>
