@@ -22,6 +22,11 @@ export const routes: Routes = [
             )
     },
     {
+        path: 'plan',
+        loadComponent: () =>
+            import('./features/plan/pages/plan-page/plan-page.component').then((m) => m.PlanPageComponent)
+    },
+    {
         path: 'about',
         loadComponent: () =>
             import('./features/about/pages/about-page/about-page.component').then(

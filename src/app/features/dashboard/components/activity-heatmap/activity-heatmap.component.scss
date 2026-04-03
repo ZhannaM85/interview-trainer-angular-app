@@ -1,0 +1,137 @@
+.heatmap {
+    margin-top: 0.5rem;
+}
+
+.heatmap__title {
+    margin: 0 0 0.35rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--it-text-muted);
+}
+
+.heatmap__desc {
+    margin: 0 0 0.85rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--it-text-muted);
+}
+
+.heatmap__scroll {
+    overflow-x: auto;
+    padding-bottom: 0.35rem;
+    margin-bottom: 0.65rem;
+    -webkit-overflow-scrolling: touch;
+}
+
+.heatmap__cols {
+    display: flex;
+    flex-direction: row;
+    gap: 3px;
+    width: max-content;
+    padding: 2px 0;
+}
+
+.heatmap__week {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.heatmap__cell {
+    width: 11px;
+    height: 11px;
+    margin: 0;
+    padding: 0;
+    border: 1px solid var(--it-border);
+    border-radius: 2px;
+    box-sizing: border-box;
+    cursor: default;
+    background: var(--it-track);
+}
+
+.heatmap__cell:disabled {
+    cursor: default;
+}
+
+.heatmap__cell--future {
+    opacity: 0.28;
+    background: var(--it-track);
+}
+
+.heatmap__cell--today:not(.heatmap__cell--future) {
+    outline: 1px solid var(--it-focus);
+    outline-offset: 1px;
+}
+
+.heatmap__cell--l0:not(.heatmap__cell--future) {
+    background: var(--it-track);
+}
+
+.heatmap__cell--l1 {
+    background: rgba(34, 197, 94, 0.28);
+    border-color: rgba(34, 197, 94, 0.35);
+}
+
+.heatmap__cell--l2 {
+    background: rgba(34, 197, 94, 0.45);
+    border-color: rgba(34, 197, 94, 0.45);
+}
+
+.heatmap__cell--l3 {
+    background: rgba(34, 197, 94, 0.65);
+    border-color: rgba(34, 197, 94, 0.55);
+}
+
+.heatmap__cell--l4 {
+    background: var(--it-accent);
+    border-color: var(--it-accent);
+}
+
+.heatmap__cell:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.heatmap__legend {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.75rem;
+    color: var(--it-text-muted);
+}
+
+.heatmap__legend-label {
+    white-space: nowrap;
+}
+
+.heatmap__legend-swatch {
+    width: 11px;
+    height: 11px;
+    border-radius: 2px;
+    border: 1px solid var(--it-border);
+    box-sizing: border-box;
+}
+
+.heatmap__legend-swatch--0 {
+    background: var(--it-track);
+}
+
+.heatmap__legend-swatch--1 {
+    background: rgba(34, 197, 94, 0.28);
+}
+
+.heatmap__legend-swatch--2 {
+    background: rgba(34, 197, 94, 0.45);
+}
+
+.heatmap__legend-swatch--3 {
+    background: rgba(34, 197, 94, 0.65);
+}
+
+.heatmap__legend-swatch--4 {
+    background: var(--it-accent);
+    border-color: var(--it-accent);
+}

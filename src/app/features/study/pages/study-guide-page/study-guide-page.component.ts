@@ -12,10 +12,12 @@ import { RouterLink } from '@angular/router';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { AnswerBlocksComponent } from '../../../../shared/components/answer-blocks/answer-blocks.component';
 import type { Question } from '../../../../shared/models/question.model';
-import { buildStudyGuideSections } from '../../study-guide-grouping';
+import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
+import { buildStudyGuideSections, type StudyCategorySection, type StudySubtopicSection } from '../../study-guide-grouping';
 
 @Component({
     selector: 'app-study-guide-page',
@@ -26,6 +28,7 @@ import { buildStudyGuideSections } from '../../study-guide-grouping';
 })
 export class StudyGuidePageComponent {
     private readonly questionService = inject(QuestionService);
+    protected readonly todayPlan = inject(TodayPlanService);
     private readonly viewportScroller = inject(ViewportScroller);
     private readonly destroyRef = inject(DestroyRef);
 
@@ -61,7 +64,18 @@ export class StudyGuidePageComponent {
         }
     }
 
+    protected showMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
+        const id = topicIdFromParts(cat.category, sub.subtopic);
+        return this.todayPlan.isSelected(id) && !this.todayPlan.isStudied(id);
+    }
+
+    protected onMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): void {
+        this.todayPlan.markStudied(topicIdFromParts(cat.category, sub.subtopic));
+    }
+
     constructor() {
+        this.todayPlan.syncCalendarDay();
+
         afterNextRender(() => {
             const mq = window.matchMedia('(min-width: 900px)');
             const sync = (): void => {
