@@ -50,7 +50,9 @@
         "gotoStudy": "Study guide",
         "gotoPractice": "Practice",
         "pickTopics": "Topics",
-        "pickHint": "Check the boxes for the subtopics you want in today’s plan."
+        "pickHint": "Check the boxes for the subtopics you want in today’s plan.",
+        "remove": "Remove",
+        "removeAria": "Remove {{topic}} from today’s plan"
     },
     "heatmap": {
         "heading": "Activity",

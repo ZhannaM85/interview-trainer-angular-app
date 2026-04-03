@@ -17,8 +17,18 @@
                     } @else {
                         <ul class="plan__summary-list">
                             @for (id of topicsRemainingToStudy(); track id) {
-                                <li class="plan__summary-item">
-                                    {{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}
+                                <li class="plan__summary-item plan__summary-item--row">
+                                    <span class="plan__summary-topic">{{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}</span>
+                                    <button
+                                        type="button"
+                                        class="plan__remove"
+                                        (click)="todayPlan.toggleTopicSelected(id)"
+                                        [attr.aria-label]="
+                                            ('plan.removeAria' | translate: { topic: (('subtopics.' + topicSubtopicFromId(id)) | translate) })
+                                        "
+                                    >
+                                        {{ 'plan.remove' | translate }}
+                                    </button>
                                 </li>
                             }
                         </ul>
@@ -38,8 +48,18 @@
                     } @else {
                         <ul class="plan__summary-list plan__summary-list--done">
                             @for (id of doneTopics(); track id) {
-                                <li class="plan__summary-item">
-                                    {{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}
+                                <li class="plan__summary-item plan__summary-item--row">
+                                    <span class="plan__summary-topic">{{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}</span>
+                                    <button
+                                        type="button"
+                                        class="plan__remove"
+                                        (click)="todayPlan.toggleTopicSelected(id)"
+                                        [attr.aria-label]="
+                                            ('plan.removeAria' | translate: { topic: (('subtopics.' + topicSubtopicFromId(id)) | translate) })
+                                        "
+                                    >
+                                        {{ 'plan.remove' | translate }}
+                                    </button>
                                 </li>
                             }
                         </ul>

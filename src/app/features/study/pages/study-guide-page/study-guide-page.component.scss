@@ -298,6 +298,15 @@
     line-height: 1.45;
 }
 
+.study__q-num {
+    display: inline-block;
+    min-width: 2.25rem;
+    margin-right: 0.35rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--it-text-muted);
+    font-weight: 800;
+}
+
 .study__q-answers {
     display: flex;
     flex-direction: column;

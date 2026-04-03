@@ -89,6 +89,43 @@
     line-height: 1.35;
 }
 
+.plan__summary-item--row {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.5rem;
+}
+
+.plan__summary-topic {
+    flex: 1 1 auto;
+    min-width: 0;
+}
+
+.plan__remove {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0.25rem 0.45rem;
+    border: none;
+    border-radius: 0.4rem;
+    background: transparent;
+    color: var(--it-text-muted);
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+    cursor: pointer;
+}
+
+.plan__remove:hover {
+    color: var(--it-error);
+}
+
+.plan__remove:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
 .plan__open-study {
     display: inline-block;
     margin-top: 0.65rem;
