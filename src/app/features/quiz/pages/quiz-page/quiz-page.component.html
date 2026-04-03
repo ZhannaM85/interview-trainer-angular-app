@@ -13,7 +13,11 @@
         <div class="quiz__done card-phase">
             <p class="quiz__message">{{ 'quiz.sessionDone' | translate }}</p>
             @if (usingFallbackQueue()) {
-                <p class="quiz__hint">{{ 'quiz.fallbackHintDone' | translate }}</p>
+                @if (todayTopicsFilterActive()) {
+                    <p class="quiz__hint">{{ 'quiz.fallbackHintDoneTodaysTopics' | translate }}</p>
+                } @else {
+                    <p class="quiz__hint">{{ 'quiz.fallbackHintDone' | translate }}</p>
+                }
             }
             <button type="button" class="quiz__restart" (click)="restartSession()">
                 {{ 'quiz.restart' | translate }}
@@ -23,8 +27,29 @@
         @if (planFocusHint()) {
             <p class="quiz__hint quiz__hint--plan" role="status">{{ 'quiz.planFocusHint' | translate }}</p>
         }
+        @if (showBackToTodaysTopicsOption()) {
+            <p class="quiz__hint quiz__hint--scope" role="status">{{ 'quiz.practicingFullBankHint' | translate }}</p>
+        }
         @if (usingFallbackQueue()) {
-            <p class="quiz__hint">{{ 'quiz.fallbackHintActive' | translate }}</p>
+            @if (todayTopicsFilterActive()) {
+                <p class="quiz__hint">{{ 'quiz.fallbackHintTodaysTopics' | translate }}</p>
+            } @else {
+                <p class="quiz__hint">{{ 'quiz.fallbackHintActive' | translate }}</p>
+            }
+        }
+        @if (todayTopicsFilterActive()) {
+            <div class="quiz__scope-actions">
+                <button type="button" class="quiz__scope-btn" (click)="switchToFullQuestionBank()">
+                    {{ 'quiz.practiceAll' | translate }}
+                </button>
+            </div>
+        }
+        @if (showBackToTodaysTopicsOption()) {
+            <div class="quiz__scope-actions">
+                <button type="button" class="quiz__scope-btn quiz__scope-btn--secondary" (click)="switchToTodaysStudiedTopics()">
+                    {{ 'quiz.backToTodaysTopics' | translate }}
+                </button>
+            </div>
         }
 
         @if (sessionProgressCounts(); as prog) {

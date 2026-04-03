@@ -67,6 +67,22 @@ export class QuizPageComponent {
         () => this.todayPlan.hasSelection() && !this.todayPlan.hasStudiedTopics()
     );
 
+    /**
+     * `planFocused` — only questions in topics marked studied today (when any exist).
+     * `full` — entire catalog (same due / fallback rules as before).
+     */
+    protected readonly practiceScope = signal<'planFocused' | 'full'>('planFocused');
+
+    /** At least one topic marked studied today and session is limited to those topics. */
+    protected readonly todayTopicsFilterActive = computed(
+        () =>
+            this.todayPlan.studiedTopicIds().length > 0 && this.practiceScope() === 'planFocused'
+    );
+
+    protected readonly showBackToTodaysTopicsOption = computed(
+        () => this.todayPlan.studiedTopicIds().length > 0 && this.practiceScope() === 'full'
+    );
+
     /** Persisted across language switches while feedback phase is showing. */
     private readonly feedbackCtx = signal<{
         rating: SelfRating;
@@ -131,6 +147,7 @@ export class QuizPageComponent {
         }
         this.progressService.recordSelfRating(q.id, rating);
         this.activityService.bumpQuestionsAnswered(1);
+        this.activityService.addCoveredTopic(topicIdFromQuestion(q));
         const updated = this.progressService.getProgress().find((p) => p.questionId === q.id);
         const nextReviewIso = updated?.nextReview ?? new Date().toISOString();
         this.feedbackCtx.set({
@@ -148,6 +165,16 @@ export class QuizPageComponent {
     }
 
     protected restartSession(): void {
+        this.loadQuiz();
+    }
+
+    protected switchToFullQuestionBank(): void {
+        this.practiceScope.set('full');
+        this.loadQuiz();
+    }
+
+    protected switchToTodaysStudiedTopics(): void {
+        this.practiceScope.set('planFocused');
         this.loadQuiz();
     }
 
@@ -205,10 +232,11 @@ export class QuizPageComponent {
                 next: (all) => {
                     const studied = this.todayPlan.studiedTopicIds();
                     const studiedSet = new Set(studied);
-                    const candidate =
-                        studied.length > 0
-                            ? all.filter((q) => studiedSet.has(topicIdFromQuestion(q)))
-                            : all;
+                    const useTodayTopicFilter =
+                        studied.length > 0 && this.practiceScope() === 'planFocused';
+                    const candidate = useTodayTopicFilter
+                        ? all.filter((q) => studiedSet.has(topicIdFromQuestion(q)))
+                        : all;
                     const due = this.progressService.getDueQuestionsSync(candidate);
                     const useFallback = due.length === 0;
                     this.usingFallbackQueue.set(useFallback);
