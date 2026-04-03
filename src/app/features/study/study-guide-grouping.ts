@@ -1,4 +1,5 @@
 import type { Question, QuestionCategory } from '../../shared/models/question.model';
+import { topicIdFromParts } from '../../shared/utils/topic-key.utils';
 
 const CATEGORY_ORDER: QuestionCategory[] = ['javascript', 'angular', 'rxjs'];
 
@@ -60,4 +61,21 @@ export function buildStudyGuideSections(questions: Question[]): StudyCategorySec
             subtopics
         };
     });
+}
+
+/** Keep only subtopics whose `category:subtopic` id is in `topicIds`. Drops empty categories. */
+export function filterStudyGuideSectionsByTopicIds(
+    sections: StudyCategorySection[],
+    topicIds: ReadonlySet<string>
+): StudyCategorySection[] {
+    const out: StudyCategorySection[] = [];
+    for (const cat of sections) {
+        const subs = cat.subtopics.filter((sub) =>
+            topicIds.has(topicIdFromParts(cat.category, sub.subtopic))
+        );
+        if (subs.length > 0) {
+            out.push({ ...cat, subtopics: subs });
+        }
+    }
+    return out;
 }

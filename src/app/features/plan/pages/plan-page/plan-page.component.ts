@@ -5,14 +5,9 @@ import { TranslatePipe } from '@ngx-translate/core';
 
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
-import type { Question, QuestionCategory } from '../../../../shared/models/question.model';
+import type { Question } from '../../../../shared/models/question.model';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
-import {
-    buildStudyGuideSections,
-    slugifySubtopic,
-    type StudyCategorySection,
-    type StudySubtopicSection
-} from '../../../study/study-guide-grouping';
+import { buildStudyGuideSections, type StudyCategorySection, type StudySubtopicSection } from '../../../study/study-guide-grouping';
 
 @Component({
     selector: 'app-plan-page',
@@ -77,14 +72,8 @@ export class PlanPageComponent {
         return i >= 0 ? id.slice(i + 1) : id;
     }
 
-    /** Fragment target matching study guide `buildStudyGuideSections` anchor ids. */
-    protected anchorFromTopicId(topicId: string): string {
-        const colon = topicId.indexOf(':');
-        if (colon < 0) {
-            return '';
-        }
-        const category = topicId.slice(0, colon) as QuestionCategory;
-        const sub = topicId.slice(colon + 1);
-        return `study-sub-${category}-${slugifySubtopic(sub)}`;
+    /** Query params for Study guide when opening today’s unread topics only. */
+    protected studyGuideQueryParams(): Record<string, string> | undefined {
+        return this.todayPlan.topicsRemainingToStudy().length > 0 ? { today: '1' } : undefined;
     }
 }

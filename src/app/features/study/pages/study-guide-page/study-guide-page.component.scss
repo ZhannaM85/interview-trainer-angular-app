@@ -33,6 +33,17 @@
     border-radius: 0.2rem;
 }
 
+.study__filter-banner {
+    margin: 0 0 1.15rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    background: var(--it-accent-dim);
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--it-text);
+}
+
 .study__message {
     margin: 0;
 }

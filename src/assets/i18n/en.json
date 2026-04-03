@@ -33,7 +33,8 @@
             "rxjs": "RxJS"
         },
         "markStudied": "Mark as studied",
-        "markStudiedAria": "Mark topic as studied for today"
+        "markStudiedAria": "Mark topic as studied for today",
+        "filteredTodayBanner": "Showing only today’s topics you still need to read. Open the Study guide from the main menu to see everything."
     },
     "plan": {
         "title": "Plan for today",

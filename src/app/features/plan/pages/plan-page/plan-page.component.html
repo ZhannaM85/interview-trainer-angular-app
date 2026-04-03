@@ -18,17 +18,17 @@
                         <ul class="plan__summary-list">
                             @for (id of topicsRemainingToStudy(); track id) {
                                 <li class="plan__summary-item">
-                                    <span>{{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}</span>
-                                    <a
-                                        class="plan__summary-link"
-                                        [routerLink]="['/study']"
-                                        [fragment]="anchorFromTopicId(id)"
-                                    >
-                                        {{ 'plan.openInStudy' | translate }}
-                                    </a>
+                                    {{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}
                                 </li>
                             }
                         </ul>
+                        <a
+                            class="plan__open-study"
+                            [routerLink]="['/study']"
+                            [queryParams]="{ today: '1' }"
+                        >
+                            {{ 'plan.openInStudy' | translate }}
+                        </a>
                     }
                 </div>
                 <div class="plan__summary-col">
@@ -49,7 +49,13 @@
         </div>
 
         <div class="plan__cta-row">
-            <a routerLink="/study" class="plan__cta plan__cta--secondary">{{ 'plan.gotoStudy' | translate }}</a>
+            <a
+                [routerLink]="['/study']"
+                [queryParams]="studyGuideQueryParams()"
+                class="plan__cta plan__cta--secondary"
+            >
+                {{ 'plan.gotoStudy' | translate }}
+            </a>
             <a routerLink="/quiz" class="plan__cta plan__cta--primary">{{ 'plan.gotoPractice' | translate }}</a>
         </div>
 

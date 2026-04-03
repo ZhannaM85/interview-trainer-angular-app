@@ -6,6 +6,12 @@
         {{ 'study.introAfter' | translate }}
     </p>
 
+    @if (planTodayFilterActive()) {
+        <p class="study__filter-banner" role="status">
+            {{ 'study.filteredTodayBanner' | translate }}
+        </p>
+    }
+
     @if (loadError()) {
         <p class="study__message study__message--error" role="alert">
             {{ 'study.loadError' | translate }}
