@@ -1,0 +1,88 @@
+<section class="plan" aria-labelledby="plan-title">
+    <h1 id="plan-title" class="plan__title">{{ 'plan.title' | translate }}</h1>
+    <p class="plan__intro">{{ 'plan.intro' | translate }}</p>
+
+    @if (loadError()) {
+        <p class="plan__message plan__message--error" role="alert">{{ 'plan.loadError' | translate }}</p>
+    } @else if (loading()) {
+        <p class="plan__message">{{ 'plan.loading' | translate }}</p>
+    } @else {
+        <div class="plan__summary" aria-labelledby="plan-summary-heading">
+            <h2 id="plan-summary-heading" class="plan__summary-heading">{{ 'plan.summaryHeading' | translate }}</h2>
+            <div class="plan__summary-cols">
+                <div class="plan__summary-col">
+                    <h3 class="plan__summary-sub">{{ 'plan.toStudy' | translate }}</h3>
+                    @if (topicsRemainingToStudy().length === 0) {
+                        <p class="plan__summary-empty">{{ 'plan.toStudyEmpty' | translate }}</p>
+                    } @else {
+                        <ul class="plan__summary-list">
+                            @for (id of topicsRemainingToStudy(); track id) {
+                                <li class="plan__summary-item">
+                                    {{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}
+                                </li>
+                            }
+                        </ul>
+                        <a
+                            class="plan__open-study"
+                            [routerLink]="['/study']"
+                            [queryParams]="{ today: '1' }"
+                        >
+                            {{ 'plan.openInStudy' | translate }}
+                        </a>
+                    }
+                </div>
+                <div class="plan__summary-col">
+                    <h3 class="plan__summary-sub">{{ 'plan.doneStudying' | translate }}</h3>
+                    @if (doneTopics().length === 0) {
+                        <p class="plan__summary-empty">{{ 'plan.doneEmpty' | translate }}</p>
+                    } @else {
+                        <ul class="plan__summary-list plan__summary-list--done">
+                            @for (id of doneTopics(); track id) {
+                                <li class="plan__summary-item">
+                                    {{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}
+                                </li>
+                            }
+                        </ul>
+                    }
+                </div>
+            </div>
+        </div>
+
+        <div class="plan__cta-row">
+            <a
+                [routerLink]="['/study']"
+                [queryParams]="studyGuideQueryParams()"
+                class="plan__cta plan__cta--secondary"
+            >
+                {{ 'plan.gotoStudy' | translate }}
+            </a>
+            <a routerLink="/quiz" class="plan__cta plan__cta--primary">{{ 'plan.gotoPractice' | translate }}</a>
+        </div>
+
+        <h2 class="plan__picker-heading">{{ 'plan.pickTopics' | translate }}</h2>
+        <p class="plan__picker-hint">{{ 'plan.pickHint' | translate }}</p>
+
+        @for (cat of sections(); track cat.anchorId) {
+            <section class="plan__cat" [attr.aria-labelledby]="cat.anchorId + '__heading'">
+                <h3 class="plan__cat-heading" [attr.id]="cat.anchorId + '__heading'">
+                    {{ ('study.category.' + cat.category) | translate }}
+                </h3>
+                <ul class="plan__topic-list">
+                    @for (sub of cat.subtopics; track sub.anchorId) {
+                        <li class="plan__topic-item">
+                            <label class="plan__topic-label">
+                                <input
+                                    class="plan__checkbox"
+                                    type="checkbox"
+                                    [checked]="isChecked(cat, sub)"
+                                    (click)="$event.preventDefault(); todayPlan.toggleTopicSelected(topicId(cat, sub))"
+                                />
+                                <span class="plan__topic-text">{{ (labelKey(sub)) | translate }}</span>
+                            </label>
+                        </li>
+                    }
+                </ul>
+            </section>
+        }
+    }
+</section>

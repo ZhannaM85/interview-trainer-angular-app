@@ -1,0 +1,221 @@
+.plan {
+    width: 100%;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 0 1rem 2.5rem;
+    box-sizing: border-box;
+}
+
+.plan__title {
+    margin: 0 0 0.5rem;
+    font-size: 1.35rem;
+    font-weight: 800;
+    letter-spacing: -0.03em;
+}
+
+.plan__intro {
+    margin: 0 0 1.25rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: var(--it-text-muted);
+}
+
+.plan__message {
+    margin: 0;
+}
+
+.plan__message--error {
+    color: var(--it-error);
+}
+
+.plan__summary {
+    margin-bottom: 1.25rem;
+    padding: 1.15rem 1.25rem;
+    border-radius: 1rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    box-shadow: var(--it-shadow);
+}
+
+.plan__summary-heading {
+    margin: 0 0 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--it-text-muted);
+}
+
+.plan__summary-cols {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+}
+
+@media (min-width: 560px) {
+    .plan__summary-cols {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+.plan__summary-sub {
+    margin: 0 0 0.5rem;
+    font-size: 0.95rem;
+    font-weight: 700;
+}
+
+.plan__summary-empty {
+    margin: 0;
+    font-size: 0.88rem;
+    color: var(--it-text-muted);
+    line-height: 1.45;
+}
+
+.plan__summary-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.plan__summary-item {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.25rem;
+    font-size: 0.88rem;
+    line-height: 1.35;
+}
+
+.plan__open-study {
+    display: inline-block;
+    margin-top: 0.65rem;
+    font-size: 0.88rem;
+    font-weight: 700;
+    color: var(--it-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.plan__open-study:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.2rem;
+}
+
+.plan__summary-list--done .plan__summary-item {
+    color: var(--it-text-muted);
+}
+
+.plan__cta-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.65rem;
+    margin-bottom: 1.5rem;
+}
+
+.plan__cta {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 2.85rem;
+    padding: 0.55rem 1rem;
+    border-radius: 0.75rem;
+    font: inherit;
+    font-weight: 700;
+    text-decoration: none;
+    box-sizing: border-box;
+    transition: transform 0.12s ease, border-color 0.12s ease;
+}
+
+.plan__cta--secondary {
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    color: var(--it-text);
+}
+
+.plan__cta--secondary:hover {
+    border-color: var(--it-accent);
+    color: var(--it-accent);
+}
+
+.plan__cta--primary {
+    border: none;
+    background: var(--it-accent);
+    color: var(--it-on-accent);
+    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+}
+
+.plan__cta--primary:hover {
+    transform: scale(1.02);
+}
+
+.plan__cta:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 3px;
+}
+
+.plan__picker-heading {
+    margin: 0 0 0.35rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.plan__picker-hint {
+    margin: 0 0 1rem;
+    font-size: 0.88rem;
+    color: var(--it-text-muted);
+    line-height: 1.45;
+}
+
+.plan__cat {
+    margin-bottom: 1.25rem;
+    padding: 1rem 1.1rem;
+    border-radius: 0.85rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+}
+
+.plan__cat-heading {
+    margin: 0 0 0.65rem;
+    font-size: 1rem;
+    font-weight: 800;
+}
+
+.plan__topic-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.plan__topic-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.55rem;
+    cursor: pointer;
+    font-size: 0.9rem;
+    line-height: 1.35;
+}
+
+.plan__checkbox {
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.12rem;
+    flex-shrink: 0;
+    accent-color: var(--it-accent);
+}
+
+.plan__topic-text {
+    flex: 1;
+}
+
+@media (max-width: 640px) {
+    .plan {
+        max-width: 100%;
+    }
+}

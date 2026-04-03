@@ -8,14 +8,22 @@ import {
     inject,
     signal
 } from '@angular/core';
-import { RouterLink } from '@angular/router';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe } from '@ngx-translate/core';
+import { distinctUntilChanged, map } from 'rxjs';
 
+import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { AnswerBlocksComponent } from '../../../../shared/components/answer-blocks/answer-blocks.component';
 import type { Question } from '../../../../shared/models/question.model';
-import { buildStudyGuideSections } from '../../study-guide-grouping';
+import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
+import {
+    buildStudyGuideSections,
+    filterStudyGuideSectionsByTopicIds,
+    type StudyCategorySection,
+    type StudySubtopicSection
+} from '../../study-guide-grouping';
 
 @Component({
     selector: 'app-study-guide-page',
@@ -26,8 +34,19 @@ import { buildStudyGuideSections } from '../../study-guide-grouping';
 })
 export class StudyGuidePageComponent {
     private readonly questionService = inject(QuestionService);
+    protected readonly todayPlan = inject(TodayPlanService);
+    private readonly route = inject(ActivatedRoute);
     private readonly viewportScroller = inject(ViewportScroller);
     private readonly destroyRef = inject(DestroyRef);
+
+    /** `?today=1` — show only subtopics still “to study” in today’s plan. */
+    private readonly planTodayOnly = toSignal(
+        this.route.queryParamMap.pipe(
+            map((m) => m.get('today') === '1'),
+            distinctUntilChanged()
+        ),
+        { initialValue: this.route.snapshot.queryParamMap.get('today') === '1' }
+    );
 
     /** Matches `study__layout` two-column breakpoint. */
     private readonly viewportWide = signal(false);
@@ -39,7 +58,25 @@ export class StudyGuidePageComponent {
     /** Collapsed on mobile by default; always expanded on wide viewports. */
     protected readonly tocOpen = signal(false);
 
-    protected readonly sections = computed(() => buildStudyGuideSections(this.questions()));
+    protected readonly sections = computed(() => {
+        const all = buildStudyGuideSections(this.questions());
+        if (!this.planTodayOnly()) {
+            return all;
+        }
+        const remaining = this.todayPlan.topicsRemainingToStudy();
+        const allow = new Set(remaining);
+        if (allow.size === 0) {
+            return all;
+        }
+        return filterStudyGuideSectionsByTopicIds(all, allow);
+    });
+
+    protected readonly planTodayFilterActive = computed(() => {
+        if (!this.planTodayOnly()) {
+            return false;
+        }
+        return this.todayPlan.topicsRemainingToStudy().length > 0;
+    });
 
     protected onTocToggle(event: Event): void {
         const el = event.target as HTMLDetailsElement;
@@ -61,7 +98,18 @@ export class StudyGuidePageComponent {
         }
     }
 
+    protected showMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
+        const id = topicIdFromParts(cat.category, sub.subtopic);
+        return this.todayPlan.isSelected(id) && !this.todayPlan.isStudied(id);
+    }
+
+    protected onMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): void {
+        this.todayPlan.markStudied(topicIdFromParts(cat.category, sub.subtopic));
+    }
+
     constructor() {
+        this.todayPlan.syncCalendarDay();
+
         afterNextRender(() => {
             const mq = window.matchMedia('(min-width: 900px)');
             const sync = (): void => {

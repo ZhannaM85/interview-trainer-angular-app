@@ -7,6 +7,7 @@ import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Progress } from '../../../../shared/models/progress.model';
 import type { Question } from '../../../../shared/models/question.model';
+import { ActivityHeatmapComponent } from '../../components/activity-heatmap/activity-heatmap.component';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
 
 export interface DashboardStats {
@@ -21,7 +22,7 @@ export interface DashboardStats {
 
 @Component({
     selector: 'app-dashboard-page',
-    imports: [ProgressBarComponent, RouterLink, TranslatePipe],
+    imports: [ActivityHeatmapComponent, ProgressBarComponent, RouterLink, TranslatePipe],
     templateUrl: './dashboard-page.component.html',
     styleUrl: './dashboard-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
