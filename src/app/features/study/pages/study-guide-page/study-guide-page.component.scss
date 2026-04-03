@@ -33,6 +33,17 @@
     border-radius: 0.2rem;
 }
 
+.study__filter-banner {
+    margin: 0 0 1.15rem;
+    padding: 0.7rem 0.85rem;
+    border-radius: 0.65rem;
+    border: 1px solid rgba(34, 197, 94, 0.35);
+    background: var(--it-accent-dim);
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--it-text);
+}
+
 .study__message {
     margin: 0;
 }
@@ -225,12 +236,46 @@
     margin-bottom: 0;
 }
 
+.study__sub-heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.65rem;
+    margin-bottom: 1rem;
+}
+
 .study__sub-heading {
-    margin: 0 0 1rem;
+    margin: 0;
+    flex: 1 1 auto;
+    min-width: 0;
     font-size: 1rem;
     font-weight: 700;
     color: var(--it-text-muted);
     text-transform: capitalize;
+}
+
+.study__mark-studied {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0.45rem 0.85rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--it-accent);
+    background: var(--it-accent-dim);
+    color: var(--it-accent);
+    font: inherit;
+    font-size: 0.8rem;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.study__mark-studied:hover {
+    filter: brightness(1.08);
+}
+
+.study__mark-studied:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
 }
 
 .study__q {

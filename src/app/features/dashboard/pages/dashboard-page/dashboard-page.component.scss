@@ -1,6 +1,6 @@
 .dashboard {
     width: 100%;
-    max-width: 40rem;
+    max-width: 44rem;
     margin: 0 auto;
     padding: 0 1rem 2rem;
     box-sizing: border-box;
@@ -33,6 +33,10 @@
     border: 1px solid var(--it-border);
     background: var(--it-card);
     box-shadow: var(--it-shadow);
+}
+
+.dashboard__card--wide {
+    max-width: 100%;
 }
 
 .dashboard__card-title {

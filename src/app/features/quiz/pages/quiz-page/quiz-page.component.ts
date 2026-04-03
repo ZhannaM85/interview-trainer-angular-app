@@ -3,9 +3,12 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
+import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService, SCORE_BY_RATING } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
+import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import type { Question, QuestionCategory } from '../../../../shared/models/question.model';
+import { topicIdFromQuestion } from '../../../../shared/utils/topic-key.utils';
 import type { SelfRating } from '../../../../shared/models/self-rating.model';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
 import { InterviewAnswerComponent } from '../../components/interview-answer/interview-answer.component';
@@ -45,6 +48,8 @@ export interface SessionProgressCounts {
 export class QuizPageComponent {
     private readonly questionService = inject(QuestionService);
     private readonly progressService = inject(ProgressService);
+    private readonly todayPlan = inject(TodayPlanService);
+    private readonly activityService = inject(ActivityService);
     private readonly translate = inject(TranslateService);
 
     protected readonly currentQuestion = signal<Question | null>(null);
@@ -56,6 +61,11 @@ export class QuizPageComponent {
     protected readonly usingFallbackQueue = signal(false);
     protected readonly sessionIndex = signal(0);
     protected readonly sessionTotal = signal(0);
+
+    /** Today’s plan has topics selected but none marked studied yet — practice still uses full catalog. */
+    protected readonly planFocusHint = computed(
+        () => this.todayPlan.hasSelection() && !this.todayPlan.hasStudiedTopics()
+    );
 
     /** Persisted across language switches while feedback phase is showing. */
     private readonly feedbackCtx = signal<{
@@ -78,6 +88,8 @@ export class QuizPageComponent {
     });
 
     constructor() {
+        this.todayPlan.syncCalendarDay();
+
         this.questionService
             .getQuestions()
             .pipe(takeUntilDestroyed())
@@ -118,6 +130,7 @@ export class QuizPageComponent {
             return;
         }
         this.progressService.recordSelfRating(q.id, rating);
+        this.activityService.bumpQuestionsAnswered(1);
         const updated = this.progressService.getProgress().find((p) => p.questionId === q.id);
         const nextReviewIso = updated?.nextReview ?? new Date().toISOString();
         this.feedbackCtx.set({
@@ -190,10 +203,16 @@ export class QuizPageComponent {
             .pipe(take(1))
             .subscribe({
                 next: (all) => {
-                    const due = this.progressService.getDueQuestionsSync(all);
+                    const studied = this.todayPlan.studiedTopicIds();
+                    const studiedSet = new Set(studied);
+                    const candidate =
+                        studied.length > 0
+                            ? all.filter((q) => studiedSet.has(topicIdFromQuestion(q)))
+                            : all;
+                    const due = this.progressService.getDueQuestionsSync(candidate);
                     const useFallback = due.length === 0;
                     this.usingFallbackQueue.set(useFallback);
-                    const queue = useFallback ? all : due;
+                    const queue = useFallback ? candidate : due;
                     this.sessionTotal.set(queue.length);
                     this.sessionIndex.set(0);
                     this.questionService.initializeQueue(queue);

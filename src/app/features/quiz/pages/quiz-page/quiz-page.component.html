@@ -20,6 +20,9 @@
             </button>
         </div>
     } @else if (currentQuestion(); as q) {
+        @if (planFocusHint()) {
+            <p class="quiz__hint quiz__hint--plan" role="status">{{ 'quiz.planFocusHint' | translate }}</p>
+        }
         @if (usingFallbackQueue()) {
             <p class="quiz__hint">{{ 'quiz.fallbackHintActive' | translate }}</p>
         }

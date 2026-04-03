@@ -6,6 +6,12 @@
         {{ 'study.introAfter' | translate }}
     </p>
 
+    @if (planTodayFilterActive()) {
+        <p class="study__filter-banner" role="status">
+            {{ 'study.filteredTodayBanner' | translate }}
+        </p>
+    }
+
     @if (loadError()) {
         <p class="study__message study__message--error" role="alert">
             {{ 'study.loadError' | translate }}
@@ -67,9 +73,25 @@
                                 [attr.id]="sub.anchorId"
                                 [attr.aria-labelledby]="sub.anchorId + '__heading'"
                             >
-                                <h3 class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
-                                    {{ ('subtopics.' + sub.subtopic) | translate }}
-                                </h3>
+                                <div class="study__sub-heading-row">
+                                    <h3 class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
+                                        {{ ('subtopics.' + sub.subtopic) | translate }}
+                                    </h3>
+                                    @if (showMarkStudied(cat, sub)) {
+                                        <button
+                                            type="button"
+                                            class="study__mark-studied"
+                                            [attr.aria-label]="
+                                                ('study.markStudiedAria' | translate) +
+                                                ' ' +
+                                                (('subtopics.' + sub.subtopic) | translate)
+                                            "
+                                            (click)="onMarkStudied(cat, sub)"
+                                        >
+                                            {{ 'study.markStudied' | translate }}
+                                        </button>
+                                    }
+                                </div>
 
                                 @for (q of sub.questions; track q.id) {
                                     <article class="study__q" [attr.id]="'study-q-' + q.id">
