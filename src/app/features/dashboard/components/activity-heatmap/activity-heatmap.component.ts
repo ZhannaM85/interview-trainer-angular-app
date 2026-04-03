@@ -1,4 +1,12 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    effect,
+    ElementRef,
+    inject,
+    viewChild
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
@@ -28,6 +36,9 @@ export class ActivityHeatmapComponent {
     private readonly activityService = inject(ActivityService);
     private readonly translate = inject(TranslateService);
 
+    /** Scroll container; scrolled to the right so the current week (today) is in view. */
+    private readonly scrollHost = viewChild<ElementRef<HTMLElement>>('heatmapScroll');
+
     private readonly activeLang = toSignal(
         this.translate.onLangChange.pipe(map((e) => e.lang)),
         { initialValue: this.translate.currentLang }
@@ -37,6 +48,29 @@ export class ActivityHeatmapComponent {
         void this.activeLang();
         return this.buildGrid();
     });
+
+    constructor() {
+        effect(() => {
+            void this.weekColumns();
+            queueMicrotask(() => {
+                requestAnimationFrame(() => {
+                    this.scrollToEnd();
+                    requestAnimationFrame(() => this.scrollToEnd());
+                });
+            });
+        });
+    }
+
+    private scrollToEnd(): void {
+        const el = this.scrollHost()?.nativeElement;
+        if (!el) {
+            return;
+        }
+        const max = el.scrollWidth - el.clientWidth;
+        if (max > 0) {
+            el.scrollLeft = max;
+        }
+    }
 
     private buildGrid(): HeatmapCell[][] {
         const today = new Date();
