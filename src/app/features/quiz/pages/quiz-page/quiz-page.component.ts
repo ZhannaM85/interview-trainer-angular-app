@@ -238,9 +238,11 @@ export class QuizPageComponent {
                         ? all.filter((q) => studiedSet.has(topicIdFromQuestion(q)))
                         : all;
                     const due = this.progressService.getDueQuestionsSync(candidate);
-                    const useFallback = due.length === 0;
+                    const fullBankMode = this.practiceScope() === 'full';
+                    /** Due-only queue when focusing on today’s topics; full bank includes every question in the candidate set. */
+                    const useFallback = !fullBankMode && due.length === 0;
                     this.usingFallbackQueue.set(useFallback);
-                    const queue = useFallback ? candidate : due;
+                    const queue = fullBankMode ? candidate : useFallback ? candidate : due;
                     this.sessionTotal.set(queue.length);
                     this.sessionIndex.set(0);
                     this.questionService.initializeQueue(queue);
