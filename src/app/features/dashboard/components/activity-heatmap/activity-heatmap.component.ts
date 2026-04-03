@@ -1,4 +1,13 @@
-import { ChangeDetectionStrategy, Component, computed, inject } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    effect,
+    ElementRef,
+    inject,
+    signal,
+    viewChild
+} from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
@@ -17,9 +26,20 @@ export interface HeatmapCell {
     label: string;
 }
 
+export interface HeatmapDayDetail {
+    date: string;
+    dateLabel: string;
+    questionsAnswered: number;
+    topicsStudied: number;
+    topicIds: string[];
+}
+
 @Component({
     selector: 'app-activity-heatmap',
     imports: [TranslatePipe],
+    host: {
+        '(document:keydown)': 'onEscape($event)'
+    },
     templateUrl: './activity-heatmap.component.html',
     styleUrl: './activity-heatmap.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -27,6 +47,11 @@ export interface HeatmapCell {
 export class ActivityHeatmapComponent {
     private readonly activityService = inject(ActivityService);
     private readonly translate = inject(TranslateService);
+
+    /** Scroll container; scrolled to the right so the current week (today) is in view. */
+    private readonly scrollHost = viewChild<ElementRef<HTMLElement>>('heatmapScroll');
+
+    protected readonly dayDetail = signal<HeatmapDayDetail | null>(null);
 
     private readonly activeLang = toSignal(
         this.translate.onLangChange.pipe(map((e) => e.lang)),
@@ -37,6 +62,76 @@ export class ActivityHeatmapComponent {
         void this.activeLang();
         return this.buildGrid();
     });
+
+    constructor() {
+        effect(() => {
+            void this.weekColumns();
+            queueMicrotask(() => {
+                requestAnimationFrame(() => {
+                    this.scrollToEnd();
+                    requestAnimationFrame(() => this.scrollToEnd());
+                });
+            });
+        });
+    }
+
+    private scrollToEnd(): void {
+        const el = this.scrollHost()?.nativeElement;
+        if (!el) {
+            return;
+        }
+        const max = el.scrollWidth - el.clientWidth;
+        if (max > 0) {
+            el.scrollLeft = max;
+        }
+    }
+
+    protected onCellClick(cell: HeatmapCell): void {
+        if (cell.isFuture) {
+            return;
+        }
+        const row = this.activityService.activityMap().get(cell.date);
+        const loc = this.translate.currentLang === 'ru' ? 'ru-RU' : 'en-US';
+        const dt = this.parseLocalYmd(cell.date);
+        const dateLabel = dt.toLocaleDateString(loc, {
+            weekday: 'long',
+            month: 'long',
+            day: 'numeric',
+            year: 'numeric'
+        });
+        this.dayDetail.set({
+            date: cell.date,
+            dateLabel,
+            questionsAnswered: row?.questionsAnswered ?? 0,
+            topicsStudied: row?.topicsStudied ?? 0,
+            topicIds: row?.coveredTopicIds ?? []
+        });
+    }
+
+    protected closeDayDetail(): void {
+        this.dayDetail.set(null);
+    }
+
+    protected onEscape(event: KeyboardEvent): void {
+        if (event.key !== 'Escape' || !this.dayDetail()) {
+            return;
+        }
+        event.preventDefault();
+        this.closeDayDetail();
+    }
+
+    protected subtopicKeyFromTopicId(topicId: string): string {
+        const i = topicId.indexOf(':');
+        return i >= 0 ? topicId.slice(i + 1) : topicId;
+    }
+
+    private parseLocalYmd(ymd: string): Date {
+        const parts = ymd.split('-').map(Number);
+        const y = parts[0] ?? 0;
+        const m = parts[1] ?? 1;
+        const d = parts[2] ?? 1;
+        return new Date(y, m - 1, d);
+    }
 
     private buildGrid(): HeatmapCell[][] {
         const today = new Date();

@@ -54,13 +54,20 @@
     },
     "heatmap": {
         "heading": "Activity",
-        "description": "Each square is a day. Intensity reflects practice questions answered plus topics marked as studied.",
+        "description": "Each square is a day. Tap a day for totals and topics. Intensity reflects practice answers plus topics marked as studied.",
         "gridAria": "Daily activity over the past weeks",
         "less": "Less",
         "more": "More",
         "cellFuture": "{{date}} — future day",
         "cellNone": "{{date}} — no activity",
-        "cellActivity": "{{date}} — {{count}} activities"
+        "cellActivity": "{{date}} — {{count}} activities",
+        "statPractice": "Practice answers",
+        "statMarkedStudied": "Topics marked as studied",
+        "topicsCovered": "Topics touched",
+        "noTopicHistory": "Topic names are saved for new activity from now on. Older days may only show totals.",
+        "noActivityThatDay": "No practice or study logged for this day.",
+        "close": "Done",
+        "closeDetail": "Close day details"
     },
     "aboutPage": {
         "title": "About the project",
@@ -103,7 +110,12 @@
         "progressToGo": "to go",
         "progressSep": "·",
         "sessionProgressLabel": "Session progress",
-        "planFocusHint": "You have topics selected for today but none marked as studied yet. After you mark topics in the Study guide, Practice will use only those questions. Until then, you still practice from the full set (or due reviews)."
+        "planFocusHint": "You have topics selected for today but none marked as studied yet. After you mark topics in the Study guide, Practice will use only those questions. Until then, you still practice from the full set (or due reviews).",
+        "practiceAll": "Practice all questions",
+        "backToTodaysTopics": "Practice only today’s studied topics",
+        "practicingFullBankHint": "You are practicing from the full question bank (all topics).",
+        "fallbackHintTodaysTopics": "Nothing in your studied topics is due for review yet — practicing every question in those topics for now.",
+        "fallbackHintDoneTodaysTopics": "No questions in your studied topics were due for review, so this round used all questions in those topics."
     },
     "dashboard": {
         "title": "Interview Progress",
