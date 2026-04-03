@@ -79,6 +79,50 @@
     text-align: center;
 }
 
+.quiz__hint--scope {
+    margin-bottom: 0.25rem;
+}
+
+.quiz__scope-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.quiz__scope-btn {
+    min-height: 2.65rem;
+    padding: 0.55rem 1rem;
+    border-radius: 0.75rem;
+    border: 1px solid var(--it-accent);
+    background: var(--it-accent-dim);
+    color: var(--it-accent);
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.quiz__scope-btn:hover {
+    filter: brightness(1.06);
+}
+
+.quiz__scope-btn:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 3px;
+}
+
+.quiz__scope-btn--secondary {
+    border-color: var(--it-border);
+    background: var(--it-card);
+    color: var(--it-text);
+}
+
+.quiz__scope-btn--secondary:hover {
+    border-color: var(--it-accent);
+    color: var(--it-accent);
+}
+
 .quiz__progress-block {
     display: flex;
     flex-direction: column;
