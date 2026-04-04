@@ -104,6 +104,23 @@
                                         </div>
                                     </article>
                                 }
+
+                                @if (showMarkStudied(cat, sub)) {
+                                    <div class="study__sub-mark-end">
+                                        <button
+                                            type="button"
+                                            class="study__mark-studied"
+                                            [attr.aria-label]="
+                                                ('study.markStudiedAria' | translate) +
+                                                ' ' +
+                                                (('subtopics.' + sub.subtopic) | translate)
+                                            "
+                                            (click)="onMarkStudied(cat, sub)"
+                                        >
+                                            {{ 'study.markStudied' | translate }}
+                                        </button>
+                                    </div>
+                                }
                             </section>
                         }
                     </section>
