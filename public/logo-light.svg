@@ -7,10 +7,16 @@
         stroke="rgba(15, 23, 42, 0.12)"
         stroke-width="1"
     />
-    <!-- Structural K mark, same geometry as favicon.svg, light theme colors -->
-    <g fill="none" stroke="#16a34a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M 9 7 L 9 25"/>
-        <path d="M 9 9.5 L 22 16"/>
-        <path d="M 9 16 L 22 25"/>
-    </g>
+    <path
+        fill="none"
+        stroke="#16a34a"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="
+            M 16 7 L 26 13 L 16 19 L 6 13 Z
+            M 16 19 L 16 28 L 6 22 L 6 13
+            M 16 19 L 26 13 L 26 22 L 16 28 Z
+        "
+    />
 </svg>

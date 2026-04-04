@@ -1,9 +1,16 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Karkas">
     <rect width="32" height="32" rx="7" fill="#0f172a"/>
-    <!-- Structural “K”: vertical beam + two diagonal struts (framework / Karkas) -->
-    <g fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M 9 7 L 9 25"/>
-        <path d="M 9 9.5 L 22 16"/>
-        <path d="M 9 16 L 22 25"/>
-    </g>
+    <!-- Isometric parallelepiped — wireframe only -->
+    <path
+        fill="none"
+        stroke="#22c55e"
+        stroke-width="1.5"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="
+            M 16 7 L 26 13 L 16 19 L 6 13 Z
+            M 16 19 L 16 28 L 6 22 L 6 13
+            M 16 19 L 26 13 L 26 22 L 16 28 Z
+        "
+    />
 </svg>
