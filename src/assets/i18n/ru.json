@@ -139,7 +139,8 @@
         "weak": "Слабый ответ",
         "technical": "Технический ответ",
         "interview": "Ответ для собеседования",
-        "codeExample": "Пример кода"
+        "codeExample": "Пример кода",
+        "readMore": "Читать дальше"
     },
     "interviewQuestion": {
         "cta": "Я ответил(а)"
