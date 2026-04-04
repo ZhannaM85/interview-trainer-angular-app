@@ -6,11 +6,11 @@
     border-radius: 0.75rem;
     padding: 1rem 1.1rem;
     border: 1px solid var(--it-border);
-    background: rgba(15, 23, 42, 0.35);
+    background: var(--it-block-surface);
 }
 
 .interview-answer__block--weak {
-    border-color: rgba(239, 68, 68, 0.45);
+    border-color: var(--it-weak-border);
     opacity: 0.92;
 }
 
@@ -19,8 +19,8 @@
 }
 
 .interview-answer__block--interview {
-    border-color: rgba(34, 197, 94, 0.55);
-    box-shadow: 0 0 0 1px rgba(34, 197, 94, 0.12);
+    border-color: var(--it-interview-border);
+    box-shadow: 0 0 0 1px var(--it-interview-inner-glow);
     background: var(--it-accent-dim);
 }
 
@@ -83,7 +83,7 @@
     padding: 1rem 1.1rem;
     border-radius: 0.75rem;
     border: 1px solid var(--it-border);
-    background: rgba(15, 23, 42, 0.65);
+    background: var(--it-code-block-bg);
     overflow-x: auto;
     font-family: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, monospace;
     font-size: 0.82rem;

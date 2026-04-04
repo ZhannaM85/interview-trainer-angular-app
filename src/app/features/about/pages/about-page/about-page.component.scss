@@ -26,8 +26,8 @@
     margin: 0 0 1.5rem;
     padding: 1rem 1.1rem;
     border-radius: 0.75rem;
-    border: 1px solid rgba(99, 102, 241, 0.35);
-    background: rgba(99, 102, 241, 0.12);
+    border: 1px solid var(--it-notice-border);
+    background: var(--it-notice-bg);
     box-shadow: var(--it-shadow);
 }
 
@@ -126,7 +126,7 @@
 }
 
 .about__footer-link:hover {
-    color: #a5b4fc;
+    color: var(--it-link-accent-hover);
 }
 
 .about__footer-link:focus-visible {

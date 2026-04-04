@@ -6,8 +6,26 @@
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Karkas helps developers practice technical interview answers with a study guide, timed sessions, and local progress tracking.">
-  <meta name="theme-color" content="#0f172a">
+  <meta id="app-theme-color" name="theme-color" content="#0f172a">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <script>
+    (function () {
+      try {
+        var k = 'interview-trainer-theme';
+        var v = localStorage.getItem(k);
+        if (v === 'light' || v === 'dark') {
+          document.documentElement.setAttribute('data-theme', v);
+          document.documentElement.style.colorScheme = v === 'light' ? 'light' : 'dark';
+          var m = document.getElementById('app-theme-color');
+          if (m) {
+            m.setAttribute('content', v === 'light' ? '#f8fafc' : '#0f172a');
+          }
+        }
+      } catch (e) {
+        /* ignore */
+      }
+    })();
+  </script>
 </head>
 <body>
   <app-root></app-root>

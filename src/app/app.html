@@ -30,6 +30,24 @@
                 <span class="app__brand-text">{{ 'app.brand' | translate }}</span>
             </a>
             <div class="app__header-actions">
+                <button
+                    type="button"
+                    class="app__theme-btn"
+                    (click)="onThemeToggle()"
+                    [attr.aria-label]="
+                        themeService.theme() === 'dark'
+                            ? ('theme.switchToLight' | translate)
+                            : ('theme.switchToDark' | translate)
+                    "
+                >
+                    <span class="app__theme-icon" aria-hidden="true">
+                        @if (themeService.theme() === 'dark') {
+                            <span class="app__theme-glyph">☼</span>
+                        } @else {
+                            <span class="app__theme-glyph">☽</span>
+                        }
+                    </span>
+                </button>
                 <div class="app__locale">
                     <label class="visually-hidden" for="app-locale-select">{{ 'locale.selectLabel' | translate }}</label>
                     <select

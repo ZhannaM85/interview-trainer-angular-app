@@ -30,7 +30,7 @@
     padding: 0.65rem 1rem calc(0.65rem + env(safe-area-inset-bottom, 0px));
     border-top: 1px solid var(--it-border);
     background: var(--it-bg);
-    box-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
+    box-shadow: var(--it-quiz-sticky-shadow);
 }
 
 .quiz__eval-footer .self-eval {

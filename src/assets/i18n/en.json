@@ -17,6 +17,11 @@
         "en": "English",
         "ru": "Russian"
     },
+    "theme": {
+        "switchToLight": "Switch to light theme",
+        "switchToDark": "Switch to dark theme",
+        "toggleAria": "Theme"
+    },
     "study": {
         "title": "Study guide",
         "introBefore": "Read through every question and model answer, then go to",
