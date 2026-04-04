@@ -21,9 +21,9 @@
             <a class="app__brand" routerLink="/">
                 <img
                     class="app__brand-mark"
-                    src="favicon.svg"
-                    width="28"
-                    height="28"
+                    [src]="themeService.theme() === 'light' ? '/logo-light.svg' : '/favicon.svg'"
+                    width="40"
+                    height="40"
                     alt=""
                     decoding="async"
                 />
