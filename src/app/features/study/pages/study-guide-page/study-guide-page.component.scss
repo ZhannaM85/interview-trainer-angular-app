@@ -278,6 +278,12 @@
     outline-offset: 2px;
 }
 
+.study__sub-mark-end {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 1.15rem;
+}
+
 .study__q {
     scroll-margin-top: 0.75rem;
     margin-bottom: 1.5rem;

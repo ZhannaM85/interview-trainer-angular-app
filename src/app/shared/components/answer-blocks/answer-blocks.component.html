@@ -24,3 +24,20 @@
     <p class="interview-answer__label">{{ 'answerBlocks.interview' | translate }}</p>
     <p class="interview-answer__text interview-answer__text--hero">{{ question().interviewAnswer }}</p>
 </div>
+
+@if (question().codeExample.trim().length > 0) {
+    <div
+        class="interview-answer__code-wrap"
+        [class.interview-answer__reveal]="animated()"
+        [class.interview-answer__reveal--4]="animated()"
+    >
+        <p class="interview-answer__label interview-answer__label--code">
+            {{ 'answerBlocks.codeExample' | translate }}
+        </p>
+        <pre
+            class="interview-answer__code"
+            role="region"
+            [attr.aria-label]="'answerBlocks.codeExample' | translate"
+        ><code>{{ question().codeExample }}</code></pre>
+    </div>
+}
