@@ -6,6 +6,9 @@ import { THEME_STORAGE_KEY, type ThemeId } from '../theme.constants';
 const META_THEME_COLOR_DARK = '#0f172a';
 const META_THEME_COLOR_LIGHT = '#f8fafc';
 
+const FAVICON_DARK = '/favicon.svg';
+const FAVICON_LIGHT = '/logo-light.svg';
+
 function readStoredTheme(): ThemeId | null {
     try {
         const raw = localStorage.getItem(THEME_STORAGE_KEY);
@@ -65,6 +68,11 @@ export class ThemeService {
         const meta = this.document.querySelector('meta[name="theme-color"]');
         if (meta) {
             meta.setAttribute('content', t === 'light' ? META_THEME_COLOR_LIGHT : META_THEME_COLOR_DARK);
+        }
+
+        const favicon = this.document.getElementById('app-favicon') ?? this.document.querySelector('link[rel="icon"]');
+        if (favicon) {
+            favicon.setAttribute('href', t === 'light' ? FAVICON_LIGHT : FAVICON_DARK);
         }
     }
 }
