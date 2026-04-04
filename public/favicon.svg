@@ -1,19 +1,9 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" role="img" aria-label="Karkas">
-    <defs>
-        <linearGradient id="karkas-blade" x1="4" y1="4" x2="28" y2="26" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#4ade80"/>
-            <stop offset="1" stop-color="#059669"/>
-        </linearGradient>
-    </defs>
     <rect width="32" height="32" rx="7" fill="#0f172a"/>
-    <!-- Thin hex ring (R_inner 5.5 → R_outer 10): narrow trapezoids, no wedge to center -->
-    <g fill="url(#karkas-blade)" fill-opacity="0.94">
-        <path d="M16 10.5 20.76 13.25 24.66 11 16 6Z"/>
-        <path d="M20.76 13.25 20.76 18.75 24.66 21 24.66 11Z"/>
-        <path d="M20.76 18.75 16 21.5 16 26 24.66 21Z"/>
-        <path d="M16 21.5 11.24 18.75 7.34 21 16 26Z"/>
-        <path d="M11.24 18.75 11.24 13.25 7.34 11 7.34 21Z"/>
-        <path d="M11.24 13.25 16 10.5 16 6 7.34 11Z"/>
+    <!-- Structural “K”: vertical beam + two diagonal struts (framework / Karkas) -->
+    <g fill="none" stroke="#22c55e" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+        <path d="M 9 7 L 9 25"/>
+        <path d="M 9 9.5 L 22 16"/>
+        <path d="M 9 16 L 22 25"/>
     </g>
-    <circle cx="16" cy="16" r="3.25" fill="#fff"/>
 </svg>
