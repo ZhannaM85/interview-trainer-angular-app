@@ -19,7 +19,7 @@
     font-size: 0.75rem;
     font-weight: 600;
     color: var(--it-text-muted);
-    background: rgba(148, 163, 184, 0.12);
+    background: var(--it-interview-q-bg);
     border: 1px solid var(--it-border);
 }
 
@@ -50,7 +50,7 @@
     transition:
         transform 0.12s ease,
         box-shadow 0.2s ease;
-    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+    box-shadow: var(--it-accent-glow-sm);
 }
 
 .interview-q__cta:hover {
@@ -64,15 +64,15 @@
 
 @keyframes cta-success-flash {
     0% {
-        box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+        box-shadow: var(--it-accent-glow-sm);
     }
     40% {
         box-shadow:
-            0 0 0 3px rgba(34, 197, 94, 0.45),
-            0 8px 24px rgba(34, 197, 94, 0.4);
+            var(--it-accent-ring),
+            var(--it-accent-glow-md);
     }
     100% {
-        box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+        box-shadow: var(--it-accent-glow-sm);
     }
 }
 

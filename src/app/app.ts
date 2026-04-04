@@ -6,6 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, fromEvent } from 'rxjs';
 
 import { LOCALE_STORAGE_KEY } from './core/locale.constants';
+import { ThemeService } from './core/services/theme.service';
 
 @Component({
     selector: 'app-root',
@@ -17,6 +18,7 @@ export class App {
     private readonly translate = inject(TranslateService);
     private readonly document = inject(DOCUMENT);
     private readonly router = inject(Router);
+    protected readonly themeService = inject(ThemeService);
 
     protected readonly currentLang = signal<'en' | 'ru'>('en');
     protected readonly navMenuOpen = signal(false);
@@ -63,6 +65,10 @@ export class App {
         const lang = this.normalizeLang(raw);
         localStorage.setItem(LOCALE_STORAGE_KEY, lang);
         this.translate.use(lang).subscribe();
+    }
+
+    protected onThemeToggle(): void {
+        this.themeService.toggleTheme();
     }
 
     private normalizeLang(lang: string | undefined): 'en' | 'ru' {

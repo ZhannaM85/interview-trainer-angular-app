@@ -18,6 +18,101 @@
     --it-timer-green: #22c55e;
     --it-timer-yellow: #eab308;
     --it-timer-red: #ef4444;
+
+    /* Semantic surfaces (dark) */
+    --it-overlay-backdrop: rgba(0, 0, 0, 0.42);
+    --it-nav-flyout-shadow: 0 14px 28px rgba(0, 0, 0, 0.38);
+    --it-block-surface: rgba(15, 23, 42, 0.35);
+    --it-code-block-bg: rgba(15, 23, 42, 0.65);
+    --it-weak-border: rgba(239, 68, 68, 0.45);
+    --it-interview-border: rgba(34, 197, 94, 0.55);
+    --it-interview-inner-glow: rgba(34, 197, 94, 0.12);
+    --it-study-q-bg: rgba(30, 41, 59, 0.45);
+    --it-filter-banner-border: rgba(34, 197, 94, 0.35);
+    --it-heat-1: rgba(34, 197, 94, 0.28);
+    --it-heat-1-border: rgba(34, 197, 94, 0.35);
+    --it-heat-2: rgba(34, 197, 94, 0.45);
+    --it-heat-2-border: rgba(34, 197, 94, 0.45);
+    --it-heat-3: rgba(34, 197, 94, 0.65);
+    --it-heat-3-border: rgba(34, 197, 94, 0.55);
+    --it-heatmap-backdrop: rgba(15, 23, 42, 0.72);
+    --it-panel-close-hover-bg: rgba(148, 163, 184, 0.12);
+    --it-notice-border: rgba(99, 102, 241, 0.35);
+    --it-notice-bg: rgba(99, 102, 241, 0.12);
+    --it-link-accent-hover: #a5b4fc;
+    --it-quiz-sticky-shadow: 0 -8px 24px rgba(0, 0, 0, 0.35);
+    --it-accent-glow-sm: 0 4px 14px rgba(34, 197, 94, 0.35);
+    --it-accent-glow-md: 0 8px 24px rgba(34, 197, 94, 0.4);
+    --it-accent-ring: 0 0 0 3px rgba(34, 197, 94, 0.45);
+    --it-self-eval-border-red: rgba(239, 68, 68, 0.45);
+    --it-self-eval-bg-red: rgba(239, 68, 68, 0.12);
+    --it-self-eval-border-yellow: rgba(234, 179, 8, 0.5);
+    --it-self-eval-bg-yellow: rgba(234, 179, 8, 0.1);
+    --it-self-eval-border-green: rgba(34, 197, 94, 0.55);
+    --it-feedback-bg: rgba(15, 23, 42, 0.4);
+    --it-feedback-border-accent: rgba(34, 197, 94, 0.35);
+    --it-interview-q-bg: rgba(148, 163, 184, 0.12);
+    --it-plan-primary-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+    --it-dashboard-streak-bg: rgba(239, 68, 68, 0.08);
+    --it-dashboard-streak-border: rgba(239, 68, 68, 0.2);
+}
+
+html[data-theme='light'] {
+    color-scheme: light;
+    --it-bg: #f8fafc;
+    --it-card: #ffffff;
+    --it-card-elevated: #f1f5f9;
+    --it-border: rgba(15, 23, 42, 0.12);
+    --it-shadow: 0 12px 40px rgba(15, 23, 42, 0.08);
+    --it-text: #0f172a;
+    --it-text-muted: #64748b;
+    --it-accent: #16a34a;
+    --it-accent-dim: rgba(22, 163, 74, 0.12);
+    --it-error: #dc2626;
+    --it-warning: #ca8a04;
+    --it-focus: #15803d;
+    --it-on-accent: #ffffff;
+    --it-track: #e2e8f0;
+    --it-nav-active-bg: rgba(22, 163, 74, 0.12);
+    --it-timer-green: #16a34a;
+    --it-timer-yellow: #ca8a04;
+    --it-timer-red: #dc2626;
+
+    --it-overlay-backdrop: rgba(15, 23, 42, 0.35);
+    --it-nav-flyout-shadow: 0 14px 28px rgba(15, 23, 42, 0.12);
+    --it-block-surface: rgba(241, 245, 249, 0.98);
+    --it-code-block-bg: #f1f5f9;
+    --it-weak-border: rgba(220, 38, 38, 0.42);
+    --it-interview-border: rgba(22, 163, 74, 0.45);
+    --it-interview-inner-glow: rgba(22, 163, 74, 0.18);
+    --it-study-q-bg: #ffffff;
+    --it-filter-banner-border: rgba(22, 163, 74, 0.35);
+    --it-heat-1: rgba(22, 163, 74, 0.22);
+    --it-heat-1-border: rgba(22, 163, 74, 0.32);
+    --it-heat-2: rgba(22, 163, 74, 0.4);
+    --it-heat-2-border: rgba(22, 163, 74, 0.42);
+    --it-heat-3: rgba(22, 163, 74, 0.58);
+    --it-heat-3-border: rgba(22, 163, 74, 0.52);
+    --it-heatmap-backdrop: rgba(15, 23, 42, 0.4);
+    --it-panel-close-hover-bg: rgba(100, 116, 139, 0.14);
+    --it-notice-border: rgba(79, 70, 229, 0.35);
+    --it-notice-bg: rgba(79, 70, 229, 0.08);
+    --it-link-accent-hover: #4f46e5;
+    --it-quiz-sticky-shadow: 0 -8px 24px rgba(15, 23, 42, 0.08);
+    --it-accent-glow-sm: 0 4px 14px rgba(22, 163, 74, 0.25);
+    --it-accent-glow-md: 0 8px 24px rgba(22, 163, 74, 0.28);
+    --it-accent-ring: 0 0 0 3px rgba(22, 163, 74, 0.35);
+    --it-self-eval-border-red: rgba(220, 38, 38, 0.45);
+    --it-self-eval-bg-red: rgba(220, 38, 38, 0.08);
+    --it-self-eval-border-yellow: rgba(202, 138, 4, 0.45);
+    --it-self-eval-bg-yellow: rgba(202, 138, 4, 0.1);
+    --it-self-eval-border-green: rgba(22, 163, 74, 0.45);
+    --it-feedback-bg: rgba(241, 245, 249, 0.92);
+    --it-feedback-border-accent: rgba(22, 163, 74, 0.3);
+    --it-interview-q-bg: rgba(100, 116, 139, 0.12);
+    --it-plan-primary-shadow: 0 4px 14px rgba(22, 163, 74, 0.22);
+    --it-dashboard-streak-bg: rgba(220, 38, 38, 0.08);
+    --it-dashboard-streak-border: rgba(220, 38, 38, 0.22);
 }
 
 html,

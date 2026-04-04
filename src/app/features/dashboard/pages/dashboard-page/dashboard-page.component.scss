@@ -78,8 +78,8 @@
     gap: 0.75rem;
     padding: 0.5rem 0.65rem;
     border-radius: 0.5rem;
-    background: rgba(239, 68, 68, 0.08);
-    border: 1px solid rgba(239, 68, 68, 0.2);
+    background: var(--it-dashboard-streak-bg);
+    border: 1px solid var(--it-dashboard-streak-border);
 }
 
 .dashboard__topic-name {
@@ -150,7 +150,7 @@
     font: inherit;
     font-weight: 700;
     text-decoration: none;
-    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+    box-shadow: var(--it-plan-primary-shadow);
     transition: transform 0.12s ease;
 }
 
