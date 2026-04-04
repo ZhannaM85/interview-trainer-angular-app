@@ -41,3 +41,27 @@
         ><code>{{ question().codeExample }}</code></pre>
     </div>
 }
+
+@if (question().readMoreLinks.length > 0) {
+    <div
+        class="interview-answer__read-more"
+        [class.interview-answer__reveal]="animated()"
+        [class.interview-answer__reveal--5]="animated()"
+    >
+        <p class="interview-answer__label interview-answer__label--read-more">
+            {{ 'answerBlocks.readMore' | translate }}
+        </p>
+        <ul class="interview-answer__read-more-list">
+            @for (link of question().readMoreLinks; track $index) {
+                <li class="interview-answer__read-more-item">
+                    <a
+                        class="interview-answer__read-more-link"
+                        [href]="link.url"
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    >{{ link.title }}</a>
+                </li>
+            }
+        </ul>
+    </div>
+}

@@ -3,7 +3,12 @@ import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, combineLatest, distinctUntilChanged, map, merge, of, shareReplay } from 'rxjs';
 
-import type { Question, QuestionCategory, QuestionDifficulty } from '../../shared/models/question.model';
+import type {
+    Question,
+    QuestionCategory,
+    QuestionDifficulty,
+    QuestionReadMoreLink
+} from '../../shared/models/question.model';
 
 type LocaleCode = 'en' | 'ru';
 
@@ -15,6 +20,12 @@ interface QuestionLocaleText {
     interviewAnswer: string;
 }
 
+/** Bilingual title for a read-more link row in JSON. */
+interface QuestionReadMoreLinkRow {
+    url: string;
+    title: Partial<Record<LocaleCode, string>> & { en: string };
+}
+
 /** Shape of `questions-bilingual.json`. */
 interface QuestionBilingualRow {
     id: number;
@@ -24,6 +35,8 @@ interface QuestionBilingualRow {
     text: Record<LocaleCode, QuestionLocaleText>;
     /** Optional; merged from build script into `questions-bilingual.json`. */
     codeExample?: string;
+    /** Optional external articles (https URLs only). */
+    readMoreLinks?: QuestionReadMoreLinkRow[];
 }
 
 @Injectable({
@@ -102,10 +115,31 @@ export class QuestionService {
             technicalAnswer: t.technicalAnswer,
             interviewAnswer: t.interviewAnswer,
             codeExample: row.codeExample ?? '',
+            readMoreLinks: this.mapReadMoreLinks(row.readMoreLinks, lang),
             subtopic: row.subtopic,
             category: this.mapTopicToCategory(row.topic, row.subtopic),
             difficulty: row.difficulty
         };
+    }
+
+    private mapReadMoreLinks(rows: QuestionReadMoreLinkRow[] | undefined, lang: LocaleCode): QuestionReadMoreLink[] {
+        if (!rows?.length) {
+            return [];
+        }
+        const out: QuestionReadMoreLink[] = [];
+        for (const row of rows) {
+            const url = typeof row.url === 'string' ? row.url.trim() : '';
+            if (!url.startsWith('https://')) {
+                continue;
+            }
+            const titleRaw = row.title?.[lang] ?? row.title?.en ?? '';
+            const title = typeof titleRaw === 'string' ? titleRaw.trim() : '';
+            if (!title) {
+                continue;
+            }
+            out.push({ url, title });
+        }
+        return out;
     }
 
     private mapTopicToCategory(topic: string, subtopic: string): QuestionCategory {

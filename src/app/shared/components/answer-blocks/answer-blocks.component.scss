@@ -70,6 +70,10 @@
     animation-delay: 0.52s;
 }
 
+.interview-answer__reveal--5 {
+    animation-delay: 0.68s;
+}
+
 .interview-answer__label--code {
     margin-bottom: 0.5rem;
 }
@@ -95,6 +99,45 @@
         white-space: pre-wrap;
         word-break: break-word;
     }
+}
+
+.interview-answer__read-more {
+    width: 100%;
+    margin-top: 0.15rem;
+}
+
+.interview-answer__label--read-more {
+    margin-bottom: 0.45rem;
+}
+
+.interview-answer__read-more-list {
+    margin: 0;
+    padding: 0 0 0 1.1rem;
+    list-style: disc;
+}
+
+.interview-answer__read-more-item {
+    margin: 0.25rem 0;
+    padding: 0;
+    font-size: 0.92rem;
+    line-height: 1.45;
+}
+
+.interview-answer__read-more-link {
+    color: var(--it-accent);
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+}
+
+.interview-answer__read-more-link:hover {
+    filter: brightness(1.08);
+}
+
+.interview-answer__read-more-link:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.2rem;
 }
 
 @keyframes interview-reveal {
