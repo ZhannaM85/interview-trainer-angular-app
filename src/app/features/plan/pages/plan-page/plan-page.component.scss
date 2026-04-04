@@ -182,7 +182,7 @@
     border: none;
     background: var(--it-accent);
     color: var(--it-on-accent);
-    box-shadow: 0 4px 14px rgba(34, 197, 94, 0.35);
+    box-shadow: var(--it-plan-primary-shadow);
 }
 
 .plan__cta--primary:hover {
