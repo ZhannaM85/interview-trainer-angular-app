@@ -139,7 +139,8 @@
         "weak": "Weak answer",
         "technical": "Technical answer",
         "interview": "Interview answer",
-        "codeExample": "Code example"
+        "codeExample": "Code example",
+        "readMore": "Read more"
     },
     "interviewQuestion": {
         "cta": "I answered"

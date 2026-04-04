@@ -2,6 +2,12 @@ export type QuestionCategory = 'javascript' | 'angular' | 'rxjs';
 
 export type QuestionDifficulty = 'beginner' | 'intermediate' | 'advanced';
 
+/** Resolved external “read more” link for the active locale. */
+export interface QuestionReadMoreLink {
+    url: string;
+    title: string;
+}
+
 export interface Question {
     id: number;
     question: string;
@@ -12,6 +18,8 @@ export interface Question {
     interviewAnswer: string;
     /** Illustrative code shown below the answer blocks (language-agnostic). */
     codeExample: string;
+    /** Optional curated article links (https only). */
+    readMoreLinks: QuestionReadMoreLink[];
     subtopic: string;
     category: QuestionCategory;
     difficulty: QuestionDifficulty;

@@ -7,6 +7,7 @@
     "start": "ng serve",
     "build": "ng build",
     "data:code-examples": "node scripts/build-code-examples.mjs",
+    "data:read-more-links": "node scripts/merge-read-more-links.mjs",
     "data:i18n-questions": "node scripts/apply-russian-translations.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
