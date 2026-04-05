@@ -2437,18 +2437,18 @@
         "text": {
             "en": {
                 "question": "What is typeof null?",
-                "weakAnswer": "Object.",
-                "technicalAnswer": "Returns object due to bug.",
-                "interviewAnswer": "typeof null returns 'object' due to a historical JavaScript bug."
+                "weakAnswer": "The string 'object' — surprising, because null is not really an object.",
+                "technicalAnswer": "`typeof` inspects an internal type tag. For `null`, early engines used the same tag as for objects, so the ECMAScript spec kept `typeof null === 'object'`; fixing it would break existing code that relied on this behavior.",
+                "interviewAnswer": "`typeof null` is the string `'object'`, but `null` is still a primitive, not an instance of `Object`. It is a well-known legacy quirk, documented in the language spec. Do not use `typeof x === 'object'` alone to mean “value is an object”—that is also true for `null`. To test for `null`, use strict equality: `x === null`. If you need “plain object or array, but not null”, a common pattern is `x !== null && typeof x === 'object'` (and often `Array.isArray` if you must exclude arrays)."
             },
             "ru": {
                 "question": "Что возвращает typeof null?",
-                "weakAnswer": "object.",
-                "technicalAnswer": "Из-за исторического бага возвращает 'object'.",
-                "interviewAnswer": "Проверка на null: value === null."
+                "weakAnswer": "Строка 'object' — хотя null не является объектом.",
+                "technicalAnswer": "Оператор `typeof` смотрит на внутренний тег типа значения. У `null` исторически совпал тег с объектами, поэтому в спецификации закреплено `typeof null === 'object'`; изменить нельзя без поломки старого кода.",
+                "interviewAnswer": "`typeof null` даёт `'object'`, но сам `null` — примитив, а не объект. Это известная историческая особенность, описанная в спецификации. Нельзя полагаться на `typeof x === 'object'`, чтобы отличить объект от null — для `null` результат тоже `'object'`. Для проверки на null используйте `x === null`. Если нужен «объект, но не null», обычно пишут `x !== null && typeof x === 'object'` (и при необходимости отдельно учитывают массивы через `Array.isArray`)."
             }
         },
-        "codeExample": "console.log(typeof null); // \"object\" (legacy)",
+        "codeExample": "console.log(typeof null); // \"object\" (legacy)\n\nconst x = null;\nconsole.log(x === null); // true — use this to test for null\nconsole.log(typeof x === 'object' && x !== null); // false — null fails the second part",
         "readMoreLinks": [
             {
                 "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures",

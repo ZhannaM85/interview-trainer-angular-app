@@ -814,9 +814,9 @@
         "topic": "javascript",
         "subtopic": "types",
         "question": "What is typeof null?",
-        "weakAnswer": "Object.",
-        "technicalAnswer": "Returns object due to bug.",
-        "interviewAnswer": "typeof null returns 'object' due to a historical JavaScript bug.",
+        "weakAnswer": "The string 'object' — surprising, because null is not really an object.",
+        "technicalAnswer": "`typeof` inspects an internal type tag. For `null`, early engines used the same tag as for objects, so the ECMAScript spec kept `typeof null === 'object'`; fixing it would break existing code that relied on this behavior.",
+        "interviewAnswer": "`typeof null` is the string `'object'`, but `null` is still a primitive, not an instance of `Object`. It is a well-known legacy quirk, documented in the language spec. Do not use `typeof x === 'object'` alone to mean “value is an object”—that is also true for `null`. To test for `null`, use strict equality: `x === null`. If you need “plain object or array, but not null”, a common pattern is `x !== null && typeof x === 'object'` (and often `Array.isArray` if you must exclude arrays).",
         "difficulty": "intermediate"
     },
     {

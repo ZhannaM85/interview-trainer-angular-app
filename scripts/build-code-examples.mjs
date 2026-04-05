@@ -200,7 +200,11 @@ console.log(0 == false); // true`,
     79: `const sub = stream$.subscribe();\n// later\nsub.unsubscribe();`,
     80: `search$.pipe(switchMap((q) => api.search(q))).subscribe();`,
     81: `console.log(NaN === NaN); // false\nNumber.isNaN(NaN); // true`,
-    82: `console.log(typeof null); // "object" (legacy)`,
+    82: `console.log(typeof null); // "object" (legacy)
+
+const x = null;
+console.log(x === null); // true — use this to test for null
+console.log(typeof x === 'object' && x !== null); // false — null fails the second part`,
     83: `const o = Object.freeze({ x: 1 });\no.x = 2; // silent fail in non-strict`,
     84: `const o = Object.seal({ x: 1 });\ndelete o.x; // false`,
     85: `const add = (a) => (b) => a + b;\nconst add2 = add(2);\nadd2(3); // 5`,
