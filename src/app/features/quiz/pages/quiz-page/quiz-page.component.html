@@ -9,6 +9,27 @@
         <p class="quiz__message quiz__message--error" role="alert">{{ 'quiz.loadError' | translate }}</p>
     } @else if (loading()) {
         <p class="quiz__message">{{ 'quiz.loading' | translate }}</p>
+    } @else if (showPlanTopicsCoveredDialog()) {
+        <div class="quiz__backdrop" role="presentation" aria-hidden="true"></div>
+        <div
+            class="quiz__plan-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="quiz-plan-dialog-title"
+        >
+            <h2 id="quiz-plan-dialog-title" class="quiz__plan-dialog-title">
+                {{ 'quiz.planTopicsCoveredTitle' | translate }}
+            </h2>
+            <p class="quiz__plan-dialog-body">{{ 'quiz.planTopicsCoveredBody' | translate }}</p>
+            <div class="quiz__plan-dialog-actions">
+                <button type="button" class="quiz__scope-btn" (click)="confirmPracticePlanTopicsAnyway()">
+                    {{ 'quiz.planTopicsCoveredPractice' | translate }}
+                </button>
+                <button type="button" class="quiz__scope-btn quiz__scope-btn--secondary" (click)="switchToFullQuestionBank()">
+                    {{ 'quiz.planTopicsCoveredOtherTopics' | translate }}
+                </button>
+            </div>
+        </div>
     } @else if (sessionComplete()) {
         <div class="quiz__done card-phase">
             <p class="quiz__message">{{ 'quiz.sessionDone' | translate }}</p>

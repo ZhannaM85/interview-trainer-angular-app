@@ -6,6 +6,30 @@
         {{ 'study.introAfter' | translate }}
     </p>
 
+    @if (showPlanCompleteBanner()) {
+        <div class="study__plan-complete-banner" role="status" aria-live="polite">
+            <div class="study__plan-complete-row">
+                <p class="study__plan-complete-text">{{ 'study.planAllStudiedMessage' | translate }}</p>
+                <button
+                    type="button"
+                    class="study__plan-complete-dismiss"
+                    (click)="dismissPlanCompleteBanner()"
+                    [attr.aria-label]="'study.planAllStudiedDismissAria' | translate"
+                >
+                    <span aria-hidden="true">×</span>
+                </button>
+            </div>
+            <div class="study__plan-complete-actions">
+                <a routerLink="/quiz" class="study__plan-complete-btn study__plan-complete-btn--primary">
+                    {{ 'study.planAllStudiedPracticeLink' | translate }}
+                </a>
+                <a routerLink="/plan" class="study__plan-complete-btn study__plan-complete-btn--secondary">
+                    {{ 'study.planAllStudiedMoreTopicsLink' | translate }}
+                </a>
+            </div>
+        </div>
+    }
+
     @if (planTodayFilterActive()) {
         <p class="study__filter-banner" role="status">
             {{ 'study.filteredTodayBanner' | translate }}

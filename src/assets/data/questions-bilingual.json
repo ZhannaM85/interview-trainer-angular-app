@@ -948,7 +948,7 @@
                 "interviewAnswer": "JS может неявно привести типы (например + с разными типами); стоит понимать правила ToPrimitive."
             }
         },
-        "codeExample": "console.log('5' - 2); // 3 (coerced)\nconsole.log(Number('5'));",
+        "codeExample": "// Implicit: - * / coerce operands toward number\nconsole.log('5' - 2); // 3\nconsole.log('6' * '2'); // 12\n\n// + : if any operand is string, the other is coerced to string\nconsole.log('5' + 2); // '52'\nconsole.log(5 + '2'); // '52'\n\n// Unary + coerces to number\nconsole.log(+'42'); // 42\n\n// Explicit conversion\nconsole.log(Number('5')); // 5\nconsole.log(parseInt('10px', 10)); // 10\n\n// == compares with coercion (use === when you want no coercion)\nconsole.log(null == undefined); // true\nconsole.log(0 == false); // true",
         "readMoreLinks": [
             {
                 "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures",
@@ -1158,7 +1158,7 @@
                 "interviewAnswer": "Для scroll/resize: обработчик срабатывает не чаще, чем раз в N мс."
             }
         },
-        "codeExample": "function throttle(fn, ms) {\n    let last = 0;\n    return (...a) => {\n        const n = Date.now();\n        if (n - last >= ms) {\n            last = n;\n            fn(...a);\n        }\n    };\n}",
+        "codeExample": "// Throttle: run fn at most once every ms milliseconds.\n// Events (scroll, resize, mousemove) can fire hundreds of times per second;\n// throttle drops extra calls so work happens in controlled bursts.\nfunction throttle(fn, ms) {\n    let lastRun = 0; // when fn last actually ran\n    return (...args) => {\n        const now = Date.now();\n        // Only call fn if at least ms ms passed since the last run\n        if (now - lastRun >= ms) {\n            lastRun = now;\n            fn(...args);\n        }\n    };\n}\n\n// Example: react to scroll at most once every 200 ms\nconst onScroll = throttle(() => {\n    console.log('scroll handled');\n}, 200);\n\nwindow.addEventListener('scroll', onScroll, { passive: true });",
         "readMoreLinks": [
             {
                 "url": "https://rxjs.dev/api/operators/throttleTime",
@@ -2437,18 +2437,18 @@
         "text": {
             "en": {
                 "question": "What is typeof null?",
-                "weakAnswer": "Object.",
-                "technicalAnswer": "Returns object due to bug.",
-                "interviewAnswer": "typeof null returns 'object' due to a historical JavaScript bug."
+                "weakAnswer": "The string 'object' — surprising, because null is not really an object.",
+                "technicalAnswer": "`typeof` inspects an internal type tag. For `null`, early engines used the same tag as for objects, so the ECMAScript spec kept `typeof null === 'object'`; fixing it would break existing code that relied on this behavior.",
+                "interviewAnswer": "`typeof null` is the string `'object'`, but `null` is still a primitive, not an instance of `Object`. It is a well-known legacy quirk, documented in the language spec. Do not use `typeof x === 'object'` alone to mean “value is an object”—that is also true for `null`. To test for `null`, use strict equality: `x === null`. If you need “plain object or array, but not null”, a common pattern is `x !== null && typeof x === 'object'` (and often `Array.isArray` if you must exclude arrays)."
             },
             "ru": {
                 "question": "Что возвращает typeof null?",
-                "weakAnswer": "object.",
-                "technicalAnswer": "Из-за исторического бага возвращает 'object'.",
-                "interviewAnswer": "Проверка на null: value === null."
+                "weakAnswer": "Строка 'object' — хотя null не является объектом.",
+                "technicalAnswer": "Оператор `typeof` смотрит на внутренний тег типа значения. У `null` исторически совпал тег с объектами, поэтому в спецификации закреплено `typeof null === 'object'`; изменить нельзя без поломки старого кода.",
+                "interviewAnswer": "`typeof null` даёт `'object'`, но сам `null` — примитив, а не объект. Это известная историческая особенность, описанная в спецификации. Нельзя полагаться на `typeof x === 'object'`, чтобы отличить объект от null — для `null` результат тоже `'object'`. Для проверки на null используйте `x === null`. Если нужен «объект, но не null», обычно пишут `x !== null && typeof x === 'object'` (и при необходимости отдельно учитывают массивы через `Array.isArray`)."
             }
         },
-        "codeExample": "console.log(typeof null); // \"object\" (legacy)",
+        "codeExample": "console.log(typeof null); // \"object\" (legacy)\n\nconst x = null;\nconsole.log(x === null); // true — use this to test for null\nconsole.log(typeof x === 'object' && x !== null); // false — null fails the second part",
         "readMoreLinks": [
             {
                 "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures",
@@ -3429,13 +3429,13 @@
                 "question": "What will this output?\n\nconst obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",
                 "weakAnswer": "John",
                 "technicalAnswer": "undefined",
-                "interviewAnswer": "Arrow functions don’t have their own 'this', so it refers to the outer scope, not obj."
+                "interviewAnswer": "It logs undefined. Arrow functions never get their own this—they close over the lexical this from the scope where the arrow was defined (the enclosing script or module), not from the call. Calling obj.greet() does not bind this to obj. In strict mode or modules, that outer this is often undefined, so this.name is undefined. To use the object, use a regular method greet() { console.log(this.name) }, capture const self = this before the arrow, or bind."
             },
             "ru": {
                 "question": "Что выведет этот код?\n\nconst obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",
                 "weakAnswer": "John",
                 "technicalAnswer": "undefined",
-                "interviewAnswer": "undefined: у стрелки нет своего this, берётся из внешней области, не из obj."
+                "interviewAnswer": "Выводится undefined. У стрелочной функции нет своего this: она использует лексический this из внешней области, где объявлен объект, а не this от вызова obj.greet(). Поэтому this не указывает на obj. В strict mode или модулях внешний this часто undefined — отсюда undefined. Чтобы сослаться на объект, используйте обычный метод greet() { ... }, const self = this или .bind."
             }
         },
         "codeExample": "const obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",

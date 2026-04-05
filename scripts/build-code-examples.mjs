@@ -133,14 +133,51 @@ const SNIPPET_OVERRIDES = {
     29: `@Directive({ selector: '[appTooltip]' })\nexport class Tooltip {}`,
     30: `@Component({\n    template: '<p *ngIf="show">Hi</p><p [class.active]="on">',\n})\nexport class Demo {}`,
     31: `const a = 'text';\nconst b = 42;\nconst c = true;\nconst d = Symbol('id');`,
-    32: `console.log('5' - 2); // 3 (coerced)\nconsole.log(Number('5'));`,
+    32: `// Implicit: - * / coerce operands toward number
+console.log('5' - 2); // 3
+console.log('6' * '2'); // 12
+
+// + : if any operand is string, the other is coerced to string
+console.log('5' + 2); // '52'
+console.log(5 + '2'); // '52'
+
+// Unary + coerces to number
+console.log(+'42'); // 42
+
+// Explicit conversion
+console.log(Number('5')); // 5
+console.log(parseInt('10px', 10)); // 10
+
+// == compares with coercion (use === when you want no coercion)
+console.log(null == undefined); // true
+console.log(0 == false); // true`,
     33: `NgZone.runOutsideAngular(() => {\n    chart.update();\n});`,
     34: `this.http.post('/login', body).subscribe({\n    next: (r) => console.log(r),\n});`,
     35: `function withLog(fn) {\n    return (...args) => {\n        console.log(args);\n        return fn(...args);\n    };\n}`,
     36: `const next = { ...state, count: state.count + 1 };`,
     37: `@Component({\n    changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class Leaf {\n    data = input.required<Item>();\n}`,
     38: `function debounce(fn, ms) {\n    let t;\n    return (...a) => {\n        clearTimeout(t);\n        t = setTimeout(() => fn(...a), ms);\n    };\n}`,
-    39: `function throttle(fn, ms) {\n    let last = 0;\n    return (...a) => {\n        const n = Date.now();\n        if (n - last >= ms) {\n            last = n;\n            fn(...a);\n        }\n    };\n}`,
+    39: `// Throttle: run fn at most once every ms milliseconds.
+// Events (scroll, resize, mousemove) can fire hundreds of times per second;
+// throttle drops extra calls so work happens in controlled bursts.
+function throttle(fn, ms) {
+    let lastRun = 0; // when fn last actually ran
+    return (...args) => {
+        const now = Date.now();
+        // Only call fn if at least ms ms passed since the last run
+        if (now - lastRun >= ms) {
+            lastRun = now;
+            fn(...args);
+        }
+    };
+}
+
+// Example: react to scroll at most once every 200 ms
+const onScroll = throttle(() => {
+    console.log('scroll handled');
+}, 200);
+
+window.addEventListener('scroll', onScroll, { passive: true });`,
     40: `@Component({\n    selector: 'app-container',\n    template: '<app-presenter [data]="vm()" />',\n})\nexport class Smart {\n    vm = signal(load());\n}`,
     41: `const { name, age } = user;\nconst { x, ...rest } = point;`,
     42: `const [first, second] = pair;\nconst [a, , c] = triple;`,
@@ -183,7 +220,11 @@ const SNIPPET_OVERRIDES = {
     79: `const sub = stream$.subscribe();\n// later\nsub.unsubscribe();`,
     80: `search$.pipe(switchMap((q) => api.search(q))).subscribe();`,
     81: `console.log(NaN === NaN); // false\nNumber.isNaN(NaN); // true`,
-    82: `console.log(typeof null); // "object" (legacy)`,
+    82: `console.log(typeof null); // "object" (legacy)
+
+const x = null;
+console.log(x === null); // true — use this to test for null
+console.log(typeof x === 'object' && x !== null); // false — null fails the second part`,
     83: `const o = Object.freeze({ x: 1 });\no.x = 2; // silent fail in non-strict`,
     84: `const o = Object.seal({ x: 1 });\ndelete o.x; // false`,
     85: `const add = (a) => (b) => a + b;\nconst add2 = add(2);\nadd2(3); // 5`,
