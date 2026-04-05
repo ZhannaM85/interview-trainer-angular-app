@@ -652,10 +652,11 @@ export const RU_STRINGS = [
     {
         id: 82,
         question: "Что возвращает typeof null?",
-        weakAnswer: "object.",
-        technicalAnswer: "Из-за исторического бага возвращает 'object'.",
+        weakAnswer: "Строка 'object' — хотя null не является объектом.",
+        technicalAnswer:
+            "Оператор `typeof` смотрит на внутренний тег типа значения. У `null` исторически совпал тег с объектами, поэтому в спецификации закреплено `typeof null === 'object'`; изменить нельзя без поломки старого кода.",
         interviewAnswer:
-            "Проверка на null: value === null."
+            "`typeof null` даёт `'object'`, но сам `null` — примитив, а не объект. Это известная историческая особенность, описанная в спецификации. Нельзя полагаться на `typeof x === 'object'`, чтобы отличить объект от null — для `null` результат тоже `'object'`. Для проверки на null используйте `x === null`. Если нужен «объект, но не null», обычно пишут `x !== null && typeof x === 'object'` (и при необходимости отдельно учитывают массивы через `Array.isArray`)."
     },
     {
         id: 83,
@@ -988,7 +989,7 @@ obj.greet();`,
         weakAnswer: "John",
         technicalAnswer: "undefined",
         interviewAnswer:
-            "undefined: у стрелки нет своего this, берётся из внешней области, не из obj."
+            "Выводится undefined. У стрелочной функции нет своего this: она использует лексический this из внешней области, где объявлен объект, а не this от вызова obj.greet(). Поэтому this не указывает на obj. В strict mode или модулях внешний this часто undefined — отсюда undefined. Чтобы сослаться на объект, используйте обычный метод greet() { ... }, const self = this или .bind."
     },
     {
         id: 116,
