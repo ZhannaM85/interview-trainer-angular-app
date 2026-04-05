@@ -1,8 +1,9 @@
-import { ChangeDetectionStrategy, Component, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Progress } from '../../../../shared/models/progress.model';
@@ -30,6 +31,17 @@ export interface DashboardStats {
 export class DashboardPageComponent {
     private readonly progressService = inject(ProgressService);
     private readonly questionService = inject(QuestionService);
+    private readonly activityService = inject(ActivityService);
+
+    /** Illustrative bar max (10,000 h in seconds) — not a literal goal. */
+    protected readonly tenKHoursSeconds = 10_000 * 3600;
+
+    protected readonly activeTimeView = computed(() => {
+        const totalSeconds = this.activityService.totalActiveSeconds();
+        const hours = Math.floor(totalSeconds / 3600);
+        const minutes = Math.floor((totalSeconds % 3600) / 60);
+        return { hours, minutes, totalSeconds };
+    });
 
     protected readonly stats = signal<DashboardStats | null>(null);
     protected readonly loading = signal(true);
