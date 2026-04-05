@@ -157,7 +157,27 @@ console.log(0 == false); // true`,
     36: `const next = { ...state, count: state.count + 1 };`,
     37: `@Component({\n    changeDetection: ChangeDetectionStrategy.OnPush,\n})\nexport class Leaf {\n    data = input.required<Item>();\n}`,
     38: `function debounce(fn, ms) {\n    let t;\n    return (...a) => {\n        clearTimeout(t);\n        t = setTimeout(() => fn(...a), ms);\n    };\n}`,
-    39: `function throttle(fn, ms) {\n    let last = 0;\n    return (...a) => {\n        const n = Date.now();\n        if (n - last >= ms) {\n            last = n;\n            fn(...a);\n        }\n    };\n}`,
+    39: `// Throttle: run fn at most once every ms milliseconds.
+// Events (scroll, resize, mousemove) can fire hundreds of times per second;
+// throttle drops extra calls so work happens in controlled bursts.
+function throttle(fn, ms) {
+    let lastRun = 0; // when fn last actually ran
+    return (...args) => {
+        const now = Date.now();
+        // Only call fn if at least ms ms passed since the last run
+        if (now - lastRun >= ms) {
+            lastRun = now;
+            fn(...args);
+        }
+    };
+}
+
+// Example: react to scroll at most once every 200 ms
+const onScroll = throttle(() => {
+    console.log('scroll handled');
+}, 200);
+
+window.addEventListener('scroll', onScroll, { passive: true });`,
     40: `@Component({\n    selector: 'app-container',\n    template: '<app-presenter [data]="vm()" />',\n})\nexport class Smart {\n    vm = signal(load());\n}`,
     41: `const { name, age } = user;\nconst { x, ...rest } = point;`,
     42: `const [first, second] = pair;\nconst [a, , c] = triple;`,

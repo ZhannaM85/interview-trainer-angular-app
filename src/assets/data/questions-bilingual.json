@@ -1158,7 +1158,7 @@
                 "interviewAnswer": "Для scroll/resize: обработчик срабатывает не чаще, чем раз в N мс."
             }
         },
-        "codeExample": "function throttle(fn, ms) {\n    let last = 0;\n    return (...a) => {\n        const n = Date.now();\n        if (n - last >= ms) {\n            last = n;\n            fn(...a);\n        }\n    };\n}",
+        "codeExample": "// Throttle: run fn at most once every ms milliseconds.\n// Events (scroll, resize, mousemove) can fire hundreds of times per second;\n// throttle drops extra calls so work happens in controlled bursts.\nfunction throttle(fn, ms) {\n    let lastRun = 0; // when fn last actually ran\n    return (...args) => {\n        const now = Date.now();\n        // Only call fn if at least ms ms passed since the last run\n        if (now - lastRun >= ms) {\n            lastRun = now;\n            fn(...args);\n        }\n    };\n}\n\n// Example: react to scroll at most once every 200 ms\nconst onScroll = throttle(() => {\n    console.log('scroll handled');\n}, 200);\n\nwindow.addEventListener('scroll', onScroll, { passive: true });",
         "readMoreLinks": [
             {
                 "url": "https://rxjs.dev/api/operators/throttleTime",
