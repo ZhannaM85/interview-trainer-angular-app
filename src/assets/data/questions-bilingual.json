@@ -18,7 +18,7 @@
                 "interviewAnswer": "«this» зависит от способа вызова: в методе объекта это сам объект; в обычной функции в strict mode — undefined."
             }
         },
-        "codeExample": "'use strict';\nconst obj = { name: 'Ann', greet() { return this.name; } };\nobj.greet();\nfunction loose() { return this; }\nloose(); // undefined in strict mode",
+        "codeExample": "'use strict';\n\nconst obj = {\n    name: 'Ann',\n    greet() {\n        return this.name;\n    },\n};\n\nobj.greet();\n\nfunction loose() {\n    return this;\n}\n\nloose(); // undefined in strict mode",
         "readMoreLinks": [
             {
                 "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this",
@@ -3108,7 +3108,7 @@
                 "interviewAnswer": "Вернуть стрелочную функцию () => console.log(this.name) или .bind(obj) на внутренней функции."
             }
         },
-        "codeExample": "'use strict';\nconst obj = { name: 'Ann', greet() { return this.name; } };\nobj.greet();\nfunction loose() { return this; }\nloose(); // undefined in strict mode",
+        "codeExample": "'use strict';\n\nconst obj = {\n    name: 'Ann',\n    greet() {\n        return this.name;\n    },\n};\n\nobj.greet();\n\nfunction loose() {\n    return this;\n}\n\nloose(); // undefined in strict mode",
         "readMoreLinks": [
             {
                 "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this",
