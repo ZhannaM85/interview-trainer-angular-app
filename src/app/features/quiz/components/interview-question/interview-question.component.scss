@@ -9,6 +9,10 @@
     margin-inline: auto;
 }
 
+.interview-q:has(.interview-q__code) {
+    align-items: stretch;
+}
+
 .interview-q__badge {
     display: inline-flex;
     align-items: center;
@@ -33,6 +37,40 @@
     font-weight: 700;
     line-height: 1.35;
     letter-spacing: -0.02em;
+}
+
+.interview-q__code {
+    margin: 0;
+    align-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-block-surface);
+    box-sizing: border-box;
+    text-align: start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.interview-q__code code {
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        'Liberation Mono',
+        'Courier New',
+        monospace;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.5;
+    white-space: pre;
+    word-break: normal;
+    overflow-wrap: normal;
+    color: var(--it-text);
 }
 
 .interview-q__cta {
