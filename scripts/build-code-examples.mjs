@@ -133,7 +133,24 @@ const SNIPPET_OVERRIDES = {
     29: `@Directive({ selector: '[appTooltip]' })\nexport class Tooltip {}`,
     30: `@Component({\n    template: '<p *ngIf="show">Hi</p><p [class.active]="on">',\n})\nexport class Demo {}`,
     31: `const a = 'text';\nconst b = 42;\nconst c = true;\nconst d = Symbol('id');`,
-    32: `console.log('5' - 2); // 3 (coerced)\nconsole.log(Number('5'));`,
+    32: `// Implicit: - * / coerce operands toward number
+console.log('5' - 2); // 3
+console.log('6' * '2'); // 12
+
+// + : if any operand is string, the other is coerced to string
+console.log('5' + 2); // '52'
+console.log(5 + '2'); // '52'
+
+// Unary + coerces to number
+console.log(+'42'); // 42
+
+// Explicit conversion
+console.log(Number('5')); // 5
+console.log(parseInt('10px', 10)); // 10
+
+// == compares with coercion (use === when you want no coercion)
+console.log(null == undefined); // true
+console.log(0 == false); // true`,
     33: `NgZone.runOutsideAngular(() => {\n    chart.update();\n});`,
     34: `this.http.post('/login', body).subscribe({\n    next: (r) => console.log(r),\n});`,
     35: `function withLog(fn) {\n    return (...args) => {\n        console.log(args);\n        return fn(...args);\n    };\n}`,

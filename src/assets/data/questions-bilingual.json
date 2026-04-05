@@ -948,7 +948,7 @@
                 "interviewAnswer": "JS может неявно привести типы (например + с разными типами); стоит понимать правила ToPrimitive."
             }
         },
-        "codeExample": "console.log('5' - 2); // 3 (coerced)\nconsole.log(Number('5'));",
+        "codeExample": "// Implicit: - * / coerce operands toward number\nconsole.log('5' - 2); // 3\nconsole.log('6' * '2'); // 12\n\n// + : if any operand is string, the other is coerced to string\nconsole.log('5' + 2); // '52'\nconsole.log(5 + '2'); // '52'\n\n// Unary + coerces to number\nconsole.log(+'42'); // 42\n\n// Explicit conversion\nconsole.log(Number('5')); // 5\nconsole.log(parseInt('10px', 10)); // 10\n\n// == compares with coercion (use === when you want no coercion)\nconsole.log(null == undefined); // true\nconsole.log(0 == false); // true",
         "readMoreLinks": [
             {
                 "url": "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Data_structures",
