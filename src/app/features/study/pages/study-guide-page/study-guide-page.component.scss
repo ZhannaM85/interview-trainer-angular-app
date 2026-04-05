@@ -320,6 +320,36 @@
     line-height: 1.45;
 }
 
+.study__q-code {
+    margin: -0.35rem 0 1rem;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.75rem 0.9rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-block-surface);
+    box-sizing: border-box;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.study__q-code code {
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        'Liberation Mono',
+        'Courier New',
+        monospace;
+    font-size: 0.84rem;
+    font-weight: 500;
+    line-height: 1.5;
+    white-space: pre;
+    color: var(--it-text);
+}
+
 .study__q-badge {
     flex-shrink: 0;
     max-width: 100%;
