@@ -47,7 +47,6 @@ function snippetFor(id, subtopic, question) {
 /** Topic-focused defaults when id has no override */
 const SUBTOPIC_SNIPPETS = {
     this: `'use strict';\nconst obj = { name: 'Ann', greet() { return this.name; } };\nobj.greet();\nfunction loose() { return this; }\nloose(); // undefined in strict mode`,
-    closure: `function outer() {\n    let count = 0;\n    return function inner() {\n        return ++count;\n    };\n}\nconst inc = outer();\ninc(); // 1`,
     scope: `const x = 1;\nfunction f() {\n    const y = 2;\n    if (true) {\n        let z = 3;\n    }\n}`,
     variables: `function demo() {\n    console.log(a); // undefined (hoisted)\n    var a = 1;\n    if (true) {\n        let b = 2;\n    }\n}`,
     functions: `function add(a, b) {\n    return a + b;\n}\nconst twice = (x) => x * 2;`,
@@ -107,6 +106,7 @@ const SUBTOPIC_SNIPPETS = {
 
 /** Fine-grained snippets where subtopic default is wrong */
 const SNIPPET_OVERRIDES = {
+    2: `function outer() {\n    let count = 0;\n    return function inner() {\n        return ++count;\n    };\n}\nconst inc = outer();\ninc(); // 1`,
     5: `function greet() {\n    return this.name;\n}\nconst bound = greet.bind({ name: 'Ann' });\nbound();`,
     6: `function sum(a, b) {\n    return a + b;\n}\nsum.call(null, 1, 2);\nsum.apply(null, [1, 2]);\nconst later = sum.bind(null, 1);`,
     7: `[1, 2, 3].map((x) => x * 2);\n[1, 2, 3].forEach((x) => console.log(x));`,
