@@ -6,8 +6,9 @@ import { THEME_STORAGE_KEY, type ThemeId } from '../theme.constants';
 const META_THEME_COLOR_DARK = '#0f172a';
 const META_THEME_COLOR_LIGHT = '#f8fafc';
 
-const FAVICON_DARK = '/favicon.svg';
-const FAVICON_LIGHT = '/logo-light.svg';
+/** Relative to `<base href>` so GitHub Pages subpath deploys resolve correctly. */
+const FAVICON_DARK = 'favicon.svg';
+const FAVICON_LIGHT = 'logo-light.svg';
 
 function readStoredTheme(): ThemeId | null {
     try {
