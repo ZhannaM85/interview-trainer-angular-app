@@ -293,15 +293,51 @@
     background: var(--it-study-q-bg);
 }
 
+.study__q--practiced-today {
+    border-left: 3px solid var(--it-accent);
+    padding-left: calc(1.1rem - 2px);
+}
+
 .study__q:last-child {
     margin-bottom: 0;
 }
 
+.study__q-heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 1rem;
+}
+
 .study__q-heading {
-    margin: 0 0 1rem;
+    margin: 0;
+    flex: 1 1 12rem;
+    min-width: 0;
     font-size: 1rem;
     font-weight: 700;
     line-height: 1.45;
+}
+
+.study__q-badge {
+    flex-shrink: 0;
+    max-width: 100%;
+    padding: 0.2rem 0.55rem;
+    border-radius: 0.45rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    font-size: 0.72rem;
+    font-weight: 650;
+    line-height: 1.3;
+    letter-spacing: 0.01em;
+    color: var(--it-text-muted);
+}
+
+.study__q-badge--today {
+    border-color: color-mix(in srgb, var(--it-accent) 45%, var(--it-border));
+    background: var(--it-accent-dim);
+    color: var(--it-accent);
 }
 
 .study__q-num {
