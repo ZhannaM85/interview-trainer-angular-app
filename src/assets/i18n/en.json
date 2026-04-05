@@ -39,7 +39,11 @@
         },
         "markStudied": "Mark as studied",
         "markStudiedAria": "Mark topic as studied for today",
-        "filteredTodayBanner": "Showing only today’s topics you still need to read. Open the Study guide from the main menu to see everything."
+        "filteredTodayBanner": "Showing only today’s topics you still need to read. Open the Study guide from the main menu to see everything.",
+        "practicedToday": "Practiced today",
+        "practicedTodayAria": "You answered this question in Practice today",
+        "lastPractice": "Last practice: {{date}}",
+        "lastPracticeAria": "Last answered in Practice on {{date}}"
     },
     "plan": {
         "title": "Plan for today",
