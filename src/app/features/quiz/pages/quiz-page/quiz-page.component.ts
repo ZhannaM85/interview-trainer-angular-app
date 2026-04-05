@@ -73,6 +73,15 @@ export class QuizPageComponent {
      */
     protected readonly practiceScope = signal<'planFocused' | 'full'>('planFocused');
 
+    /**
+     * When today’s studied topics have no due items, we used to jump straight to “all questions in those topics”.
+     * We first show a dialog; this flag skips that dialog on the next load (user chose to practice anyway).
+     */
+    private readonly acceptPlanTopicFallback = signal(false);
+
+    /** Shown when plan-focused practice has nothing due — user picks full bank or practicing every topic in the plan. */
+    protected readonly showPlanTopicsCoveredDialog = signal(false);
+
     /** At least one topic marked studied today and session is limited to those topics. */
     protected readonly todayTopicsFilterActive = computed(
         () =>
@@ -169,12 +178,22 @@ export class QuizPageComponent {
     }
 
     protected switchToFullQuestionBank(): void {
+        this.showPlanTopicsCoveredDialog.set(false);
+        this.acceptPlanTopicFallback.set(false);
         this.practiceScope.set('full');
         this.loadQuiz();
     }
 
     protected switchToTodaysStudiedTopics(): void {
+        this.acceptPlanTopicFallback.set(false);
         this.practiceScope.set('planFocused');
+        this.loadQuiz();
+    }
+
+    /** User confirmed: practice every question in today’s studied topics (former automatic fallback). */
+    protected confirmPracticePlanTopicsAnyway(): void {
+        this.showPlanTopicsCoveredDialog.set(false);
+        this.acceptPlanTopicFallback.set(true);
         this.loadQuiz();
     }
 
@@ -221,6 +240,7 @@ export class QuizPageComponent {
         this.loading.set(true);
         this.loadError.set(false);
         this.sessionComplete.set(false);
+        this.showPlanTopicsCoveredDialog.set(false);
         this.currentQuestion.set(null);
         this.phase.set('question');
         this.feedbackSnapshot.set(null);
@@ -241,6 +261,24 @@ export class QuizPageComponent {
                     const fullBankMode = this.practiceScope() === 'full';
                     /** Due-only queue when focusing on today’s topics; full bank includes every question in the candidate set. */
                     const useFallback = !fullBankMode && due.length === 0;
+                    const skipDialog = this.acceptPlanTopicFallback();
+                    if (
+                        useFallback &&
+                        studied.length > 0 &&
+                        candidate.length > 0 &&
+                        !skipDialog
+                    ) {
+                        this.showPlanTopicsCoveredDialog.set(true);
+                        this.usingFallbackQueue.set(false);
+                        this.sessionTotal.set(0);
+                        this.sessionIndex.set(0);
+                        this.questionService.initializeQueue([]);
+                        this.loading.set(false);
+                        return;
+                    }
+                    if (skipDialog) {
+                        this.acceptPlanTopicFallback.set(false);
+                    }
                     this.usingFallbackQueue.set(useFallback);
                     const queue = fullBankMode ? candidate : useFallback ? candidate : due;
                     this.sessionTotal.set(queue.length);

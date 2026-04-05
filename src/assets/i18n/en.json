@@ -39,6 +39,10 @@
         },
         "markStudied": "Mark as studied",
         "markStudiedAria": "Mark topic as studied for today",
+        "planAllStudiedMessage": "You’ve studied everything you planned for today.",
+        "planAllStudiedPracticeLink": "Practice today’s material",
+        "planAllStudiedMoreTopicsLink": "Study more topics",
+        "planAllStudiedDismissAria": "Dismiss message",
         "filteredTodayBanner": "Showing only today’s topics you still need to read. Open the Study guide from the main menu to see everything.",
         "practicedToday": "Practiced today",
         "practicedTodayAria": "You answered this question in Practice today",
@@ -126,7 +130,11 @@
         "backToTodaysTopics": "Practice only today’s studied topics",
         "practicingFullBankHint": "Full bank mode: every question in the list is included, not only items due for spaced review.",
         "fallbackHintTodaysTopics": "Nothing in your studied topics is due for review yet — practicing every question in those topics for now.",
-        "fallbackHintDoneTodaysTopics": "No questions in your studied topics were due for review, so this round used all questions in those topics."
+        "fallbackHintDoneTodaysTopics": "No questions in your studied topics were due for review, so this round used all questions in those topics.",
+        "planTopicsCoveredTitle": "Today’s plan topics are covered",
+        "planTopicsCoveredBody": "Nothing in the topics you studied today is due for spaced review right now. You can keep practicing every question in those topics, or switch to the full question bank (all topics).",
+        "planTopicsCoveredPractice": "Practice today’s topics",
+        "planTopicsCoveredOtherTopics": "Full question bank"
     },
     "dashboard": {
         "title": "Interview Progress",

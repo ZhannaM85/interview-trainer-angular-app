@@ -79,6 +79,9 @@ export class StudyGuidePageComponent {
     /** Collapsed on mobile by default; always expanded on wide viewports. */
     protected readonly tocOpen = signal(false);
 
+    /** Shown after marking the last topic in today’s plan as studied. */
+    protected readonly showPlanCompleteBanner = signal(false);
+
     protected readonly sections = computed(() => {
         const all = buildStudyGuideSections(this.questions());
         if (!this.planTodayOnly()) {
@@ -152,7 +155,15 @@ export class StudyGuidePageComponent {
     }
 
     protected onMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): void {
+        const remainingBefore = this.todayPlan.topicsRemainingToStudy().length;
         this.todayPlan.markStudied(topicIdFromParts(cat.category, sub.subtopic));
+        if (remainingBefore === 1) {
+            this.showPlanCompleteBanner.set(true);
+        }
+    }
+
+    protected dismissPlanCompleteBanner(): void {
+        this.showPlanCompleteBanner.set(false);
     }
 
     /**
