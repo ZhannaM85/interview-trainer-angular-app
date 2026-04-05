@@ -94,11 +94,39 @@
                                 </div>
 
                                 @for (q of sub.questions; track q.id) {
-                                    <article class="study__q" [attr.id]="'study-q-' + q.id">
-                                        <h4 class="study__q-heading">
-                                            <span class="study__q-num">{{ globalOrdinalByQuestionId().get(q.id) }}.</span>
-                                            {{ q.question }}
-                                        </h4>
+                                    @let hint = questionPracticeHint(q.id);
+                                    <article
+                                        class="study__q"
+                                        [class.study__q--practiced-today]="hint?.kind === 'today'"
+                                        [attr.id]="'study-q-' + q.id"
+                                    >
+                                        <div class="study__q-heading-row">
+                                            <h4 class="study__q-heading">
+                                                <span class="study__q-num">{{
+                                                    globalOrdinalByQuestionId().get(q.id)
+                                                }}.</span>
+                                                {{ q.question }}
+                                            </h4>
+                                            @if (hint) {
+                                                <span
+                                                    class="study__q-badge"
+                                                    [class.study__q-badge--today]="hint.kind === 'today'"
+                                                    [attr.aria-label]="
+                                                        hint.kind === 'today'
+                                                            ? ('study.practicedTodayAria' | translate)
+                                                            : ('study.lastPracticeAria' | translate: { date: hint.dateStr })
+                                                    "
+                                                >
+                                                    @if (hint.kind === 'today') {
+                                                        {{ 'study.practicedToday' | translate }}
+                                                    } @else {
+                                                        {{
+                                                            'study.lastPractice' | translate: { date: hint.dateStr }
+                                                        }}
+                                                    }
+                                                </span>
+                                            }
+                                        </div>
                                         <div class="study__q-answers">
                                             <app-answer-blocks [question]="q" [animated]="false" />
                                         </div>
