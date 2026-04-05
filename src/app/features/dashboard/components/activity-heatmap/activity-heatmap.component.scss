@@ -51,6 +51,31 @@
     background: var(--it-track);
 }
 
+/* Desktop: stretch 26 weeks across the full card width (square cells). */
+@media (min-width: 768px) {
+    .heatmap__scroll {
+        overflow-x: visible;
+    }
+
+    .heatmap__cols {
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .heatmap__week {
+        flex: 1 1 0;
+        min-width: 0;
+    }
+
+    .heatmap__cell {
+        width: 100%;
+        height: auto;
+        min-width: 0;
+        aspect-ratio: 1;
+    }
+}
+
 .heatmap__cell:disabled {
     cursor: default;
 }
