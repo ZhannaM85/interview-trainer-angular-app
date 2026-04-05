@@ -32,7 +32,7 @@
     {
         "id": 2,
         "topic": "javascript",
-        "subtopic": "closure",
+        "subtopic": "closures",
         "difficulty": "beginner",
         "text": {
             "en": {

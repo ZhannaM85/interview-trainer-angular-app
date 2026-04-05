@@ -185,7 +185,6 @@
         "async": "Async",
         "browser": "Browser",
         "change-detection": "Change detection",
-        "closure": "Closure",
         "closures": "Closures",
         "components": "Components",
         "context": "Context",
