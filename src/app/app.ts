@@ -6,6 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, fromEvent } from 'rxjs';
 
 import { LOCALE_STORAGE_KEY } from './core/locale.constants';
+import { ActiveTimeService } from './core/services/active-time.service';
 import { ThemeService } from './core/services/theme.service';
 
 @Component({
@@ -24,6 +25,7 @@ export class App {
     protected readonly navMenuOpen = signal(false);
 
     constructor() {
+        inject(ActiveTimeService);
         this.currentLang.set(this.normalizeLang(this.translate.currentLang));
         this.translate.onLangChange.pipe(takeUntilDestroyed()).subscribe((e) => {
             this.currentLang.set(this.normalizeLang(e.lang));

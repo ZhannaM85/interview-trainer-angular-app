@@ -63,6 +63,16 @@
     line-height: 1.45;
 }
 
+.dashboard__hint--muted {
+    margin-top: 0.5rem;
+    font-size: 0.82rem;
+    opacity: 0.92;
+}
+
+.dashboard__active-time-bar {
+    margin-bottom: 0.75rem;
+}
+
 .dashboard__list {
     margin: 0;
     padding: 0;
