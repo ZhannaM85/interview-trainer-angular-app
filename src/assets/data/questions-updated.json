@@ -1146,7 +1146,7 @@
         "question": "What will this output?\n\nconst obj = {\n  name: 'John',\n  greet: () => console.log(this.name)\n};\nobj.greet();",
         "weakAnswer": "John",
         "technicalAnswer": "undefined",
-        "interviewAnswer": "Arrow functions don’t have their own 'this', so it refers to the outer scope, not obj.",
+        "interviewAnswer": "It logs undefined. Arrow functions never get their own this—they close over the lexical this from the scope where the arrow was defined (the enclosing script or module), not from the call. Calling obj.greet() does not bind this to obj. In strict mode or modules, that outer this is often undefined, so this.name is undefined. To use the object, use a regular method greet() { console.log(this.name) }, capture const self = this before the arrow, or bind.",
         "difficulty": "advanced"
     },
     {

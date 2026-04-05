@@ -988,7 +988,7 @@ obj.greet();`,
         weakAnswer: "John",
         technicalAnswer: "undefined",
         interviewAnswer:
-            "undefined: у стрелки нет своего this, берётся из внешней области, не из obj."
+            "Выводится undefined. У стрелочной функции нет своего this: она использует лексический this из внешней области, где объявлен объект, а не this от вызова obj.greet(). Поэтому this не указывает на obj. В strict mode или модулях внешний this часто undefined — отсюда undefined. Чтобы сослаться на объект, используйте обычный метод greet() { ... }, const self = this или .bind."
     },
     {
         id: 116,
