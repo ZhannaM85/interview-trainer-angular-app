@@ -17,10 +17,6 @@ const LINK_BY_TOPIC_SUBTOPIC = {
         url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this',
         title: { en: 'MDN — this', ru: 'MDN — this (англ.)' }
     },
-    'javascript/closure': {
-        url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures',
-        title: { en: 'MDN — Closures', ru: 'MDN — Closures (англ.)' }
-    },
     'javascript/closures': {
         url: 'https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures',
         title: { en: 'MDN — Closures', ru: 'MDN — Closures (англ.)' }

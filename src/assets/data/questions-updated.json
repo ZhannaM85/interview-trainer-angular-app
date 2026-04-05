@@ -12,7 +12,7 @@
     {
         "id": 2,
         "topic": "javascript",
-        "subtopic": "closure",
+        "subtopic": "closures",
         "question": "What is a closure?",
         "weakAnswer": "Function inside another function.",
         "technicalAnswer": "A closure is a function that retains access to its lexical scope.",
