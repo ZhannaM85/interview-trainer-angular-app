@@ -33,6 +33,7 @@
     border: 1px solid var(--it-border);
     background: var(--it-card);
     box-shadow: var(--it-shadow);
+    min-width: 0;
 }
 
 .dashboard__card--wide {

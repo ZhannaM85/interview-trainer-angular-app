@@ -5,7 +5,13 @@
         <span>{{ ('difficulty.' + question().difficulty) | translate }}</span>
     </p>
 
-    <h1 class="interview-q__title">{{ question().question }}</h1>
+    @let parts = question().question | splitQuestionCode;
+    @if (parts.code) {
+        <h1 class="interview-q__title">{{ parts.lead }}</h1>
+        <pre class="interview-q__code" tabindex="0"><code>{{ parts.code }}</code></pre>
+    } @else {
+        <h1 class="interview-q__title">{{ question().question }}</h1>
+    }
 
     <app-quiz-timer
         [resetKey]="question().id"

@@ -46,7 +46,7 @@ function snippetFor(id, subtopic, question) {
 
 /** Topic-focused defaults when id has no override */
 const SUBTOPIC_SNIPPETS = {
-    this: `'use strict';\nconst obj = { name: 'Ann', greet() { return this.name; } };\nobj.greet();\nfunction loose() { return this; }\nloose(); // undefined in strict mode`,
+    this: `'use strict';\n\nconst obj = {\n    name: 'Ann',\n    greet() {\n        return this.name;\n    },\n};\n\nobj.greet();\n\nfunction loose() {\n    return this;\n}\n\nloose(); // undefined in strict mode`,
     scope: `const x = 1;\nfunction f() {\n    const y = 2;\n    if (true) {\n        let z = 3;\n    }\n}`,
     variables: `function demo() {\n    console.log(a); // undefined (hoisted)\n    var a = 1;\n    if (true) {\n        let b = 2;\n    }\n}`,
     functions: `function add(a, b) {\n    return a + b;\n}\nconst twice = (x) => x * 2;`,

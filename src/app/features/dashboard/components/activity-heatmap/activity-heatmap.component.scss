@@ -1,5 +1,12 @@
+:host {
+    display: block;
+    min-width: 0;
+    width: 100%;
+}
+
 .heatmap {
     margin-top: 0.5rem;
+    min-width: 0;
 }
 
 .heatmap__title {
@@ -20,9 +27,14 @@
 
 .heatmap__scroll {
     overflow-x: auto;
+    overflow-y: visible;
+    width: 100%;
+    min-width: 0;
     padding-bottom: 0.35rem;
     margin-bottom: 0.65rem;
     -webkit-overflow-scrolling: touch;
+    /* Lets the last column scroll fully clear of the card edge (iOS / narrow viewports) */
+    scroll-padding-inline-end: 8px;
 }
 
 .heatmap__cols {
@@ -30,7 +42,16 @@
     flex-direction: row;
     gap: 3px;
     width: max-content;
+    max-width: none;
     padding: 2px 0;
+    box-sizing: border-box;
+}
+
+@media (max-width: 767.98px) {
+    .heatmap__cols {
+        padding-right: 12px;
+        padding-left: 2px;
+    }
 }
 
 .heatmap__week {
@@ -51,6 +72,45 @@
     background: var(--it-track);
 }
 
+.heatmap__cell--today:not(.heatmap__cell--future) {
+    outline: 1px solid var(--it-focus);
+    /* Inset so the ring is not clipped by overflow-x on narrow screens */
+    outline-offset: -1px;
+}
+
+/* Desktop: stretch 26 weeks across the full card width (square cells). */
+@media (min-width: 768px) {
+    .heatmap__scroll {
+        overflow-x: visible;
+        /* Avoid subpixel clipping of the last column at the card edge */
+        padding-inline: 2px;
+        box-sizing: border-box;
+    }
+
+    .heatmap__cols {
+        display: grid;
+        grid-template-columns: repeat(26, minmax(0, 1fr));
+        gap: 3px;
+        width: 100%;
+        max-width: 100%;
+        box-sizing: border-box;
+    }
+
+    .heatmap__week {
+        min-width: 0;
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+    }
+
+    .heatmap__cell {
+        width: 100%;
+        height: auto;
+        min-width: 0;
+        aspect-ratio: 1;
+    }
+}
+
 .heatmap__cell:disabled {
     cursor: default;
 }
@@ -58,11 +118,6 @@
 .heatmap__cell--future {
     opacity: 0.28;
     background: var(--it-track);
-}
-
-.heatmap__cell--today:not(.heatmap__cell--future) {
-    outline: 1px solid var(--it-focus);
-    outline-offset: 1px;
 }
 
 .heatmap__cell--l0:not(.heatmap__cell--future) {

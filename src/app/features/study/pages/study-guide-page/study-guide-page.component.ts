@@ -17,6 +17,7 @@ import { ProgressService } from '../../../../core/services/progress.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { AnswerBlocksComponent } from '../../../../shared/components/answer-blocks/answer-blocks.component';
+import { SplitQuestionCodePipe } from '../../../../shared/pipes/split-question-code.pipe';
 import type { Question } from '../../../../shared/models/question.model';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import {
@@ -41,7 +42,7 @@ function isSameLocalCalendarDay(a: Date, b: Date): boolean {
 
 @Component({
     selector: 'app-study-guide-page',
-    imports: [AnswerBlocksComponent, RouterLink, TranslatePipe],
+    imports: [AnswerBlocksComponent, RouterLink, SplitQuestionCodePipe, TranslatePipe],
     templateUrl: './study-guide-page.component.html',
     styleUrl: './study-guide-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

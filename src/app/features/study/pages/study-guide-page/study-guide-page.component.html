@@ -95,6 +95,7 @@
 
                                 @for (q of sub.questions; track q.id) {
                                     @let hint = questionPracticeHint(q.id);
+                                    @let qParts = q.question | splitQuestionCode;
                                     <article
                                         class="study__q"
                                         [class.study__q--practiced-today]="hint?.kind === 'today'"
@@ -105,7 +106,7 @@
                                                 <span class="study__q-num">{{
                                                     globalOrdinalByQuestionId().get(q.id)
                                                 }}.</span>
-                                                {{ q.question }}
+                                                {{ qParts.lead }}
                                             </h4>
                                             @if (hint) {
                                                 <span
@@ -127,6 +128,9 @@
                                                 </span>
                                             }
                                         </div>
+                                        @if (qParts.code) {
+                                            <pre class="study__q-code" tabindex="0"><code>{{ qParts.code }}</code></pre>
+                                        }
                                         <div class="study__q-answers">
                                             <app-answer-blocks [question]="q" [animated]="false" />
                                         </div>

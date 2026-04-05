@@ -96,8 +96,10 @@
 
     code {
         font: inherit;
-        white-space: pre-wrap;
-        word-break: break-word;
+        white-space: pre;
+        tab-size: 4;
+        overflow-wrap: normal;
+        word-break: normal;
     }
 }
 
