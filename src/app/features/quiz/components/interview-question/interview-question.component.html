@@ -4,6 +4,10 @@
         <span class="interview-q__dot" aria-hidden="true">•</span>
         <span>{{ ('difficulty.' + question().difficulty) | translate }}</span>
     </p>
+    <p class="interview-q__topic">
+        {{ 'interviewQuestion.topicLabel' | translate }}:
+        <strong>{{ ('subtopics.' + question().subtopic) | translate }}</strong>
+    </p>
 
     @let parts = question().question | splitQuestionCode;
     @if (parts.code) {

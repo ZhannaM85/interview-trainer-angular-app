@@ -169,7 +169,8 @@
         "readMore": "Читать дальше"
     },
     "interviewQuestion": {
-        "cta": "Я ответил(а)"
+        "cta": "Я ответил(а)",
+        "topicLabel": "Тема"
     },
     "selfEval": {
         "ariaLabel": "Насколько хорошо вы ответили?",

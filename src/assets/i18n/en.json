@@ -169,7 +169,8 @@
         "readMore": "Read more"
     },
     "interviewQuestion": {
-        "cta": "I answered"
+        "cta": "I answered",
+        "topicLabel": "Topic"
     },
     "selfEval": {
         "ariaLabel": "How well did you answer?",
