@@ -151,12 +151,20 @@ export class StudyGuidePageComponent {
 
     protected showMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
         const id = topicIdFromParts(cat.category, sub.subtopic);
-        return this.todayPlan.isSelected(id) && !this.todayPlan.isStudied(id);
+        return !this.todayPlan.isStudied(id);
+    }
+
+    protected isStudiedTopic(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
+        return this.todayPlan.isStudied(topicIdFromParts(cat.category, sub.subtopic));
     }
 
     protected onMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): void {
+        const topicId = topicIdFromParts(cat.category, sub.subtopic);
         const remainingBefore = this.todayPlan.topicsRemainingToStudy().length;
-        this.todayPlan.markStudied(topicIdFromParts(cat.category, sub.subtopic));
+        if (!this.todayPlan.isSelected(topicId)) {
+            this.todayPlan.toggleTopicSelected(topicId);
+        }
+        this.todayPlan.markStudied(topicId);
         if (remainingBefore === 1) {
             this.showPlanCompleteBanner.set(true);
         }

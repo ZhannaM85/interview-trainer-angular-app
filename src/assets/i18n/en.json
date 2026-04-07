@@ -27,6 +27,8 @@
         "introBefore": "Read through every question and model answer, then go to",
         "introLink": "Practice",
         "introAfter": "when you are ready.",
+        "gotoPractice": "Go to Practice",
+        "gotoPracticeHint": "Practice uses topics marked as studied. If none are marked yet, it falls back to your full due queue.",
         "loadError": "Could not load questions. Check that assets are available and try again.",
         "loading": "Loading…",
         "tocSummary": "Table of contents",
@@ -38,7 +40,9 @@
             "rxjs": "RxJS"
         },
         "markStudied": "Mark as studied",
+        "markStudiedAddsToPractice": "Mark as studied (adds to practice)",
         "markStudiedAria": "Mark topic as studied for today",
+        "studiedAddedToPractice": "Added to practice",
         "planAllStudiedMessage": "You’ve studied everything you planned for today.",
         "planAllStudiedPracticeLink": "Practice today’s material",
         "planAllStudiedMoreTopicsLink": "Study more topics",
@@ -64,6 +68,8 @@
         "gotoPractice": "Practice",
         "pickTopics": "Topics",
         "pickHint": "Check the boxes for the subtopics you want in today’s plan.",
+        "statusToStudy": "To study",
+        "statusInPractice": "In practice",
         "remove": "Remove",
         "removeAria": "Remove {{topic}} from today’s plan"
     },

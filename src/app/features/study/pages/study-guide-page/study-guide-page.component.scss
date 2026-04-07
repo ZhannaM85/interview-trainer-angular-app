@@ -33,6 +33,12 @@
     border-radius: 0.2rem;
 }
 
+.study__practice-cta-hint {
+    margin: 0.45rem 0 1.1rem;
+    font-size: 0.82rem;
+    color: var(--it-text-muted);
+}
+
 .study__plan-complete-banner {
     display: flex;
     flex-direction: column;
@@ -374,6 +380,19 @@
 .study__mark-studied:focus-visible {
     outline: 2px solid var(--it-focus);
     outline-offset: 2px;
+}
+
+.study__studied-pill {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0.28rem 0.7rem;
+    border-radius: 999px;
+    border: 1px solid var(--it-accent);
+    background: var(--it-accent-dim);
+    color: var(--it-accent);
+    font-size: 0.74rem;
+    font-weight: 700;
+    line-height: 1.3;
 }
 
 .study__sub-mark-end {
