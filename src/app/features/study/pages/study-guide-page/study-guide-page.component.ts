@@ -83,6 +83,12 @@ export class StudyGuidePageComponent {
     /** Shown after marking the last topic in today’s plan as studied. */
     protected readonly showPlanCompleteBanner = signal(false);
 
+    /**
+     * Per-topic accordion open state (`category:subtopic` id).
+     * If absent, default is open when not studied, closed when studied.
+     */
+    private readonly subtopicAccordionState = signal<ReadonlyMap<string, boolean>>(new Map());
+
     /** Show only subtopics where no question has been answered in Practice yet. */
     protected readonly showUntouchedOnly = signal(false);
 
@@ -160,8 +166,17 @@ export class StudyGuidePageComponent {
         this.tocOpen.set(el.open);
     }
 
-    protected scrollToTocAnchor(event: MouseEvent, anchorId: string): void {
+    protected scrollToTocAnchor(
+        event: MouseEvent,
+        anchorId: string,
+        cat?: StudyCategorySection,
+        sub?: StudySubtopicSection
+    ): void {
         event.preventDefault();
+        if (cat && sub) {
+            const id = topicIdFromParts(cat.category, sub.subtopic);
+            this.patchSubtopicAccordion(id, true);
+        }
         this.viewportScroller.scrollToAnchor(anchorId);
         if (!this.viewportWide()) {
             this.tocOpen.set(false);
@@ -177,6 +192,37 @@ export class StudyGuidePageComponent {
         return this.todayPlan.isStudied(topicIdFromParts(cat.category, sub.subtopic));
     }
 
+    protected topicAccordionKey(cat: StudyCategorySection, sub: StudySubtopicSection): string {
+        return topicIdFromParts(cat.category, sub.subtopic);
+    }
+
+    protected subtopicAccordionOpen(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
+        const id = topicIdFromParts(cat.category, sub.subtopic);
+        const m = this.subtopicAccordionState();
+        if (m.has(id)) {
+            return m.get(id)!;
+        }
+        return !this.todayPlan.isStudied(id);
+    }
+
+    protected onSubtopicAccordionToggle(event: Event): void {
+        const el = event.target as HTMLDetailsElement | null;
+        if (!el || el.tagName !== 'DETAILS') {
+            return;
+        }
+        const id = el.getAttribute('data-topic-key');
+        if (!id) {
+            return;
+        }
+        this.patchSubtopicAccordion(id, el.open);
+    }
+
+    private patchSubtopicAccordion(topicKey: string, open: boolean): void {
+        const next = new Map(this.subtopicAccordionState());
+        next.set(topicKey, open);
+        this.subtopicAccordionState.set(next);
+    }
+
     protected onMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): void {
         const topicId = topicIdFromParts(cat.category, sub.subtopic);
         const remainingBefore = this.todayPlan.topicsRemainingToStudy().length;
@@ -184,6 +230,7 @@ export class StudyGuidePageComponent {
             this.todayPlan.toggleTopicSelected(topicId);
         }
         this.todayPlan.markStudied(topicId);
+        this.patchSubtopicAccordion(topicId, false);
         if (remainingBefore === 1) {
             this.showPlanCompleteBanner.set(true);
         }

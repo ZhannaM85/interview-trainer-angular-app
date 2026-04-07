@@ -95,7 +95,7 @@
                                             <a
                                                 class="study__toc-sub-link"
                                                 [href]="'#' + sub.anchorId"
-                                                (click)="scrollToTocAnchor($event, sub.anchorId)"
+                                                (click)="scrollToTocAnchor($event, sub.anchorId, cat, sub)"
                                                 >{{ ('subtopics.' + sub.subtopic) | translate }}</a>
                                         </li>
                                     }
@@ -118,35 +118,41 @@
                         </h2>
 
                         @for (sub of cat.subtopics; track sub.anchorId) {
-                            <section
-                                class="study__sub"
+                            <details
+                                class="study__sub study__sub-accordion"
                                 [attr.id]="sub.anchorId"
+                                [attr.data-topic-key]="topicAccordionKey(cat, sub)"
                                 [attr.aria-labelledby]="sub.anchorId + '__heading'"
+                                [open]="subtopicAccordionOpen(cat, sub)"
+                                (toggle)="onSubtopicAccordionToggle($event)"
                             >
-                                <div class="study__sub-heading-row">
+                                <summary class="study__sub-summary">
                                     <h3 class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
                                         {{ ('subtopics.' + sub.subtopic) | translate }}
                                     </h3>
-                                    @if (showMarkStudied(cat, sub)) {
-                                        <button
-                                            type="button"
-                                            class="study__mark-studied"
-                                            [attr.aria-label]="
-                                                ('study.markStudiedAria' | translate) +
-                                                ' ' +
-                                                (('subtopics.' + sub.subtopic) | translate)
-                                            "
-                                            (click)="onMarkStudied(cat, sub)"
-                                        >
-                                            {{ 'study.markStudiedAddsToPractice' | translate }}
-                                        </button>
-                                    } @else if (isStudiedTopic(cat, sub)) {
-                                        <span class="study__studied-pill" role="status">
-                                            {{ 'study.studiedAddedToPractice' | translate }}
-                                        </span>
-                                    }
-                                </div>
+                                    <span class="study__sub-summary-actions" (click)="$event.stopPropagation()">
+                                        @if (showMarkStudied(cat, sub)) {
+                                            <button
+                                                type="button"
+                                                class="study__mark-studied"
+                                                [attr.aria-label]="
+                                                    ('study.markStudiedAria' | translate) +
+                                                    ' ' +
+                                                    (('subtopics.' + sub.subtopic) | translate)
+                                                "
+                                                (click)="onMarkStudied(cat, sub)"
+                                            >
+                                                {{ 'study.markStudiedAddsToPractice' | translate }}
+                                            </button>
+                                        } @else if (isStudiedTopic(cat, sub)) {
+                                            <span class="study__studied-pill" role="status">
+                                                {{ 'study.studiedAddedToPractice' | translate }}
+                                            </span>
+                                        }
+                                    </span>
+                                </summary>
 
+                                <div class="study__sub-body">
                                 @for (q of sub.questions; track q.id) {
                                     @let hint = questionPracticeHint(q.id);
                                     @let qParts = q.question | splitQuestionCode;
@@ -190,24 +196,8 @@
                                         </div>
                                     </article>
                                 }
-
-                                @if (showMarkStudied(cat, sub)) {
-                                    <div class="study__sub-mark-end">
-                                        <button
-                                            type="button"
-                                            class="study__mark-studied"
-                                            [attr.aria-label]="
-                                                ('study.markStudiedAria' | translate) +
-                                                ' ' +
-                                                (('subtopics.' + sub.subtopic) | translate)
-                                            "
-                                            (click)="onMarkStudied(cat, sub)"
-                                        >
-                                            {{ 'study.markStudiedAddsToPractice' | translate }}
-                                        </button>
-                                    </div>
-                                }
-                            </section>
+                                </div>
+                            </details>
                         }
                     </section>
                 }
