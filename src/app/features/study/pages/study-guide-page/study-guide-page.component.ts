@@ -23,6 +23,7 @@ import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import {
     buildStudyGuideSections,
     filterStudyGuideSectionsByTopicIds,
+    filterStudyGuideSectionsWithoutPractice,
     type StudyCategorySection,
     type StudySubtopicSection
 } from '../../study-guide-grouping';
@@ -82,17 +83,35 @@ export class StudyGuidePageComponent {
     /** Shown after marking the last topic in today’s plan as studied. */
     protected readonly showPlanCompleteBanner = signal(false);
 
+    /** Show only subtopics where no question has been answered in Practice yet. */
+    protected readonly showUntouchedOnly = signal(false);
+
+    private readonly practicedQuestionIds = computed(() => {
+        this.studyProgressRefresh();
+        const ids = new Set<number>();
+        for (const row of this.progressService.getProgress()) {
+            const attempts =
+                (row.nailedCount ?? 0) + (row.partialCount ?? 0) + (row.didntKnowCount ?? 0);
+            if (attempts > 0) {
+                ids.add(row.questionId);
+            }
+        }
+        return ids;
+    });
+
     protected readonly sections = computed(() => {
-        const all = buildStudyGuideSections(this.questions());
-        if (!this.planTodayOnly()) {
-            return all;
+        let all = buildStudyGuideSections(this.questions());
+        if (this.planTodayOnly()) {
+            const remaining = this.todayPlan.topicsRemainingToStudy();
+            const allow = new Set(remaining);
+            if (allow.size > 0) {
+                all = filterStudyGuideSectionsByTopicIds(all, allow);
+            }
         }
-        const remaining = this.todayPlan.topicsRemainingToStudy();
-        const allow = new Set(remaining);
-        if (allow.size === 0) {
-            return all;
+        if (this.showUntouchedOnly()) {
+            all = filterStudyGuideSectionsWithoutPractice(all, this.practicedQuestionIds());
         }
-        return filterStudyGuideSectionsByTopicIds(all, allow);
+        return all;
     });
 
     protected readonly planTodayFilterActive = computed(() => {
@@ -172,6 +191,10 @@ export class StudyGuidePageComponent {
 
     protected dismissPlanCompleteBanner(): void {
         this.showPlanCompleteBanner.set(false);
+    }
+
+    protected toggleUntouchedFilter(checked: boolean): void {
+        this.showUntouchedOnly.set(checked);
     }
 
     /**

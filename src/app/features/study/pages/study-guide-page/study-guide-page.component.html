@@ -12,6 +12,18 @@
         <p class="study__practice-cta-hint">{{ 'study.gotoPracticeHint' | translate }}</p>
     </div>
 
+    <div class="study__filter-row">
+        <label class="study__untouched-label">
+            <input
+                type="checkbox"
+                class="study__untouched-input"
+                [checked]="showUntouchedOnly()"
+                (change)="toggleUntouchedFilter($any($event.target).checked)"
+            />
+            <span>{{ 'study.showUntouchedOnly' | translate }}</span>
+        </label>
+    </div>
+
     @if (showPlanCompleteBanner()) {
         <div class="study__plan-complete-banner" role="status" aria-live="polite">
             <div class="study__plan-complete-row">
@@ -42,12 +54,20 @@
         </p>
     }
 
+    @if (showUntouchedOnly()) {
+        <p class="study__filter-banner" role="status">
+            {{ 'study.untouchedFilterBanner' | translate }}
+        </p>
+    }
+
     @if (loadError()) {
         <p class="study__message study__message--error" role="alert">
             {{ 'study.loadError' | translate }}
         </p>
     } @else if (loading()) {
         <p class="study__message">{{ 'study.loading' | translate }}</p>
+    } @else if (showUntouchedOnly() && sections().length === 0) {
+        <p class="study__message">{{ 'study.untouchedFilterEmpty' | translate }}</p>
     } @else {
         <div class="study__layout">
             <details

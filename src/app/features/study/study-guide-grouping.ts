@@ -79,3 +79,20 @@ export function filterStudyGuideSectionsByTopicIds(
     }
     return out;
 }
+
+/** Keep only subtopics where no question has been practiced (no attempts in `practicedQuestionIds`). */
+export function filterStudyGuideSectionsWithoutPractice(
+    sections: StudyCategorySection[],
+    practicedQuestionIds: ReadonlySet<number>
+): StudyCategorySection[] {
+    const out: StudyCategorySection[] = [];
+    for (const cat of sections) {
+        const subs = cat.subtopics.filter((sub) =>
+            sub.questions.every((q) => !practicedQuestionIds.has(q.id))
+        );
+        if (subs.length > 0) {
+            out.push({ ...cat, subtopics: subs });
+        }
+    }
+    return out;
+}
