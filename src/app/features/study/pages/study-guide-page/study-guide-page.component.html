@@ -5,6 +5,12 @@
         <a routerLink="/quiz" class="study__intro-link">{{ 'study.introLink' | translate }}</a>
         {{ 'study.introAfter' | translate }}
     </p>
+    <div>
+        <a routerLink="/quiz" class="study__plan-complete-btn study__plan-complete-btn--primary">
+            {{ 'study.gotoPractice' | translate }}
+        </a>
+        <p class="study__practice-cta-hint">{{ 'study.gotoPracticeHint' | translate }}</p>
+    </div>
 
     @if (showPlanCompleteBanner()) {
         <div class="study__plan-complete-banner" role="status" aria-live="polite">
@@ -112,8 +118,12 @@
                                             "
                                             (click)="onMarkStudied(cat, sub)"
                                         >
-                                            {{ 'study.markStudied' | translate }}
+                                            {{ 'study.markStudiedAddsToPractice' | translate }}
                                         </button>
+                                    } @else if (isStudiedTopic(cat, sub)) {
+                                        <span class="study__studied-pill" role="status">
+                                            {{ 'study.studiedAddedToPractice' | translate }}
+                                        </span>
                                     }
                                 </div>
 
@@ -173,7 +183,7 @@
                                             "
                                             (click)="onMarkStudied(cat, sub)"
                                         >
-                                            {{ 'study.markStudied' | translate }}
+                                            {{ 'study.markStudiedAddsToPractice' | translate }}
                                         </button>
                                     </div>
                                 }

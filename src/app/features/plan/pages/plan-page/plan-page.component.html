@@ -98,6 +98,14 @@
                                     (click)="$event.preventDefault(); todayPlan.toggleTopicSelected(topicId(cat, sub))"
                                 />
                                 <span class="plan__topic-text">{{ (labelKey(sub)) | translate }}</span>
+                                @if (topicStatusKey(cat, sub); as statusKey) {
+                                    <span
+                                        class="plan__topic-status"
+                                        [class.plan__topic-status--practice]="statusKey === 'plan.statusInPractice'"
+                                    >
+                                        {{ statusKey | translate }}
+                                    </span>
+                                }
                             </label>
                         </li>
                     }

@@ -31,6 +31,17 @@
     opacity: 0.6;
 }
 
+.interview-q__topic {
+    margin: -0.5rem 0 0;
+    font-size: 0.85rem;
+    color: var(--it-text-muted);
+    text-align: center;
+}
+
+.interview-q__topic strong {
+    color: var(--it-text);
+}
+
 .interview-q__title {
     margin: 0;
     font-size: clamp(1.35rem, 4vw, 1.65rem);
