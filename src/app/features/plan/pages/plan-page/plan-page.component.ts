@@ -66,6 +66,14 @@ export class PlanPageComponent {
         return `subtopics.${sub.subtopic}`;
     }
 
+    protected topicStatusKey(cat: StudyCategorySection, sub: StudySubtopicSection): string | null {
+        const id = this.topicId(cat, sub);
+        if (!this.todayPlan.isSelected(id)) {
+            return null;
+        }
+        return this.todayPlan.isStudied(id) ? 'plan.statusInPractice' : 'plan.statusToStudy';
+    }
+
     /** Subtopic string from `category:subtopic` id. */
     protected topicSubtopicFromId(id: string): string {
         const i = id.indexOf(':');
