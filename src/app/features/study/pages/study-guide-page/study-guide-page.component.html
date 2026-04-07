@@ -12,6 +12,18 @@
         <p class="study__practice-cta-hint">{{ 'study.gotoPracticeHint' | translate }}</p>
     </div>
 
+    <div class="study__filter-row">
+        <label class="study__untouched-label">
+            <input
+                type="checkbox"
+                class="study__untouched-input"
+                [checked]="showUntouchedOnly()"
+                (change)="toggleUntouchedFilter($any($event.target).checked)"
+            />
+            <span>{{ 'study.showUntouchedOnly' | translate }}</span>
+        </label>
+    </div>
+
     @if (showPlanCompleteBanner()) {
         <div class="study__plan-complete-banner" role="status" aria-live="polite">
             <div class="study__plan-complete-row">
@@ -42,12 +54,20 @@
         </p>
     }
 
+    @if (showUntouchedOnly()) {
+        <p class="study__filter-banner" role="status">
+            {{ 'study.untouchedFilterBanner' | translate }}
+        </p>
+    }
+
     @if (loadError()) {
         <p class="study__message study__message--error" role="alert">
             {{ 'study.loadError' | translate }}
         </p>
     } @else if (loading()) {
         <p class="study__message">{{ 'study.loading' | translate }}</p>
+    } @else if (showUntouchedOnly() && sections().length === 0) {
+        <p class="study__message">{{ 'study.untouchedFilterEmpty' | translate }}</p>
     } @else {
         <div class="study__layout">
             <details
@@ -75,7 +95,7 @@
                                             <a
                                                 class="study__toc-sub-link"
                                                 [href]="'#' + sub.anchorId"
-                                                (click)="scrollToTocAnchor($event, sub.anchorId)"
+                                                (click)="scrollToTocAnchor($event, sub.anchorId, cat, sub)"
                                                 >{{ ('subtopics.' + sub.subtopic) | translate }}</a>
                                         </li>
                                     }
@@ -98,35 +118,41 @@
                         </h2>
 
                         @for (sub of cat.subtopics; track sub.anchorId) {
-                            <section
-                                class="study__sub"
+                            <details
+                                class="study__sub study__sub-accordion"
                                 [attr.id]="sub.anchorId"
+                                [attr.data-topic-key]="topicAccordionKey(cat, sub)"
                                 [attr.aria-labelledby]="sub.anchorId + '__heading'"
+                                [open]="subtopicAccordionOpen(cat, sub)"
+                                (toggle)="onSubtopicAccordionToggle($event)"
                             >
-                                <div class="study__sub-heading-row">
+                                <summary class="study__sub-summary">
                                     <h3 class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
                                         {{ ('subtopics.' + sub.subtopic) | translate }}
                                     </h3>
-                                    @if (showMarkStudied(cat, sub)) {
-                                        <button
-                                            type="button"
-                                            class="study__mark-studied"
-                                            [attr.aria-label]="
-                                                ('study.markStudiedAria' | translate) +
-                                                ' ' +
-                                                (('subtopics.' + sub.subtopic) | translate)
-                                            "
-                                            (click)="onMarkStudied(cat, sub)"
-                                        >
-                                            {{ 'study.markStudiedAddsToPractice' | translate }}
-                                        </button>
-                                    } @else if (isStudiedTopic(cat, sub)) {
-                                        <span class="study__studied-pill" role="status">
-                                            {{ 'study.studiedAddedToPractice' | translate }}
-                                        </span>
-                                    }
-                                </div>
+                                    <span class="study__sub-summary-actions" (click)="$event.stopPropagation()">
+                                        @if (showMarkStudied(cat, sub)) {
+                                            <button
+                                                type="button"
+                                                class="study__mark-studied"
+                                                [attr.aria-label]="
+                                                    ('study.markStudiedAria' | translate) +
+                                                    ' ' +
+                                                    (('subtopics.' + sub.subtopic) | translate)
+                                                "
+                                                (click)="onMarkStudied(cat, sub)"
+                                            >
+                                                {{ 'study.markStudiedAddsToPractice' | translate }}
+                                            </button>
+                                        } @else if (isStudiedTopic(cat, sub)) {
+                                            <span class="study__studied-pill" role="status">
+                                                {{ 'study.studiedAddedToPractice' | translate }}
+                                            </span>
+                                        }
+                                    </span>
+                                </summary>
 
+                                <div class="study__sub-body">
                                 @for (q of sub.questions; track q.id) {
                                     @let hint = questionPracticeHint(q.id);
                                     @let qParts = q.question | splitQuestionCode;
@@ -170,24 +196,8 @@
                                         </div>
                                     </article>
                                 }
-
-                                @if (showMarkStudied(cat, sub)) {
-                                    <div class="study__sub-mark-end">
-                                        <button
-                                            type="button"
-                                            class="study__mark-studied"
-                                            [attr.aria-label]="
-                                                ('study.markStudiedAria' | translate) +
-                                                ' ' +
-                                                (('subtopics.' + sub.subtopic) | translate)
-                                            "
-                                            (click)="onMarkStudied(cat, sub)"
-                                        >
-                                            {{ 'study.markStudiedAddsToPractice' | translate }}
-                                        </button>
-                                    </div>
-                                }
-                            </section>
+                                </div>
+                            </details>
                         }
                     </section>
                 }
