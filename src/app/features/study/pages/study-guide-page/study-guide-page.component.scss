@@ -39,6 +39,34 @@
     color: var(--it-text-muted);
 }
 
+.study__filter-row {
+    margin: 0 0 0.85rem;
+}
+
+.study__untouched-label {
+    display: inline-flex;
+    align-items: flex-start;
+    gap: 0.45rem;
+    max-width: 100%;
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--it-text);
+    cursor: pointer;
+}
+
+.study__untouched-input {
+    width: 1.05rem;
+    height: 1.05rem;
+    margin-top: 0.12rem;
+    flex-shrink: 0;
+    accent-color: var(--it-accent);
+}
+
+.study__untouched-input:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
 .study__plan-complete-banner {
     display: flex;
     flex-direction: column;
@@ -331,22 +359,53 @@
     border-bottom: 1px solid var(--it-border);
 }
 
-.study__sub {
+.study__sub-accordion {
     scroll-margin-top: 1rem;
     margin-bottom: 1.75rem;
+    border: 1px solid var(--it-border);
+    border-radius: 0.85rem;
+    background: var(--it-card);
+    box-sizing: border-box;
 }
 
-.study__sub:last-child {
+.study__sub-accordion:last-child {
     margin-bottom: 0;
 }
 
-.study__sub-heading-row {
+.study__sub-summary {
     display: flex;
     flex-wrap: wrap;
     align-items: center;
-    justify-content: space-between;
     gap: 0.65rem;
-    margin-bottom: 1rem;
+    padding: 0.85rem 1rem;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.study__sub-summary::-webkit-details-marker {
+    display: none;
+}
+
+.study__sub-summary::marker {
+    content: '';
+}
+
+.study__sub-summary::after {
+    content: '';
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    margin-left: auto;
+    flex-shrink: 0;
+    border-right: 2px solid var(--it-text-muted);
+    border-bottom: 2px solid var(--it-text-muted);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.study__sub-accordion[open] > .study__sub-summary::after {
+    transform: rotate(-135deg);
 }
 
 .study__sub-heading {
@@ -357,6 +416,14 @@
     font-weight: 700;
     color: var(--it-text-muted);
     text-transform: capitalize;
+}
+
+.study__sub-summary-actions {
+    flex-shrink: 0;
+}
+
+.study__sub-body {
+    padding: 0 1rem 1.1rem;
 }
 
 .study__mark-studied {
@@ -393,12 +460,6 @@
     font-size: 0.74rem;
     font-weight: 700;
     line-height: 1.3;
-}
-
-.study__sub-mark-end {
-    display: flex;
-    justify-content: flex-end;
-    margin-top: 1.15rem;
 }
 
 .study__q {
