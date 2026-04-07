@@ -8,6 +8,7 @@ import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Progress } from '../../../../shared/models/progress.model';
 import type { Question } from '../../../../shared/models/question.model';
+import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
 import { ActivityHeatmapComponent } from '../../components/activity-heatmap/activity-heatmap.component';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
 
@@ -41,6 +42,40 @@ export class DashboardPageComponent {
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
         return { hours, minutes, totalSeconds };
+    });
+
+    protected readonly streakView = computed(() => {
+        const map = this.activityService.activityMap();
+        const active = new Set<string>();
+        for (const row of map.values()) {
+            const hasAnyActivity =
+                row.questionsAnswered > 0 ||
+                row.topicsStudied > 0 ||
+                (row.activeSeconds ?? 0) > 0 ||
+                row.coveredTopicIds.length > 0;
+            if (hasAnyActivity) {
+                active.add(row.date);
+            }
+        }
+
+        const currentDays = this.countBackwardStreakFrom(new Date(), active);
+
+        let bestDays = 0;
+        for (const d of active) {
+            const prev = this.shiftYmdByDays(d, -1);
+            if (active.has(prev)) {
+                continue;
+            }
+            let run = 1;
+            let cursor = d;
+            while (active.has(this.shiftYmdByDays(cursor, 1))) {
+                cursor = this.shiftYmdByDays(cursor, 1);
+                run += 1;
+            }
+            bestDays = Math.max(bestDays, run);
+        }
+
+        return { currentDays, bestDays };
     });
 
     protected readonly stats = signal<DashboardStats | null>(null);
@@ -119,5 +154,28 @@ export class DashboardPageComponent {
             weakTopics,
             weakCategories: weakTopics
         };
+    }
+
+    private countBackwardStreakFrom(from: Date, activeDays: Set<string>): number {
+        let n = 0;
+        let cursor = formatLocalYmd(from);
+        while (activeDays.has(cursor)) {
+            n += 1;
+            cursor = this.shiftYmdByDays(cursor, -1);
+        }
+        return n;
+    }
+
+    private shiftYmdByDays(ymd: string, deltaDays: number): string {
+        const [yRaw, mRaw, dRaw] = ymd.split('-');
+        const y = Number(yRaw);
+        const m = Number(mRaw);
+        const d = Number(dRaw);
+        if (!Number.isFinite(y) || !Number.isFinite(m) || !Number.isFinite(d)) {
+            return ymd;
+        }
+        const dt = new Date(y, m - 1, d);
+        dt.setDate(dt.getDate() + deltaDays);
+        return formatLocalYmd(dt);
     }
 }
