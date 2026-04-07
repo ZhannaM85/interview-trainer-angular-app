@@ -9,6 +9,7 @@
         <p class="dashboard__message">{{ 'dashboard.loading' | translate }}</p>
     } @else if (stats(); as s) {
         @let at = activeTimeView();
+        @let streak = streakView();
         <div class="dashboard__layout">
             <article class="dashboard__card">
                 <h2 class="dashboard__card-title">{{ 'dashboard.accuracy' | translate }}</h2>
@@ -58,6 +59,26 @@
                 </div>
                 <p class="dashboard__hint">{{ 'dashboard.activeTimeDisclaimer' | translate }}</p>
                 <p class="dashboard__hint dashboard__hint--muted">{{ 'dashboard.activeTimeTenKHint' | translate }}</p>
+            </article>
+
+            <article class="dashboard__card">
+                <h2 class="dashboard__card-title">{{ 'dashboard.streakHeading' | translate }}</h2>
+                <p class="dashboard__metric dashboard__metric--streak">
+                    {{
+                        'dashboard.streakCurrentMetric'
+                            | translate: {
+                                  days: streak.currentDays
+                              }
+                    }}
+                </p>
+                <p class="dashboard__hint">
+                    {{
+                        'dashboard.streakBestMetric'
+                            | translate: {
+                                  days: streak.bestDays
+                              }
+                    }}
+                </p>
             </article>
 
             <article class="dashboard__card dashboard__card--wide">
