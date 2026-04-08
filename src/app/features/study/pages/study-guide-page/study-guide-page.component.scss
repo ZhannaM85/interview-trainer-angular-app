@@ -427,6 +427,12 @@
     text-transform: capitalize;
 }
 
+.study__sub-topic-practice-badge {
+    flex-shrink: 0;
+    align-self: center;
+    max-width: min(100%, 11rem);
+}
+
 .study__sub-summary-actions {
     flex-shrink: 0;
 }
