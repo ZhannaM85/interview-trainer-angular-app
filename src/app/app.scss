@@ -5,6 +5,19 @@
     min-width: 0;
     max-width: 100%;
     box-sizing: border-box;
+    /**
+     * Where nested `position: sticky` bars sit (Study subtopic headers). Match the **app shell**
+     * bar only — once the user scrolls, the Study TOC scrolls away; a large inset was leaving a
+     * visible gap between the main header and the stuck row.
+     */
+    --app-sticky-inset: calc(env(safe-area-inset-top, 0px) + 4rem);
+}
+
+@media (min-width: 768px) {
+    .app {
+        /* Header gains a second row (nav links). */
+        --app-sticky-inset: calc(env(safe-area-inset-top, 0px) + 6.25rem);
+    }
 }
 
 .app__header {

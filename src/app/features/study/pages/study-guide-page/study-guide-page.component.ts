@@ -108,8 +108,9 @@ export class StudyGuidePageComponent {
     protected readonly sections = computed(() => {
         let all = buildStudyGuideSections(this.questions());
         if (this.planTodayOnly()) {
-            const remaining = this.todayPlan.topicsRemainingToStudy();
-            const allow = new Set(remaining);
+            /** Use the full plan selection, not only “still to read”, so marking studied collapses the row instead of removing it. */
+            const planned = this.todayPlan.selectedTopicIds();
+            const allow = new Set(planned);
             if (allow.size > 0) {
                 all = filterStudyGuideSectionsByTopicIds(all, allow);
             }
