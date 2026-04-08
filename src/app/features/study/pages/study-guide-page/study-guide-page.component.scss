@@ -239,14 +239,21 @@
     }
 }
 
+/* In-flow disclosure (not an overlay). Sticky only in the wide sidebar so main scrolls beside it, not under it. */
 .study__toc-shell {
-    position: sticky;
-    top: 0.75rem;
-    z-index: 1;
     border-radius: 0.85rem;
     border: 1px solid var(--it-border);
     background: var(--it-card);
     box-shadow: var(--it-shadow);
+    box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+    .study__toc-shell {
+        position: sticky;
+        top: 0.75rem;
+        z-index: 12;
+    }
 }
 
 .study__toc-summary {
@@ -300,36 +307,25 @@
 .study__toc {
     max-height: min(70vh, 32rem);
     overflow: auto;
-    padding: 0 1rem 1.1rem;
+    padding: 0 1.1rem 1.1rem;
+    box-sizing: border-box;
 }
 
 @media (max-width: 899px) {
     .study__toc-shell[open] .study__toc {
         border-top: 1px solid var(--it-border);
+        padding-top: 0.85rem;
     }
-}
-
-.study__toc-title {
-    display: none;
-    margin: 0 0 0.65rem;
-    font-size: 0.75rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.06em;
-    color: var(--it-text-muted);
 }
 
 @media (min-width: 900px) {
-    .study__toc-summary {
-        display: none;
-    }
-
-    .study__toc-title {
-        display: block;
-    }
-
     .study__toc {
-        padding: 1rem 1rem 1.1rem;
+        padding: 0 1rem 1.1rem;
+    }
+
+    .study__toc-shell[open] .study__toc {
+        padding-top: 0.85rem;
+        border-top: 1px solid var(--it-border);
     }
 }
 
@@ -419,44 +415,63 @@
     align-items: center;
     gap: 0.5rem 0.65rem;
     padding: 0.85rem 1rem;
-    list-style: none;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+/* Native `<summary>` avoided (no interactive descendants); title row toggles via this control */
+.study__sub-disclosure {
+    display: flex;
+    align-items: center;
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    text-align: left;
     cursor: pointer;
     user-select: none;
-    min-width: 0;
 }
 
-/* Keep title + Mark as studied reachable while scrolling long subtopic content */
-.study__sub-accordion[open] > .study__sub-summary {
-    position: sticky;
-    top: 60px;
-    z-index: 8;
-    background: var(--it-card);
-    box-shadow: 0 1px 0 var(--it-border);
+.study__sub-disclosure:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 3px;
+    border-radius: 0.35rem;
 }
 
-.study__sub-summary::-webkit-details-marker {
-    display: none;
-}
-
-.study__sub-summary::marker {
-    content: '';
-}
-
-.study__sub-summary::after {
-    content: '';
+.study__sub-chevron {
     display: inline-block;
     width: 0.45rem;
     height: 0.45rem;
-    margin-left: auto;
     flex-shrink: 0;
+    margin-left: auto;
     border-right: 2px solid var(--it-text-muted);
     border-bottom: 2px solid var(--it-text-muted);
     transform: rotate(45deg);
     transition: transform 0.2s ease;
 }
 
-.study__sub-accordion[open] > .study__sub-summary::after {
+.study__sub-accordion--open .study__sub-chevron {
     transform: rotate(-135deg);
+}
+
+.study__sub-aside {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* Keep title + Mark as studied reachable while scrolling long subtopic content */
+.study__sub-accordion--open > .study__sub-summary {
+    position: sticky;
+    top: 60px;
+    z-index: 8;
+    background: var(--it-card);
+    box-shadow: 0 1px 0 var(--it-border);
 }
 
 .study__sub-heading {
@@ -470,14 +485,14 @@
 }
 
 /* Collapsed: one-line row with ellipsis so controls stay on a single line */
-.study__sub-accordion:not([open]) > .study__sub-summary .study__sub-heading {
+.study__sub-accordion:not(.study__sub-accordion--open) .study__sub-disclosure .study__sub-heading {
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
 /* Expanded: show the full title (wrap if needed) */
-.study__sub-accordion[open] > .study__sub-summary .study__sub-heading {
+.study__sub-accordion--open .study__sub-disclosure .study__sub-heading {
     white-space: normal;
     overflow: visible;
     word-wrap: break-word;

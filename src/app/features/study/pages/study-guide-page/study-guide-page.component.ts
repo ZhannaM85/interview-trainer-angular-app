@@ -1,13 +1,5 @@
 import { ViewportScroller } from '@angular/common';
-import {
-    afterNextRender,
-    ChangeDetectionStrategy,
-    Component,
-    computed,
-    DestroyRef,
-    inject,
-    signal
-} from '@angular/core';
+import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -56,7 +48,6 @@ export class StudyGuidePageComponent {
     private readonly router = inject(Router);
     private readonly translate = inject(TranslateService);
     private readonly viewportScroller = inject(ViewportScroller);
-    private readonly destroyRef = inject(DestroyRef);
 
     /** Bumps when returning to this page so practice progress is re-read from storage. */
     private readonly studyProgressRefresh = signal(0);
@@ -70,15 +61,12 @@ export class StudyGuidePageComponent {
         { initialValue: this.route.snapshot.queryParamMap.get('today') === '1' }
     );
 
-    /** Matches `study__layout` two-column breakpoint. */
-    private readonly viewportWide = signal(false);
-
     protected readonly questions = signal<Question[]>([]);
     protected readonly loading = signal(true);
     protected readonly loadError = signal(false);
 
-    /** Collapsed on mobile by default; always expanded on wide viewports. */
-    protected readonly tocOpen = signal(false);
+    /** Table of contents `<details>` open state (collapsible; in-flow, not an overlay). */
+    protected readonly tocExpanded = signal(true);
 
     /** Shown after marking the last topic in today’s plan as studied. */
     protected readonly showPlanCompleteBanner = signal(false);
@@ -170,16 +158,12 @@ export class StudyGuidePageComponent {
         return m;
     });
 
-    protected onTocToggle(event: Event): void {
-        const el = event.target as HTMLDetailsElement;
-        if (this.viewportWide()) {
-            if (!el.open) {
-                el.open = true;
-            }
-            this.tocOpen.set(true);
+    protected onTocShellToggle(event: Event): void {
+        const el = event.currentTarget as HTMLDetailsElement | null;
+        if (!el || el.tagName !== 'DETAILS') {
             return;
         }
-        this.tocOpen.set(el.open);
+        this.tocExpanded.set(el.open);
     }
 
     protected scrollToTocAnchor(
@@ -194,9 +178,6 @@ export class StudyGuidePageComponent {
             this.patchSubtopicAccordion(id, true);
         }
         this.viewportScroller.scrollToAnchor(anchorId);
-        if (!this.viewportWide()) {
-            this.tocOpen.set(false);
-        }
     }
 
     protected showMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
@@ -221,16 +202,10 @@ export class StudyGuidePageComponent {
         return !this.todayPlan.isStudied(id);
     }
 
-    protected onSubtopicAccordionToggle(event: Event): void {
-        const el = event.target as HTMLDetailsElement | null;
-        if (!el || el.tagName !== 'DETAILS') {
-            return;
-        }
-        const id = el.getAttribute('data-topic-key');
-        if (!id) {
-            return;
-        }
-        this.patchSubtopicAccordion(id, el.open);
+    protected toggleSubtopicAccordion(cat: StudyCategorySection, sub: StudySubtopicSection): void {
+        const id = topicIdFromParts(cat.category, sub.subtopic);
+        const open = !this.subtopicAccordionOpen(cat, sub);
+        this.patchSubtopicAccordion(id, open);
     }
 
     private patchSubtopicAccordion(topicKey: string, open: boolean): void {
@@ -350,22 +325,6 @@ export class StudyGuidePageComponent {
                     this.studyProgressRefresh.update((n) => n + 1);
                 }
             });
-
-        afterNextRender(() => {
-            const mq = window.matchMedia('(min-width: 900px)');
-            const sync = (): void => {
-                const wide = mq.matches;
-                this.viewportWide.set(wide);
-                if (wide) {
-                    this.tocOpen.set(true);
-                } else {
-                    this.tocOpen.set(false);
-                }
-            };
-            sync();
-            mq.addEventListener('change', sync);
-            this.destroyRef.onDestroy(() => mq.removeEventListener('change', sync));
-        });
 
         this.questionService
             .getQuestions()
