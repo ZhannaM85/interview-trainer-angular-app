@@ -74,7 +74,11 @@
         "statusToStudy": "К изучению",
         "statusInPractice": "В практике",
         "remove": "Убрать",
-        "removeAria": "Убрать «{{topic}}» из плана на сегодня"
+        "removeAria": "Убрать «{{topic}}» из плана на сегодня",
+        "lastStudiedNever": "—",
+        "lastStudiedNeverAria": "Пока нет записей об изучении или практике по этой теме",
+        "lastStudiedToday": "Сегодня",
+        "lastStudiedAria": "Последняя активность по теме: {{date}}"
     },
     "heatmap": {
         "heading": "Активность",

@@ -1,12 +1,19 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
-import { TranslatePipe } from '@ngx-translate/core';
+import { NavigationEnd, Router, RouterLink } from '@angular/router';
+import { TranslatePipe, TranslateService } from '@ngx-translate/core';
+import { filter } from 'rxjs';
 
+import { ActivityService } from '../../../../core/services/activity.service';
+import { ProgressService } from '../../../../core/services/progress.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Question } from '../../../../shared/models/question.model';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
+import {
+    buildTopicLastStudiedHintMap,
+    type TopicLastStudiedHint
+} from '../../../../shared/utils/topic-last-studied.utils';
 import { buildStudyGuideSections, type StudyCategorySection, type StudySubtopicSection } from '../../../study/study-guide-grouping';
 
 @Component({
@@ -18,7 +25,14 @@ import { buildStudyGuideSections, type StudyCategorySection, type StudySubtopicS
 })
 export class PlanPageComponent {
     private readonly questionService = inject(QuestionService);
+    private readonly progressService = inject(ProgressService);
+    private readonly activityService = inject(ActivityService);
+    private readonly translate = inject(TranslateService);
+    private readonly router = inject(Router);
     protected readonly todayPlan = inject(TodayPlanService);
+
+    /** Recomputes last-studied hints when locale, navigation, or stored activity/progress may have changed. */
+    private readonly lastStudiedRefresh = signal(0);
 
     protected readonly questions = signal<Question[]>([]);
     protected readonly loading = signal(true);
@@ -35,8 +49,35 @@ export class PlanPageComponent {
         return this.todayPlan.selectedTopicIds().filter((id) => studied.has(id));
     });
 
+    protected readonly topicLastStudiedById = computed(() => {
+        this.lastStudiedRefresh();
+        this.questions();
+        this.activityService.activityMap();
+        return buildTopicLastStudiedHintMap(
+            this.questions(),
+            this.activityService.activityMap(),
+            this.progressService.getProgress(),
+            this.translate.currentLang ?? 'en'
+        );
+    });
+
     constructor() {
         this.todayPlan.syncCalendarDay();
+
+        this.translate.onLangChange.pipe(takeUntilDestroyed()).subscribe(() => {
+            this.lastStudiedRefresh.update((n) => n + 1);
+        });
+
+        this.router.events
+            .pipe(
+                filter((e): e is NavigationEnd => e instanceof NavigationEnd),
+                takeUntilDestroyed()
+            )
+            .subscribe(() => {
+                if (this.router.url.includes('/plan')) {
+                    this.lastStudiedRefresh.update((n) => n + 1);
+                }
+            });
 
         this.questionService
             .getQuestions()
@@ -72,6 +113,21 @@ export class PlanPageComponent {
             return null;
         }
         return this.todayPlan.isStudied(id) ? 'plan.statusInPractice' : 'plan.statusToStudy';
+    }
+
+    protected topicLastStudiedHint(cat: StudyCategorySection, sub: StudySubtopicSection): TopicLastStudiedHint {
+        return this.topicLastStudiedById().get(this.topicId(cat, sub)) ?? { kind: 'none' };
+    }
+
+    protected lastStudiedDateAria(hint: TopicLastStudiedHint): string {
+        if (hint.kind === 'none') {
+            return this.translate.instant('plan.lastStudiedNeverAria');
+        }
+        const dateLabel =
+            hint.kind === 'today'
+                ? this.translate.instant('plan.lastStudiedToday')
+                : hint.dateStr;
+        return this.translate.instant('plan.lastStudiedAria', { date: dateLabel });
     }
 
     /** Subtopic string from `category:subtopic` id. */
