@@ -74,7 +74,11 @@
         "statusToStudy": "To study",
         "statusInPractice": "In practice",
         "remove": "Remove",
-        "removeAria": "Remove {{topic}} from today’s plan"
+        "removeAria": "Remove {{topic}} from today’s plan",
+        "lastStudiedNever": "—",
+        "lastStudiedNeverAria": "No recorded study or practice in this topic yet",
+        "lastStudiedToday": "Today",
+        "lastStudiedAria": "Last activity in this topic: {{date}}"
     },
     "heatmap": {
         "heading": "Activity",
