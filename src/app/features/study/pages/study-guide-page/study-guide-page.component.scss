@@ -415,13 +415,14 @@
 
 .study__sub-summary {
     display: flex;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     align-items: center;
-    gap: 0.65rem;
+    gap: 0.5rem 0.65rem;
     padding: 0.85rem 1rem;
     list-style: none;
     cursor: pointer;
     user-select: none;
+    min-width: 0;
 }
 
 /* Keep title + Mark as studied reachable while scrolling long subtopic content */
@@ -460,7 +461,7 @@
 
 .study__sub-heading {
     margin: 0;
-    flex: 1 1 auto;
+    flex: 1 1 0;
     min-width: 0;
     font-size: 1rem;
     font-weight: 700;
@@ -468,10 +469,28 @@
     text-transform: capitalize;
 }
 
+/* Collapsed: one-line row with ellipsis so controls stay on a single line */
+.study__sub-accordion:not([open]) > .study__sub-summary .study__sub-heading {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Expanded: show the full title (wrap if needed) */
+.study__sub-accordion[open] > .study__sub-summary .study__sub-heading {
+    white-space: normal;
+    overflow: visible;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
 .study__sub-topic-practice-badge {
     flex-shrink: 0;
     align-self: center;
-    max-width: min(100%, 11rem);
+    max-width: 10.5rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .study__sub-summary-actions {
