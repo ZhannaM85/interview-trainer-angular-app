@@ -130,6 +130,24 @@
                                     <h3 class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
                                         {{ ('subtopics.' + sub.subtopic) | translate }}
                                     </h3>
+                                    @if (topicPracticeHint(cat, sub); as tHint) {
+                                        <span
+                                            class="study__q-badge study__sub-topic-practice-badge"
+                                            [class.study__q-badge--today]="tHint.kind === 'today'"
+                                            [attr.aria-label]="
+                                                tHint.kind === 'today'
+                                                    ? ('study.practicedTodayAria' | translate)
+                                                    : ('study.lastPracticeAria' | translate: { date: tHint.dateStr })
+                                            "
+                                            (click)="$event.stopPropagation()"
+                                        >
+                                            @if (tHint.kind === 'today') {
+                                                {{ 'study.practicedToday' | translate }}
+                                            } @else {
+                                                {{ 'study.lastPractice' | translate: { date: tHint.dateStr } }}
+                                            }
+                                        </span>
+                                    }
                                     <span class="study__sub-summary-actions" (click)="$event.stopPropagation()">
                                         @if (showMarkStudied(cat, sub)) {
                                             <button
@@ -194,25 +212,6 @@
                                                 }}.</span>
                                                 {{ qParts.lead }}
                                             </h4>
-                                            @if (hint) {
-                                                <span
-                                                    class="study__q-badge"
-                                                    [class.study__q-badge--today]="hint.kind === 'today'"
-                                                    [attr.aria-label]="
-                                                        hint.kind === 'today'
-                                                            ? ('study.practicedTodayAria' | translate)
-                                                            : ('study.lastPracticeAria' | translate: { date: hint.dateStr })
-                                                    "
-                                                >
-                                                    @if (hint.kind === 'today') {
-                                                        {{ 'study.practicedToday' | translate }}
-                                                    } @else {
-                                                        {{
-                                                            'study.lastPractice' | translate: { date: hint.dateStr }
-                                                        }}
-                                                    }
-                                                </span>
-                                            }
                                         </div>
                                         @if (qParts.code) {
                                             <pre class="study__q-code" tabindex="0"><code>{{ qParts.code }}</code></pre>

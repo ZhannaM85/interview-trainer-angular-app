@@ -246,7 +246,36 @@ export class StudyGuidePageComponent {
     }
 
     /**
-     * From quiz `lastAnswered`: “practiced today” vs short “last practice” date.
+     * Latest practice in this subtopic (max `lastAnswered` across its questions).
+     */
+    protected topicPracticeHint(
+        cat: StudyCategorySection,
+        sub: StudySubtopicSection
+    ): StudyQuestionPracticeHint | null {
+        const map = this.lastAnsweredIsoByQuestionId();
+        let bestIso: string | null = null;
+        for (const q of sub.questions) {
+            const iso = map.get(q.id);
+            if (iso && (!bestIso || iso > bestIso)) {
+                bestIso = iso;
+            }
+        }
+        if (!bestIso) {
+            return null;
+        }
+        const d = new Date(bestIso);
+        if (Number.isNaN(d.getTime())) {
+            return null;
+        }
+        const now = new Date();
+        if (isSameLocalCalendarDay(d, now)) {
+            return { kind: 'today' };
+        }
+        return { kind: 'past', dateStr: this.formatShortPracticeDate(d) };
+    }
+
+    /**
+     * From quiz `lastAnswered`: “practiced today” vs short “last practice” date (per question).
      */
     protected questionPracticeHint(questionId: number): StudyQuestionPracticeHint | null {
         const iso = this.lastAnsweredIsoByQuestionId().get(questionId);
