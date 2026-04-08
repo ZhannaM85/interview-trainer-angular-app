@@ -54,7 +54,8 @@
         "practicedToday": "Сегодня в практике",
         "practicedTodayAria": "Вы отвечали на этот вопрос в практике сегодня",
         "lastPractice": "Последняя практика: {{date}}",
-        "lastPracticeAria": "Последний ответ в практике: {{date}}"
+        "lastPracticeAria": "Последний ответ в практике: {{date}}",
+        "expandCollapseAll": "Развернуть / свернуть всё"
     },
     "plan": {
         "title": "План на сегодня",
