@@ -89,6 +89,11 @@ export class StudyGuidePageComponent {
      */
     private readonly subtopicAccordionState = signal<ReadonlyMap<string, boolean>>(new Map());
 
+    /**
+     * Drives the single “Expand / collapse all” control: next click collapses when `true`, expands when `false`.
+     */
+    private readonly accordionBulkNextIsCollapse = signal(false);
+
     /** Show only subtopics where no question has been answered in Practice yet. */
     protected readonly showUntouchedOnly = signal(false);
 
@@ -126,6 +131,16 @@ export class StudyGuidePageComponent {
             return false;
         }
         return this.todayPlan.topicsRemainingToStudy().length > 0;
+    });
+
+    /** At least one subtopic accordion is shown (guide loaded and not empty). */
+    protected readonly hasAccordionSubtopics = computed(() => {
+        for (const cat of this.sections()) {
+            if (cat.subtopics.length > 0) {
+                return true;
+            }
+        }
+        return false;
     });
 
     /** 1-based index per question in the visible guide (order matches DOM; total count across all topics). */
@@ -221,6 +236,22 @@ export class StudyGuidePageComponent {
     private patchSubtopicAccordion(topicKey: string, open: boolean): void {
         const next = new Map(this.subtopicAccordionState());
         next.set(topicKey, open);
+        this.subtopicAccordionState.set(next);
+    }
+
+    protected toggleExpandCollapseAll(): void {
+        const collapse = this.accordionBulkNextIsCollapse();
+        this.setAllSubtopicAccordions(!collapse);
+        this.accordionBulkNextIsCollapse.update((v) => !v);
+    }
+
+    private setAllSubtopicAccordions(open: boolean): void {
+        const next = new Map(this.subtopicAccordionState());
+        for (const cat of this.sections()) {
+            for (const sub of cat.subtopics) {
+                next.set(topicIdFromParts(cat.category, sub.subtopic), open);
+            }
+        }
         this.subtopicAccordionState.set(next);
     }
 
