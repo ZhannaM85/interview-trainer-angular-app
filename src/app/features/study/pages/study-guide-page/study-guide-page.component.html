@@ -141,7 +141,6 @@
                                         <span class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
                                             {{ ('subtopics.' + sub.subtopic) | translate }}
                                         </span>
-                                        <span class="study__sub-chevron" aria-hidden="true"></span>
                                     </button>
                                     <div class="study__sub-aside">
                                         @if (topicPracticeHint(cat, sub); as tHint) {
@@ -155,9 +154,9 @@
                                                 "
                                             >
                                                 @if (tHint.kind === 'today') {
-                                                    {{ 'study.practicedToday' | translate }}
+                                                    {{ 'study.practiceHintTodayShort' | translate }}
                                                 } @else {
-                                                    {{ 'study.lastPractice' | translate: { date: tHint.dateStr } }}
+                                                    {{ tHint.dateStr }}
                                                 }
                                             </span>
                                         }
@@ -168,7 +167,7 @@
                                                     class="study__mark-studied"
                                                     [attr.aria-label]="
                                                         ('study.markStudiedAria' | translate) +
-                                                        ' ' +
+                                                        '. ' +
                                                         (('subtopics.' + sub.subtopic) | translate)
                                                     "
                                                     (click)="onMarkStudied(cat, sub)"
@@ -188,25 +187,59 @@
                                                                 stroke-width="2"
                                                             />
                                                             <path
-                                                                d="M8 12.5 10.8 15.2 16.2 9.8"
+                                                                d="M12 8v8M8 12h8"
                                                                 fill="none"
                                                                 stroke="currentColor"
                                                                 stroke-width="2"
                                                                 stroke-linecap="round"
-                                                                stroke-linejoin="round"
                                                             />
                                                         </svg>
                                                     </span>
-                                                    <span class="study__mark-studied-text">{{
-                                                        'study.markStudiedAddsToPractice' | translate
-                                                    }}</span>
                                                 </button>
                                             } @else if (isStudiedTopic(cat, sub)) {
-                                                <span class="study__studied-pill" role="status">
-                                                    {{ 'study.studiedAddedToPractice' | translate }}
+                                                <span
+                                                    class="study__in-practice-badge"
+                                                    role="status"
+                                                    [attr.aria-label]="'study.studiedAddedToPractice' | translate"
+                                                >
+                                                    <svg
+                                                        class="study__in-practice-svg"
+                                                        viewBox="0 0 24 24"
+                                                        aria-hidden="true"
+                                                        focusable="false"
+                                                    >
+                                                        <circle
+                                                            cx="12"
+                                                            cy="12"
+                                                            r="9"
+                                                            fill="currentColor"
+                                                            opacity="0.22"
+                                                            stroke="currentColor"
+                                                            stroke-width="2"
+                                                        />
+                                                        <path
+                                                            d="M8 12.5 10.8 15.2 16.2 9.8"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            stroke-width="2"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                        />
+                                                    </svg>
                                                 </span>
                                             }
                                         </span>
+                                        <button
+                                            type="button"
+                                            class="study__sub-chevron-btn"
+                                            tabindex="-1"
+                                            [attr.aria-expanded]="subtopicAccordionOpen(cat, sub)"
+                                            [attr.aria-controls]="sub.anchorId + '__panel'"
+                                            [attr.aria-labelledby]="sub.anchorId + '__heading'"
+                                            (click)="toggleSubtopicAccordion(cat, sub)"
+                                        >
+                                            <span class="study__sub-chevron" aria-hidden="true"></span>
+                                        </button>
                                     </div>
                                 </div>
 

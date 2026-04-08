@@ -53,6 +53,7 @@
         "filteredTodayBanner": "Showing topics from today’s plan (read items stay listed, collapsed). Open the Study guide from the main menu to see everything.",
         "practicedToday": "Practiced today",
         "practicedTodayAria": "You answered this question in Practice today",
+        "practiceHintTodayShort": "Today",
         "lastPractice": "Last practice: {{date}}",
         "lastPracticeAria": "Last answered in Practice on {{date}}",
         "expandCollapseAll": "Expand / collapse all"
