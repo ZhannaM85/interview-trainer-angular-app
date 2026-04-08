@@ -12,16 +12,23 @@
         <p class="study__practice-cta-hint">{{ 'study.gotoPracticeHint' | translate }}</p>
     </div>
 
-    <div class="study__filter-row">
-        <label class="study__untouched-label">
-            <input
-                type="checkbox"
-                class="study__untouched-input"
-                [checked]="showUntouchedOnly()"
-                (change)="toggleUntouchedFilter($any($event.target).checked)"
-            />
-            <span>{{ 'study.showUntouchedOnly' | translate }}</span>
-        </label>
+    <div class="study__toolbar">
+        <div class="study__filter-row">
+            <label class="study__untouched-label">
+                <input
+                    type="checkbox"
+                    class="study__untouched-input"
+                    [checked]="showUntouchedOnly()"
+                    (change)="toggleUntouchedFilter($any($event.target).checked)"
+                />
+                <span>{{ 'study.showUntouchedOnly' | translate }}</span>
+            </label>
+        </div>
+        @if (!loadError() && !loading() && hasAccordionSubtopics()) {
+            <button type="button" class="study__expand-collapse-all" (click)="toggleExpandCollapseAll()">
+                {{ 'study.expandCollapseAll' | translate }}
+            </button>
+        }
     </div>
 
     @if (showPlanCompleteBanner()) {

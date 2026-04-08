@@ -54,7 +54,8 @@
         "practicedToday": "Practiced today",
         "practicedTodayAria": "You answered this question in Practice today",
         "lastPractice": "Last practice: {{date}}",
-        "lastPracticeAria": "Last answered in Practice on {{date}}"
+        "lastPracticeAria": "Last answered in Practice on {{date}}",
+        "expandCollapseAll": "Expand / collapse all"
     },
     "plan": {
         "title": "Plan for today",

@@ -39,8 +39,49 @@
     color: var(--it-text-muted);
 }
 
-.study__filter-row {
+.study__toolbar {
+    display: flex;
+    flex-direction: column;
+    gap: 0.65rem;
     margin: 0 0 0.85rem;
+}
+
+@media (min-width: 560px) {
+    .study__toolbar {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+}
+
+.study__filter-row {
+    margin: 0;
+}
+
+.study__expand-collapse-all {
+    margin: 0;
+    padding: 0.38rem 0.8rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    color: var(--it-text);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 650;
+    cursor: pointer;
+    transition: border-color 0.12s ease, color 0.12s ease;
+    align-self: flex-start;
+}
+
+.study__expand-collapse-all:hover {
+    border-color: var(--it-accent);
+    color: var(--it-accent);
+}
+
+.study__expand-collapse-all:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
 }
 
 .study__untouched-label {
