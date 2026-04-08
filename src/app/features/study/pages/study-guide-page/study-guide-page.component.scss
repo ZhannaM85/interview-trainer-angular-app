@@ -383,6 +383,15 @@
     user-select: none;
 }
 
+/* Keep title + Mark as studied reachable while scrolling long subtopic content */
+.study__sub-accordion[open] > .study__sub-summary {
+    position: sticky;
+    top: 60px;
+    z-index: 8;
+    background: var(--it-card);
+    box-shadow: 0 1px 0 var(--it-border);
+}
+
 .study__sub-summary::-webkit-details-marker {
     display: none;
 }
@@ -427,6 +436,9 @@
 }
 
 .study__mark-studied {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     flex-shrink: 0;
     margin: 0;
     padding: 0.45rem 0.85rem;
@@ -438,6 +450,50 @@
     font-size: 0.8rem;
     font-weight: 700;
     cursor: pointer;
+}
+
+.study__mark-studied-icon {
+    display: none;
+    align-items: center;
+    justify-content: center;
+}
+
+.study__mark-studied-svg {
+    display: block;
+    width: 1.35rem;
+    height: 1.35rem;
+}
+
+/* Icon-only control on narrow viewports; full phrase kept for screen readers via aria-label */
+@media (max-width: 699px) {
+    .study__mark-studied {
+        position: relative;
+        min-width: 2.75rem;
+        min-height: 2.75rem;
+        padding: 0.4rem;
+    }
+
+    .study__mark-studied-icon {
+        display: flex;
+    }
+
+    .study__mark-studied-text {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+    }
+}
+
+@media (min-width: 700px) {
+    .study__mark-studied-icon {
+        display: none;
+    }
 }
 
 .study__mark-studied:hover {
