@@ -257,6 +257,58 @@ export class StudyGuidePageComponent {
         if (remainingBefore === 1) {
             this.showPlanCompleteBanner.set(true);
         }
+
+        const nextAnchor = this.findNextUnstudiedAnchor(cat, sub);
+        if (nextAnchor) {
+            // Wait two frames for the accordion to collapse so the layout has settled.
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    this.scrollToAnchorBelowHeader(nextAnchor);
+                });
+            });
+        }
+    }
+
+    /**
+     * Scrolls so the element sits just below the sticky header instead of behind it.
+     * Falls back to `viewportScroller.scrollToAnchor` when the element is not found.
+     */
+    private scrollToAnchorBelowHeader(anchorId: string): void {
+        const el = document.getElementById(anchorId);
+        if (!el) {
+            this.viewportScroller.scrollToAnchor(anchorId);
+            return;
+        }
+        const headerEl = document.querySelector('.app__header') as HTMLElement | null;
+        const headerH = headerEl ? headerEl.getBoundingClientRect().height : 56;
+        const gap = 12;
+        const targetY = window.scrollY + el.getBoundingClientRect().top - headerH - gap;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
+
+    /** Returns the anchorId of the first unstudied subtopic after the given one, or null. */
+    private findNextUnstudiedAnchor(
+        currentCat: StudyCategorySection,
+        currentSub: StudySubtopicSection
+    ): string | null {
+        const allSections = this.sections();
+        let passedCurrent = false;
+
+        for (const c of allSections) {
+            for (const s of c.subtopics) {
+                if (!passedCurrent) {
+                    if (c.anchorId === currentCat.anchorId && s.anchorId === currentSub.anchorId) {
+                        passedCurrent = true;
+                    }
+                    continue;
+                }
+                const id = topicIdFromParts(c.category, s.subtopic);
+                if (!this.todayPlan.isStudied(id)) {
+                    return s.anchorId;
+                }
+            }
+        }
+        return null;
     }
 
     protected dismissPlanCompleteBanner(): void {
