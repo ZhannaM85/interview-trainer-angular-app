@@ -61,6 +61,13 @@
         </p>
     }
 
+    @if (topicsFocusActive()) {
+        <p class="study__filter-banner study__filter-banner--retry" role="status">
+            {{ 'study.filteredRetryBanner' | translate }}
+            <a routerLink="/study" class="study__filter-banner-clear">{{ 'study.filteredRetryClear' | translate }}</a>
+        </p>
+    }
+
     @if (showUntouchedOnly()) {
         <p class="study__filter-banner" role="status">
             {{ 'study.untouchedFilterBanner' | translate }}

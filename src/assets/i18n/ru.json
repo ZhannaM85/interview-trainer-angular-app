@@ -3,7 +3,10 @@
         "brand": "Karkas",
         "navAria": "Основная навигация",
         "menuToggle": "Открыть меню",
-        "menuClose": "Закрыть меню"
+        "menuClose": "Закрыть меню",
+        "retryBannerMsg": "Вчера были затруднения с {{count}} темой(-ами).",
+        "retryBannerLink": "Повторить в справочнике →",
+        "retryBannerClose": "Скрыть подсказку"
     },
     "nav": {
         "about": "О проекте",
@@ -56,7 +59,9 @@
         "practiceHintTodayShort": "Сегодня",
         "lastPractice": "Последняя практика: {{date}}",
         "lastPracticeAria": "Последний ответ в практике: {{date}}",
-        "expandCollapseAll": "Развернуть / свернуть всё"
+        "expandCollapseAll": "Развернуть / свернуть всё",
+        "filteredRetryBanner": "Показаны темы, с которыми были затруднения вчера.",
+        "filteredRetryClear": "Показать все темы"
     },
     "plan": {
         "title": "План на сегодня",
@@ -80,12 +85,17 @@
         "lastStudiedNever": "—",
         "lastStudiedNeverAria": "Пока нет записей об изучении или практике по этой теме",
         "lastStudiedToday": "Сегодня",
-        "lastStudiedAria": "Последняя активность по теме: {{date}}"
+        "lastStudiedAria": "Последняя активность по теме: {{date}}",
+        "removeAll": "Убрать все",
+        "removeAllAria": "Убрать все изученные темы из плана на сегодня"
     },
     "heatmap": {
         "heading": "Активность",
         "description": "Каждая клетка — день. Нажмите на день, чтобы увидеть суммы и темы. Насыщенность — ответы в практике и отмеченные как изученные темы.",
         "gridAria": "Активность по дням за последние недели",
+        "weekdayMon": "Пн",
+        "weekdayWed": "Ср",
+        "weekdayFri": "Пт",
         "less": "Меньше",
         "more": "Больше",
         "cellFuture": "{{date}} — будущий день",
@@ -135,6 +145,8 @@
         "sessionDone": "Вы завершили эту сессию.",
         "fallbackHintDone": "Не было вопросов к повторению, поэтому показан полный список.",
         "restart": "Начать ещё раунд",
+        "doneGotoStudy": "Справочник",
+        "doneGotoPlan": "План на сегодня",
         "fallbackHintActive": "Сейчас нечего повторять — тренировка по полному набору.",
         "progressAnswered": "отвечено",
         "progressToGo": "осталось",
@@ -149,7 +161,8 @@
         "planTopicsCoveredTitle": "Темы на сегодня закрыты",
         "planTopicsCoveredBody": "Сейчас в изученных сегодня темах нет вопросов к повторению по графику. Можно пройти все вопросы по этим темам или переключиться на полный банк (все темы).",
         "planTopicsCoveredPractice": "Практика по темам сегодня",
-        "planTopicsCoveredOtherTopics": "Полный банк вопросов"
+        "planTopicsCoveredOtherTopics": "Полный банк вопросов",
+        "planTopicsCoveredGotoPlan": "План на сегодня"
     },
     "dashboard": {
         "title": "Прогресс по собеседованиям",
@@ -168,7 +181,20 @@
         "activeTimeTenKHint": "Идея «10 000 часов» — упрощённая популярная история про экспертность; относитесь к счётчику как к мотивации, а не к научной норме.",
         "streakHeading": "Серия обучения",
         "streakCurrentMetric": "{{days}} дней подряд",
-        "streakBestMetric": "Лучшая серия: {{days}} дней"
+        "streakBestMetric": "Лучшая серия: {{days}} дней",
+        "practiceRatingsHeading": "Оценки в практике",
+        "practiceRatingsIntro": "Как вы оценили ответ после каждого вопроса («Отлично», «Частично», «Не знаю»). Если в тот же день повторяете тот же вопрос, в дневных и «все дни» итогах учитывается только лучшая оценка за этот день.",
+        "practiceRatingsToday": "Сегодня",
+        "practiceRatingsAllDays": "Все дни (лучшая оценка за день по каждому вопросу)",
+        "practiceRatingsAllDaysHint": "За каждый календарный день каждый вопрос учитывается один раз — по самой сильной оценке за этот день — затем суммируется по всем сохранённым дням.",
+        "practiceRatingsEveryAttempt": "Каждая попытка (всё время)",
+        "practiceRatingsEveryAttemptHint": "Каждая отправленная оценка в практике, в том числе повторы в тот же день. Те же суммы, что и для «Точность» и «Уверенность» выше.",
+        "practiceRatingsTotalQuestions": "Сегодня: {{count}} уникальных вопросов",
+        "practiceRatingsTotalQuestionDays": "Всего: {{count}} вопросо-дней",
+        "practiceRatingsTotalAnswers": "Всего ответов: {{count}}",
+        "practiceRatingsEmptyDay": "Сегодня ещё нет оценок в практике.",
+        "practiceRatingsEmptyAllDays": "Пока нет сохранённых дневных оценок — новые сессии практики заполнят этот блок.",
+        "practiceRatingsEmptyAttempts": "Пока ни одна оценка не сохранена."
     },
     "answerBlocks": {
         "weak": "Слабый ответ",

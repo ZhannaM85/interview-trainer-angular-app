@@ -91,6 +91,27 @@ export class StudyGuidePageComponent {
      */
     private readonly todayScopedTopicIds = signal<ReadonlySet<string>>(new Set());
 
+    /** `?topics=cat:sub,cat:sub2` — focus guide on specific topic IDs (e.g. from retry banner). */
+    private readonly topicsFocusParam = toSignal(
+        this.route.queryParamMap.pipe(
+            map((m) => m.get('topics') ?? ''),
+            distinctUntilChanged()
+        ),
+        { initialValue: this.route.snapshot.queryParamMap.get('topics') ?? '' }
+    );
+
+    private readonly topicsFocusSet = computed((): ReadonlySet<string> | null => {
+        const raw = this.topicsFocusParam();
+        if (!raw) {
+            return null;
+        }
+        const ids = raw.split(',').map((s) => s.trim()).filter((s) => s.length > 0);
+        return ids.length > 0 ? new Set(ids) : null;
+    });
+
+    /** Whether a ?topics= filter is active (shown in a banner). */
+    protected readonly topicsFocusActive = computed(() => this.topicsFocusSet() !== null);
+
     private readonly practicedQuestionIds = computed(() => {
         this.studyProgressRefresh();
         const ids = new Set<number>();
@@ -106,6 +127,10 @@ export class StudyGuidePageComponent {
 
     protected readonly sections = computed(() => {
         let all = buildStudyGuideSections(this.questions());
+        const focusSet = this.topicsFocusSet();
+        if (focusSet) {
+            all = filterStudyGuideSectionsByTopicIds(all, focusSet);
+        }
         if (this.planTodayOnly()) {
             /**
              * In `?today=1`, while there are still topics left from today's plan,
@@ -257,6 +282,58 @@ export class StudyGuidePageComponent {
         if (remainingBefore === 1) {
             this.showPlanCompleteBanner.set(true);
         }
+
+        const nextAnchor = this.findNextUnstudiedAnchor(cat, sub);
+        if (nextAnchor) {
+            // Wait two frames for the accordion to collapse so the layout has settled.
+            requestAnimationFrame(() => {
+                requestAnimationFrame(() => {
+                    this.scrollToAnchorBelowHeader(nextAnchor);
+                });
+            });
+        }
+    }
+
+    /**
+     * Scrolls so the element sits just below the sticky header instead of behind it.
+     * Falls back to `viewportScroller.scrollToAnchor` when the element is not found.
+     */
+    private scrollToAnchorBelowHeader(anchorId: string): void {
+        const el = document.getElementById(anchorId);
+        if (!el) {
+            this.viewportScroller.scrollToAnchor(anchorId);
+            return;
+        }
+        const headerEl = document.querySelector('.app__header') as HTMLElement | null;
+        const headerH = headerEl ? headerEl.getBoundingClientRect().height : 56;
+        const gap = 12;
+        const targetY = window.scrollY + el.getBoundingClientRect().top - headerH - gap;
+        window.scrollTo({ top: targetY, behavior: 'smooth' });
+    }
+
+    /** Returns the anchorId of the first unstudied subtopic after the given one, or null. */
+    private findNextUnstudiedAnchor(
+        currentCat: StudyCategorySection,
+        currentSub: StudySubtopicSection
+    ): string | null {
+        const allSections = this.sections();
+        let passedCurrent = false;
+
+        for (const c of allSections) {
+            for (const s of c.subtopics) {
+                if (!passedCurrent) {
+                    if (c.anchorId === currentCat.anchorId && s.anchorId === currentSub.anchorId) {
+                        passedCurrent = true;
+                    }
+                    continue;
+                }
+                const id = topicIdFromParts(c.category, s.subtopic);
+                if (!this.todayPlan.isStudied(id)) {
+                    return s.anchorId;
+                }
+            }
+        }
+        return null;
     }
 
     protected dismissPlanCompleteBanner(): void {
