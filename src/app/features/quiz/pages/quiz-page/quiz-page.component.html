@@ -1,6 +1,7 @@
 <section
     class="quiz"
     [class.quiz--answer-footer]="phase() === 'answer'"
+    [class.quiz--session-done]="sessionComplete()"
     aria-labelledby="quiz-title"
 >
     <h1 id="quiz-title" class="quiz__title visually-hidden">{{ 'quiz.titleHidden' | translate }}</h1>
@@ -28,6 +29,9 @@
                 <button type="button" class="quiz__scope-btn quiz__scope-btn--secondary" (click)="switchToFullQuestionBank()">
                     {{ 'quiz.planTopicsCoveredOtherTopics' | translate }}
                 </button>
+                <a routerLink="/plan" class="quiz__scope-btn quiz__scope-btn--secondary">
+                    {{ 'quiz.planTopicsCoveredGotoPlan' | translate }}
+                </a>
             </div>
         </div>
     } @else if (sessionComplete()) {
@@ -40,9 +44,17 @@
                     <p class="quiz__hint">{{ 'quiz.fallbackHintDone' | translate }}</p>
                 }
             }
-            <button type="button" class="quiz__restart" (click)="restartSession()">
-                {{ 'quiz.restart' | translate }}
-            </button>
+            <div class="quiz__done-actions">
+                <button type="button" class="quiz__restart" (click)="restartSession()">
+                    {{ 'quiz.restart' | translate }}
+                </button>
+                <a routerLink="/study" class="quiz__done-nav quiz__done-nav--secondary">
+                    {{ 'quiz.doneGotoStudy' | translate }}
+                </a>
+                <a routerLink="/plan" class="quiz__done-nav quiz__done-nav--secondary">
+                    {{ 'quiz.doneGotoPlan' | translate }}
+                </a>
+            </div>
         </div>
     } @else if (currentQuestion(); as q) {
         @if (planFocusHint()) {

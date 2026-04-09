@@ -1,5 +1,6 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { take } from 'rxjs';
 
@@ -39,6 +40,7 @@ export interface SessionProgressCounts {
         InterviewFeedbackComponent,
         ProgressBarComponent,
         SelfEvaluationComponent,
+        RouterLink,
         TranslatePipe
     ],
     templateUrl: './quiz-page.component.html',

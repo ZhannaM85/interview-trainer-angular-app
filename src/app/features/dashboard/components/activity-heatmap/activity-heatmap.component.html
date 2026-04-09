@@ -3,31 +3,42 @@
     <p class="heatmap__desc">{{ 'heatmap.description' | translate }}</p>
 
     <div class="heatmap__scroll" #heatmapScroll>
-        <div
-            class="heatmap__cols"
-            role="grid"
-            [attr.aria-label]="'heatmap.gridAria' | translate"
-        >
-            @for (col of weekColumns(); track $index) {
-                <div class="heatmap__week" role="row">
-                    @for (cell of col; track cell.date) {
-                        <button
-                            type="button"
-                            class="heatmap__cell"
-                            [class.heatmap__cell--future]="cell.isFuture"
-                            [class.heatmap__cell--today]="cell.isToday"
-                            [class.heatmap__cell--l0]="cell.level === 0 && !cell.isFuture"
-                            [class.heatmap__cell--l1]="cell.level === 1"
-                            [class.heatmap__cell--l2]="cell.level === 2"
-                            [class.heatmap__cell--l3]="cell.level === 3"
-                            [class.heatmap__cell--l4]="cell.level === 4"
-                            [disabled]="cell.isFuture"
-                            [attr.aria-label]="cell.label"
-                            (click)="onCellClick(cell)"
-                        ></button>
-                    }
-                </div>
-            }
+        <div class="heatmap__body">
+            <div class="heatmap__weekday-labels" aria-hidden="true">
+                <span class="heatmap__weekday-slot"></span>
+                <span class="heatmap__weekday-slot heatmap__weekday-slot--named">{{ 'heatmap.weekdayMon' | translate }}</span>
+                <span class="heatmap__weekday-slot"></span>
+                <span class="heatmap__weekday-slot heatmap__weekday-slot--named">{{ 'heatmap.weekdayWed' | translate }}</span>
+                <span class="heatmap__weekday-slot"></span>
+                <span class="heatmap__weekday-slot heatmap__weekday-slot--named">{{ 'heatmap.weekdayFri' | translate }}</span>
+                <span class="heatmap__weekday-slot"></span>
+            </div>
+            <div
+                class="heatmap__cols"
+                role="grid"
+                [attr.aria-label]="'heatmap.gridAria' | translate"
+            >
+                @for (col of weekColumns(); track $index) {
+                    <div class="heatmap__week" role="row">
+                        @for (cell of col; track cell.date) {
+                            <button
+                                type="button"
+                                class="heatmap__cell"
+                                [class.heatmap__cell--future]="cell.isFuture"
+                                [class.heatmap__cell--today]="cell.isToday"
+                                [class.heatmap__cell--l0]="cell.level === 0 && !cell.isFuture"
+                                [class.heatmap__cell--l1]="cell.level === 1"
+                                [class.heatmap__cell--l2]="cell.level === 2"
+                                [class.heatmap__cell--l3]="cell.level === 3"
+                                [class.heatmap__cell--l4]="cell.level === 4"
+                                [disabled]="cell.isFuture"
+                                [attr.aria-label]="cell.label"
+                                (click)="onCellClick(cell)"
+                            ></button>
+                        }
+                    </div>
+                }
+            </div>
         </div>
     </div>
 

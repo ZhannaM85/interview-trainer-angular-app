@@ -98,6 +98,29 @@
             [attr.aria-label]="'app.menuClose' | translate"
         ></button>
     }
+    @if (showRetryBanner()) {
+        <div class="app__retry-banner" role="status" aria-live="polite">
+            <span class="app__retry-banner-icon" aria-hidden="true">💡</span>
+            <span class="app__retry-banner-text">
+                {{ 'app.retryBannerMsg' | translate: { count: retryTopicIds().length } }}
+            </span>
+            <a
+                [routerLink]="['/study']"
+                [queryParams]="retryStudyQueryParams()"
+                class="app__retry-banner-link"
+            >
+                {{ 'app.retryBannerLink' | translate }}
+            </a>
+            <button
+                type="button"
+                class="app__retry-banner-close"
+                (click)="retryBannerDismissed.set(true)"
+                [attr.aria-label]="'app.retryBannerClose' | translate"
+            >
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    }
     <main class="app__main">
         <router-outlet />
     </main>

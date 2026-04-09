@@ -122,6 +122,12 @@ export class PlanPageComponent {
         this.todayPlan.clearStudied(id);
     }
 
+    protected removeAllDoneTopics(): void {
+        for (const id of this.doneTopics()) {
+            this.todayPlan.clearStudied(id);
+        }
+    }
+
     protected topicLastStudiedHint(cat: StudyCategorySection, sub: StudySubtopicSection): TopicLastStudiedHint {
         return this.topicLastStudiedById().get(this.topicId(cat, sub)) ?? { kind: 'none' };
     }

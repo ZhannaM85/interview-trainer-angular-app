@@ -1,3 +1,5 @@
+import type { SelfRating } from './self-rating.model';
+
 /** Per-calendar-day aggregates for the activity heatmap. */
 export interface DailyActivity {
     date: string;
@@ -10,4 +12,9 @@ export interface DailyActivity {
      * Omitted in legacy stored rows; treat as 0.
      */
     activeSeconds?: number;
+    /**
+     * Best self-rating per question that day (`questionId` string key).
+     * Retaking the same question the same day only upgrades (nailed > partial > didn't know).
+     */
+    practiceRatingBest?: Partial<Record<string, SelfRating>>;
 }

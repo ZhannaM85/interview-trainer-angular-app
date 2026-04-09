@@ -3,7 +3,10 @@
         "brand": "Karkas",
         "navAria": "Main",
         "menuToggle": "Open menu",
-        "menuClose": "Close menu"
+        "menuClose": "Close menu",
+        "retryBannerMsg": "You had trouble with {{count}} topic(s) yesterday.",
+        "retryBannerLink": "Review in Study guide →",
+        "retryBannerClose": "Dismiss suggestion"
     },
     "nav": {
         "about": "About",
@@ -56,7 +59,9 @@
         "practiceHintTodayShort": "Today",
         "lastPractice": "Last practice: {{date}}",
         "lastPracticeAria": "Last answered in Practice on {{date}}",
-        "expandCollapseAll": "Expand / collapse all"
+        "expandCollapseAll": "Expand / collapse all",
+        "filteredRetryBanner": "Showing topics you had trouble with yesterday.",
+        "filteredRetryClear": "Show all topics"
     },
     "plan": {
         "title": "Plan for today",
@@ -80,12 +85,17 @@
         "lastStudiedNever": "—",
         "lastStudiedNeverAria": "No recorded study or practice in this topic yet",
         "lastStudiedToday": "Today",
-        "lastStudiedAria": "Last activity in this topic: {{date}}"
+        "lastStudiedAria": "Last activity in this topic: {{date}}",
+        "removeAll": "Remove all",
+        "removeAllAria": "Remove all done topics from today's plan"
     },
     "heatmap": {
         "heading": "Activity",
         "description": "Each square is a day. Tap a day for totals and topics. Intensity reflects practice answers plus topics marked as studied.",
         "gridAria": "Daily activity over the past weeks",
+        "weekdayMon": "Mon",
+        "weekdayWed": "Wed",
+        "weekdayFri": "Fri",
         "less": "Less",
         "more": "More",
         "cellFuture": "{{date}} — future day",
@@ -135,6 +145,8 @@
         "sessionDone": "You finished this session.",
         "fallbackHintDone": "No questions were due for review, so all questions were shown.",
         "restart": "Start another round",
+        "doneGotoStudy": "Study guide",
+        "doneGotoPlan": "Plan for today",
         "fallbackHintActive": "Nothing due right now — practicing from the full set.",
         "progressAnswered": "answered",
         "progressToGo": "to go",
@@ -149,7 +161,8 @@
         "planTopicsCoveredTitle": "Today’s plan topics are covered",
         "planTopicsCoveredBody": "Nothing in the topics you studied today is due for spaced review right now. You can keep practicing every question in those topics, or switch to the full question bank (all topics).",
         "planTopicsCoveredPractice": "Practice today’s topics",
-        "planTopicsCoveredOtherTopics": "Full question bank"
+        "planTopicsCoveredOtherTopics": "Full question bank",
+        "planTopicsCoveredGotoPlan": "Plan for today"
     },
     "dashboard": {
         "title": "Interview Progress",
@@ -168,7 +181,20 @@
         "activeTimeTenKHint": "The “10,000 hours” idea is a simplified popular story about expertise — use this tally as motivation, not a scientific benchmark.",
         "streakHeading": "Learning streak",
         "streakCurrentMetric": "{{days}} days in a row",
-        "streakBestMetric": "Best streak: {{days}} days"
+        "streakBestMetric": "Best streak: {{days}} days",
+        "practiceRatingsHeading": "Practice self-ratings",
+        "practiceRatingsIntro": "How you rated answers after each question (Nailed it, Partial, Didn’t know). If you repeat the same question the same day, only your best rating that day is counted in the daily and “all days” totals.",
+        "practiceRatingsToday": "Today",
+        "practiceRatingsAllDays": "All days (best per question per day)",
+        "practiceRatingsAllDaysHint": "Each calendar day, each question counts once — as your strongest rating that day — then summed over every stored day.",
+        "practiceRatingsEveryAttempt": "Every attempt (lifetime)",
+        "practiceRatingsEveryAttemptHint": "Every time you submitted a rating in Practice, including repeats the same day. Same numbers as used for Accuracy and Confidence above.",
+        "practiceRatingsTotalQuestions": "{{count}} unique questions today",
+        "practiceRatingsTotalQuestionDays": "{{count}} question-days across all days",
+        "practiceRatingsTotalAnswers": "{{count}} answers total",
+        "practiceRatingsEmptyDay": "No practice ratings recorded yet today.",
+        "practiceRatingsEmptyAllDays": "No per-day ratings stored yet. New practice sessions will fill this in.",
+        "practiceRatingsEmptyAttempts": "No answers rated yet."
     },
     "answerBlocks": {
         "weak": "Weak answer",

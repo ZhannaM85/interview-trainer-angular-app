@@ -236,6 +236,75 @@
     cursor: pointer;
 }
 
+.app__retry-banner {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6rem 1rem;
+    background: var(--it-accent-dim);
+    border-bottom: 1px solid var(--it-heat-1-border);
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+
+.app__retry-banner-icon {
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.app__retry-banner-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: var(--it-text);
+    font-weight: 500;
+}
+
+.app__retry-banner-link {
+    flex-shrink: 0;
+    font-weight: 700;
+    color: var(--it-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    white-space: nowrap;
+}
+
+.app__retry-banner-link:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.2rem;
+}
+
+.app__retry-banner-close {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin-left: auto;
+    padding: 0;
+    border: none;
+    border-radius: 0.4rem;
+    background: transparent;
+    color: var(--it-text-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.app__retry-banner-close:hover {
+    color: var(--it-text);
+    background: var(--it-panel-close-hover-bg);
+}
+
+.app__retry-banner-close:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
 .app__main {
     flex: 1;
     padding: 1rem 0 1.25rem;

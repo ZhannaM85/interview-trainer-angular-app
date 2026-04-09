@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ActivityService } from '../../../../core/services/activity.service';
+import type { PracticeRatingBreakdown } from '../../../../core/services/activity.service';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Progress } from '../../../../shared/models/progress.model';
@@ -76,6 +77,16 @@ export class DashboardPageComponent {
         }
 
         return { currentDays, bestDays };
+    });
+
+    /** Self-rating buckets: today / all days (best per question per day) stay in sync with activity storage. */
+    protected readonly practiceRatingsView = computed(() => {
+        this.activityService.activityMap();
+        return {
+            today: this.activityService.todayPracticeRatingBreakdown(),
+            allDaysBest: this.activityService.aggregatePracticeRatingBreakdown(),
+            everyAttempt: this.lifetimeAttemptsBreakdown()
+        };
     });
 
     protected readonly stats = signal<DashboardStats | null>(null);
@@ -154,6 +165,22 @@ export class DashboardPageComponent {
             weakTopics,
             weakCategories: weakTopics
         };
+    }
+
+    protected practiceRatingTotal(b: PracticeRatingBreakdown): number {
+        return b.nailed + b.partial + b.didntKnow;
+    }
+
+    private lifetimeAttemptsBreakdown(): PracticeRatingBreakdown {
+        let nailed = 0;
+        let partial = 0;
+        let didntKnow = 0;
+        for (const p of this.progressService.getProgress()) {
+            nailed += p.nailedCount ?? 0;
+            partial += p.partialCount ?? 0;
+            didntKnow += p.didntKnowCount ?? 0;
+        }
+        return { nailed, partial, didntKnow };
     }
 
     private countBackwardStreakFrom(from: Date, activeDays: Set<string>): number {
