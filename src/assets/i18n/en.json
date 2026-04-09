@@ -138,6 +138,8 @@
         "sessionDone": "You finished this session.",
         "fallbackHintDone": "No questions were due for review, so all questions were shown.",
         "restart": "Start another round",
+        "doneGotoStudy": "Study guide",
+        "doneGotoPlan": "Plan for today",
         "fallbackHintActive": "Nothing due right now — practicing from the full set.",
         "progressAnswered": "answered",
         "progressToGo": "to go",
@@ -152,7 +154,8 @@
         "planTopicsCoveredTitle": "Today’s plan topics are covered",
         "planTopicsCoveredBody": "Nothing in the topics you studied today is due for spaced review right now. You can keep practicing every question in those topics, or switch to the full question bank (all topics).",
         "planTopicsCoveredPractice": "Practice today’s topics",
-        "planTopicsCoveredOtherTopics": "Full question bank"
+        "planTopicsCoveredOtherTopics": "Full question bank",
+        "planTopicsCoveredGotoPlan": "Plan for today"
     },
     "dashboard": {
         "title": "Interview Progress",

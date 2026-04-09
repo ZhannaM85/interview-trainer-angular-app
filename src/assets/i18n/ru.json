@@ -138,6 +138,8 @@
         "sessionDone": "Вы завершили эту сессию.",
         "fallbackHintDone": "Не было вопросов к повторению, поэтому показан полный список.",
         "restart": "Начать ещё раунд",
+        "doneGotoStudy": "Справочник",
+        "doneGotoPlan": "План на сегодня",
         "fallbackHintActive": "Сейчас нечего повторять — тренировка по полному набору.",
         "progressAnswered": "отвечено",
         "progressToGo": "осталось",
@@ -152,7 +154,8 @@
         "planTopicsCoveredTitle": "Темы на сегодня закрыты",
         "planTopicsCoveredBody": "Сейчас в изученных сегодня темах нет вопросов к повторению по графику. Можно пройти все вопросы по этим темам или переключиться на полный банк (все темы).",
         "planTopicsCoveredPractice": "Практика по темам сегодня",
-        "planTopicsCoveredOtherTopics": "Полный банк вопросов"
+        "planTopicsCoveredOtherTopics": "Полный банк вопросов",
+        "planTopicsCoveredGotoPlan": "План на сегодня"
     },
     "dashboard": {
         "title": "Прогресс по собеседованиям",
