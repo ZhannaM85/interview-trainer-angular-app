@@ -290,6 +290,10 @@
     opacity: 0.65;
 }
 
+.plan__topic-date--today {
+    color: var(--it-accent);
+}
+
 .plan__topic-status {
     flex: 0 0 auto;
     margin-left: 0;
