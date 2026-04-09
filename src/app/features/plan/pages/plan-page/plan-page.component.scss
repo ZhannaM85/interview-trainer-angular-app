@@ -6,6 +6,10 @@
     box-sizing: border-box;
 }
 
+.plan--has-sticky-practice {
+    padding-bottom: 6.5rem;
+}
+
 .plan__title {
     margin: 0 0 0.5rem;
     font-size: 1.35rem;
@@ -192,6 +196,23 @@
 .plan__cta:focus-visible {
     outline: 2px solid var(--it-focus);
     outline-offset: 3px;
+}
+
+.plan__sticky-practice {
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: calc(0.75rem + env(safe-area-inset-bottom));
+    z-index: 25;
+    display: flex;
+    justify-content: center;
+    padding: 0 1rem;
+    pointer-events: none;
+}
+
+.plan__sticky-practice-btn {
+    width: min(40rem, 100%);
+    pointer-events: auto;
 }
 
 .plan__picker-heading {
