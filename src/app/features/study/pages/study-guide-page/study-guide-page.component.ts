@@ -85,6 +85,12 @@ export class StudyGuidePageComponent {
     /** Show only subtopics where no question has been answered in Practice yet. */
     protected readonly showUntouchedOnly = signal(false);
 
+    /**
+     * Topic ids captured when entering `?today=1`.
+     * Keeps the "today list" stable even after marking items as studied (which unselects them in Plan).
+     */
+    private readonly todayScopedTopicIds = signal<ReadonlySet<string>>(new Set());
+
     private readonly practicedQuestionIds = computed(() => {
         this.studyProgressRefresh();
         const ids = new Set<number>();
@@ -101,11 +107,16 @@ export class StudyGuidePageComponent {
     protected readonly sections = computed(() => {
         let all = buildStudyGuideSections(this.questions());
         if (this.planTodayOnly()) {
-            /** Use the full plan selection, not only “still to read”, so marking studied collapses the row instead of removing it. */
-            const planned = this.todayPlan.selectedTopicIds();
-            const allow = new Set(planned);
-            if (allow.size > 0) {
-                all = filterStudyGuideSectionsByTopicIds(all, allow);
+            /**
+             * In `?today=1`, while there are still topics left from today's plan,
+             * show only topics captured when entering today's plan mode.
+             * Once today's plan is fully completed, show the full guide again.
+             */
+            if (this.todayPlan.topicsRemainingToStudy().length > 0) {
+                const allow = this.todayScopedTopicIds();
+                if (allow.size > 0) {
+                    all = filterStudyGuideSectionsByTopicIds(all, allow);
+                }
             }
         }
         if (this.showUntouchedOnly()) {
@@ -233,6 +244,11 @@ export class StudyGuidePageComponent {
     protected onMarkStudied(cat: StudyCategorySection, sub: StudySubtopicSection): void {
         const topicId = topicIdFromParts(cat.category, sub.subtopic);
         const remainingBefore = this.todayPlan.topicsRemainingToStudy().length;
+        if (this.planTodayOnly()) {
+            const next = new Set(this.todayScopedTopicIds());
+            next.add(topicId);
+            this.todayScopedTopicIds.set(next);
+        }
         if (!this.todayPlan.isSelected(topicId)) {
             this.todayPlan.toggleTopicSelected(topicId);
         }
@@ -314,6 +330,20 @@ export class StudyGuidePageComponent {
 
     constructor() {
         this.todayPlan.syncCalendarDay();
+
+        this.route.queryParamMap
+            .pipe(
+                map((m) => m.get('today') === '1'),
+                distinctUntilChanged(),
+                takeUntilDestroyed()
+            )
+            .subscribe((todayOnly) => {
+                if (!todayOnly) {
+                    this.todayScopedTopicIds.set(new Set());
+                    return;
+                }
+                this.todayScopedTopicIds.set(new Set(this.todayPlan.selectedTopicIds()));
+            });
 
         this.router.events
             .pipe(

@@ -68,9 +68,10 @@ export class TodayPlanService {
         let studied = s.studiedTopicIds;
         if (selected.includes(topicId)) {
             selected = withoutId(selected, topicId);
-            studied = withoutId(studied, topicId);
         } else {
             selected = uniquePush(selected, topicId);
+            // Re-adding a previously studied topic means the user wants to study it again today.
+            studied = withoutId(studied, topicId);
         }
         this.save({ ...s, selectedTopicIds: selected, studiedTopicIds: studied });
     }
@@ -83,18 +84,31 @@ export class TodayPlanService {
     markStudied(topicId: string): void {
         this.ensureCurrentDay();
         const s = this.state();
-        if (!s.selectedTopicIds.includes(topicId)) {
-            return;
+        const wasStudied = s.studiedTopicIds.includes(topicId);
+        const nextSelected = withoutId(s.selectedTopicIds, topicId);
+        const nextStudied = wasStudied ? s.studiedTopicIds : uniquePush(s.studiedTopicIds, topicId);
+        this.save({
+            ...s,
+            selectedTopicIds: nextSelected,
+            studiedTopicIds: nextStudied
+        });
+        if (!wasStudied) {
+            this.activityService.bumpTopicsStudied(1);
+            this.activityService.addCoveredTopic(topicId);
         }
-        if (s.studiedTopicIds.includes(topicId)) {
+    }
+
+    clearStudied(topicId: string): void {
+        this.ensureCurrentDay();
+        const s = this.state();
+        if (!s.studiedTopicIds.includes(topicId) && !s.selectedTopicIds.includes(topicId)) {
             return;
         }
         this.save({
             ...s,
-            studiedTopicIds: uniquePush(s.studiedTopicIds, topicId)
+            selectedTopicIds: withoutId(s.selectedTopicIds, topicId),
+            studiedTopicIds: withoutId(s.studiedTopicIds, topicId)
         });
-        this.activityService.bumpTopicsStudied(1);
-        this.activityService.addCoveredTopic(topicId);
     }
 
     private ensureCurrentDay(): void {
@@ -124,9 +138,7 @@ export class TodayPlanService {
         return {
             planDate: raw.planDate,
             selectedTopicIds: [...new Set(raw.selectedTopicIds)],
-            studiedTopicIds: [...new Set(raw.studiedTopicIds)].filter((id) =>
-                raw.selectedTopicIds.includes(id)
-            )
+            studiedTopicIds: [...new Set(raw.studiedTopicIds)]
         };
     }
 

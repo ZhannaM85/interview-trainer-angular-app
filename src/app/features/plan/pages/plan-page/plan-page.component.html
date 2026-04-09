@@ -1,4 +1,8 @@
-<section class="plan" aria-labelledby="plan-title">
+<section
+    class="plan"
+    [class.plan--has-sticky-practice]="selectedTopicIds().length > 0"
+    aria-labelledby="plan-title"
+>
     <h1 id="plan-title" class="plan__title">{{ 'plan.title' | translate }}</h1>
     <p class="plan__intro">{{ 'plan.intro' | translate }}</p>
 
@@ -22,7 +26,7 @@
                                     <button
                                         type="button"
                                         class="plan__remove"
-                                        (click)="todayPlan.toggleTopicSelected(id)"
+                                        (click)="removeRemainingTopic(id)"
                                         [attr.aria-label]="
                                             ('plan.removeAria' | translate: { topic: (('subtopics.' + topicSubtopicFromId(id)) | translate) })
                                         "
@@ -53,7 +57,7 @@
                                     <button
                                         type="button"
                                         class="plan__remove"
-                                        (click)="todayPlan.toggleTopicSelected(id)"
+                                        (click)="removeDoneTopic(id)"
                                         [attr.aria-label]="
                                             ('plan.removeAria' | translate: { topic: (('subtopics.' + topicSubtopicFromId(id)) | translate) })
                                         "
@@ -102,6 +106,7 @@
                                     <span
                                         class="plan__topic-date"
                                         [class.plan__topic-date--empty]="hint.kind === 'none'"
+                                        [class.plan__topic-date--today]="hint.kind === 'today'"
                                         [attr.aria-label]="lastStudiedDateAria(hint)"
                                     >
                                         @switch (hint.kind) {
@@ -130,6 +135,18 @@
                     }
                 </ul>
             </section>
+        }
+
+        @if (selectedTopicIds().length > 0) {
+            <div class="plan__sticky-practice">
+                <a
+                    [routerLink]="['/study']"
+                    [queryParams]="studyGuideQueryParams()"
+                    class="plan__cta plan__cta--primary plan__sticky-practice-btn"
+                >
+                    {{ 'plan.gotoStudy' | translate }}
+                </a>
+            </div>
         }
     }
 </section>

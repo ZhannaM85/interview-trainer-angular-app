@@ -45,8 +45,7 @@ export class PlanPageComponent {
     protected readonly topicsRemainingToStudy = this.todayPlan.topicsRemainingToStudy;
 
     protected readonly doneTopics = computed(() => {
-        const studied = new Set(this.todayPlan.studiedTopicIds());
-        return this.todayPlan.selectedTopicIds().filter((id) => studied.has(id));
+        return this.todayPlan.studiedTopicIds();
     });
 
     protected readonly topicLastStudiedById = computed(() => {
@@ -109,10 +108,18 @@ export class PlanPageComponent {
 
     protected topicStatusKey(cat: StudyCategorySection, sub: StudySubtopicSection): string | null {
         const id = this.topicId(cat, sub);
-        if (!this.todayPlan.isSelected(id)) {
-            return null;
+        if (this.todayPlan.isStudied(id)) {
+            return 'plan.statusInPractice';
         }
-        return this.todayPlan.isStudied(id) ? 'plan.statusInPractice' : 'plan.statusToStudy';
+        return this.todayPlan.isSelected(id) ? 'plan.statusToStudy' : null;
+    }
+
+    protected removeRemainingTopic(id: string): void {
+        this.todayPlan.toggleTopicSelected(id);
+    }
+
+    protected removeDoneTopic(id: string): void {
+        this.todayPlan.clearStudied(id);
     }
 
     protected topicLastStudiedHint(cat: StudyCategorySection, sub: StudySubtopicSection): TopicLastStudiedHint {
