@@ -1,8 +1,56 @@
 import { computed, Injectable, inject, signal } from '@angular/core';
 
 import type { DailyActivity } from '../../shared/models/activity.model';
+import type { SelfRating } from '../../shared/models/self-rating.model';
 import { formatLocalYmd } from '../../shared/utils/local-date.utils';
 import { StorageService } from './storage.service';
+
+const RATING_RANK: Record<SelfRating, number> = { didntKnow: 0, partial: 1, nailed: 2 };
+
+export interface PracticeRatingBreakdown {
+    nailed: number;
+    partial: number;
+    didntKnow: number;
+}
+
+function mergeBetterRating(prev: SelfRating | undefined, next: SelfRating): SelfRating {
+    if (prev === undefined) {
+        return next;
+    }
+    return RATING_RANK[next] > RATING_RANK[prev] ? next : prev;
+}
+
+function normalizePracticeRatingBest(raw: unknown): Partial<Record<string, SelfRating>> | undefined {
+    if (typeof raw !== 'object' || raw === null) {
+        return undefined;
+    }
+    const out: Partial<Record<string, SelfRating>> = {};
+    for (const [k, v] of Object.entries(raw)) {
+        if (v === 'nailed' || v === 'partial' || v === 'didntKnow') {
+            out[k] = v;
+        }
+    }
+    return Object.keys(out).length > 0 ? out : undefined;
+}
+
+function countPracticeRatingBreakdown(
+    best: Partial<Record<string, SelfRating>> | undefined
+): PracticeRatingBreakdown {
+    const out: PracticeRatingBreakdown = { nailed: 0, partial: 0, didntKnow: 0 };
+    if (!best) {
+        return out;
+    }
+    for (const r of Object.values(best)) {
+        if (r === 'nailed') {
+            out.nailed += 1;
+        } else if (r === 'partial') {
+            out.partial += 1;
+        } else if (r === 'didntKnow') {
+            out.didntKnow += 1;
+        }
+    }
+    return out;
+}
 
 const ACTIVITY_KEY = 'activity-by-day';
 const MAX_STORED_DAYS = 400;
@@ -45,6 +93,40 @@ export class ActivityService {
             ...row,
             topicsStudied: row.topicsStudied + delta
         }));
+    }
+
+    /**
+     * Records a practice self-rating for today. Same question later the same day only upgrades
+     * (nailed beats partial beats didn't know).
+     */
+    recordPracticeRating(questionId: number, rating: SelfRating): void {
+        const key = String(questionId);
+        this.updateDay(formatLocalYmd(new Date()), (row) => {
+            const prev = row.practiceRatingBest?.[key];
+            const merged = mergeBetterRating(prev, rating);
+            return {
+                ...row,
+                practiceRatingBest: { ...(row.practiceRatingBest ?? {}), [key]: merged }
+            };
+        });
+    }
+
+    /** Best-rating counts for the current local calendar day. */
+    todayPracticeRatingBreakdown(): PracticeRatingBreakdown {
+        const row = this.byDate().get(formatLocalYmd(new Date()));
+        return countPracticeRatingBreakdown(row?.practiceRatingBest);
+    }
+
+    /** Sum of per-day best-per-question counts over all stored days. */
+    aggregatePracticeRatingBreakdown(): PracticeRatingBreakdown {
+        const sum: PracticeRatingBreakdown = { nailed: 0, partial: 0, didntKnow: 0 };
+        for (const row of this.byDate().values()) {
+            const c = countPracticeRatingBreakdown(row.practiceRatingBest);
+            sum.nailed += c.nailed;
+            sum.partial += c.partial;
+            sum.didntKnow += c.didntKnow;
+        }
+        return sum;
     }
 
     /** Adds foreground learning time for the current local calendar day. */
@@ -117,6 +199,9 @@ export class ActivityService {
                 'activeSeconds' in row && typeof (row as DailyActivity).activeSeconds === 'number'
                     ? Math.max(0, (row as DailyActivity).activeSeconds!)
                     : 0;
+            const practiceRatingBest = normalizePracticeRatingBest(
+                (row as DailyActivity).practiceRatingBest
+            );
             map.set(row.date, {
                 date: row.date,
                 questionsAnswered: Math.max(0, row.questionsAnswered),
@@ -130,7 +215,8 @@ export class ActivityService {
                               )
                           )
                       ].sort((a, b) => a.localeCompare(b))
-                    : []
+                    : [],
+                ...(practiceRatingBest ? { practiceRatingBest } : {})
             });
         }
         return map;

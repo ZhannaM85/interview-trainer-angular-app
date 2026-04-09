@@ -39,6 +39,86 @@
                 }
             </article>
 
+            <article class="dashboard__card dashboard__card--wide">
+                <h2 class="dashboard__card-title">{{ 'dashboard.practiceRatingsHeading' | translate }}</h2>
+                <p class="dashboard__hint dashboard__ratings-intro">{{ 'dashboard.practiceRatingsIntro' | translate }}</p>
+                @let pr = practiceRatingsView();
+                <div class="dashboard__ratings-section">
+                    <h3 class="dashboard__ratings-sub">{{ 'dashboard.practiceRatingsToday' | translate }}</h3>
+                    <p class="dashboard__ratings-total">
+                        @if (practiceRatingTotal(pr.today) === 0) {
+                            <span class="dashboard__ratings-empty">{{ 'dashboard.practiceRatingsEmptyDay' | translate }}</span>
+                        } @else {
+                            {{ 'dashboard.practiceRatingsTotalQuestions' | translate: { count: practiceRatingTotal(pr.today) } }}
+                        }
+                    </p>
+                    <ul class="dashboard__ratings-list" [attr.aria-label]="'dashboard.practiceRatingsToday' | translate">
+                        <li class="dashboard__ratings-item dashboard__ratings-item--good">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.nailed' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.today.nailed }}</span>
+                        </li>
+                        <li class="dashboard__ratings-item dashboard__ratings-item--weak">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.partial' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.today.partial }}</span>
+                        </li>
+                        <li class="dashboard__ratings-item dashboard__ratings-item--wrong">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.didntKnow' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.today.didntKnow }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dashboard__ratings-section">
+                    <h3 class="dashboard__ratings-sub">{{ 'dashboard.practiceRatingsAllDays' | translate }}</h3>
+                    <p class="dashboard__hint dashboard__ratings-hint">{{ 'dashboard.practiceRatingsAllDaysHint' | translate }}</p>
+                    <p class="dashboard__ratings-total">
+                        @if (practiceRatingTotal(pr.allDaysBest) === 0) {
+                            <span class="dashboard__ratings-empty">{{ 'dashboard.practiceRatingsEmptyAllDays' | translate }}</span>
+                        } @else {
+                            {{ 'dashboard.practiceRatingsTotalQuestionDays' | translate: { count: practiceRatingTotal(pr.allDaysBest) } }}
+                        }
+                    </p>
+                    <ul class="dashboard__ratings-list" [attr.aria-label]="'dashboard.practiceRatingsAllDays' | translate">
+                        <li class="dashboard__ratings-item dashboard__ratings-item--good">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.nailed' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.allDaysBest.nailed }}</span>
+                        </li>
+                        <li class="dashboard__ratings-item dashboard__ratings-item--weak">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.partial' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.allDaysBest.partial }}</span>
+                        </li>
+                        <li class="dashboard__ratings-item dashboard__ratings-item--wrong">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.didntKnow' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.allDaysBest.didntKnow }}</span>
+                        </li>
+                    </ul>
+                </div>
+                <div class="dashboard__ratings-section">
+                    <h3 class="dashboard__ratings-sub">{{ 'dashboard.practiceRatingsEveryAttempt' | translate }}</h3>
+                    <p class="dashboard__hint dashboard__ratings-hint">{{ 'dashboard.practiceRatingsEveryAttemptHint' | translate }}</p>
+                    <p class="dashboard__ratings-total">
+                        @if (practiceRatingTotal(pr.everyAttempt) === 0) {
+                            <span class="dashboard__ratings-empty">{{ 'dashboard.practiceRatingsEmptyAttempts' | translate }}</span>
+                        } @else {
+                            {{ 'dashboard.practiceRatingsTotalAnswers' | translate: { count: practiceRatingTotal(pr.everyAttempt) } }}
+                        }
+                    </p>
+                    <ul class="dashboard__ratings-list" [attr.aria-label]="'dashboard.practiceRatingsEveryAttempt' | translate">
+                        <li class="dashboard__ratings-item dashboard__ratings-item--good">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.nailed' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.everyAttempt.nailed }}</span>
+                        </li>
+                        <li class="dashboard__ratings-item dashboard__ratings-item--weak">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.partial' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.everyAttempt.partial }}</span>
+                        </li>
+                        <li class="dashboard__ratings-item dashboard__ratings-item--wrong">
+                            <span class="dashboard__ratings-label">{{ 'selfEval.didntKnow' | translate }}</span>
+                            <span class="dashboard__ratings-value">{{ pr.everyAttempt.didntKnow }}</span>
+                        </li>
+                    </ul>
+                </div>
+            </article>
+
             <article class="dashboard__card">
                 <h2 class="dashboard__card-title">{{ 'dashboard.activeTimeHeading' | translate }}</h2>
                 <p class="dashboard__metric" aria-live="polite">

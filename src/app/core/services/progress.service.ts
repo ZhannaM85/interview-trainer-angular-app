@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import type { LegacyProgress, Progress } from '../../shared/models/progress.model';
 import type { Question } from '../../shared/models/question.model';
 import type { SelfRating } from '../../shared/models/self-rating.model';
+import { ActivityService } from './activity.service';
 import { QuestionService } from './question.service';
 import { StorageService } from './storage.service';
 
@@ -52,6 +53,7 @@ function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
 export class ProgressService {
     private readonly storage = inject(StorageService);
     private readonly questionService = inject(QuestionService);
+    private readonly activityService = inject(ActivityService);
 
     /**
      * Spaced repetition: nailed → +3 days, partial → +2 days, didn’t know → +1 day.
@@ -90,6 +92,7 @@ export class ProgressService {
             });
         }
         this.storage.set(PROGRESS_KEY, list);
+        this.activityService.recordPracticeRating(questionId, rating);
     }
 
     getProgress(): Progress[] {

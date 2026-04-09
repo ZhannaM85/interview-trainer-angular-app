@@ -171,7 +171,20 @@
         "activeTimeTenKHint": "The “10,000 hours” idea is a simplified popular story about expertise — use this tally as motivation, not a scientific benchmark.",
         "streakHeading": "Learning streak",
         "streakCurrentMetric": "{{days}} days in a row",
-        "streakBestMetric": "Best streak: {{days}} days"
+        "streakBestMetric": "Best streak: {{days}} days",
+        "practiceRatingsHeading": "Practice self-ratings",
+        "practiceRatingsIntro": "How you rated answers after each question (Nailed it, Partial, Didn’t know). If you repeat the same question the same day, only your best rating that day is counted in the daily and “all days” totals.",
+        "practiceRatingsToday": "Today",
+        "practiceRatingsAllDays": "All days (best per question per day)",
+        "practiceRatingsAllDaysHint": "Each calendar day, each question counts once — as your strongest rating that day — then summed over every stored day.",
+        "practiceRatingsEveryAttempt": "Every attempt (lifetime)",
+        "practiceRatingsEveryAttemptHint": "Every time you submitted a rating in Practice, including repeats the same day. Same numbers as used for Accuracy and Confidence above.",
+        "practiceRatingsTotalQuestions": "{{count}} unique questions today",
+        "practiceRatingsTotalQuestionDays": "{{count}} question-days across all days",
+        "practiceRatingsTotalAnswers": "{{count}} answers total",
+        "practiceRatingsEmptyDay": "No practice ratings recorded yet today.",
+        "practiceRatingsEmptyAllDays": "No per-day ratings stored yet. New practice sessions will fill this in.",
+        "practiceRatingsEmptyAttempts": "No answers rated yet."
     },
     "answerBlocks": {
         "weak": "Weak answer",
