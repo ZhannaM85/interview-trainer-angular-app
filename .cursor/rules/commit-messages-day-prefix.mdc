@@ -1,17 +1,19 @@
----
-description: Prefix git commit messages with [DAY-N] when the branch name includes DAY4, DAY5, etc.
+description: Require [DAY-N] commit prefix when branch contains DAY<digits> (e.g., feat/zhanna-DAY9-someFeature)
 alwaysApply: true
 ---
 
 # Commit messages: DAY branch prefix
 
-When suggesting or writing a **git commit message** for work on a branch whose name contains a segment like `DAY4`, `DAY5`, `DAY6`, `DAY10`, etc. (pattern: `DAY` followed by one or more digits), **start the subject line** with the matching tag in this exact form:
+When suggesting or writing a **git commit message**, first inspect the current branch name.
 
-- `DAY4` → `[DAY-4]`
-- `DAY5` → `[DAY-5]`
-- `DAY10` → `[DAY-10]`
+If the branch contains `DAY` followed by digits anywhere in the name (regex: `DAY(\d+)`), the commit subject line **must start** with the matching tag in this exact form:
 
-Use a **hyphen** after `DAY`: `[DAY-N]`, not `[DAY5]` or `[DAY-4]` with wrong formatting.
+- `DAY4` -> `[DAY-4]`
+- `DAY5` -> `[DAY-5]`
+- `DAY10` -> `[DAY-10]`
+- `feat/zhanna-DAY9-someFeature` -> `[DAY-9] ...`
+
+Use a **hyphen** after `DAY`: `[DAY-N]`. Do not use `[DAY9]`, `DAY-9: ...`, or omit the prefix.
 
 **Examples**
 
@@ -21,6 +23,10 @@ Use a **hyphen** after `DAY`: `[DAY-N]`, not `[DAY5]` or `[DAY-4]` with wrong fo
 
 - Branch `feat/some-DAY4-feature`  
   Good: `[DAY-4] fix: handle edge case`
+
+- Branch `feat/zhanna-DAY9-someFeature`  
+  Good: `[DAY-9] feat(plan): add sticky Study Guide button`
+  Bad: `feat(plan): add sticky Study Guide button`
 
 If the **current branch name** does not contain any `DAY{digits}` segment, do **not** add this prefix unless the user explicitly asks.
 
