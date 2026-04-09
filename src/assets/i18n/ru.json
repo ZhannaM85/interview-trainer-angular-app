@@ -3,7 +3,10 @@
         "brand": "Karkas",
         "navAria": "Основная навигация",
         "menuToggle": "Открыть меню",
-        "menuClose": "Закрыть меню"
+        "menuClose": "Закрыть меню",
+        "retryBannerMsg": "Вчера были затруднения с {{count}} темой(-ами).",
+        "retryBannerLink": "Повторить в справочнике →",
+        "retryBannerClose": "Скрыть подсказку"
     },
     "nav": {
         "about": "О проекте",
@@ -56,7 +59,9 @@
         "practiceHintTodayShort": "Сегодня",
         "lastPractice": "Последняя практика: {{date}}",
         "lastPracticeAria": "Последний ответ в практике: {{date}}",
-        "expandCollapseAll": "Развернуть / свернуть всё"
+        "expandCollapseAll": "Развернуть / свернуть всё",
+        "filteredRetryBanner": "Показаны темы, с которыми были затруднения вчера.",
+        "filteredRetryClear": "Показать все темы"
     },
     "plan": {
         "title": "План на сегодня",

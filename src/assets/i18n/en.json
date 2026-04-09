@@ -3,7 +3,10 @@
         "brand": "Karkas",
         "navAria": "Main",
         "menuToggle": "Open menu",
-        "menuClose": "Close menu"
+        "menuClose": "Close menu",
+        "retryBannerMsg": "You had trouble with {{count}} topic(s) yesterday.",
+        "retryBannerLink": "Review in Study guide →",
+        "retryBannerClose": "Dismiss suggestion"
     },
     "nav": {
         "about": "About",
@@ -56,7 +59,9 @@
         "practiceHintTodayShort": "Today",
         "lastPractice": "Last practice: {{date}}",
         "lastPracticeAria": "Last answered in Practice on {{date}}",
-        "expandCollapseAll": "Expand / collapse all"
+        "expandCollapseAll": "Expand / collapse all",
+        "filteredRetryBanner": "Showing topics you had trouble with yesterday.",
+        "filteredRetryClear": "Show all topics"
     },
     "plan": {
         "title": "Plan for today",

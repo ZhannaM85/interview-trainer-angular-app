@@ -1,13 +1,16 @@
 import { DOCUMENT } from '@angular/common';
-import { Component, HostListener, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { Component, computed, HostListener, inject, signal } from '@angular/core';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, fromEvent } from 'rxjs';
 
 import { LOCALE_STORAGE_KEY } from './core/locale.constants';
 import { ActiveTimeService } from './core/services/active-time.service';
+import { ActivityService } from './core/services/activity.service';
+import { QuestionService } from './core/services/question.service';
 import { ThemeService } from './core/services/theme.service';
+import { formatLocalYmd } from './shared/utils/local-date.utils';
 
 @Component({
     selector: 'app-root',
@@ -21,8 +24,46 @@ export class App {
     private readonly router = inject(Router);
     protected readonly themeService = inject(ThemeService);
 
+    private readonly activityService = inject(ActivityService);
+    private readonly questionService = inject(QuestionService);
+    private readonly allQuestions = toSignal(this.questionService.getQuestions(), { initialValue: [] });
+
     protected readonly currentLang = signal<'en' | 'ru'>('en');
     protected readonly navMenuOpen = signal(false);
+    protected readonly retryBannerDismissed = signal(false);
+
+    /** Topic IDs (category:subtopic) where the best rating yesterday was didntKnow or partial. */
+    protected readonly retryTopicIds = computed(() => {
+        const yesterday = this.yesterdayYmd();
+        const row = this.activityService.activityMap().get(yesterday);
+        if (!row?.practiceRatingBest) {
+            return [];
+        }
+        const failedQIds = new Set<number>();
+        for (const [qIdStr, rating] of Object.entries(row.practiceRatingBest)) {
+            if (rating === 'didntKnow' || rating === 'partial') {
+                failedQIds.add(Number(qIdStr));
+            }
+        }
+        if (failedQIds.size === 0) {
+            return [];
+        }
+        const topicIds = new Set<string>();
+        for (const q of this.allQuestions()) {
+            if (failedQIds.has(q.id)) {
+                topicIds.add(`${q.category}:${q.subtopic}`);
+            }
+        }
+        return [...topicIds];
+    });
+
+    protected readonly showRetryBanner = computed(
+        () => !this.retryBannerDismissed() && this.retryTopicIds().length > 0
+    );
+
+    protected retryStudyQueryParams(): Record<string, string> {
+        return { topics: this.retryTopicIds().join(',') };
+    }
 
     constructor() {
         inject(ActiveTimeService);
@@ -75,5 +116,11 @@ export class App {
 
     private normalizeLang(lang: string | undefined): 'en' | 'ru' {
         return lang === 'ru' ? 'ru' : 'en';
+    }
+
+    private yesterdayYmd(): string {
+        const d = new Date();
+        d.setDate(d.getDate() - 1);
+        return formatLocalYmd(d);
     }
 }

@@ -91,6 +91,27 @@ export class StudyGuidePageComponent {
      */
     private readonly todayScopedTopicIds = signal<ReadonlySet<string>>(new Set());
 
+    /** `?topics=cat:sub,cat:sub2` — focus guide on specific topic IDs (e.g. from retry banner). */
+    private readonly topicsFocusParam = toSignal(
+        this.route.queryParamMap.pipe(
+            map((m) => m.get('topics') ?? ''),
+            distinctUntilChanged()
+        ),
+        { initialValue: this.route.snapshot.queryParamMap.get('topics') ?? '' }
+    );
+
+    private readonly topicsFocusSet = computed((): ReadonlySet<string> | null => {
+        const raw = this.topicsFocusParam();
+        if (!raw) {
+            return null;
+        }
+        const ids = raw.split(',').map((s) => s.trim()).filter((s) => s.length > 0);
+        return ids.length > 0 ? new Set(ids) : null;
+    });
+
+    /** Whether a ?topics= filter is active (shown in a banner). */
+    protected readonly topicsFocusActive = computed(() => this.topicsFocusSet() !== null);
+
     private readonly practicedQuestionIds = computed(() => {
         this.studyProgressRefresh();
         const ids = new Set<number>();
@@ -106,6 +127,10 @@ export class StudyGuidePageComponent {
 
     protected readonly sections = computed(() => {
         let all = buildStudyGuideSections(this.questions());
+        const focusSet = this.topicsFocusSet();
+        if (focusSet) {
+            all = filterStudyGuideSectionsByTopicIds(all, focusSet);
+        }
         if (this.planTodayOnly()) {
             /**
              * In `?today=1`, while there are still topics left from today's plan,
