@@ -62,10 +62,43 @@
     }
 }
 
+.plan__summary-sub-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
 .plan__summary-sub {
-    margin: 0 0 0.5rem;
+    margin: 0;
     font-size: 0.95rem;
     font-weight: 700;
+}
+
+.plan__remove-all {
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    color: var(--it-text-muted);
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    text-decoration: underline;
+    text-underline-offset: 0.12em;
+    cursor: pointer;
+}
+
+.plan__remove-all:hover {
+    color: var(--it-error);
+}
+
+.plan__remove-all:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
 }
 
 .plan__summary-empty {

@@ -85,7 +85,9 @@
         "lastStudiedNever": "—",
         "lastStudiedNeverAria": "No recorded study or practice in this topic yet",
         "lastStudiedToday": "Today",
-        "lastStudiedAria": "Last activity in this topic: {{date}}"
+        "lastStudiedAria": "Last activity in this topic: {{date}}",
+        "removeAll": "Remove all",
+        "removeAllAria": "Remove all done topics from today's plan"
     },
     "heatmap": {
         "heading": "Activity",

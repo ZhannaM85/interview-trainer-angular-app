@@ -46,7 +46,19 @@
                     }
                 </div>
                 <div class="plan__summary-col">
-                    <h3 class="plan__summary-sub">{{ 'plan.doneStudying' | translate }}</h3>
+                    <div class="plan__summary-sub-row">
+                        <h3 class="plan__summary-sub">{{ 'plan.doneStudying' | translate }}</h3>
+                        @if (doneTopics().length > 0) {
+                            <button
+                                type="button"
+                                class="plan__remove-all"
+                                (click)="removeAllDoneTopics()"
+                                [attr.aria-label]="'plan.removeAllAria' | translate"
+                            >
+                                {{ 'plan.removeAll' | translate }}
+                            </button>
+                        }
+                    </div>
                     @if (doneTopics().length === 0) {
                         <p class="plan__summary-empty">{{ 'plan.doneEmpty' | translate }}</p>
                     } @else {

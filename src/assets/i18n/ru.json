@@ -85,7 +85,9 @@
         "lastStudiedNever": "—",
         "lastStudiedNeverAria": "Пока нет записей об изучении или практике по этой теме",
         "lastStudiedToday": "Сегодня",
-        "lastStudiedAria": "Последняя активность по теме: {{date}}"
+        "lastStudiedAria": "Последняя активность по теме: {{date}}",
+        "removeAll": "Убрать все",
+        "removeAllAria": "Убрать все изученные темы из плана на сегодня"
     },
     "heatmap": {
         "heading": "Активность",
