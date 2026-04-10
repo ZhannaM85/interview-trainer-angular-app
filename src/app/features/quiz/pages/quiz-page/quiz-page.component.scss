@@ -144,6 +144,52 @@
     color: var(--it-accent);
 }
 
+.quiz__stack-topics {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    text-align: center;
+}
+
+.quiz__stack-topics-heading {
+    margin: 0;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--it-text-muted);
+}
+
+.quiz__stack-topics-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.4rem 0.5rem;
+    max-width: 100%;
+}
+
+.quiz__stack-topic {
+    margin: 0;
+}
+
+.quiz__stack-topic-label {
+    display: inline-block;
+    padding: 0.22rem 0.55rem;
+    border-radius: 0.45rem;
+    border: 1px solid color-mix(in srgb, var(--it-accent) 38%, var(--it-border));
+    background: var(--it-accent-dim);
+    color: var(--it-text);
+    font-size: 0.78rem;
+    font-weight: 650;
+    line-height: 1.35;
+    text-transform: capitalize;
+}
+
 .quiz__progress-block {
     display: flex;
     flex-direction: column;
