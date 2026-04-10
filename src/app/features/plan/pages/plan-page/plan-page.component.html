@@ -114,25 +114,27 @@
                                     (click)="$event.preventDefault(); todayPlan.toggleTopicSelected(topicId(cat, sub))"
                                 />
                                 <span class="plan__topic-text">{{ (labelKey(sub)) | translate }}</span>
-                                @if (topicLastStudiedHint(cat, sub); as hint) {
-                                    <span
-                                        class="plan__topic-date"
-                                        [class.plan__topic-date--empty]="hint.kind === 'none'"
-                                        [class.plan__topic-date--today]="hint.kind === 'today'"
-                                        [attr.aria-label]="lastStudiedDateAria(hint)"
-                                    >
-                                        @switch (hint.kind) {
-                                            @case ('none') {
-                                                {{ 'plan.lastStudiedNever' | translate }}
+                                @if (topicStatusKey(cat, sub) !== 'plan.statusToStudy') {
+                                    @if (topicLastStudiedHint(cat, sub); as hint) {
+                                        <span
+                                            class="plan__topic-date"
+                                            [class.plan__topic-date--empty]="hint.kind === 'none'"
+                                            [class.plan__topic-date--today]="hint.kind === 'today'"
+                                            [attr.aria-label]="lastStudiedDateAria(hint)"
+                                        >
+                                            @switch (hint.kind) {
+                                                @case ('none') {
+                                                    {{ 'plan.lastStudiedNever' | translate }}
+                                                }
+                                                @case ('today') {
+                                                    {{ 'plan.lastStudiedToday' | translate }}
+                                                }
+                                                @case ('past') {
+                                                    {{ hint.dateStr }}
+                                                }
                                             }
-                                            @case ('today') {
-                                                {{ 'plan.lastStudiedToday' | translate }}
-                                            }
-                                            @case ('past') {
-                                                {{ hint.dateStr }}
-                                            }
-                                        }
-                                    </span>
+                                        </span>
+                                    }
                                 }
                                 @if (topicStatusKey(cat, sub); as statusKey) {
                                     <span
