@@ -95,6 +95,26 @@
     border-radius: 0.5rem;
     background: var(--it-dashboard-streak-bg);
     border: 1px solid var(--it-dashboard-streak-border);
+    box-sizing: border-box;
+    width: 100%;
+    text-decoration: none;
+    color: inherit;
+    font: inherit;
+    text-align: left;
+    cursor: pointer;
+    transition:
+        border-color 0.12s ease,
+        background-color 0.12s ease;
+}
+
+.dashboard__topic:hover {
+    border-color: color-mix(in srgb, var(--it-accent) 35%, var(--it-dashboard-streak-border));
+    background: color-mix(in srgb, var(--it-accent) 8%, var(--it-dashboard-streak-bg));
+}
+
+.dashboard__topic:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
 }
 
 .dashboard__topic-name {
@@ -102,7 +122,10 @@
 }
 
 .dashboard__topic-mark {
+    flex-shrink: 0;
     opacity: 0.85;
+    font-weight: 700;
+    color: var(--it-accent);
 }
 
 .dashboard__ratings-intro {

@@ -10,6 +10,7 @@ import { QuestionService } from '../../../../core/services/question.service';
 import type { Progress } from '../../../../shared/models/progress.model';
 import type { Question } from '../../../../shared/models/question.model';
 import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
+import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import { ActivityHeatmapComponent } from '../../components/activity-heatmap/activity-heatmap.component';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
 
@@ -17,7 +18,7 @@ export interface DashboardStats {
     totalAnswered: number;
     accuracyPct: number;
     confidencePct: number;
-    /** Subtopics that need work (nailed rate below 60% with 3+ attempts). */
+    /** `category:subtopic` ids that need work (nailed rate below 60% with 3+ attempts). */
     weakTopics: string[];
     /** Same list as `weakTopics` — kept for template compatibility. */
     weakCategories: string[];
@@ -116,7 +117,7 @@ export class DashboardPageComponent {
         let totalNailed = 0;
         let totalPartial = 0;
         let totalDidnt = 0;
-        const bySubtopic = new Map<string, { attempts: number; nailed: number }>();
+        const byTopicId = new Map<string, { attempts: number; nailed: number }>();
 
         for (const q of questions) {
             const p = byId.get(q.id);
@@ -133,11 +134,11 @@ export class DashboardPageComponent {
             totalNailed += nailed;
             totalPartial += partial;
             totalDidnt += didnt;
-            const key = q.subtopic || q.category;
-            const agg = bySubtopic.get(key) ?? { attempts: 0, nailed: 0 };
+            const topicId = topicIdFromParts(q.category, q.subtopic);
+            const agg = byTopicId.get(topicId) ?? { attempts: 0, nailed: 0 };
             agg.attempts += attempts;
             agg.nailed += nailed;
-            bySubtopic.set(key, agg);
+            byTopicId.set(topicId, agg);
         }
 
         const totalRatings = totalNailed + totalPartial + totalDidnt;
@@ -151,9 +152,9 @@ export class DashboardPageComponent {
                 : Math.round(((totalNailed + 0.5 * totalPartial) / totalRatings) * 1000) / 10;
 
         const weakTopics: string[] = [];
-        for (const [subtopic, agg] of bySubtopic) {
+        for (const [topicId, agg] of byTopicId) {
             if (agg.attempts >= 3 && agg.nailed / agg.attempts < 0.6) {
-                weakTopics.push(subtopic);
+                weakTopics.push(topicId);
             }
         }
         weakTopics.sort((a, b) => a.localeCompare(b));
@@ -204,5 +205,11 @@ export class DashboardPageComponent {
         const dt = new Date(y, m - 1, d);
         dt.setDate(dt.getDate() + deltaDays);
         return formatLocalYmd(dt);
+    }
+
+    /** Subtopic key for i18n from a `category:subtopic` id. */
+    protected weakTopicSubtopicKey(topicId: string): string {
+        const i = topicId.indexOf(':');
+        return i >= 0 ? topicId.slice(i + 1) : topicId;
     }
 }

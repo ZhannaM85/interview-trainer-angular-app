@@ -172,6 +172,7 @@
         "confidence": "Confidence",
         "weakTopics": "Weak topics",
         "weakHint": "No weak spots detected yet (need at least 3 attempts on a topic below 60% nailed).",
+        "weakTopicStudyAria": "Open {{topic}} in Study guide",
         "browseQa": "Browse all Q&A",
         "startPractice": "Start Practice",
         "activeTimeHeading": "Approx. learning time",

@@ -29,10 +29,24 @@
                     <p class="dashboard__hint">{{ 'dashboard.weakHint' | translate }}</p>
                 } @else {
                     <ul class="dashboard__list">
-                        @for (topic of s.weakTopics; track topic) {
-                            <li class="dashboard__topic">
-                                <span class="dashboard__topic-name">{{ ('subtopics.' + topic) | translate }}</span>
-                                <span class="dashboard__topic-mark" aria-hidden="true">❌</span>
+                        @for (topicId of s.weakTopics; track topicId) {
+                            <li>
+                                <a
+                                    class="dashboard__topic"
+                                    routerLink="/study"
+                                    [queryParams]="{ topics: topicId }"
+                                    [attr.aria-label]="
+                                        'dashboard.weakTopicStudyAria'
+                                            | translate: {
+                                                  topic: (('subtopics.' + weakTopicSubtopicKey(topicId)) | translate)
+                                              }
+                                    "
+                                >
+                                    <span class="dashboard__topic-name">{{
+                                        ('subtopics.' + weakTopicSubtopicKey(topicId)) | translate
+                                    }}</span>
+                                    <span class="dashboard__topic-mark" aria-hidden="true">→</span>
+                                </a>
                             </li>
                         }
                     </ul>
