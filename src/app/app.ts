@@ -32,15 +32,22 @@ export class App {
     protected readonly navMenuOpen = signal(false);
     protected readonly retryBannerDismissed = signal(false);
 
-    /** Topic IDs (category:subtopic) where the best rating yesterday was didntKnow or partial. */
+    /**
+     * Topic IDs (category:subtopic) where the best rating yesterday was didntKnow or partial
+     * AND the topic has not yet been covered today. A topic is considered covered when the user
+     * answers any of its questions in the Quiz OR marks it as studied in the Study Guide
+     * (both paths write to `coveredTopicIds`). The banner disappears automatically as topics
+     * are worked through.
+     */
     protected readonly retryTopicIds = computed(() => {
+        const activityMap = this.activityService.activityMap();
         const yesterday = this.yesterdayYmd();
-        const row = this.activityService.activityMap().get(yesterday);
-        if (!row?.practiceRatingBest) {
+        const yesterdayRow = activityMap.get(yesterday);
+        if (!yesterdayRow?.practiceRatingBest) {
             return [];
         }
         const failedQIds = new Set<number>();
-        for (const [qIdStr, rating] of Object.entries(row.practiceRatingBest)) {
+        for (const [qIdStr, rating] of Object.entries(yesterdayRow.practiceRatingBest)) {
             if (rating === 'didntKnow' || rating === 'partial') {
                 failedQIds.add(Number(qIdStr));
             }
@@ -54,7 +61,13 @@ export class App {
                 topicIds.add(`${q.category}:${q.subtopic}`);
             }
         }
-        return [...topicIds];
+        if (topicIds.size === 0) {
+            return [];
+        }
+        // Remove topics already covered today via Quiz practice or Study Guide "Mark as studied"
+        const todayRow = activityMap.get(formatLocalYmd(new Date()));
+        const todayCovered = new Set(todayRow?.coveredTopicIds ?? []);
+        return [...topicIds].filter((tid) => !todayCovered.has(tid));
     });
 
     protected readonly showRetryBanner = computed(
