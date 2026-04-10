@@ -35,6 +35,20 @@
             </div>
         </div>
     } @else if (sessionComplete()) {
+        @if (sessionStackTopicIds().length > 0) {
+            <div class="quiz__stack-topics" [attr.aria-label]="'quiz.sessionStackAria' | translate">
+                <p class="quiz__stack-topics-heading">{{ 'quiz.sessionStackHeading' | translate }}</p>
+                <ul class="quiz__stack-topics-list" role="list">
+                    @for (tid of sessionStackTopicIds(); track tid) {
+                        <li class="quiz__stack-topic" role="listitem">
+                            <span class="quiz__stack-topic-label">{{
+                                ('subtopics.' + stackSubtopicKey(tid)) | translate
+                            }}</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
         <div class="quiz__done card-phase">
             <p class="quiz__message">{{ 'quiz.sessionDone' | translate }}</p>
             @if (usingFallbackQueue()) {
@@ -82,6 +96,21 @@
                 <button type="button" class="quiz__scope-btn quiz__scope-btn--secondary" (click)="switchToTodaysStudiedTopics()">
                     {{ 'quiz.backToTodaysTopics' | translate }}
                 </button>
+            </div>
+        }
+
+        @if (sessionStackTopicIds().length > 0) {
+            <div class="quiz__stack-topics" [attr.aria-label]="'quiz.sessionStackAria' | translate">
+                <p class="quiz__stack-topics-heading">{{ 'quiz.sessionStackHeading' | translate }}</p>
+                <ul class="quiz__stack-topics-list" role="list">
+                    @for (tid of sessionStackTopicIds(); track tid) {
+                        <li class="quiz__stack-topic" role="listitem">
+                            <span class="quiz__stack-topic-label">{{
+                                ('subtopics.' + stackSubtopicKey(tid)) | translate
+                            }}</span>
+                        </li>
+                    }
+                </ul>
             </div>
         }
 

@@ -63,6 +63,8 @@ export class QuizPageComponent {
     protected readonly usingFallbackQueue = signal(false);
     protected readonly sessionIndex = signal(0);
     protected readonly sessionTotal = signal(0);
+    /** Unique `category:subtopic` ids in the current session queue (stable for the round). */
+    protected readonly sessionStackTopicIds = signal<string[]>([]);
 
     /** Today’s plan has topics selected but none marked studied yet — practice still uses full catalog. */
     protected readonly planFocusHint = computed(
@@ -274,6 +276,7 @@ export class QuizPageComponent {
                         this.usingFallbackQueue.set(false);
                         this.sessionTotal.set(0);
                         this.sessionIndex.set(0);
+                        this.sessionStackTopicIds.set([]);
                         this.questionService.initializeQueue([]);
                         this.loading.set(false);
                         return;
@@ -285,6 +288,7 @@ export class QuizPageComponent {
                     const queue = fullBankMode ? candidate : useFallback ? candidate : due;
                     this.sessionTotal.set(queue.length);
                     this.sessionIndex.set(0);
+                    this.sessionStackTopicIds.set(this.uniqueSortedTopicIds(queue));
                     this.questionService.initializeQueue(queue);
                     this.loading.set(false);
                     this.advanceToNextQuestion();
@@ -308,5 +312,19 @@ export class QuizPageComponent {
         if (!next) {
             this.sessionComplete.set(true);
         }
+    }
+
+    private uniqueSortedTopicIds(questions: Question[]): string[] {
+        const ids = new Set<string>();
+        for (const q of questions) {
+            ids.add(topicIdFromQuestion(q));
+        }
+        return [...ids].sort((a, b) => a.localeCompare(b));
+    }
+
+    /** Subtopic i18n key from `category:subtopic` id. */
+    protected stackSubtopicKey(topicId: string): string {
+        const i = topicId.indexOf(':');
+        return i >= 0 ? topicId.slice(i + 1) : topicId;
     }
 }

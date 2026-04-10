@@ -12,13 +12,87 @@
         @let streak = streakView();
         <div class="dashboard__layout">
             <article class="dashboard__card">
-                <h2 class="dashboard__card-title">{{ 'dashboard.accuracy' | translate }}</h2>
+                <div class="dashboard__metric-help" data-dashboard-metric-help>
+                    <div class="dashboard__card-title-row">
+                        <h2 class="dashboard__card-title" id="dashboard-accuracy-heading">
+                            {{ 'dashboard.accuracy' | translate }}
+                        </h2>
+                        <button
+                            type="button"
+                            class="dashboard__info-btn"
+                            [attr.title]="'dashboard.accuracyInfo' | translate"
+                            [attr.aria-label]="'dashboard.accuracyInfoToggle' | translate"
+                            [attr.aria-expanded]="openMetricHelp() === 'accuracy'"
+                            [attr.aria-controls]="
+                                openMetricHelp() === 'accuracy' ? 'dashboard-accuracy-explainer' : null
+                            "
+                            (click)="toggleMetricHelp('accuracy')"
+                        >
+                            <svg class="dashboard__info-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.75" />
+                                <path
+                                    fill="currentColor"
+                                    d="M11 10h2v8h-2v-8zm0-4h2v2h-2V6z"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    @if (openMetricHelp() === 'accuracy') {
+                        <div
+                            id="dashboard-accuracy-explainer"
+                            class="dashboard__metric-explainer"
+                            role="region"
+                            aria-labelledby="dashboard-accuracy-heading"
+                        >
+                            <p class="dashboard__metric-explainer-text">
+                                {{ 'dashboard.accuracyInfo' | translate }}
+                            </p>
+                        </div>
+                    }
+                </div>
                 <p class="dashboard__metric">{{ s.accuracyPct }}%</p>
                 <app-progress-bar [value]="s.accuracyPct" [max]="100" [label]="'dashboard.accuracy' | translate" />
             </article>
 
             <article class="dashboard__card">
-                <h2 class="dashboard__card-title">{{ 'dashboard.confidence' | translate }}</h2>
+                <div class="dashboard__metric-help" data-dashboard-metric-help>
+                    <div class="dashboard__card-title-row">
+                        <h2 class="dashboard__card-title" id="dashboard-confidence-heading">
+                            {{ 'dashboard.confidence' | translate }}
+                        </h2>
+                        <button
+                            type="button"
+                            class="dashboard__info-btn"
+                            [attr.title]="'dashboard.confidenceInfo' | translate"
+                            [attr.aria-label]="'dashboard.confidenceInfoToggle' | translate"
+                            [attr.aria-expanded]="openMetricHelp() === 'confidence'"
+                            [attr.aria-controls]="
+                                openMetricHelp() === 'confidence' ? 'dashboard-confidence-explainer' : null
+                            "
+                            (click)="toggleMetricHelp('confidence')"
+                        >
+                            <svg class="dashboard__info-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+                                <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" stroke-width="1.75" />
+                                <path
+                                    fill="currentColor"
+                                    d="M11 10h2v8h-2v-8zm0-4h2v2h-2V6z"
+                                />
+                            </svg>
+                        </button>
+                    </div>
+                    @if (openMetricHelp() === 'confidence') {
+                        <div
+                            id="dashboard-confidence-explainer"
+                            class="dashboard__metric-explainer"
+                            role="region"
+                            aria-labelledby="dashboard-confidence-heading"
+                        >
+                            <p class="dashboard__metric-explainer-text">
+                                {{ 'dashboard.confidenceInfo' | translate }}
+                            </p>
+                        </div>
+                    }
+                </div>
                 <p class="dashboard__metric">{{ s.confidencePct }}%</p>
                 <app-progress-bar [value]="s.confidencePct" [max]="100" [label]="'dashboard.confidence' | translate" />
             </article>
@@ -29,10 +103,24 @@
                     <p class="dashboard__hint">{{ 'dashboard.weakHint' | translate }}</p>
                 } @else {
                     <ul class="dashboard__list">
-                        @for (topic of s.weakTopics; track topic) {
-                            <li class="dashboard__topic">
-                                <span class="dashboard__topic-name">{{ ('subtopics.' + topic) | translate }}</span>
-                                <span class="dashboard__topic-mark" aria-hidden="true">❌</span>
+                        @for (topicId of s.weakTopics; track topicId) {
+                            <li>
+                                <a
+                                    class="dashboard__topic"
+                                    routerLink="/study"
+                                    [queryParams]="{ topics: topicId }"
+                                    [attr.aria-label]="
+                                        'dashboard.weakTopicStudyAria'
+                                            | translate: {
+                                                  topic: (('subtopics.' + weakTopicSubtopicKey(topicId)) | translate)
+                                              }
+                                    "
+                                >
+                                    <span class="dashboard__topic-name">{{
+                                        ('subtopics.' + weakTopicSubtopicKey(topicId)) | translate
+                                    }}</span>
+                                    <span class="dashboard__topic-mark" aria-hidden="true">→</span>
+                                </a>
                             </li>
                         }
                     </ul>
