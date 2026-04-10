@@ -4,6 +4,7 @@ import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import { ActivityService } from '../../../../core/services/activity.service';
+import type { DailyActivity } from '../../../../shared/models/activity.model';
 import type { PracticeRatingBreakdown } from '../../../../core/services/activity.service';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
@@ -50,12 +51,10 @@ export class DashboardPageComponent {
         const map = this.activityService.activityMap();
         const active = new Set<string>();
         for (const row of map.values()) {
-            const hasAnyActivity =
-                row.questionsAnswered > 0 ||
-                row.topicsStudied > 0 ||
-                (row.activeSeconds ?? 0) > 0 ||
-                row.coveredTopicIds.length > 0;
-            if (hasAnyActivity) {
+            // Match Activity heatmap: a “lit” day is practice answers or topics marked studied.
+            // Do not count foreground time alone (`activeSeconds`) — that caused streaks to grow
+            // across gaps that look empty on the grid.
+            if (this.dayHasPracticeOrStudyForStreak(row)) {
                 active.add(row.date);
             }
         }
@@ -182,6 +181,11 @@ export class DashboardPageComponent {
             didntKnow += p.didntKnowCount ?? 0;
         }
         return { nailed, partial, didntKnow };
+    }
+
+    /** Same notion of “activity” as the heatmap cell intensity (answers + mark-studied). */
+    private dayHasPracticeOrStudyForStreak(row: DailyActivity): boolean {
+        return (row.questionsAnswered ?? 0) > 0 || (row.topicsStudied ?? 0) > 0;
     }
 
     private countBackwardStreakFrom(from: Date, activeDays: Set<string>): number {
