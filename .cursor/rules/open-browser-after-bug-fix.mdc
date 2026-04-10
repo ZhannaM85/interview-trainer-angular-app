@@ -1,0 +1,11 @@
+---
+description: Open the internal browser to verify the fix after fixing a bug
+alwaysApply: true
+---
+
+# Open Browser After Bug Fix
+
+After fixing a bug, always open the internal browser to visually verify the fix using the `cursor-ide-browser` MCP:
+
+1. Navigate to the relevant page (e.g. `http://localhost:4200`) using `browser_navigate`
+2. Take a screenshot with `browser_take_screenshot` to confirm the fix is visible
