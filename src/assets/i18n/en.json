@@ -152,6 +152,8 @@
         "progressToGo": "to go",
         "progressSep": "·",
         "sessionProgressLabel": "Session progress",
+        "sessionStackHeading": "Topics in this round",
+        "sessionStackAria": "Subtopics included in this practice session",
         "planFocusHint": "You have topics selected for today but none marked as studied yet. After you mark topics in the Study guide, Practice will use only those questions. Until then, you still practice from the full set (or due reviews).",
         "practiceAll": "Practice all questions",
         "backToTodaysTopics": "Practice only today’s studied topics",
