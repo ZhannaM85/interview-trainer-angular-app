@@ -32,7 +32,12 @@
     </div>
 
     @if (showPlanCompleteBanner()) {
-        <div class="study__plan-complete-banner" role="status" aria-live="polite">
+        <div
+            id="study-plan-complete-banner"
+            class="study__plan-complete-banner"
+            role="status"
+            aria-live="polite"
+        >
             <div class="study__plan-complete-row">
                 <p class="study__plan-complete-text">{{ 'study.planAllStudiedMessage' | translate }}</p>
                 <button
