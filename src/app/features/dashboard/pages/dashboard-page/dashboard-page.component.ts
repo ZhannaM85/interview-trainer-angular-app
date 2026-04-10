@@ -1,4 +1,11 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+    ChangeDetectionStrategy,
+    Component,
+    HostListener,
+    computed,
+    inject,
+    signal
+} from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -36,6 +43,9 @@ export class DashboardPageComponent {
     private readonly progressService = inject(ProgressService);
     private readonly questionService = inject(QuestionService);
     private readonly activityService = inject(ActivityService);
+
+    /** Inline help for Accuracy / Confidence (tap icon on mobile; hover title still works on desktop). */
+    protected readonly openMetricHelp = signal<'accuracy' | 'confidence' | null>(null);
 
     /** Illustrative bar max (10,000 h in seconds) — not a literal goal. */
     protected readonly tenKHoursSeconds = 10_000 * 3600;
@@ -92,6 +102,19 @@ export class DashboardPageComponent {
     protected readonly stats = signal<DashboardStats | null>(null);
     protected readonly loading = signal(true);
     protected readonly loadError = signal(false);
+
+    protected toggleMetricHelp(which: 'accuracy' | 'confidence'): void {
+        this.openMetricHelp.update((current) => (current === which ? null : which));
+    }
+
+    @HostListener('document:pointerdown', ['$event'])
+    protected onDocumentPointerDown(event: PointerEvent): void {
+        const t = event.target;
+        if (t instanceof Element && t.closest('[data-dashboard-metric-help]')) {
+            return;
+        }
+        this.openMetricHelp.set(null);
+    }
 
     constructor() {
         this.questionService
