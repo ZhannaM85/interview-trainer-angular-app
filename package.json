@@ -10,7 +10,10 @@
     "data:read-more-links": "node scripts/merge-read-more-links.mjs",
     "data:i18n-questions": "node scripts/apply-russian-translations.mjs",
     "watch": "ng build --watch --configuration development",
-    "test": "ng test"
+    "test": "ng test",
+    "e2e": "playwright test",
+    "e2e:ui": "playwright test --ui",
+    "e2e:screenshots": "node scripts/capture-practice-validation.mjs"
   },
   "prettier": {
     "printWidth": 100,
@@ -42,6 +45,7 @@
     "@angular/build": "^21.1.4",
     "@angular/cli": "^21.1.4",
     "@angular/compiler-cli": "^21.1.0",
+    "@playwright/test": "^1.59.1",
     "jsdom": "^27.1.0",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
