@@ -2,10 +2,18 @@
  * Captures practice (quiz) screenshots for desktop and mobile viewports.
  * Requires: `ng serve` on http://127.0.0.1:4200 (or rely on CI/local habit).
  * Run: `npx playwright install chromium` once, then `npm run e2e:screenshots`
- * Output: __screenshots__/*-practice-{question|answer}-card.png (gitignored).
- * Uses the `.quiz__card-wrap` element screenshot so the practice card is framed
- * correctly on mobile (long page above the card is excluded).
+ *
+ * Output layout:
+ *   __screenshots__/<group>/desktop-01-practice-question-card.png
+ *   __screenshots__/<group>/mobile-pixel5-02-practice-answer-card.png
+ * <group> is derived from the current git branch: the highest DAY<number> match
+ * (e.g. feat/...-DAY10-... → DAY10). Override: SCREENSHOT_GROUP=my-run npm run e2e:screenshots
+ * If no DAY digit segment exists, uses "local".
+ *
+ * Screenshots the visible practice card: `.quiz__phase.card-phase` inside
+ * `.quiz__card-wrap[data-phase=…]` (border/background), not the unstyled outer wrap.
  */
+import { execSync } from 'node:child_process';
 import { chromium, devices } from 'playwright';
 import { mkdir, readdir, unlink } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
@@ -13,7 +21,42 @@ import { dirname, join } from 'node:path';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const root = join(__dirname, '..');
-const outDir = join(root, '__screenshots__');
+
+/**
+ * @returns {string} Safe folder segment, e.g. DAY10 or local
+ */
+function resolveScreenshotGroup(repoRoot) {
+  const fromEnv = process.env.SCREENSHOT_GROUP?.trim();
+  if (fromEnv) {
+    return fromEnv.replace(/[^a-zA-Z0-9._-]/g, '-') || 'local';
+  }
+  try {
+    const branch = execSync('git rev-parse --abbrev-ref HEAD', {
+      cwd: repoRoot,
+      encoding: 'utf8',
+      stdio: ['ignore', 'pipe', 'ignore']
+    }).trim();
+    const matches = [...branch.matchAll(/DAY(\d+)/gi)].map((m) => Number.parseInt(m[1], 10));
+    if (matches.length > 0) {
+      const n = Math.max(...matches);
+      return `DAY${n}`;
+    }
+  } catch {
+    /* not a git checkout, etc. */
+  }
+  return 'local';
+}
+
+const group = resolveScreenshotGroup(root);
+const outDir = join(root, '__screenshots__', group);
+
+/** Wait for CSS transitions/animations on the card so screenshots are not mid-fade. */
+async function waitForCardAnimations(locator) {
+  await locator.evaluate(async (el) => {
+    const anims = el.getAnimations?.() ?? [];
+    await Promise.all(anims.map((a) => a.finished.catch(() => undefined)));
+  });
+}
 
 const profiles = [
   {
@@ -28,7 +71,7 @@ const profiles = [
 
 await mkdir(outDir, { recursive: true });
 
-/** Drop previous PNGs so IDE / viewers do not keep showing stale *-phase*.png files. */
+/** Clear only this group folder so other DAY* runs stay on disk. */
 try {
   for (const name of await readdir(outDir)) {
     if (name.endsWith('.png')) {
@@ -38,6 +81,8 @@ try {
 } catch {
   /* empty or missing */
 }
+
+console.log('Screenshot group folder:', group, '→', outDir);
 
 const browser = await chromium.launch();
 
@@ -52,20 +97,23 @@ try {
         timeout: 90_000
       });
       await page.waitForSelector('.interview-q__cta', { timeout: 60_000 });
-      const card = page.locator('.quiz__card-wrap');
-      await card.scrollIntoViewIfNeeded();
+      const questionCard = page.locator('.quiz__card-wrap[data-phase="question"] .quiz__phase.card-phase');
+      await questionCard.scrollIntoViewIfNeeded();
+      await waitForCardAnimations(questionCard);
       const qPath = join(outDir, `${slug}-01-practice-question-card.png`);
-      await card.screenshot({ path: qPath });
+      await questionCard.screenshot({ path: qPath });
       console.log('Wrote', qPath);
 
       await page.click('.interview-q__cta');
-      await page.waitForSelector('.interview-answer__question', { timeout: 15_000 });
+      await page.waitForSelector('.quiz__card-wrap[data-phase="answer"]', { timeout: 15_000 });
       await page.waitForSelector('.interview-answer__title', { timeout: 15_000 });
       await page.waitForSelector('.interview-answer__block--weak', { timeout: 15_000 });
 
-      await card.scrollIntoViewIfNeeded();
+      const answerCard = page.locator('.quiz__card-wrap[data-phase="answer"] .quiz__phase.card-phase');
+      await answerCard.scrollIntoViewIfNeeded();
+      await waitForCardAnimations(answerCard);
       const aPath = join(outDir, `${slug}-02-practice-answer-card.png`);
-      await card.screenshot({ path: aPath });
+      await answerCard.screenshot({ path: aPath });
       console.log('Wrote', aPath);
     } finally {
       await context.close();
@@ -75,4 +123,4 @@ try {
   await browser.close();
 }
 
-console.log('Done. Open the *-card.png files above (not older *-phase*.png — those are removed each run).');
+console.log('Done. Files are under __screenshots__/' + group + '/');
