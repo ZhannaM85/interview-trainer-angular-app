@@ -1,5 +1,13 @@
 import { ViewportScroller } from '@angular/common';
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import {
+    afterNextRender,
+    ChangeDetectionStrategy,
+    Component,
+    computed,
+    inject,
+    Injector,
+    signal
+} from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/router';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -48,6 +56,7 @@ export class StudyGuidePageComponent {
     private readonly router = inject(Router);
     private readonly translate = inject(TranslateService);
     private readonly viewportScroller = inject(ViewportScroller);
+    private readonly injector = inject(Injector);
 
     /** Bumps when returning to this page so practice progress is re-read from storage. */
     private readonly studyProgressRefresh = signal(0);
@@ -285,14 +294,48 @@ export class StudyGuidePageComponent {
             requestAnimationFrame(() => {
                 requestAnimationFrame(() => this.scrollPlanCompleteBannerIntoView());
             });
+            return;
+        }
+        const nextSub = this.findNextSubtopicAfter(cat, sub);
+        if (nextSub) {
+            const nextKey = topicIdFromParts(nextSub.cat.category, nextSub.sub.subtopic);
+            this.patchSubtopicAccordion(nextKey, true);
+            afterNextRender(
+                () => {
+                    this.scrollBlockStartBelowHeader(nextSub.sub.anchorId);
+                },
+                { injector: this.injector }
+            );
         }
     }
 
-    /** Positions the “all studied today” banner just below the sticky app header. */
-    private scrollPlanCompleteBannerIntoView(): void {
-        const el = document.getElementById('study-plan-complete-banner');
+    /**
+     * Next subtopic accordion in the current `sections()` order (same as DOM), or null if none.
+     */
+    private findNextSubtopicAfter(
+        cat: StudyCategorySection,
+        sub: StudySubtopicSection
+    ): { cat: StudyCategorySection; sub: StudySubtopicSection } | null {
+        const secs = this.sections();
+        let seen = false;
+        for (const c of secs) {
+            for (const s of c.subtopics) {
+                if (seen) {
+                    return { cat: c, sub: s };
+                }
+                if (c.category === cat.category && s.subtopic === sub.subtopic) {
+                    seen = true;
+                }
+            }
+        }
+        return null;
+    }
+
+    /** Scroll so the block’s top sits just under the sticky app header (matches TOC jump feel). */
+    private scrollBlockStartBelowHeader(elementId: string, fallbackScrollTop = 0): void {
+        const el = document.getElementById(elementId);
         if (!el) {
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: fallbackScrollTop, behavior: 'smooth' });
             return;
         }
         const headerEl = document.querySelector('.app__header') as HTMLElement | null;
@@ -300,6 +343,11 @@ export class StudyGuidePageComponent {
         const gap = 12;
         const targetY = window.scrollY + el.getBoundingClientRect().top - headerH - gap;
         window.scrollTo({ top: Math.max(0, targetY), behavior: 'smooth' });
+    }
+
+    /** Positions the “all studied today” banner just below the sticky app header. */
+    private scrollPlanCompleteBannerIntoView(): void {
+        this.scrollBlockStartBelowHeader('study-plan-complete-banner', 0);
     }
 
     protected dismissPlanCompleteBanner(): void {
