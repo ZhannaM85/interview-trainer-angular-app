@@ -1,6 +1,98 @@
+:host {
+    display: block;
+    width: 100%;
+}
+
 .interview-answer {
     display: flex;
     flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+}
+
+.interview-answer__question {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 1rem;
     width: 100%;
+    max-width: 600px;
+    margin-inline: auto;
+    padding-bottom: 0.25rem;
+}
+
+.interview-answer__question:has(.interview-answer__code) {
+    align-items: stretch;
+}
+
+.interview-answer__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin: 0;
+    padding: 0.25rem 0.65rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--it-text-muted);
+    background: var(--it-interview-q-bg);
+    border: 1px solid var(--it-border);
+}
+
+.interview-answer__dot {
+    opacity: 0.6;
+}
+
+.interview-answer__topic {
+    margin: -0.5rem 0 0;
+    font-size: 0.85rem;
+    color: var(--it-text-muted);
+    text-align: center;
+}
+
+.interview-answer__topic strong {
+    color: var(--it-text);
+}
+
+.interview-answer__title {
+    margin: 0;
+    font-size: clamp(1.2rem, 3.8vw, 1.5rem);
+    font-weight: 700;
+    line-height: 1.35;
+    letter-spacing: -0.02em;
+}
+
+.interview-answer__code {
+    margin: 0;
+    align-self: stretch;
+    width: 100%;
+    max-width: 100%;
+    padding: 0.85rem 1rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-block-surface);
+    box-sizing: border-box;
+    text-align: start;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.interview-answer__code code {
+    font-family:
+        ui-monospace,
+        SFMono-Regular,
+        Menlo,
+        Monaco,
+        Consolas,
+        'Liberation Mono',
+        'Courier New',
+        monospace;
+    font-size: 0.82rem;
+    font-weight: 500;
+    line-height: 1.5;
+    white-space: pre;
+    word-break: normal;
+    overflow-wrap: normal;
+    color: var(--it-text);
 }
