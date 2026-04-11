@@ -1,3 +1,23 @@
 <div class="interview-answer">
+    <header class="interview-answer__question">
+        <p class="interview-answer__badge">
+            <span>{{ ('category.' + question().category) | translate }}</span>
+            <span class="interview-answer__dot" aria-hidden="true">•</span>
+            <span>{{ ('difficulty.' + question().difficulty) | translate }}</span>
+        </p>
+        <p class="interview-answer__topic">
+            {{ 'interviewQuestion.topicLabel' | translate }}:
+            <strong>{{ ('subtopics.' + question().subtopic) | translate }}</strong>
+        </p>
+
+        @let parts = question().question | splitQuestionCode;
+        @if (parts.code) {
+            <h2 class="interview-answer__title">{{ parts.lead }}</h2>
+            <pre class="interview-answer__code" tabindex="0"><code>{{ parts.code }}</code></pre>
+        } @else {
+            <h2 class="interview-answer__title">{{ question().question }}</h2>
+        }
+    </header>
+
     <app-answer-blocks [question]="question()" [animated]="true" />
 </div>
