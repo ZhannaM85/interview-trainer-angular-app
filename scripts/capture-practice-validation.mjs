@@ -2,10 +2,12 @@
  * Captures practice (quiz) screenshots for desktop and mobile viewports.
  * Requires: `ng serve` on http://127.0.0.1:4200 (or rely on CI/local habit).
  * Run: `npx playwright install chromium` once, then `npm run e2e:screenshots`
- * Output: __screenshots__/ (gitignored)
+ * Output: __screenshots__/*-practice-{question|answer}-card.png (gitignored).
+ * Uses the `.quiz__card-wrap` element screenshot so the practice card is framed
+ * correctly on mobile (long page above the card is excluded).
  */
 import { chromium, devices } from 'playwright';
-import { mkdir } from 'node:fs/promises';
+import { mkdir, readdir, unlink } from 'node:fs/promises';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -26,6 +28,17 @@ const profiles = [
 
 await mkdir(outDir, { recursive: true });
 
+/** Drop previous PNGs so IDE / viewers do not keep showing stale *-phase*.png files. */
+try {
+  for (const name of await readdir(outDir)) {
+    if (name.endsWith('.png')) {
+      await unlink(join(outDir, name));
+    }
+  }
+} catch {
+  /* empty or missing */
+}
+
 const browser = await chromium.launch();
 
 try {
@@ -39,20 +52,21 @@ try {
         timeout: 90_000
       });
       await page.waitForSelector('.interview-q__cta', { timeout: 60_000 });
-      await page.screenshot({
-        path: join(outDir, `${slug}-01-practice-question-phase.png`),
-        fullPage: true
-      });
+      const card = page.locator('.quiz__card-wrap');
+      await card.scrollIntoViewIfNeeded();
+      const qPath = join(outDir, `${slug}-01-practice-question-card.png`);
+      await card.screenshot({ path: qPath });
+      console.log('Wrote', qPath);
 
       await page.click('.interview-q__cta');
       await page.waitForSelector('.interview-answer__question', { timeout: 15_000 });
       await page.waitForSelector('.interview-answer__title', { timeout: 15_000 });
       await page.waitForSelector('.interview-answer__block--weak', { timeout: 15_000 });
 
-      await page.screenshot({
-        path: join(outDir, `${slug}-02-practice-answer-phase.png`),
-        fullPage: true
-      });
+      await card.scrollIntoViewIfNeeded();
+      const aPath = join(outDir, `${slug}-02-practice-answer-card.png`);
+      await card.screenshot({ path: aPath });
+      console.log('Wrote', aPath);
     } finally {
       await context.close();
     }
@@ -61,4 +75,4 @@ try {
   await browser.close();
 }
 
-console.log('Screenshots written to', outDir);
+console.log('Done. Open the *-card.png files above (not older *-phase*.png — those are removed each run).');
