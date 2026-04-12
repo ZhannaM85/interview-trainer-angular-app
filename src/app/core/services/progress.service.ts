@@ -1,4 +1,4 @@
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { Observable, map } from 'rxjs';
 
 import type { LegacyProgress, Progress } from '../../shared/models/progress.model';
@@ -55,47 +55,62 @@ export class ProgressService {
     private readonly questionService = inject(QuestionService);
     private readonly activityService = inject(ActivityService);
 
+    private readonly _progress = signal<Progress[]>(this.loadProgress());
+
     /**
      * Spaced repetition: nailed → +3 days, partial → +2 days, didn’t know → +1 day.
      */
     recordSelfRating(questionId: number, rating: SelfRating): void {
-        const list = this.getProgress();
         const now = new Date();
         const nextReview = new Date(now);
-        if (rating === 'nailed') {
+        if (rating === ‘nailed’) {
             nextReview.setDate(nextReview.getDate() + 3);
-        } else if (rating === 'partial') {
+        } else if (rating === ‘partial’) {
             nextReview.setDate(nextReview.getDate() + 2);
         } else {
             nextReview.setDate(nextReview.getDate() + 1);
         }
 
-        const existing = list.find((p) => p.questionId === questionId);
-        if (existing) {
-            if (rating === 'nailed') {
-                existing.nailedCount += 1;
-            } else if (rating === 'partial') {
-                existing.partialCount += 1;
-            } else {
-                existing.didntKnowCount += 1;
+        this._progress.update((list) => {
+            const existing = list.find((p) => p.questionId === questionId);
+            if (existing) {
+                return list.map((p) =>
+                    p.questionId === questionId
+                        ? {
+                              ...p,
+                              nailedCount: p.nailedCount + (rating === ‘nailed’ ? 1 : 0),
+                              partialCount: p.partialCount + (rating === ‘partial’ ? 1 : 0),
+                              didntKnowCount:
+                                  p.didntKnowCount + (rating === ‘didntKnow’ ? 1 : 0),
+                              lastAnswered: now.toISOString(),
+                              nextReview: nextReview.toISOString()
+                          }
+                        : p
+                );
             }
-            existing.lastAnswered = now.toISOString();
-            existing.nextReview = nextReview.toISOString();
-        } else {
-            list.push({
-                questionId,
-                nailedCount: rating === 'nailed' ? 1 : 0,
-                partialCount: rating === 'partial' ? 1 : 0,
-                didntKnowCount: rating === 'didntKnow' ? 1 : 0,
-                lastAnswered: now.toISOString(),
-                nextReview: nextReview.toISOString()
-            });
-        }
-        this.storage.set(PROGRESS_KEY, list);
+            return [
+                ...list,
+                {
+                    questionId,
+                    nailedCount: rating === ‘nailed’ ? 1 : 0,
+                    partialCount: rating === ‘partial’ ? 1 : 0,
+                    didntKnowCount: rating === ‘didntKnow’ ? 1 : 0,
+                    lastAnswered: now.toISOString(),
+                    nextReview: nextReview.toISOString()
+                }
+            ];
+        });
+
+        this.storage.set(PROGRESS_KEY, this._progress());
         this.activityService.recordPracticeRating(questionId, rating);
     }
 
+    /** Returns cached progress. Reads the signal, so computed() callers track it reactively. */
     getProgress(): Progress[] {
+        return this._progress();
+    }
+
+    private loadProgress(): Progress[] {
         const raw = this.storage.get<unknown>(PROGRESS_KEY);
         if (!Array.isArray(raw)) {
             return [];

@@ -1,4 +1,4 @@
-import { computed, Injectable, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 
 import type { DailyActivity } from '../../shared/models/activity.model';
 import type { SelfRating } from '../../shared/models/self-rating.model';
@@ -66,14 +66,20 @@ export class ActivityService {
 
     readonly activityMap = this.byDate.asReadonly();
 
-    /** Sum of `activeSeconds` across all stored days (lifetime approximate). */
-    readonly totalActiveSeconds = computed(() => {
+    /**
+     * Sum of `activeSeconds` across all stored days (lifetime approximate).
+     * Initialized once from stored data; updated incrementally in addActiveSeconds()
+     * to avoid iterating all records on every flush tick.
+     */
+    private readonly _totalActiveSeconds = (() => {
         let t = 0;
         for (const row of this.byDate().values()) {
             t += Math.max(0, row.activeSeconds ?? 0);
         }
-        return t;
-    });
+        return signal(t);
+    })();
+
+    readonly totalActiveSeconds = this._totalActiveSeconds.asReadonly();
 
     bumpQuestionsAnswered(delta = 1): void {
         if (delta <= 0) {
@@ -138,6 +144,7 @@ export class ActivityService {
             ...row,
             activeSeconds: Math.max(0, row.activeSeconds ?? 0) + delta
         }));
+        this._totalActiveSeconds.update((t) => t + delta);
     }
 
     /** Records a `category:subtopic` touched on this calendar day (deduped). */
