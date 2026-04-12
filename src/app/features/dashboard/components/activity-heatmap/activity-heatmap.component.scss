@@ -54,6 +54,10 @@
     gap: 3px;
     flex-shrink: 0;
     width: 1.85rem;
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--it-card);
 }
 
 .heatmap__weekday-slot {
