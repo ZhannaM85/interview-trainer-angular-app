@@ -44,7 +44,8 @@
         "category": {
             "javascript": "JavaScript",
             "angular": "Angular",
-            "rxjs": "RxJS"
+            "rxjs": "RxJS",
+            "custom": "Мои вопросы"
         },
         "markStudied": "Отметить как изучено",
         "markStudiedAddsToPractice": "Отметить как изучено (добавить в практику)",
