@@ -44,6 +44,9 @@ __screenshots__/
 /test-results/
 /blob-report/
 
+# Claude Code
+.claude/
+
 # System files
 .DS_Store
 Thumbs.db
