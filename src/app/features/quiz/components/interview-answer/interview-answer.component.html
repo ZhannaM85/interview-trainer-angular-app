@@ -7,7 +7,13 @@
         </p>
         <p class="interview-answer__topic">
             {{ 'interviewQuestion.topicLabel' | translate }}:
-            <strong>{{ ('subtopics.' + question().subtopic) | translate }}</strong>
+            <strong>
+                @if (question().category === 'custom') {
+                    {{ question().subtopic }}
+                } @else {
+                    {{ ('subtopics.' + question().subtopic) | translate }}
+                }
+            </strong>
         </p>
 
         @let parts = question().question | splitQuestionCode;

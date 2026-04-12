@@ -88,6 +88,9 @@
             <a routerLink="/dashboard" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
                 'nav.dashboard' | translate
             }}</a>
+            <a routerLink="/my-questions" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                'nav.myQuestions' | translate
+            }}</a>
         </nav>
     </header>
     @if (navMenuOpen()) {

@@ -1,4 +1,4 @@
-export type QuestionCategory = 'javascript' | 'angular' | 'rxjs';
+export type QuestionCategory = 'javascript' | 'angular' | 'rxjs' | 'custom';
 
 export type QuestionDifficulty = 'beginner' | 'intermediate' | 'advanced';
 

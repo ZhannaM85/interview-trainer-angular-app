@@ -212,13 +212,16 @@ export class QuizPageComponent {
                 : ctx.rating === 'partial'
                   ? 'feedback.headlinePartial'
                   : 'feedback.headlineWeak';
-        const weakKey = ctx.subtopic.trim()
-            ? `subtopics.${ctx.subtopic}`
-            : `category.${ctx.category}`;
+        const weakArea =
+            ctx.category === 'custom' && ctx.subtopic.trim()
+                ? ctx.subtopic
+                : this.translate.instant(
+                      ctx.subtopic.trim() ? `subtopics.${ctx.subtopic}` : `category.${ctx.category}`
+                  );
         this.feedbackSnapshot.set({
             headline: this.translate.instant(headlineKey),
             scoreDelta: SCORE_BY_RATING[ctx.rating],
-            weakArea: this.translate.instant(weakKey),
+            weakArea,
             nextReviewLabel: this.formatNextReviewLabel(ctx.nextReviewIso)
         });
     }

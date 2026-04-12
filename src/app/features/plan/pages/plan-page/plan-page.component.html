@@ -22,13 +22,19 @@
                         <ul class="plan__summary-list">
                             @for (id of topicsRemainingToStudy(); track id) {
                                 <li class="plan__summary-item plan__summary-item--row">
-                                    <span class="plan__summary-topic">{{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}</span>
+                                    <span class="plan__summary-topic">
+                                        @if (isCustomTopicId(id)) {
+                                            {{ topicSubtopicFromId(id) }}
+                                        } @else {
+                                            {{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}
+                                        }
+                                    </span>
                                     <button
                                         type="button"
                                         class="plan__remove"
                                         (click)="removeRemainingTopic(id)"
                                         [attr.aria-label]="
-                                            ('plan.removeAria' | translate: { topic: (('subtopics.' + topicSubtopicFromId(id)) | translate) })
+                                            ('plan.removeAria' | translate: { topic: topicSubtopicFromId(id) })
                                         "
                                     >
                                         {{ 'plan.remove' | translate }}
@@ -65,13 +71,19 @@
                         <ul class="plan__summary-list plan__summary-list--done">
                             @for (id of doneTopics(); track id) {
                                 <li class="plan__summary-item plan__summary-item--row">
-                                    <span class="plan__summary-topic">{{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}</span>
+                                    <span class="plan__summary-topic">
+                                        @if (isCustomTopicId(id)) {
+                                            {{ topicSubtopicFromId(id) }}
+                                        } @else {
+                                            {{ ('subtopics.' + topicSubtopicFromId(id)) | translate }}
+                                        }
+                                    </span>
                                     <button
                                         type="button"
                                         class="plan__remove"
                                         (click)="removeDoneTopic(id)"
                                         [attr.aria-label]="
-                                            ('plan.removeAria' | translate: { topic: (('subtopics.' + topicSubtopicFromId(id)) | translate) })
+                                            ('plan.removeAria' | translate: { topic: topicSubtopicFromId(id) })
                                         "
                                     >
                                         {{ 'plan.remove' | translate }}
@@ -113,7 +125,13 @@
                                     [checked]="isChecked(cat, sub)"
                                     (click)="$event.preventDefault(); todayPlan.toggleTopicSelected(topicId(cat, sub))"
                                 />
-                                <span class="plan__topic-text">{{ (labelKey(sub)) | translate }}</span>
+                                <span class="plan__topic-text">
+                                    @if (cat.category === 'custom') {
+                                        {{ sub.subtopic }}
+                                    } @else {
+                                        {{ (labelKey(sub)) | translate }}
+                                    }
+                                </span>
                                 @if (topicStatusKey(cat, sub) !== 'plan.statusToStudy') {
                                     @if (topicLastStudiedHint(cat, sub); as hint) {
                                         <span

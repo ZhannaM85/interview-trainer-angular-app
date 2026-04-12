@@ -1,7 +1,10 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, combineLatest, distinctUntilChanged, map, merge, of, shareReplay } from 'rxjs';
+
+import { CustomQuestionService } from './custom-question.service';
 
 import type {
     Question,
@@ -45,6 +48,7 @@ interface QuestionBilingualRow {
 export class QuestionService {
     private readonly http = inject(HttpClient);
     private readonly translate = inject(TranslateService);
+    private readonly customQuestionService = inject(CustomQuestionService);
 
     private readonly rawQuestions$ = this.http.get<QuestionBilingualRow[]>('assets/data/questions-bilingual.json').pipe(
         shareReplay(1)
@@ -55,11 +59,17 @@ export class QuestionService {
         this.translate.onLangChange.pipe(map((e) => this.resolveLocale(e.lang)))
     ).pipe(distinctUntilChanged());
 
+    private readonly customQuestions$ = toObservable(this.customQuestionService.asQuestions);
+
     private readonly questions$: Observable<Question[]> = combineLatest([
         this.rawQuestions$,
-        this.activeLocale$
+        this.activeLocale$,
+        this.customQuestions$
     ]).pipe(
-        map(([rows, lang]) => rows.map((row) => this.mapRowToQuestion(row, lang))),
+        map(([rows, lang, customQs]) => [
+            ...rows.map((row) => this.mapRowToQuestion(row, lang)),
+            ...customQs
+        ]),
         shareReplay(1)
     );
 

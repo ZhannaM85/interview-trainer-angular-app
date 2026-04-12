@@ -1,7 +1,7 @@
 import type { Question, QuestionCategory } from '../../shared/models/question.model';
 import { topicIdFromParts } from '../../shared/utils/topic-key.utils';
 
-const CATEGORY_ORDER: QuestionCategory[] = ['javascript', 'angular', 'rxjs'];
+const CATEGORY_ORDER: QuestionCategory[] = ['javascript', 'angular', 'rxjs', 'custom'];
 
 export interface StudySubtopicSection {
     /** Stable machine key (English slug source); use `subtopics.<key>` for display. */
