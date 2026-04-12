@@ -103,22 +103,27 @@
                     <p class="dashboard__hint">{{ 'dashboard.weakHint' | translate }}</p>
                 } @else {
                     <ul class="dashboard__list">
-                        @for (topicId of s.weakTopics; track topicId) {
+                        @for (wt of s.weakTopics; track wt.id) {
                             <li>
                                 <a
                                     class="dashboard__topic"
                                     routerLink="/study"
-                                    [queryParams]="{ topics: topicId }"
+                                    [queryParams]="{ topics: wt.id }"
                                     [attr.aria-label]="
                                         'dashboard.weakTopicStudyAria'
                                             | translate: {
-                                                  topic: (('subtopics.' + weakTopicSubtopicKey(topicId)) | translate)
+                                                  topic: (('subtopics.' + weakTopicSubtopicKey(wt.id)) | translate)
                                               }
                                     "
                                 >
-                                    <span class="dashboard__topic-name">{{
-                                        ('subtopics.' + weakTopicSubtopicKey(topicId)) | translate
-                                    }}</span>
+                                    <div class="dashboard__topic-info">
+                                        <span class="dashboard__topic-name">{{
+                                            ('subtopics.' + weakTopicSubtopicKey(wt.id)) | translate
+                                        }}</span>
+                                        <span class="dashboard__topic-note">{{
+                                            'dashboard.weakTopicNote' | translate: { count: wt.nailedNeeded }
+                                        }}</span>
+                                    </div>
                                     <span class="dashboard__topic-mark" aria-hidden="true">→</span>
                                 </a>
                             </li>
