@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, combineLatest, distinctUntilChanged, map, merge, of, shareReplay } from 'rxjs';
 
@@ -58,13 +59,16 @@ export class QuestionService {
         this.translate.onLangChange.pipe(map((e) => this.resolveLocale(e.lang)))
     ).pipe(distinctUntilChanged());
 
+    private readonly customQuestions$ = toObservable(this.customQuestionService.asQuestions);
+
     private readonly questions$: Observable<Question[]> = combineLatest([
         this.rawQuestions$,
-        this.activeLocale$
+        this.activeLocale$,
+        this.customQuestions$
     ]).pipe(
-        map(([rows, lang]) => [
+        map(([rows, lang, customQs]) => [
             ...rows.map((row) => this.mapRowToQuestion(row, lang)),
-            ...this.customQuestionService.asQuestions()
+            ...customQs
         ]),
         shareReplay(1)
     );
