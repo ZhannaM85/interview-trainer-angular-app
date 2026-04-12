@@ -58,14 +58,14 @@ export class ProgressService {
     private readonly _progress = signal<Progress[]>(this.loadProgress());
 
     /**
-     * Spaced repetition: nailed → +3 days, partial → +2 days, didn’t know → +1 day.
+     * Spaced repetition: nailed -> +3 days, partial -> +2 days, didn't know -> +1 day.
      */
     recordSelfRating(questionId: number, rating: SelfRating): void {
         const now = new Date();
         const nextReview = new Date(now);
-        if (rating === ‘nailed’) {
+        if (rating === 'nailed') {
             nextReview.setDate(nextReview.getDate() + 3);
-        } else if (rating === ‘partial’) {
+        } else if (rating === 'partial') {
             nextReview.setDate(nextReview.getDate() + 2);
         } else {
             nextReview.setDate(nextReview.getDate() + 1);
@@ -78,10 +78,10 @@ export class ProgressService {
                     p.questionId === questionId
                         ? {
                               ...p,
-                              nailedCount: p.nailedCount + (rating === ‘nailed’ ? 1 : 0),
-                              partialCount: p.partialCount + (rating === ‘partial’ ? 1 : 0),
+                              nailedCount: p.nailedCount + (rating === 'nailed' ? 1 : 0),
+                              partialCount: p.partialCount + (rating === 'partial' ? 1 : 0),
                               didntKnowCount:
-                                  p.didntKnowCount + (rating === ‘didntKnow’ ? 1 : 0),
+                                  p.didntKnowCount + (rating === 'didntKnow' ? 1 : 0),
                               lastAnswered: now.toISOString(),
                               nextReview: nextReview.toISOString()
                           }
@@ -92,9 +92,9 @@ export class ProgressService {
                 ...list,
                 {
                     questionId,
-                    nailedCount: rating === ‘nailed’ ? 1 : 0,
-                    partialCount: rating === ‘partial’ ? 1 : 0,
-                    didntKnowCount: rating === ‘didntKnow’ ? 1 : 0,
+                    nailedCount: rating === 'nailed' ? 1 : 0,
+                    partialCount: rating === 'partial' ? 1 : 0,
+                    didntKnowCount: rating === 'didntKnow' ? 1 : 0,
                     lastAnswered: now.toISOString(),
                     nextReview: nextReview.toISOString()
                 }
