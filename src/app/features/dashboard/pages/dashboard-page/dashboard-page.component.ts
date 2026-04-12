@@ -22,12 +22,18 @@ import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import { ActivityHeatmapComponent } from '../../components/activity-heatmap/activity-heatmap.component';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
 
+export interface WeakTopic {
+    id: string;
+    /** Minimum "Nailed it" ratings (assuming every future attempt is nailed) to reach 60%. */
+    nailedNeeded: number;
+}
+
 export interface DashboardStats {
     totalAnswered: number;
     accuracyPct: number;
     confidencePct: number;
     /** `category:subtopic` ids that need work (nailed rate below 60% with 3+ attempts). */
-    weakTopics: string[];
+    weakTopics: WeakTopic[];
     /** Same list as `weakTopics` — kept for template compatibility. */
     weakCategories: string[];
 }
@@ -173,20 +179,21 @@ export class DashboardPageComponent {
                 ? 0
                 : Math.round(((totalNailed + 0.5 * totalPartial) / totalRatings) * 1000) / 10;
 
-        const weakTopics: string[] = [];
+        const weakTopics: WeakTopic[] = [];
         for (const [topicId, agg] of byTopicId) {
             if (agg.attempts >= 3 && agg.nailed / agg.attempts < 0.6) {
-                weakTopics.push(topicId);
+                const nailedNeeded = Math.ceil((0.6 * agg.attempts - agg.nailed) / 0.4);
+                weakTopics.push({ id: topicId, nailedNeeded: Math.max(nailedNeeded, 1) });
             }
         }
-        weakTopics.sort((a, b) => a.localeCompare(b));
+        weakTopics.sort((a, b) => a.id.localeCompare(b.id));
 
         return {
             totalAnswered: totalRatings,
             accuracyPct,
             confidencePct,
             weakTopics,
-            weakCategories: weakTopics
+            weakCategories: weakTopics.map((w) => w.id)
         };
     }
 
