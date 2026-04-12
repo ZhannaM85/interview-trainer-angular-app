@@ -13,7 +13,8 @@
         "study": "Справочник",
         "plan": "План на сегодня",
         "quiz": "Практика",
-        "dashboard": "Прогресс"
+        "dashboard": "Прогресс",
+        "myQuestions": "Мои вопросы"
     },
     "locale": {
         "selectLabel": "Язык",
@@ -238,10 +239,29 @@
     "quizTimer": {
         "aria": "Осталось времени {{time}}"
     },
+    "myQuestions": {
+        "title": "Мои вопросы",
+        "addNew": "Добавить вопрос",
+        "editQuestion": "Редактировать вопрос",
+        "questionLabel": "Вопрос",
+        "questionPlaceholder": "Введите вопрос для собеседования…",
+        "answerLabel": "Ответ",
+        "answerPlaceholder": "Введите ответ…",
+        "subtopicLabel": "Метка темы",
+        "subtopicPlaceholder": "например, Промисы, NgRx, Хуки",
+        "difficultyLabel": "Сложность",
+        "save": "Сохранить",
+        "cancel": "Отмена",
+        "edit": "Редактировать",
+        "delete": "Удалить",
+        "empty": "Пока нет своих вопросов. Добавьте первый выше.",
+        "validationRequired": "Пожалуйста, заполните все обязательные поля."
+    },
     "category": {
         "javascript": "JavaScript",
         "angular": "Angular",
-        "rxjs": "RxJS"
+        "rxjs": "RxJS",
+        "custom": "Мои вопросы"
     },
     "difficulty": {
         "beginner": "Начальный",

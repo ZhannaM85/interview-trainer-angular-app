@@ -723,3 +723,14 @@
     gap: 1rem;
     width: 100%;
 }
+
+.study__custom-answer {
+    padding: 0.85rem 1rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    font-size: 0.92rem;
+    line-height: 1.6;
+    white-space: pre-wrap;
+    color: var(--it-text);
+}

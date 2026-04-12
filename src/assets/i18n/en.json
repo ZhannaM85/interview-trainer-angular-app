@@ -13,7 +13,8 @@
         "study": "Study guide",
         "plan": "Plan for today",
         "quiz": "Practice",
-        "dashboard": "Progress"
+        "dashboard": "Progress",
+        "myQuestions": "My Questions"
     },
     "locale": {
         "selectLabel": "Language",
@@ -238,10 +239,29 @@
     "quizTimer": {
         "aria": "Time remaining {{time}}"
     },
+    "myQuestions": {
+        "title": "My Questions",
+        "addNew": "Add Question",
+        "editQuestion": "Edit Question",
+        "questionLabel": "Question",
+        "questionPlaceholder": "Enter your interview question…",
+        "answerLabel": "Answer",
+        "answerPlaceholder": "Enter the answer…",
+        "subtopicLabel": "Topic label",
+        "subtopicPlaceholder": "e.g. Promises, NgRx, Custom Hooks",
+        "difficultyLabel": "Difficulty",
+        "save": "Save",
+        "cancel": "Cancel",
+        "edit": "Edit",
+        "delete": "Delete",
+        "empty": "No custom questions yet. Add your first one above.",
+        "validationRequired": "Please fill in all required fields."
+    },
     "category": {
         "javascript": "JavaScript",
         "angular": "Angular",
-        "rxjs": "RxJS"
+        "rxjs": "RxJS",
+        "custom": "My Questions"
     },
     "difficulty": {
         "beginner": "Beginner",

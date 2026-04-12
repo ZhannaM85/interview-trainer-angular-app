@@ -114,7 +114,11 @@
                                                 class="study__toc-sub-link"
                                                 [href]="'#' + sub.anchorId"
                                                 (click)="scrollToTocAnchor($event, sub.anchorId, cat, sub)"
-                                                >{{ ('subtopics.' + sub.subtopic) | translate }}</a>
+                                                >@if (cat.category === 'custom') {
+                                                    {{ sub.subtopic }}
+                                                } @else {
+                                                    {{ ('subtopics.' + sub.subtopic) | translate }}
+                                                }</a>
                                         </li>
                                     }
                                 </ul>
@@ -151,7 +155,11 @@
                                         (click)="toggleSubtopicAccordion(cat, sub)"
                                     >
                                         <span class="study__sub-heading" [attr.id]="sub.anchorId + '__heading'">
-                                            {{ ('subtopics.' + sub.subtopic) | translate }}
+                                            @if (cat.category === 'custom') {
+                                                {{ sub.subtopic }}
+                                            } @else {
+                                                {{ ('subtopics.' + sub.subtopic) | translate }}
+                                            }
                                         </span>
                                     </button>
                                     <div class="study__sub-aside">
@@ -282,7 +290,11 @@
                                             <pre class="study__q-code" tabindex="0"><code>{{ qParts.code }}</code></pre>
                                         }
                                         <div class="study__q-answers">
-                                            <app-answer-blocks [question]="q" [animated]="false" />
+                                            @if (cat.category === 'custom') {
+                                                <div class="study__custom-answer">{{ q.answer }}</div>
+                                            } @else {
+                                                <app-answer-blocks [question]="q" [animated]="false" />
+                                            }
                                         </div>
                                     </article>
                                 }

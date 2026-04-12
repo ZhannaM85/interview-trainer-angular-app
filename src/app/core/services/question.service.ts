@@ -3,6 +3,8 @@ import { Injectable, inject } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, combineLatest, distinctUntilChanged, map, merge, of, shareReplay } from 'rxjs';
 
+import { CustomQuestionService } from './custom-question.service';
+
 import type {
     Question,
     QuestionCategory,
@@ -45,6 +47,7 @@ interface QuestionBilingualRow {
 export class QuestionService {
     private readonly http = inject(HttpClient);
     private readonly translate = inject(TranslateService);
+    private readonly customQuestionService = inject(CustomQuestionService);
 
     private readonly rawQuestions$ = this.http.get<QuestionBilingualRow[]>('assets/data/questions-bilingual.json').pipe(
         shareReplay(1)
@@ -59,7 +62,10 @@ export class QuestionService {
         this.rawQuestions$,
         this.activeLocale$
     ]).pipe(
-        map(([rows, lang]) => rows.map((row) => this.mapRowToQuestion(row, lang))),
+        map(([rows, lang]) => [
+            ...rows.map((row) => this.mapRowToQuestion(row, lang)),
+            ...this.customQuestionService.asQuestions()
+        ]),
         shareReplay(1)
     );
 
