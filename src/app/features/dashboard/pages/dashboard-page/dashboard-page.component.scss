@@ -186,8 +186,21 @@
     outline-offset: 2px;
 }
 
+.dashboard__topic-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    min-width: 0;
+}
+
 .dashboard__topic-name {
     font-weight: 600;
+}
+
+.dashboard__topic-note {
+    font-size: 0.75rem;
+    color: var(--it-text-muted);
+    line-height: 1.3;
 }
 
 .dashboard__topic-mark {
