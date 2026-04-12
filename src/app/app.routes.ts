@@ -33,5 +33,12 @@ export const routes: Routes = [
                 (m) => m.AboutPageComponent
             )
     },
+    {
+        path: 'my-questions',
+        loadComponent: () =>
+            import('./features/my-questions/pages/my-questions-page/my-questions-page.component').then(
+                (m) => m.MyQuestionsPageComponent
+            )
+    },
     { path: '**', redirectTo: 'quiz' }
 ];

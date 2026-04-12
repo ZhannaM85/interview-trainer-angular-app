@@ -1,0 +1,115 @@
+<section class="myq" aria-labelledby="myq-title">
+    <h1 id="myq-title" class="myq__title">{{ 'myQuestions.title' | translate }}</h1>
+
+    <div class="myq__form-card">
+        <h2 class="myq__form-heading">
+            @if (mode() === 'edit') {
+                {{ 'myQuestions.editQuestion' | translate }}
+            } @else {
+                {{ 'myQuestions.addNew' | translate }}
+            }
+        </h2>
+
+        <div class="myq__field">
+            <label class="myq__label" for="myq-question">{{ 'myQuestions.questionLabel' | translate }}</label>
+            <textarea
+                id="myq-question"
+                class="myq__textarea"
+                [class.myq__input--invalid]="submitted() && formQuestion().trim().length === 0"
+                rows="3"
+                [value]="formQuestion()"
+                [placeholder]="'myQuestions.questionPlaceholder' | translate"
+                (input)="onFormQuestionInput($event)"
+            ></textarea>
+        </div>
+
+        <div class="myq__field">
+            <label class="myq__label" for="myq-answer">{{ 'myQuestions.answerLabel' | translate }}</label>
+            <textarea
+                id="myq-answer"
+                class="myq__textarea"
+                [class.myq__input--invalid]="submitted() && formAnswer().trim().length === 0"
+                rows="5"
+                [value]="formAnswer()"
+                [placeholder]="'myQuestions.answerPlaceholder' | translate"
+                (input)="onFormAnswerInput($event)"
+            ></textarea>
+        </div>
+
+        <div class="myq__field-row">
+            <div class="myq__field myq__field--grow">
+                <label class="myq__label" for="myq-subtopic">{{ 'myQuestions.subtopicLabel' | translate }}</label>
+                <input
+                    id="myq-subtopic"
+                    type="text"
+                    class="myq__input"
+                    [class.myq__input--invalid]="submitted() && formSubtopic().trim().length === 0"
+                    [value]="formSubtopic()"
+                    [placeholder]="'myQuestions.subtopicPlaceholder' | translate"
+                    (input)="onFormSubtopicInput($event)"
+                />
+            </div>
+            <div class="myq__field">
+                <label class="myq__label" for="myq-difficulty">{{ 'myQuestions.difficultyLabel' | translate }}</label>
+                <select
+                    id="myq-difficulty"
+                    class="myq__select"
+                    [value]="formDifficulty()"
+                    (change)="onFormDifficultyChange($event)"
+                >
+                    @for (d of difficulties; track d) {
+                        <option [value]="d">{{ ('difficulty.' + d) | translate }}</option>
+                    }
+                </select>
+            </div>
+        </div>
+
+        @if (submitted() && !isFormValid()) {
+            <p class="myq__validation-msg" role="alert">{{ 'myQuestions.validationRequired' | translate }}</p>
+        }
+
+        <div class="myq__form-actions">
+            <button type="button" class="myq__btn myq__btn--primary" (click)="onSave()">
+                {{ 'myQuestions.save' | translate }}
+            </button>
+            @if (mode() === 'edit') {
+                <button type="button" class="myq__btn myq__btn--secondary" (click)="onCancel()">
+                    {{ 'myQuestions.cancel' | translate }}
+                </button>
+            }
+        </div>
+    </div>
+
+    @if (questions().length === 0) {
+        <p class="myq__empty">{{ 'myQuestions.empty' | translate }}</p>
+    } @else {
+        <ul class="myq__list">
+            @for (q of questions(); track q.id) {
+                <li class="myq__card" [class.myq__card--editing]="editingId() === q.id">
+                    <div class="myq__card-meta">
+                        <span class="myq__badge myq__badge--subtopic">{{ q.subtopic }}</span>
+                        <span class="myq__badge myq__badge--difficulty">{{ ('difficulty.' + q.difficulty) | translate }}</span>
+                    </div>
+                    <p class="myq__card-question">{{ q.question }}</p>
+                    <p class="myq__card-answer">{{ q.answer }}</p>
+                    <div class="myq__card-actions">
+                        <button
+                            type="button"
+                            class="myq__btn myq__btn--secondary myq__btn--sm"
+                            (click)="onEdit(q)"
+                        >
+                            {{ 'myQuestions.edit' | translate }}
+                        </button>
+                        <button
+                            type="button"
+                            class="myq__btn myq__btn--danger myq__btn--sm"
+                            (click)="onDelete(q.id, q.question)"
+                        >
+                            {{ 'myQuestions.delete' | translate }}
+                        </button>
+                    </div>
+                </li>
+            }
+        </ul>
+    }
+</section>

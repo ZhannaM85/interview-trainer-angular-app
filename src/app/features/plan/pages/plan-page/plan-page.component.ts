@@ -149,6 +149,10 @@ export class PlanPageComponent {
         return i >= 0 ? id.slice(i + 1) : id;
     }
 
+    protected isCustomTopicId(id: string): boolean {
+        return id.startsWith('custom:');
+    }
+
     /** Query params for Study guide when opening today’s unread topics only. */
     protected studyGuideQueryParams(): Record<string, string> | undefined {
         return this.todayPlan.topicsRemainingToStudy().length > 0 ? { today: '1' } : undefined;
