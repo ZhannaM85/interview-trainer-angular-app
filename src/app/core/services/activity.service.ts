@@ -117,6 +117,12 @@ export class ActivityService {
         });
     }
 
+    /** Active seconds accumulated on the current local calendar day. */
+    todayActiveSeconds(): number {
+        const row = this.byDate().get(formatLocalYmd(new Date()));
+        return Math.max(0, row?.activeSeconds ?? 0);
+    }
+
     /** Best-rating counts for the current local calendar day. */
     todayPracticeRatingBreakdown(): PracticeRatingBreakdown {
         const row = this.byDate().get(formatLocalYmd(new Date()));
