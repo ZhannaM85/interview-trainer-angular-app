@@ -60,7 +60,10 @@ export class DashboardPageComponent {
         const totalSeconds = this.activityService.totalActiveSeconds();
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
-        return { hours, minutes, totalSeconds };
+        const todaySeconds = this.activityService.todayActiveSeconds();
+        const todayHours = Math.floor(todaySeconds / 3600);
+        const todayMinutes = Math.floor((todaySeconds % 3600) / 60);
+        return { hours, minutes, totalSeconds, todaySeconds, todayHours, todayMinutes };
     });
 
     protected readonly streakView = computed(() => {
