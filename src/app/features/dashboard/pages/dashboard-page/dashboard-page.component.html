@@ -223,6 +223,17 @@
                               }
                     }}
                 </p>
+                @if (at.todaySeconds > 0) {
+                    <p class="dashboard__hint dashboard__hint--today-time">
+                        {{
+                            'dashboard.activeTimeTodayHint'
+                                | translate: {
+                                      hours: at.todayHours,
+                                      minutes: at.todayMinutes
+                                  }
+                        }}
+                    </p>
+                }
                 <div class="dashboard__active-time-bar">
                     <app-progress-bar
                         [value]="at.totalSeconds"
