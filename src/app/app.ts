@@ -33,25 +33,28 @@ export class App {
     protected readonly retryBannerDismissed = signal(false);
 
     /**
-     * Topic IDs (category:subtopic) where the best rating yesterday was didntKnow or partial
-     * AND the topic has not yet been covered today. A topic is considered covered when the user
-     * answers any of its questions in the Quiz OR marks it as studied in the Study Guide
-     * (both paths write to `coveredTopicIds`). The banner disappears automatically as topics
-     * are worked through.
+     * Topic IDs (category:subtopic) where the best rating on any past day was didntKnow or
+     * partial AND the topic has not yet been covered today. A topic is considered covered when
+     * the user answers any of its questions in the Quiz OR marks it as studied in the Study
+     * Guide (both paths write to `coveredTopicIds`). The banner disappears automatically as
+     * topics are worked through.
      */
     protected readonly retryTopicIds = computed(() => {
         const activityMap = this.activityService.activityMap();
-        const yesterday = this.yesterdayYmd();
-        const yesterdayRow = activityMap.get(yesterday);
-        if (!yesterdayRow?.practiceRatingBest) {
-            return [];
-        }
+        const todayYmd = formatLocalYmd(new Date());
         const failedQIds = new Set<number>();
-        for (const [qIdStr, rating] of Object.entries(yesterdayRow.practiceRatingBest)) {
-            if (rating === 'didntKnow' || rating === 'partial') {
-                failedQIds.add(Number(qIdStr));
+
+        for (const [dateKey, row] of activityMap) {
+            if (dateKey >= todayYmd || !row.practiceRatingBest) {
+                continue;
+            }
+            for (const [qIdStr, rating] of Object.entries(row.practiceRatingBest)) {
+                if (rating === 'didntKnow' || rating === 'partial') {
+                    failedQIds.add(Number(qIdStr));
+                }
             }
         }
+
         if (failedQIds.size === 0) {
             return [];
         }
@@ -64,8 +67,7 @@ export class App {
         if (topicIds.size === 0) {
             return [];
         }
-        // Remove topics already covered today via Quiz practice or Study Guide "Mark as studied"
-        const todayRow = activityMap.get(formatLocalYmd(new Date()));
+        const todayRow = activityMap.get(todayYmd);
         const todayCovered = new Set(todayRow?.coveredTopicIds ?? []);
         return [...topicIds].filter((tid) => !todayCovered.has(tid));
     });
@@ -129,11 +131,5 @@ export class App {
 
     private normalizeLang(lang: string | undefined): 'en' | 'ru' {
         return lang === 'ru' ? 'ru' : 'en';
-    }
-
-    private yesterdayYmd(): string {
-        const d = new Date();
-        d.setDate(d.getDate() - 1);
-        return formatLocalYmd(d);
     }
 }
