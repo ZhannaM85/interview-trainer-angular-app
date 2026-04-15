@@ -4,7 +4,7 @@
         "navAria": "Основная навигация",
         "menuToggle": "Открыть меню",
         "menuClose": "Закрыть меню",
-        "retryBannerMsg": "Вчера были затруднения с {{count}} темой(-ами).",
+        "retryBannerMsg": "Недавно были затруднения с {{count}} темой(-ами).",
         "retryBannerLink": "Повторить в справочнике →",
         "retryBannerClose": "Скрыть подсказку"
     },
@@ -62,7 +62,7 @@
         "lastPractice": "Последняя практика: {{date}}",
         "lastPracticeAria": "Последний ответ в практике: {{date}}",
         "expandCollapseAll": "Развернуть / свернуть всё",
-        "filteredRetryBanner": "Показаны темы, с которыми были затруднения вчера.",
+        "filteredRetryBanner": "Показаны темы, с которыми были затруднения недавно.",
         "filteredRetryClear": "Показать все темы"
     },
     "plan": {
