@@ -4,7 +4,7 @@
         "navAria": "Main",
         "menuToggle": "Open menu",
         "menuClose": "Close menu",
-        "retryBannerMsg": "You had trouble with {{count}} topic(s) yesterday.",
+        "retryBannerMsg": "You had trouble with {{count}} topic(s) recently.",
         "retryBannerLink": "Review in Study guide →",
         "retryBannerClose": "Dismiss suggestion"
     },
@@ -62,7 +62,7 @@
         "lastPractice": "Last practice: {{date}}",
         "lastPracticeAria": "Last answered in Practice on {{date}}",
         "expandCollapseAll": "Expand / collapse all",
-        "filteredRetryBanner": "Showing topics you had trouble with yesterday.",
+        "filteredRetryBanner": "Showing topics you had trouble with recently.",
         "filteredRetryClear": "Show all topics"
     },
     "plan": {
