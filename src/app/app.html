@@ -68,54 +68,63 @@
             class="app__nav"
             [attr.aria-label]="'app.navAria' | translate"
         >
-            <div class="app__nav-group" role="presentation">
-                <span class="app__nav-group-label">{{ 'nav.sectionJs' | translate }}</span>
-                <a routerLink="/about" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                    'nav.about' | translate
-                }}</a>
-                <a routerLink="/study" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                    'nav.study' | translate
-                }}</a>
-                <a routerLink="/plan" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                    'nav.plan' | translate
-                }}</a>
-                <a
-                    routerLink="/quiz"
-                    routerLinkActive="app__link--active"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    (click)="closeNavMenu()"
-                >
-                    {{ 'nav.quiz' | translate }}
-                </a>
-                <a routerLink="/dashboard" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                    'nav.dashboard' | translate
-                }}</a>
-                <a routerLink="/my-questions" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                    'nav.myQuestions' | translate
-                }}</a>
-            </div>
-            <span class="app__nav-sep" aria-hidden="true"></span>
-            <div class="app__nav-group" role="presentation">
-                <span class="app__nav-group-label">{{ 'nav.sectionSociology' | translate }}</span>
-                <a
-                    routerLink="/sociology/quiz"
-                    routerLinkActive="app__link--active"
-                    [routerLinkActiveOptions]="{ exact: true }"
-                    (click)="closeNavMenu()"
-                >
-                    {{ 'nav.sociologyQuiz' | translate }}
-                </a>
-                <a routerLink="/sociology/study" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                    'nav.sociologyStudy' | translate
-                }}</a>
-                <a
-                    routerLink="/sociology/dashboard"
-                    routerLinkActive="app__link--active"
-                    (click)="closeNavMenu()"
-                >
-                    {{ 'nav.sociologyDashboard' | translate }}
-                </a>
-            </div>
+            @if (showInterviewNavSection()) {
+                <div class="app__nav-group" role="presentation">
+                    <span class="app__nav-group-label">{{ 'nav.sectionJs' | translate }}</span>
+                    <a routerLink="/about" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                        'nav.about' | translate
+                    }}</a>
+                    <a routerLink="/study" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                        'nav.study' | translate
+                    }}</a>
+                    <a routerLink="/plan" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                        'nav.plan' | translate
+                    }}</a>
+                    <a
+                        routerLink="/quiz"
+                        routerLinkActive="app__link--active"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                        (click)="closeNavMenu()"
+                    >
+                        {{ 'nav.quiz' | translate }}
+                    </a>
+                    <a routerLink="/dashboard" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                        'nav.dashboard' | translate
+                    }}</a>
+                    <a routerLink="/my-questions" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                        'nav.myQuestions' | translate
+                    }}</a>
+                </div>
+            }
+            @if (showInterviewNavSection() && showSociologyNavSection()) {
+                <span class="app__nav-sep" aria-hidden="true"></span>
+            }
+            @if (showSociologyNavSection()) {
+                <div class="app__nav-group" role="presentation">
+                    <span class="app__nav-group-label">{{ 'nav.sectionSociology' | translate }}</span>
+                    <a
+                        routerLink="/sociology/quiz"
+                        routerLinkActive="app__link--active"
+                        [routerLinkActiveOptions]="{ exact: true }"
+                        (click)="closeNavMenu()"
+                    >
+                        {{ 'nav.sociologyQuiz' | translate }}
+                    </a>
+                    <a routerLink="/sociology/study" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                        'nav.sociologyStudy' | translate
+                    }}</a>
+                    <a routerLink="/sociology/plan" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
+                        'nav.sociologyPlan' | translate
+                    }}</a>
+                    <a
+                        routerLink="/sociology/dashboard"
+                        routerLinkActive="app__link--active"
+                        (click)="closeNavMenu()"
+                    >
+                        {{ 'nav.sociologyDashboard' | translate }}
+                    </a>
+                </div>
+            }
         </nav>
     </header>
     @if (navMenuOpen()) {

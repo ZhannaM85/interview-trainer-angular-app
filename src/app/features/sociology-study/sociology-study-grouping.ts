@@ -1,14 +1,5 @@
 import type { SociologyQuestion } from '../../shared/models/sociology-question.model';
-
-function slugifySegment(s: string): string {
-    const t = s
-        .toLowerCase()
-        .trim()
-        .replace(/[^a-z0-9а-яё]+/gi, '-')
-        .replace(/^-+|-+$/g, '')
-        .replace(/-+/g, '-');
-    return t.length > 0 ? t : 'general';
-}
+import { slugifySociologySegment, sociologyPlanTopicId } from '../../shared/utils/sociology-topic-key.utils';
 
 export interface SociologyStudySubtopicSection {
     subtopic: string;
@@ -43,8 +34,8 @@ export function buildSociologyStudySections(questions: SociologyQuestion[]): Soc
                 .sort(([a], [b]) => a.localeCompare(b, 'ru'))
                 .map(([subtopic, qlist]) => {
                     const sorted = [...qlist].sort((x, y) => x.id - y.id);
-                    const topicSlug = slugifySegment(topic);
-                    const subSlug = slugifySegment(subtopic);
+                    const topicSlug = slugifySociologySegment(topic);
+                    const subSlug = slugifySociologySegment(subtopic);
                     return {
                         subtopic,
                         anchorId: `soc-study-${topicSlug}-${subSlug}`,
@@ -53,7 +44,7 @@ export function buildSociologyStudySections(questions: SociologyQuestion[]): Soc
                 });
             return {
                 topic,
-                anchorId: `soc-study-topic-${slugifySegment(topic)}`,
+                anchorId: `soc-study-topic-${slugifySociologySegment(topic)}`,
                 subtopics
             };
         });
@@ -66,6 +57,23 @@ export function filterSociologySectionsBySubtopics(
     const out: SociologyStudyTopicSection[] = [];
     for (const sec of sections) {
         const subs = sec.subtopics.filter((s) => subtopics.has(s.subtopic));
+        if (subs.length > 0) {
+            out.push({ ...sec, subtopics: subs });
+        }
+    }
+    return out;
+}
+
+/** Keep only subtopics whose plan id is in `ids` (used with `?today=1`). */
+export function filterSociologySectionsByPlanTopicIds(
+    sections: SociologyStudyTopicSection[],
+    ids: ReadonlySet<string>
+): SociologyStudyTopicSection[] {
+    const out: SociologyStudyTopicSection[] = [];
+    for (const sec of sections) {
+        const subs = sec.subtopics.filter((s) =>
+            ids.has(sociologyPlanTopicId(sec.topic, s.subtopic))
+        );
         if (subs.length > 0) {
             out.push({ ...sec, subtopics: subs });
         }

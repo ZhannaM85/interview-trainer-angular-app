@@ -65,6 +65,13 @@ export const routes: Routes = [
                     ).then((m) => m.SociologyStudyPageComponent)
             },
             {
+                path: 'plan',
+                loadComponent: () =>
+                    import(
+                        './features/sociology-plan/pages/sociology-plan-page/sociology-plan-page.component'
+                    ).then((m) => m.SociologyPlanPageComponent)
+            },
+            {
                 path: 'dashboard',
                 loadComponent: () =>
                     import(

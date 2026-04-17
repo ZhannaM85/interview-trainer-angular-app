@@ -2,7 +2,9 @@ import { Injectable, computed, inject, signal } from '@angular/core';
 
 import type { TodayPlanState } from '../../shared/models/today-plan.model';
 import { formatLocalYmd } from '../../shared/utils/local-date.utils';
+import { isSociologyPlanTopicId } from '../../shared/utils/sociology-topic-key.utils';
 import { ActivityService } from './activity.service';
+import { SociologyActivityService } from './sociology-activity.service';
 import { StorageService } from './storage.service';
 
 const TODAY_PLAN_KEY = 'today-plan';
@@ -32,6 +34,7 @@ function withoutId(list: string[], id: string): string[] {
 export class TodayPlanService {
     private readonly storage = inject(StorageService);
     private readonly activityService = inject(ActivityService);
+    private readonly sociologyActivityService = inject(SociologyActivityService);
 
     private readonly state = signal<TodayPlanState>(this.loadInitial());
 
@@ -93,8 +96,9 @@ export class TodayPlanService {
             studiedTopicIds: nextStudied
         });
         if (!wasStudied) {
-            this.activityService.bumpTopicsStudied(1);
-            this.activityService.addCoveredTopic(topicId);
+            const act = isSociologyPlanTopicId(topicId) ? this.sociologyActivityService : this.activityService;
+            act.bumpTopicsStudied(1);
+            act.addCoveredTopic(topicId);
         }
     }
 

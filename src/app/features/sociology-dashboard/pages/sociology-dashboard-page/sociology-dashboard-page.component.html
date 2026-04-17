@@ -51,7 +51,7 @@
                         }}
                     </p>
                 }
-                <p class="soc-dash__hint">{{ 'dashboard.activeTimeDisclaimer' | translate }}</p>
+                <p class="soc-dash__hint">{{ 'sociology.activeTimeDisclaimer' | translate }}</p>
             </article>
 
             <article class="soc-dash__card soc-dash__card--wide">
@@ -80,7 +80,11 @@
             </article>
 
             <article class="soc-dash__card soc-dash__card--wide">
-                <app-activity-heatmap />
+                <app-activity-heatmap
+                    variant="sociology"
+                    headingKey="sociology.heatmapHeading"
+                    descriptionKey="sociology.heatmapDescription"
+                />
             </article>
         </div>
 

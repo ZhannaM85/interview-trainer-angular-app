@@ -1,15 +1,18 @@
+/* Match interview `dashboard-page` shell so both progress pages behave the same in narrow viewports. */
 .soc-dash {
     width: 100%;
-    max-width: 900px;
+    max-width: 44rem;
     margin: 0 auto;
     padding: 0 1rem 2rem;
     box-sizing: border-box;
+    min-width: 0;
 }
 
 .soc-dash__title {
     margin: 0 0 1.25rem;
-    font-size: 1.45rem;
+    font-size: 1.25rem;
     font-weight: 700;
+    letter-spacing: -0.02em;
 }
 
 .soc-dash__message {
@@ -22,33 +25,33 @@
 }
 
 .soc-dash__layout {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: 1rem;
-    grid-template-columns: 1fr;
-}
-
-@media (min-width: 640px) {
-    .soc-dash__layout {
-        grid-template-columns: 1fr 1fr;
-    }
+    min-width: 0;
 }
 
 .soc-dash__card {
-    padding: 1rem 1.1rem;
-    border-radius: 0.65rem;
+    border-radius: 1rem;
+    padding: 1.25rem 1.35rem;
     border: 1px solid var(--it-border);
     background: var(--it-card);
+    box-shadow: var(--it-shadow);
+    min-width: 0;
     box-sizing: border-box;
 }
 
 .soc-dash__card--wide {
-    grid-column: 1 / -1;
+    max-width: 100%;
 }
 
 .soc-dash__card-title {
-    margin: 0 0 0.5rem;
-    font-size: 1rem;
+    margin: 0 0 0.65rem;
+    font-size: 0.8rem;
     font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--it-text-muted);
 }
 
 .soc-dash__metric {
@@ -60,8 +63,8 @@
 
 .soc-dash__hint {
     margin: 0.5rem 0 0;
-    font-size: 0.88rem;
-    line-height: 1.4;
+    font-size: 0.82rem;
+    line-height: 1.45;
     color: var(--it-text-muted);
 }
 

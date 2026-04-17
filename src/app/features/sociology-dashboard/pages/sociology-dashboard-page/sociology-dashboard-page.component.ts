@@ -3,7 +3,7 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
-import { ActivityService } from '../../../../core/services/activity.service';
+import { SociologyActivityService } from '../../../../core/services/sociology-activity.service';
 import { SociologyProgressService } from '../../../../core/services/sociology-progress.service';
 import { SociologyQuestionService } from '../../../../core/services/sociology-question.service';
 import type { SociologyProgress } from '../../../../shared/models/sociology-progress.model';
@@ -35,7 +35,7 @@ export interface SociologyDashboardStats {
 export class SociologyDashboardPageComponent {
     private readonly questionService = inject(SociologyQuestionService);
     private readonly progressService = inject(SociologyProgressService);
-    protected readonly activityService = inject(ActivityService);
+    protected readonly sociologyActivity = inject(SociologyActivityService);
 
     private readonly questions = signal<SociologyQuestion[]>([]);
     protected readonly loadError = signal(false);
@@ -54,10 +54,10 @@ export class SociologyDashboardPageComponent {
     );
 
     protected readonly activeTimeView = computed(() => {
-        const totalSeconds = this.activityService.totalActiveSeconds();
+        const totalSeconds = this.sociologyActivity.totalActiveSeconds();
         const hours = Math.floor(totalSeconds / 3600);
         const minutes = Math.floor((totalSeconds % 3600) / 60);
-        const todaySeconds = this.activityService.todayActiveSeconds();
+        const todaySeconds = this.sociologyActivity.todayActiveSeconds();
         const todayHours = Math.floor(todaySeconds / 3600);
         const todayMinutes = Math.floor((todaySeconds % 3600) / 60);
         return { hours, minutes, totalSeconds, todaySeconds, todayHours, todayMinutes };

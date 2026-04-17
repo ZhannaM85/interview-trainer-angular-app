@@ -3,7 +3,7 @@ import { Component, computed, HostListener, inject, signal } from '@angular/core
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterLink, RouterLinkActive, RouterOutlet } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { filter, fromEvent } from 'rxjs';
+import { filter, fromEvent, map, merge, of } from 'rxjs';
 
 import { LOCALE_STORAGE_KEY } from './core/locale.constants';
 import { ActiveTimeService } from './core/services/active-time.service';
@@ -31,6 +31,14 @@ export class App {
     protected readonly currentLang = signal<'en' | 'ru'>('en');
     protected readonly navMenuOpen = signal(false);
     protected readonly retryBannerDismissed = signal(false);
+
+    /** Path without query/hash; updates on navigation (for gating JS-only UI such as the retry banner). */
+    private readonly locationPath = toSignal(
+        merge(of(null), this.router.events.pipe(filter((e): e is NavigationEnd => e instanceof NavigationEnd))).pipe(
+            map(() => this.pathOnly(this.router.url))
+        ),
+        { initialValue: this.pathOnly(this.router.url) }
+    );
 
     /**
      * Topic IDs (category:subtopic) where the best rating on any past day was didntKnow or
@@ -72,9 +80,25 @@ export class App {
         return [...topicIds].filter((tid) => !todayCovered.has(tid));
     });
 
-    protected readonly showRetryBanner = computed(
-        () => !this.retryBannerDismissed() && this.retryTopicIds().length > 0
-    );
+    /** Interview-prep topics only; hidden in the sociology section (separate progress model). */
+    protected readonly showRetryBanner = computed(() => {
+        if (this.locationPath().startsWith('/sociology')) {
+            return false;
+        }
+        return !this.retryBannerDismissed() && this.retryTopicIds().length > 0;
+    });
+
+    /** Main nav: interview block hidden while browsing sociology routes. */
+    protected readonly showInterviewNavSection = computed(() => !this.locationPath().startsWith('/sociology'));
+
+    /**
+     * Main nav: sociology block on the home picker and sociology routes only,
+     * hidden on interview-prep pages so the menu matches the active track.
+     */
+    protected readonly showSociologyNavSection = computed(() => {
+        const p = this.locationPath();
+        return p === '/' || p.startsWith('/sociology');
+    });
 
     protected retryStudyQueryParams(): Record<string, string> {
         return { topics: this.retryTopicIds().join(',') };
@@ -131,5 +155,10 @@ export class App {
 
     private normalizeLang(lang: string | undefined): 'en' | 'ru' {
         return lang === 'ru' ? 'ru' : 'en';
+    }
+
+    private pathOnly(url: string): string {
+        const path = url.split('?')[0].split('#')[0];
+        return path || '/';
     }
 }

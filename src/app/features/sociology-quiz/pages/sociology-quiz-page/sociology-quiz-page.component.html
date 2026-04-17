@@ -7,21 +7,92 @@
         </p>
     } @else if (loading()) {
         <p class="soc-quiz__message">{{ 'sociology.loading' | translate }}</p>
+    } @else if (showPlanTopicsCoveredDialog()) {
+        <div class="quiz__backdrop" role="presentation" aria-hidden="true"></div>
+        <div
+            class="quiz__plan-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="soc-quiz-plan-dialog-title"
+        >
+            <h2 id="soc-quiz-plan-dialog-title" class="quiz__plan-dialog-title">
+                {{ 'quiz.planTopicsCoveredTitle' | translate }}
+            </h2>
+            <p class="quiz__plan-dialog-body">{{ 'quiz.planTopicsCoveredBody' | translate }}</p>
+            <div class="quiz__plan-dialog-actions">
+                <button type="button" class="quiz__scope-btn" (click)="confirmPracticePlanTopicsAnyway()">
+                    {{ 'quiz.planTopicsCoveredPractice' | translate }}
+                </button>
+                <button type="button" class="quiz__scope-btn quiz__scope-btn--secondary" (click)="switchToFullQuestionBank()">
+                    {{ 'quiz.planTopicsCoveredOtherTopics' | translate }}
+                </button>
+                <a routerLink="/sociology/plan" class="quiz__scope-btn quiz__scope-btn--secondary">
+                    {{ 'quiz.planTopicsCoveredGotoPlan' | translate }}
+                </a>
+            </div>
+        </div>
     } @else if (sessionComplete()) {
+        @if (sessionStackTopicIds().length > 0) {
+            <div class="quiz__stack-topics" [attr.aria-label]="'quiz.sessionStackAria' | translate">
+                <p class="quiz__stack-topics-heading">{{ 'quiz.sessionStackHeading' | translate }}</p>
+                <ul class="quiz__stack-topics-list" role="list">
+                    @for (tid of sessionStackTopicIds(); track tid) {
+                        <li class="quiz__stack-topic" role="listitem">
+                            <span class="quiz__stack-topic-label">{{ sociologyStackTopicLabel(tid) }}</span>
+                        </li>
+                    }
+                </ul>
+            </div>
+        }
         <div class="soc-quiz__done">
             <h2 class="soc-quiz__done-title">{{ 'sociology.sessionComplete' | translate }}</h2>
             <p class="soc-quiz__done-text">{{ 'sociology.sessionCompleteHint' | translate }}</p>
+            @if (usingFallbackQueue()) {
+                @if (todayTopicsFilterActive()) {
+                    <p class="quiz__hint">{{ 'quiz.fallbackHintDoneTodaysTopics' | translate }}</p>
+                } @else {
+                    <p class="quiz__hint">{{ 'quiz.fallbackHintDone' | translate }}</p>
+                }
+            }
             <div class="soc-quiz__done-actions">
                 <button type="button" class="soc-quiz__btn soc-quiz__btn--primary" (click)="restartSession()">
                     {{ 'sociology.restart' | translate }}
                 </button>
                 <a routerLink="/sociology/study" class="soc-quiz__link">{{ 'nav.sociologyStudy' | translate }}</a>
+                <a routerLink="/sociology/plan" class="soc-quiz__link">{{ 'nav.sociologyPlan' | translate }}</a>
                 <a routerLink="/sociology/dashboard" class="soc-quiz__link">{{ 'nav.sociologyDashboard' | translate }}</a>
             </div>
         </div>
     } @else if (currentQuestion(); as q) {
         @let ph = phase();
         <div class="soc-quiz__panel">
+            @if (planFocusHint()) {
+                <p class="quiz__hint quiz__hint--plan" role="status">{{ 'quiz.planFocusHint' | translate }}</p>
+            }
+            @if (showBackToTodaysTopicsOption()) {
+                <p class="quiz__hint quiz__hint--scope" role="status">{{ 'quiz.practicingFullBankHint' | translate }}</p>
+            }
+            @if (usingFallbackQueue()) {
+                @if (todayTopicsFilterActive()) {
+                    <p class="quiz__hint">{{ 'quiz.fallbackHintTodaysTopics' | translate }}</p>
+                } @else {
+                    <p class="quiz__hint">{{ 'quiz.fallbackHintActive' | translate }}</p>
+                }
+            }
+            @if (todayTopicsFilterActive()) {
+                <div class="quiz__scope-actions">
+                    <button type="button" class="quiz__scope-btn" (click)="switchToFullQuestionBank()">
+                        {{ 'quiz.practiceAll' | translate }}
+                    </button>
+                </div>
+            }
+            @if (showBackToTodaysTopicsOption()) {
+                <div class="quiz__scope-actions">
+                    <button type="button" class="quiz__scope-btn quiz__scope-btn--secondary" (click)="switchToTodaysStudiedTopics()">
+                        {{ 'quiz.backToTodaysTopics' | translate }}
+                    </button>
+                </div>
+            }
             <p class="soc-quiz__meta">
                 {{ sessionIndex() + 1 }} / {{ sessionTotal() }}
             </p>
@@ -80,10 +151,10 @@
                             [class.soc-quiz__reveal-item--missed]="st === 'missed'"
                         >
                             @if (st === 'correct' || st === 'missed') {
-                                <span class="soc-quiz__mark" aria-hidden="true">✓</span>
+                                <span class="soc-quiz__mark" aria-hidden="true">&#10003;</span>
                             }
                             @if (st === 'wrong') {
-                                <span class="soc-quiz__mark" aria-hidden="true">✗</span>
+                                <span class="soc-quiz__mark" aria-hidden="true">&#10007;</span>
                             }
                             <span>{{ opt }}</span>
                         </li>
@@ -113,13 +184,13 @@
                     role="status"
                 >
                     @if (o === 'correct') {
-                        <span aria-hidden="true">✅</span>
+                        <span aria-hidden="true">&#9989;</span>
                         {{ 'sociology.correct' | translate }}
                     } @else if (o === 'wrong') {
-                        <span aria-hidden="true">❌</span>
+                        <span aria-hidden="true">&#10060;</span>
                         {{ 'sociology.wrong' | translate }}
                     } @else if (o === 'partial') {
-                        <span aria-hidden="true">⚠️</span>
+                        <span aria-hidden="true">&#9888;</span>
                         {{ 'sociology.partial' | translate }}
                     }
                 </p>
