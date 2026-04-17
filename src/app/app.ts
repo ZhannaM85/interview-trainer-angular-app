@@ -12,6 +12,15 @@ import { QuestionService } from './core/services/question.service';
 import { ThemeService } from './core/services/theme.service';
 import { formatLocalYmd } from './shared/utils/local-date.utils';
 
+/** Interview routes where the “topics to revisit” banner is relevant (not home, About, etc.). */
+const INTERVIEW_RETRY_BANNER_PATHS = new Set([
+    '/quiz',
+    '/study',
+    '/plan',
+    '/dashboard',
+    '/my-questions'
+]);
+
 @Component({
     selector: 'app-root',
     imports: [RouterOutlet, RouterLink, RouterLinkActive, TranslatePipe],
@@ -80,9 +89,16 @@ export class App {
         return [...topicIds].filter((tid) => !todayCovered.has(tid));
     });
 
-    /** Interview-prep topics only; hidden in the sociology section (separate progress model). */
+    /**
+     * Interview-prep topics only: not on sociology, not on the subject picker or About—only
+     * on practice/study/plan/progress/my-questions where revisiting topics is actionable.
+     */
     protected readonly showRetryBanner = computed(() => {
-        if (this.locationPath().startsWith('/sociology')) {
+        const p = this.locationPath();
+        if (p.startsWith('/sociology')) {
+            return false;
+        }
+        if (!INTERVIEW_RETRY_BANNER_PATHS.has(p)) {
             return false;
         }
         return !this.retryBannerDismissed() && this.retryTopicIds().length > 0;
@@ -92,12 +108,13 @@ export class App {
     protected readonly showInterviewNavSection = computed(() => !this.locationPath().startsWith('/sociology'));
 
     /**
-     * Main nav: sociology block on the home picker and sociology routes only,
-     * hidden on interview-prep pages so the menu matches the active track.
+     * Main nav: sociology block on the home picker, sociology routes, and About
+     * (shared page) so users coming from sociology still see sociology links.
+     * Hidden on other interview-prep pages.
      */
     protected readonly showSociologyNavSection = computed(() => {
         const p = this.locationPath();
-        return p === '/' || p.startsWith('/sociology');
+        return p === '/' || p === '/about' || p.startsWith('/sociology');
     });
 
     protected retryStudyQueryParams(): Record<string, string> {
