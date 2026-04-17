@@ -10,6 +10,7 @@
     "data:read-more-links": "node scripts/merge-read-more-links.mjs",
     "data:i18n-questions": "node scripts/apply-russian-translations.mjs",
     "data:pdf-text": "node scripts/pdf-extract-text.mjs",
+    "data:sociology": "node scripts/build-sociology-questions-from-pdf-text.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "e2e": "playwright test",
