@@ -1,3 +1,4 @@
+import { ViewportScroller } from '@angular/common';
 import {
     afterNextRender,
     ChangeDetectionStrategy,
@@ -56,8 +57,24 @@ export class SociologyStudyPageComponent {
     private readonly router = inject(Router);
     private readonly translate = inject(TranslateService);
     private readonly injector = inject(Injector);
+    private readonly viewportScroller = inject(ViewportScroller);
 
     private readonly studyProgressRefresh = signal(0);
+
+    /** Table of contents `<details>` open state (in-flow, not an overlay). */
+    protected readonly tocExpanded = signal(true);
+
+    /**
+     * Per-subtopic accordion open state (sociology plan topic id: `topic|subtopic` segment form from
+     * {@link sociologyPlanTopicId}).
+     * If absent, default is open when not studied, closed when studied.
+     */
+    private readonly subtopicAccordionState = signal<ReadonlyMap<string, boolean>>(new Map());
+
+    /**
+     * Drives “Expand / collapse all”: next click collapses when `true`, expands when `false`.
+     */
+    private readonly accordionBulkNextIsCollapse = signal(false);
 
     private readonly planTodayOnly = toSignal(
         this.route.queryParamMap.pipe(
@@ -127,6 +144,31 @@ export class SociologyStudyPageComponent {
             return false;
         }
         return this.topicsRemainingToStudySoc().length > 0;
+    });
+
+    /** At least one subtopic accordion is shown (catalog loaded and not empty). */
+    protected readonly hasAccordionSubtopics = computed(() => {
+        for (const t of this.visibleSections()) {
+            if (t.subtopics.length > 0) {
+                return true;
+            }
+        }
+        return false;
+    });
+
+    /** 1-based index per question in the visible guide (DOM order). */
+    protected readonly globalOrdinalByQuestionId = computed(() => {
+        const map = new Map<number, number>();
+        let n = 0;
+        for (const t of this.visibleSections()) {
+            for (const s of t.subtopics) {
+                for (const q of s.questions) {
+                    n += 1;
+                    map.set(q.id, n);
+                }
+            }
+        }
+        return map;
     });
 
     private readonly lastAnsweredIsoByQuestionId = computed(() => {
@@ -204,6 +246,69 @@ export class SociologyStudyPageComponent {
         return this.catalogEdits.hasOverrideFor(id);
     }
 
+    protected onTocShellToggle(event: Event): void {
+        const el = event.currentTarget as HTMLDetailsElement | null;
+        if (!el || el.tagName !== 'DETAILS') {
+            return;
+        }
+        this.tocExpanded.set(el.open);
+    }
+
+    protected scrollToTocAnchor(
+        event: MouseEvent,
+        anchorId: string,
+        topic?: SociologyStudyTopicSection,
+        sub?: SociologyStudySubtopicSection
+    ): void {
+        event.preventDefault();
+        if (topic && sub) {
+            const id = sociologyPlanTopicId(topic.topic, sub.subtopic);
+            this.patchSubtopicAccordion(id, true);
+        }
+        this.viewportScroller.scrollToAnchor(anchorId);
+    }
+
+    protected topicAccordionKey(topic: SociologyStudyTopicSection, sub: SociologyStudySubtopicSection): string {
+        return sociologyPlanTopicId(topic.topic, sub.subtopic);
+    }
+
+    protected subtopicAccordionOpen(topic: SociologyStudyTopicSection, sub: SociologyStudySubtopicSection): boolean {
+        const id = sociologyPlanTopicId(topic.topic, sub.subtopic);
+        const m = this.subtopicAccordionState();
+        if (m.has(id)) {
+            return m.get(id)!;
+        }
+        return !this.todayPlan.isStudied(id);
+    }
+
+    protected toggleSubtopicAccordion(topic: SociologyStudyTopicSection, sub: SociologyStudySubtopicSection): void {
+        const id = sociologyPlanTopicId(topic.topic, sub.subtopic);
+        const open = !this.subtopicAccordionOpen(topic, sub);
+        this.patchSubtopicAccordion(id, open);
+    }
+
+    private patchSubtopicAccordion(topicKey: string, open: boolean): void {
+        const next = new Map(this.subtopicAccordionState());
+        next.set(topicKey, open);
+        this.subtopicAccordionState.set(next);
+    }
+
+    protected toggleExpandCollapseAll(): void {
+        const collapse = this.accordionBulkNextIsCollapse();
+        this.setAllSubtopicAccordions(!collapse);
+        this.accordionBulkNextIsCollapse.update((v) => !v);
+    }
+
+    private setAllSubtopicAccordions(open: boolean): void {
+        const next = new Map(this.subtopicAccordionState());
+        for (const t of this.visibleSections()) {
+            for (const s of t.subtopics) {
+                next.set(sociologyPlanTopicId(t.topic, s.subtopic), open);
+            }
+        }
+        this.subtopicAccordionState.set(next);
+    }
+
     protected showMarkStudied(topic: SociologyStudyTopicSection, sub: SociologyStudySubtopicSection): boolean {
         const id = sociologyPlanTopicId(topic.topic, sub.subtopic);
         return !this.todayPlan.isStudied(id);
@@ -225,6 +330,7 @@ export class SociologyStudyPageComponent {
             this.todayPlan.toggleTopicSelected(topicId);
         }
         this.todayPlan.markStudied(topicId);
+        this.patchSubtopicAccordion(topicId, false);
         if (remainingBefore === 1) {
             this.showPlanCompleteBanner.set(true);
             requestAnimationFrame(() => {
@@ -234,6 +340,8 @@ export class SociologyStudyPageComponent {
         }
         const nextSub = this.findNextSubtopicAfter(topic, sub);
         if (nextSub) {
+            const nextKey = sociologyPlanTopicId(nextSub.topic.topic, nextSub.sub.subtopic);
+            this.patchSubtopicAccordion(nextKey, true);
             afterNextRender(
                 () => {
                     this.scrollBlockStartBelowHeader(nextSub.sub.anchorId);
