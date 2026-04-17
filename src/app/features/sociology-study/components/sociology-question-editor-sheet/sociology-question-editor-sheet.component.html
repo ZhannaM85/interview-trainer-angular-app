@@ -1,0 +1,92 @@
+<div class="soc-edit" role="dialog" aria-modal="true" [attr.aria-labelledby]="titleId">
+    <button
+        type="button"
+        class="soc-edit__backdrop"
+        (click)="close()"
+        [attr.aria-label]="'sociology.editCloseBackdrop' | translate"
+    ></button>
+    <div class="soc-edit__panel" (click)="$event.stopPropagation()">
+        <div class="soc-edit__head">
+            <h2 [id]="titleId" class="soc-edit__title">{{ 'sociology.editTitle' | translate }}</h2>
+            <button type="button" class="soc-edit__close" (click)="close()" [attr.aria-label]="'sociology.editClose' | translate">
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+        <p class="soc-edit__meta">{{ 'sociology.editMeta' | translate: { topic: question().topic, subtopic: question().subtopic, id: question().id } }}</p>
+
+        @if (validationMessageKey(); as vk) {
+            <p class="soc-edit__alert" role="alert">{{ vk | translate }}</p>
+        }
+
+        <form class="soc-edit__form" [formGroup]="form" (ngSubmit)="submit()">
+            <div class="soc-edit__field">
+                <label class="soc-edit__label" for="soc-q-text">{{ 'sociology.editQuestionLabel' | translate }}</label>
+                <textarea id="soc-q-text" class="soc-edit__textarea" formControlName="question" rows="4"></textarea>
+            </div>
+
+            <fieldset class="soc-edit__fieldset">
+                <legend class="soc-edit__legend">{{ 'sociology.editTypeLabel' | translate }}</legend>
+                <label class="soc-edit__radio">
+                    <input type="radio" formControlName="type" value="single" />
+                    <span>{{ 'sociology.typeSingle' | translate }}</span>
+                </label>
+                <label class="soc-edit__radio">
+                    <input type="radio" formControlName="type" value="multi" />
+                    <span>{{ 'sociology.typeMulti' | translate }}</span>
+                </label>
+            </fieldset>
+
+            <div class="soc-edit__field">
+                <label class="soc-edit__label" for="soc-q-expl">{{ 'sociology.editExplanationLabel' | translate }}</label>
+                <textarea id="soc-q-expl" class="soc-edit__textarea" formControlName="explanation" rows="3"></textarea>
+            </div>
+
+            <div class="soc-edit__options-head">
+                <span class="soc-edit__label">{{ 'sociology.editOptionsLabel' | translate }}</span>
+                <button type="button" class="soc-edit__linkish" (click)="addOption()">{{ 'sociology.editAddOption' | translate }}</button>
+            </div>
+
+            <ul class="soc-edit__options" formArrayName="options">
+                @for (opt of options.controls; track $index; let i = $index) {
+                    <li class="soc-edit__option-row" [formGroupName]="i">
+                        <div class="soc-edit__option-main">
+                            <label class="visually-hidden" [attr.for]="'soc-opt-' + i">{{ 'sociology.editOptionText' | translate }}</label>
+                            <input
+                                type="text"
+                                class="soc-edit__input"
+                                [id]="'soc-opt-' + i"
+                                formControlName="text"
+                                [attr.aria-label]="'sociology.editOptionAria' | translate: { n: i + 1 }"
+                            />
+                        </div>
+                        <label class="soc-edit__correct">
+                            <input
+                                type="checkbox"
+                                [checked]="isCorrectChecked(i)"
+                                (change)="onToggleCorrect(i, $any($event.target).checked)"
+                            />
+                            <span>{{ 'sociology.editCorrectLabel' | translate }}</span>
+                        </label>
+                        <button
+                            type="button"
+                            class="soc-edit__remove"
+                            (click)="removeOption(i)"
+                            [disabled]="options.length <= 2"
+                            [attr.aria-label]="'sociology.editRemoveOptionAria' | translate: { n: i + 1 }"
+                        >
+                            {{ 'sociology.editRemoveOption' | translate }}
+                        </button>
+                    </li>
+                }
+            </ul>
+
+            <div class="soc-edit__actions">
+                <button type="submit" class="soc-edit__btn soc-edit__btn--primary">{{ 'sociology.editSave' | translate }}</button>
+                <button type="button" class="soc-edit__btn" (click)="close()">{{ 'sociology.editCancel' | translate }}</button>
+            </div>
+            <p class="soc-edit__foot">
+                <button type="button" class="soc-edit__linkish" (click)="resetToBundled()">{{ 'sociology.editResetBundled' | translate }}</button>
+            </p>
+        </form>
+    </div>
+</div>

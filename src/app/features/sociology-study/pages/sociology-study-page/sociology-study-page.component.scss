@@ -48,6 +48,51 @@
     color: var(--it-accent);
 }
 
+.soc-study__catalog-hint {
+    margin: -0.75rem 0 1.25rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--it-text-muted);
+}
+
+.soc-study__q-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 0.45rem;
+}
+
+.soc-study__edited-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.45rem;
+    border-radius: 0.35rem;
+    border: 1px solid var(--it-border);
+    color: var(--it-text-muted);
+    margin-right: auto;
+}
+
+.soc-study__edit-q {
+    border: 1px solid var(--it-border);
+    border-radius: 0.45rem;
+    padding: 0.3rem 0.55rem;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: transparent;
+    color: var(--it-accent);
+}
+
+.soc-study__edit-q:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
 .soc-study__topic {
     margin-bottom: 2rem;
 }

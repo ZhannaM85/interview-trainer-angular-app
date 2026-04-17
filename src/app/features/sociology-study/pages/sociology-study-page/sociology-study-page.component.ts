@@ -12,6 +12,7 @@ import { ActivatedRoute, NavigationEnd, Router, RouterLink } from '@angular/rout
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { distinctUntilChanged, filter, map } from 'rxjs';
 
+import { SociologyCatalogEditService } from '../../../../core/services/sociology-catalog-edit.service';
 import { SociologyProgressService } from '../../../../core/services/sociology-progress.service';
 import { SociologyQuestionService } from '../../../../core/services/sociology-question.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
@@ -20,6 +21,7 @@ import {
     isSociologyPlanTopicId,
     sociologyPlanTopicId
 } from '../../../../shared/utils/sociology-topic-key.utils';
+import { SociologyQuestionEditorSheetComponent } from '../../components/sociology-question-editor-sheet/sociology-question-editor-sheet.component';
 import {
     buildSociologyStudySections,
     filterSociologySectionsByPlanTopicIds,
@@ -40,13 +42,14 @@ function isSameLocalCalendarDay(a: Date, b: Date): boolean {
 
 @Component({
     selector: 'app-sociology-study-page',
-    imports: [RouterLink, TranslatePipe],
+    imports: [RouterLink, TranslatePipe, SociologyQuestionEditorSheetComponent],
     templateUrl: './sociology-study-page.component.html',
     styleUrl: './sociology-study-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class SociologyStudyPageComponent {
     private readonly questionService = inject(SociologyQuestionService);
+    private readonly catalogEdits = inject(SociologyCatalogEditService);
     private readonly progressService = inject(SociologyProgressService);
     protected readonly todayPlan = inject(TodayPlanService);
     private readonly route = inject(ActivatedRoute);
@@ -87,6 +90,9 @@ export class SociologyStudyPageComponent {
     private readonly todayScopedTopicIds = signal<ReadonlySet<string>>(new Set());
 
     protected readonly showPlanCompleteBanner = signal(false);
+
+    /** Local-only edits open in a sheet; `null` when closed. */
+    protected readonly editorQuestion = signal<SociologyQuestion | null>(null);
 
     protected readonly questions = signal<SociologyQuestion[]>([]);
     protected readonly sections = signal<SociologyStudyTopicSection[]>([]);
@@ -180,6 +186,22 @@ export class SociologyStudyPageComponent {
 
     protected isCorrectOption(q: SociologyQuestion, optionIndex: number): boolean {
         return q.correctIndices.includes(optionIndex);
+    }
+
+    protected openQuestionEditor(q: SociologyQuestion): void {
+        this.editorQuestion.set({
+            ...q,
+            options: [...q.options],
+            correctIndices: [...q.correctIndices]
+        });
+    }
+
+    protected closeQuestionEditor(): void {
+        this.editorQuestion.set(null);
+    }
+
+    protected isLocallyEdited(id: number): boolean {
+        return this.catalogEdits.hasOverrideFor(id);
     }
 
     protected showMarkStudied(topic: SociologyStudyTopicSection, sub: SociologyStudySubtopicSection): boolean {

@@ -56,6 +56,7 @@
             <a routerLink="/sociology/plan" class="soc-study__intro-link">{{ 'nav.sociologyPlan' | translate }}</a>
             {{ 'sociology.studyIntroPlanAfter' | translate }}
         </p>
+        <p class="soc-study__catalog-hint">{{ 'sociology.studyCatalogEditsHint' | translate }}</p>
         <div class="soc-study__cta-block">
             <a routerLink="/sociology/quiz" class="soc-study__cta-primary">{{ 'study.gotoPractice' | translate }}</a>
             <p class="soc-study__cta-hint">{{ 'study.gotoPracticeHint' | translate }}</p>
@@ -157,6 +158,14 @@
                                 class="soc-study__q"
                                 [class.soc-study__q--practiced-today]="hint?.kind === 'today'"
                             >
+                                <div class="soc-study__q-toolbar">
+                                    @if (isLocallyEdited(q.id)) {
+                                        <span class="soc-study__edited-badge">{{ 'sociology.editedLocallyBadge' | translate }}</span>
+                                    }
+                                    <button type="button" class="soc-study__edit-q" (click)="openQuestionEditor(q)">
+                                        {{ 'sociology.editQuestion' | translate }}
+                                    </button>
+                                </div>
                                 <p class="soc-study__q-text">{{ q.question }}</p>
                                 <p class="soc-study__q-type">
                                     {{ q.type === 'single' ? ('sociology.typeSingle' | translate) : ('sociology.typeMulti' | translate) }}
@@ -185,6 +194,14 @@
                     </section>
                 }
             </article>
+        }
+
+        @if (editorQuestion(); as eq) {
+            <app-sociology-question-editor-sheet
+                [question]="eq"
+                (dismissed)="closeQuestionEditor()"
+                (saved)="closeQuestionEditor()"
+            />
         }
     }
 </section>
