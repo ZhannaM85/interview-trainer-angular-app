@@ -9,6 +9,7 @@ import { ProgressService } from '../../../../core/services/progress.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Question } from '../../../../shared/models/question.model';
+import { isSociologyPlanTopicId } from '../../../../shared/utils/sociology-topic-key.utils';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import {
     buildTopicLastStudiedHintMap,
@@ -44,8 +45,17 @@ export class PlanPageComponent {
     protected readonly studiedTopicIds = this.todayPlan.studiedTopicIds;
     protected readonly topicsRemainingToStudy = this.todayPlan.topicsRemainingToStudy;
 
+    /** Main-track plan UI excludes sociology ids (sociology has its own plan page). */
+    protected readonly topicsRemainingToStudyJs = computed(() =>
+        this.todayPlan.topicsRemainingToStudy().filter((id) => !isSociologyPlanTopicId(id))
+    );
+
+    protected readonly selectedTopicIdsJs = computed(() =>
+        this.todayPlan.selectedTopicIds().filter((id) => !isSociologyPlanTopicId(id))
+    );
+
     protected readonly doneTopics = computed(() => {
-        return this.todayPlan.studiedTopicIds();
+        return this.todayPlan.studiedTopicIds().filter((id) => !isSociologyPlanTopicId(id));
     });
 
     protected readonly topicLastStudiedById = computed(() => {
@@ -155,6 +165,6 @@ export class PlanPageComponent {
 
     /** Query params for Study guide when opening today’s unread topics only. */
     protected studyGuideQueryParams(): Record<string, string> | undefined {
-        return this.todayPlan.topicsRemainingToStudy().length > 0 ? { today: '1' } : undefined;
+        return this.topicsRemainingToStudyJs().length > 0 ? { today: '1' } : undefined;
     }
 }

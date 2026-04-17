@@ -1,6 +1,6 @@
 <section class="heatmap" aria-labelledby="heatmap-heading">
-    <h2 id="heatmap-heading" class="heatmap__title">{{ 'heatmap.heading' | translate }}</h2>
-    <p class="heatmap__desc">{{ 'heatmap.description' | translate }}</p>
+    <h2 id="heatmap-heading" class="heatmap__title">{{ headingKey() | translate }}</h2>
+    <p class="heatmap__desc">{{ descriptionKey() | translate }}</p>
 
     <div class="heatmap__scroll" #heatmapScroll>
         <div class="heatmap__body">
@@ -91,7 +91,11 @@
                 <ul class="heatmap__topic-list">
                     @for (tid of day.topicIds; track tid) {
                         <li class="heatmap__topic-item">
-                            {{ ('subtopics.' + subtopicKeyFromTopicId(tid)) | translate }}
+                            @if (variant() === 'sociology') {
+                                {{ sociologyTopicLabel(tid) }}
+                            } @else {
+                                {{ ('subtopics.' + subtopicKeyFromTopicId(tid)) | translate }}
+                            }
                         </li>
                     }
                 </ul>

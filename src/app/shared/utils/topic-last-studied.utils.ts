@@ -1,6 +1,9 @@
 import type { DailyActivity } from '../models/activity.model';
 import type { Progress } from '../models/progress.model';
 import type { Question } from '../models/question.model';
+import type { SociologyProgress } from '../models/sociology-progress.model';
+import type { SociologyQuestion } from '../models/sociology-question.model';
+import { sociologyPlanTopicId } from './sociology-topic-key.utils';
 import { topicIdFromParts } from './topic-key.utils';
 
 /** Shown next to a topic on the Plan page (last read / practice touch). */
@@ -66,6 +69,63 @@ export function lastPracticeIsoByTopic(questions: Question[], progress: Progress
         }
     }
     return byTopic;
+}
+
+/** Latest `lastAnswered` ISO per sociology plan topic id. */
+export function lastSociologyPracticeIsoByTopic(
+    questions: SociologyQuestion[],
+    progress: SociologyProgress[]
+): Map<string, string> {
+    const qById = new Map(questions.map((q) => [q.id, q] as const));
+    const byTopic = new Map<string, string>();
+    for (const row of progress) {
+        if (!row.lastAnswered) {
+            continue;
+        }
+        const q = qById.get(row.questionId);
+        if (!q) {
+            continue;
+        }
+        const tid = sociologyPlanTopicId(q.topic, q.subtopic);
+        const prev = byTopic.get(tid);
+        if (!prev || row.lastAnswered > prev) {
+            byTopic.set(tid, row.lastAnswered);
+        }
+    }
+    return byTopic;
+}
+
+/** One hint per sociology subtopic that appears in the catalog. */
+export function buildSociologyTopicLastStudiedHintMap(
+    questions: SociologyQuestion[],
+    activityMap: ReadonlyMap<string, DailyActivity>,
+    progress: SociologyProgress[],
+    translateLang: string
+): ReadonlyMap<string, TopicLastStudiedHint> {
+    const covered = lastCoveredYmdByTopic(activityMap);
+    const practice = lastSociologyPracticeIsoByTopic(questions, progress);
+    const lang: 'ru-RU' | 'en-GB' = translateLang?.toLowerCase().startsWith('ru') ? 'ru-RU' : 'en-GB';
+
+    const topicIds = new Set<string>();
+    for (const q of questions) {
+        topicIds.add(sociologyPlanTopicId(q.topic, q.subtopic));
+    }
+
+    const result = new Map<string, TopicLastStudiedHint>();
+    for (const tid of topicIds) {
+        const d = mergeLastEngagement(covered.get(tid), practice.get(tid));
+        if (!d) {
+            result.set(tid, { kind: 'none' });
+            continue;
+        }
+        const now = new Date();
+        if (isSameLocalCalendarDay(d, now)) {
+            result.set(tid, { kind: 'today' });
+        } else {
+            result.set(tid, { kind: 'past', dateStr: formatShortStudyDate(d, lang) });
+        }
+    }
+    return result;
 }
 
 function mergeLastEngagement(ymd: string | undefined, iso: string | undefined): Date | null {
