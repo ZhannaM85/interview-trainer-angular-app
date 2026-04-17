@@ -1,24 +1,33 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
-import { Observable, shareReplay } from 'rxjs';
+import { Injectable, Injector, inject } from '@angular/core';
+import { toObservable } from '@angular/core/rxjs-interop';
+import { Observable, combineLatest, map, shareReplay } from 'rxjs';
 
 import type { SociologyQuestion } from '../../shared/models/sociology-question.model';
+import { SociologyCatalogEditService } from './sociology-catalog-edit.service';
 
 @Injectable({
     providedIn: 'root'
 })
 export class SociologyQuestionService {
     private readonly http = inject(HttpClient);
+    private readonly injector = inject(Injector);
+    private readonly catalogEdits = inject(SociologyCatalogEditService);
 
-    private readonly questions$ = this.http
-        .get<SociologyQuestion[]>('assets/data/sociology-questions.json')
-        .pipe(shareReplay(1));
+    private readonly base$ = this.http.get<SociologyQuestion[]>('assets/data/sociology-questions.json').pipe(
+        shareReplay({ bufferSize: 1, refCount: false })
+    );
+
+    private readonly merged$ = combineLatest([
+        this.base$,
+        toObservable(this.catalogEdits.overridesList, { injector: this.injector })
+    ]).pipe(map(([base, _overrides]) => this.catalogEdits.mergeWithBase(base)));
 
     private queue: SociologyQuestion[] = [];
     private index = -1;
 
     getQuestions(): Observable<SociologyQuestion[]> {
-        return this.questions$;
+        return this.merged$;
     }
 
     initializeQueue(questions: SociologyQuestion[]): void {

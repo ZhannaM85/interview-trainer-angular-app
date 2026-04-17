@@ -1,6 +1,6 @@
 .soc-study {
     width: 100%;
-    max-width: 720px;
+    max-width: 56rem;
     margin: 0 auto;
     padding: 0 1rem 2.5rem;
     box-sizing: border-box;
@@ -48,33 +48,102 @@
     color: var(--it-accent);
 }
 
+.soc-study__catalog-hint {
+    margin: -0.75rem 0 1.25rem;
+    font-size: 0.85rem;
+    line-height: 1.45;
+    color: var(--it-text-muted);
+}
+
+.soc-study__q-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 0.5rem;
+}
+
+.soc-study__edited-badge {
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    padding: 0.2rem 0.45rem;
+    border-radius: 0.35rem;
+    border: 1px solid var(--it-border);
+    color: var(--it-text-muted);
+    margin-right: auto;
+}
+
+.soc-study__edit-q {
+    border: 1px solid var(--it-border);
+    border-radius: 0.45rem;
+    padding: 0.3rem 0.55rem;
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 700;
+    cursor: pointer;
+    background: transparent;
+    color: var(--it-accent);
+}
+
+.soc-study__edit-q:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
 .soc-study__topic {
     margin-bottom: 2rem;
 }
 
 .soc-study__topic-title {
-    margin: 0 0 1rem;
-    font-size: 1.2rem;
+    margin: 0 0 1.25rem;
+    font-size: 1.15rem;
+    font-weight: 800;
+    letter-spacing: -0.02em;
     border-bottom: 1px solid var(--it-border);
-    padding-bottom: 0.35rem;
-}
-
-.soc-study__sub {
-    margin-bottom: 1.5rem;
+    padding-bottom: 0.5rem;
 }
 
 .soc-study__q {
-    margin-bottom: 1.25rem;
-    padding: 0.85rem 1rem;
-    border-radius: 0.5rem;
+    scroll-margin-top: 0.75rem;
+    margin-bottom: 1.5rem;
+    padding: 1rem 1.1rem 1.15rem;
+    border-radius: 0.85rem;
     border: 1px solid var(--it-border);
     background: var(--it-card);
 }
 
-.soc-study__q-text {
-    margin: 0 0 0.5rem;
-    font-weight: 600;
+.soc-study__q:last-child {
+    margin-bottom: 0;
+}
+
+.soc-study__q-heading-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem 0.75rem;
+    margin-bottom: 0.65rem;
+}
+
+.soc-study__q-heading {
+    margin: 0;
+    flex: 1 1 12rem;
+    min-width: 0;
+    font-size: 1rem;
+    font-weight: 700;
     line-height: 1.45;
+}
+
+.soc-study__q-num {
+    display: inline-block;
+    min-width: 2.25rem;
+    margin-right: 0.35rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--it-text-muted);
+    font-weight: 800;
 }
 
 .soc-study__q-type {
@@ -261,36 +330,6 @@
     line-height: 1.4;
 }
 
-.soc-study__sub-head {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 0.65rem;
-    margin-bottom: 0.75rem;
-}
-
-.soc-study__sub-title {
-    margin: 0;
-    font-size: 1.05rem;
-    font-weight: 700;
-    color: var(--it-text);
-    flex: 1;
-    min-width: 0;
-}
-
-.soc-study__sub-aside {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-    flex-shrink: 0;
-}
-
-.soc-study__sub-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.35rem;
-}
-
 .soc-study__practice-badge {
     display: inline-flex;
     align-items: center;
@@ -369,5 +408,338 @@
 
 .soc-study__q--practiced-today {
     border-left: 3px solid var(--it-accent);
-    padding-left: calc(1rem - 2px);
+    padding-left: calc(1.1rem - 2px);
+}
+
+.soc-study__toolbar {
+    margin: 0 0 0.85rem;
+}
+
+.soc-study__expand-collapse-all {
+    margin: 0;
+    padding: 0.38rem 0.8rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    color: var(--it-text);
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 650;
+    cursor: pointer;
+    transition:
+        border-color 0.12s ease,
+        color 0.12s ease;
+}
+
+.soc-study__expand-collapse-all:hover {
+    border-color: var(--it-accent);
+    color: var(--it-accent);
+}
+
+.soc-study__expand-collapse-all:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.soc-study__layout {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+@media (min-width: 900px) {
+    .soc-study__layout {
+        grid-template-columns: minmax(11rem, 14rem) minmax(0, 1fr);
+        gap: 2rem;
+    }
+}
+
+.soc-study__toc-shell {
+    border-radius: 0.85rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    box-shadow: var(--it-shadow);
+    box-sizing: border-box;
+}
+
+@media (min-width: 900px) {
+    .soc-study__toc-shell {
+        position: sticky;
+        top: 0.75rem;
+        z-index: 12;
+    }
+}
+
+.soc-study__toc-summary {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 1rem 1.1rem;
+    list-style: none;
+    cursor: pointer;
+    user-select: none;
+}
+
+.soc-study__toc-summary::-webkit-details-marker {
+    display: none;
+}
+
+.soc-study__toc-summary::marker {
+    content: '';
+}
+
+.soc-study__toc-summary-label {
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    color: var(--it-text-muted);
+}
+
+.soc-study__toc-summary:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.35rem;
+}
+
+.soc-study__toc-chevron {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-right: 2px solid var(--it-text-muted);
+    border-bottom: 2px solid var(--it-text-muted);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+    flex-shrink: 0;
+}
+
+.soc-study__toc-shell[open] .soc-study__toc-chevron {
+    transform: rotate(225deg);
+}
+
+.soc-study__toc {
+    max-height: min(70vh, 32rem);
+    overflow: auto;
+    padding: 0 1.1rem 1.1rem;
+    box-sizing: border-box;
+}
+
+@media (max-width: 899px) {
+    .soc-study__toc-shell[open] .soc-study__toc {
+        border-top: 1px solid var(--it-border);
+        padding-top: 0.85rem;
+    }
+}
+
+@media (min-width: 900px) {
+    .soc-study__toc {
+        padding: 0 1rem 1.1rem;
+    }
+
+    .soc-study__toc-shell[open] .soc-study__toc {
+        padding-top: 0.85rem;
+        border-top: 1px solid var(--it-border);
+    }
+}
+
+.soc-study__toc-cats {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.85rem;
+}
+
+.soc-study__toc-subs {
+    margin: 0.35rem 0 0;
+    padding: 0 0 0 0.85rem;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.soc-study__toc-cat-link,
+.soc-study__toc-sub-link {
+    color: var(--it-text);
+    text-decoration: none;
+    font-size: 0.88rem;
+    line-height: 1.35;
+}
+
+.soc-study__toc-cat-link {
+    font-weight: 700;
+}
+
+.soc-study__toc-sub-link {
+    font-weight: 500;
+    color: var(--it-text-muted);
+}
+
+.soc-study__toc-cat-link:hover,
+.soc-study__toc-sub-link:hover {
+    color: var(--it-accent);
+}
+
+.soc-study__toc-cat-link:focus-visible,
+.soc-study__toc-sub-link:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.25rem;
+}
+
+.soc-study__main {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    min-width: 0;
+}
+
+.soc-study__topic {
+    scroll-margin-top: 1rem;
+}
+
+.soc-study__sub-accordion {
+    scroll-margin-top: 1rem;
+    margin-bottom: 1.75rem;
+    border: 1px solid var(--it-border);
+    border-radius: 0.85rem;
+    background: var(--it-card);
+    box-sizing: border-box;
+}
+
+.soc-study__sub-accordion:last-child {
+    margin-bottom: 0;
+}
+
+.soc-study__sub-summary {
+    display: flex;
+    flex-wrap: nowrap;
+    align-items: center;
+    gap: 0.5rem 0.65rem;
+    padding: 0.85rem 1rem;
+    min-width: 0;
+    box-sizing: border-box;
+}
+
+.soc-study__sub-disclosure {
+    display: block;
+    flex: 1 1 0;
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    font: inherit;
+    color: inherit;
+    text-align: left;
+    cursor: pointer;
+    user-select: none;
+}
+
+.soc-study__sub-disclosure:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 3px;
+    border-radius: 0.35rem;
+}
+
+.soc-study__sub-chevron-btn {
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+    margin-left: 0.15rem;
+    padding: 0.4rem;
+    border: none;
+    border-radius: 0.35rem;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+    user-select: none;
+}
+
+.soc-study__sub-chevron-btn:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.soc-study__sub-chevron {
+    display: inline-block;
+    width: 0.45rem;
+    height: 0.45rem;
+    flex-shrink: 0;
+    border-right: 2px solid var(--it-text-muted);
+    border-bottom: 2px solid var(--it-text-muted);
+    transform: rotate(45deg);
+    transition: transform 0.2s ease;
+}
+
+.soc-study__sub-accordion--open .soc-study__sub-chevron {
+    transform: rotate(-135deg);
+}
+
+.soc-study__sub-aside {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.soc-study__sub-accordion--open > .soc-study__sub-summary {
+    position: sticky;
+    top: 60px;
+    z-index: 8;
+    border-radius: 0.85rem 0.85rem 0 0;
+    background: var(--it-card);
+    box-shadow: 0 1px 0 var(--it-border);
+}
+
+.soc-study__sub-heading {
+    display: block;
+    margin: 0;
+    min-width: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--it-text-muted);
+}
+
+.soc-study__sub-accordion:not(.soc-study__sub-accordion--open) .soc-study__sub-disclosure .soc-study__sub-heading {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.soc-study__sub-accordion--open .soc-study__sub-disclosure .soc-study__sub-heading {
+    white-space: normal;
+    overflow: visible;
+    word-wrap: break-word;
+    overflow-wrap: anywhere;
+}
+
+.soc-study__sub-topic-practice-badge {
+    flex-shrink: 0;
+    align-self: center;
+    max-width: 6rem;
+    padding: 0.16rem 0.42rem;
+    font-size: 0.72rem;
+    font-weight: 650;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    line-height: 1.35;
+}
+
+.soc-study__sub-summary-actions {
+    display: flex;
+    flex-shrink: 0;
+    align-items: center;
+    gap: 0.35rem;
+}
+
+.soc-study__sub-body {
+    padding: 0 1rem 1.1rem;
 }

@@ -50,6 +50,7 @@ export const routes: Routes = [
     {
         path: 'sociology',
         children: [
+            { path: '', pathMatch: 'full', redirectTo: 'study' },
             {
                 path: 'quiz',
                 loadComponent: () =>
@@ -77,8 +78,7 @@ export const routes: Routes = [
                     import(
                         './features/sociology-dashboard/pages/sociology-dashboard-page/sociology-dashboard-page.component'
                     ).then((m) => m.SociologyDashboardPageComponent)
-            },
-            { path: '', pathMatch: 'full', redirectTo: 'study' }
+            }
         ]
     },
     { path: '**', redirectTo: '' }

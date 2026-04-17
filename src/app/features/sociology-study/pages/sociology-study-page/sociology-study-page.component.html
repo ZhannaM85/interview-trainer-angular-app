@@ -56,135 +56,253 @@
             <a routerLink="/sociology/plan" class="soc-study__intro-link">{{ 'nav.sociologyPlan' | translate }}</a>
             {{ 'sociology.studyIntroPlanAfter' | translate }}
         </p>
+        <p class="soc-study__catalog-hint">{{ 'sociology.studyCatalogEditsHint' | translate }}</p>
         <div class="soc-study__cta-block">
             <a routerLink="/sociology/quiz" class="soc-study__cta-primary">{{ 'study.gotoPractice' | translate }}</a>
             <p class="soc-study__cta-hint">{{ 'study.gotoPracticeHint' | translate }}</p>
         </div>
 
-        @for (topic of visibleSections(); track topic.anchorId) {
-            <article class="soc-study__topic" [attr.id]="topic.anchorId">
-                <h2 class="soc-study__topic-title">{{ topic.topic }}</h2>
-                @for (sub of topic.subtopics; track sub.anchorId) {
-                    <section class="soc-study__sub" [attr.id]="sub.anchorId">
-                        <div class="soc-study__sub-head">
-                            <h3 class="soc-study__sub-title">{{ sub.subtopic }}</h3>
-                            <div class="soc-study__sub-aside">
-                                @if (topicPracticeHint(topic, sub); as tHint) {
-                                    <span
-                                        class="soc-study__practice-badge"
-                                        [class.soc-study__practice-badge--today]="tHint.kind === 'today'"
-                                        [attr.aria-label]="
-                                            tHint.kind === 'today'
-                                                ? ('study.practicedTodayAria' | translate)
-                                                : ('study.lastPracticeAria' | translate: { date: tHint.dateStr })
-                                        "
-                                    >
-                                        @if (tHint.kind === 'today') {
-                                            {{ 'study.practiceHintTodayShort' | translate }}
-                                        } @else {
-                                            {{ tHint.dateStr }}
-                                        }
-                                    </span>
-                                }
-                                <span class="soc-study__sub-actions">
-                                    @if (showMarkStudied(topic, sub)) {
-                                        <button
-                                            type="button"
-                                            class="soc-study__mark-studied"
-                                            [attr.aria-label]="
-                                                ('study.markStudiedAria' | translate) + '. ' + sub.subtopic
-                                            "
-                                            (click)="onMarkStudied(topic, sub)"
-                                        >
-                                            <span class="soc-study__mark-studied-icon" aria-hidden="true">
-                                                <svg class="soc-study__mark-studied-svg" viewBox="0 0 24 24" focusable="false">
-                                                    <circle
-                                                        cx="12"
-                                                        cy="12"
-                                                        r="9"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        stroke-width="2"
-                                                    />
-                                                    <path
-                                                        d="M12 8v8M8 12h8"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        stroke-width="2"
-                                                        stroke-linecap="round"
-                                                    />
-                                                </svg>
-                                            </span>
-                                        </button>
-                                    } @else if (isStudiedTopic(topic, sub)) {
-                                        <span
-                                            class="soc-study__in-practice-badge"
-                                            role="status"
-                                            [attr.aria-label]="'study.studiedAddedToPractice' | translate"
-                                        >
-                                            <svg
-                                                class="soc-study__in-practice-svg"
-                                                viewBox="0 0 24 24"
-                                                aria-hidden="true"
-                                                focusable="false"
-                                            >
-                                                <circle
-                                                    cx="12"
-                                                    cy="12"
-                                                    r="9"
-                                                    fill="currentColor"
-                                                    opacity="0.22"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                />
-                                                <path
-                                                    d="M8 12.5 10.8 15.2 16.2 9.8"
-                                                    fill="none"
-                                                    stroke="currentColor"
-                                                    stroke-width="2"
-                                                    stroke-linecap="round"
-                                                    stroke-linejoin="round"
-                                                />
-                                            </svg>
-                                        </span>
-                                    }
-                                </span>
-                            </div>
-                        </div>
-                        @for (q of sub.questions; track q.id) {
-                            @let hint = questionPracticeHint(q.id);
-                            <div
-                                class="soc-study__q"
-                                [class.soc-study__q--practiced-today]="hint?.kind === 'today'"
-                            >
-                                <p class="soc-study__q-text">{{ q.question }}</p>
-                                <p class="soc-study__q-type">
-                                    {{ q.type === 'single' ? ('sociology.typeSingle' | translate) : ('sociology.typeMulti' | translate) }}
-                                </p>
-                                <ul class="soc-study__options">
-                                    @for (opt of q.options; track $index) {
-                                        <li
-                                            class="soc-study__option"
-                                            [class.soc-study__option--correct]="isCorrectOption(q, $index)"
-                                        >
-                                            @if (isCorrectOption(q, $index)) {
-                                                <span class="soc-study__check" aria-hidden="true">&#10003;</span>
-                                            }
-                                            {{ opt }}
+        @if (hasAccordionSubtopics()) {
+            <div class="soc-study__toolbar">
+                <button type="button" class="soc-study__expand-collapse-all" (click)="toggleExpandCollapseAll()">
+                    {{ 'study.expandCollapseAll' | translate }}
+                </button>
+            </div>
+        }
+
+        <div class="soc-study__layout">
+            <details
+                class="soc-study__toc-shell"
+                [open]="tocExpanded()"
+                (toggle)="onTocShellToggle($event)"
+            >
+                <summary class="soc-study__toc-summary">
+                    <span class="soc-study__toc-summary-label">{{ 'study.tocSummary' | translate }}</span>
+                    <span class="soc-study__toc-chevron" aria-hidden="true"></span>
+                </summary>
+                <nav class="soc-study__toc" [attr.aria-label]="'study.tocNavAria' | translate">
+                    <ul class="soc-study__toc-cats">
+                        @for (topic of visibleSections(); track topic.anchorId) {
+                            <li class="soc-study__toc-cat">
+                                <a
+                                    class="soc-study__toc-cat-link"
+                                    [href]="'#' + topic.anchorId"
+                                    (click)="scrollToTocAnchor($event, topic.anchorId)"
+                                    >{{ topic.topic }}</a>
+                                <ul class="soc-study__toc-subs">
+                                    @for (sub of topic.subtopics; track sub.anchorId) {
+                                        <li>
+                                            <a
+                                                class="soc-study__toc-sub-link"
+                                                [href]="'#' + sub.anchorId"
+                                                (click)="scrollToTocAnchor($event, sub.anchorId, topic, sub)"
+                                                >{{ sub.subtopic }}</a>
                                         </li>
                                     }
                                 </ul>
-                                @if (q.explanation) {
-                                    <p class="soc-study__expl">
-                                        <strong>{{ 'sociology.explanation' | translate }}:</strong>
-                                        {{ q.explanation }}
-                                    </p>
-                                }
+                            </li>
+                        }
+                    </ul>
+                </nav>
+            </details>
+
+            <div class="soc-study__main">
+                @for (topic of visibleSections(); track topic.anchorId) {
+                    <article
+                        class="soc-study__topic"
+                        [attr.id]="topic.anchorId"
+                        [attr.aria-labelledby]="topic.anchorId + '__heading'"
+                    >
+                        <h2 class="soc-study__topic-title" [attr.id]="topic.anchorId + '__heading'">{{ topic.topic }}</h2>
+
+                        @for (sub of topic.subtopics; track sub.anchorId) {
+                            <div
+                                class="soc-study__sub soc-study__sub-accordion"
+                                [class.soc-study__sub-accordion--open]="subtopicAccordionOpen(topic, sub)"
+                                [attr.id]="sub.anchorId"
+                                [attr.data-topic-key]="topicAccordionKey(topic, sub)"
+                            >
+                                <div class="soc-study__sub-summary">
+                                    <button
+                                        type="button"
+                                        class="soc-study__sub-disclosure"
+                                        [attr.aria-expanded]="subtopicAccordionOpen(topic, sub)"
+                                        [attr.aria-controls]="sub.anchorId + '__panel'"
+                                        (click)="toggleSubtopicAccordion(topic, sub)"
+                                    >
+                                        <span class="soc-study__sub-heading" [attr.id]="sub.anchorId + '__heading'">{{
+                                            sub.subtopic
+                                        }}</span>
+                                    </button>
+                                    <div class="soc-study__sub-aside">
+                                        @if (topicPracticeHint(topic, sub); as tHint) {
+                                            <span
+                                                class="soc-study__practice-badge soc-study__sub-topic-practice-badge"
+                                                [class.soc-study__practice-badge--today]="tHint.kind === 'today'"
+                                                [attr.aria-label]="
+                                                    tHint.kind === 'today'
+                                                        ? ('study.practicedTodayAria' | translate)
+                                                        : ('study.lastPracticeAria' | translate: { date: tHint.dateStr })
+                                                "
+                                            >
+                                                @if (tHint.kind === 'today') {
+                                                    {{ 'study.practiceHintTodayShort' | translate }}
+                                                } @else {
+                                                    {{ tHint.dateStr }}
+                                                }
+                                            </span>
+                                        }
+                                        <span class="soc-study__sub-summary-actions">
+                                            @if (showMarkStudied(topic, sub)) {
+                                                <button
+                                                    type="button"
+                                                    class="soc-study__mark-studied"
+                                                    [attr.aria-label]="
+                                                        ('study.markStudiedAria' | translate) + '. ' + sub.subtopic
+                                                    "
+                                                    (click)="onMarkStudied(topic, sub)"
+                                                >
+                                                    <span class="soc-study__mark-studied-icon" aria-hidden="true">
+                                                        <svg class="soc-study__mark-studied-svg" viewBox="0 0 24 24" focusable="false">
+                                                            <circle
+                                                                cx="12"
+                                                                cy="12"
+                                                                r="9"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                stroke-width="2"
+                                                            />
+                                                            <path
+                                                                d="M12 8v8M8 12h8"
+                                                                fill="none"
+                                                                stroke="currentColor"
+                                                                stroke-width="2"
+                                                                stroke-linecap="round"
+                                                            />
+                                                        </svg>
+                                                    </span>
+                                                </button>
+                                            } @else if (isStudiedTopic(topic, sub)) {
+                                                <span
+                                                    class="soc-study__in-practice-badge"
+                                                    role="status"
+                                                    [attr.aria-label]="'study.studiedAddedToPractice' | translate"
+                                                >
+                                                    <svg
+                                                        class="soc-study__in-practice-svg"
+                                                        viewBox="0 0 24 24"
+                                                        aria-hidden="true"
+                                                        focusable="false"
+                                                    >
+                                                        <circle
+                                                            cx="12"
+                                                            cy="12"
+                                                            r="9"
+                                                            fill="currentColor"
+                                                            opacity="0.22"
+                                                            stroke="currentColor"
+                                                            stroke-width="2"
+                                                        />
+                                                        <path
+                                                            d="M8 12.5 10.8 15.2 16.2 9.8"
+                                                            fill="none"
+                                                            stroke="currentColor"
+                                                            stroke-width="2"
+                                                            stroke-linecap="round"
+                                                            stroke-linejoin="round"
+                                                        />
+                                                    </svg>
+                                                </span>
+                                            }
+                                        </span>
+                                        <button
+                                            type="button"
+                                            class="soc-study__sub-chevron-btn"
+                                            tabindex="-1"
+                                            [attr.aria-expanded]="subtopicAccordionOpen(topic, sub)"
+                                            [attr.aria-controls]="sub.anchorId + '__panel'"
+                                            [attr.aria-labelledby]="sub.anchorId + '__heading'"
+                                            (click)="toggleSubtopicAccordion(topic, sub)"
+                                        >
+                                            <span class="soc-study__sub-chevron" aria-hidden="true"></span>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div
+                                    class="soc-study__sub-body"
+                                    [attr.id]="sub.anchorId + '__panel'"
+                                    role="region"
+                                    [attr.aria-labelledby]="sub.anchorId + '__heading'"
+                                    [hidden]="!subtopicAccordionOpen(topic, sub)"
+                                >
+                                    @for (q of sub.questions; track q.id) {
+                                        @let hint = questionPracticeHint(q.id);
+                                        <article
+                                            class="soc-study__q"
+                                            [class.soc-study__q--practiced-today]="hint?.kind === 'today'"
+                                            [attr.id]="'soc-study-q-' + q.id"
+                                        >
+                                            <div class="soc-study__q-toolbar">
+                                                @if (isLocallyEdited(q.id)) {
+                                                    <span class="soc-study__edited-badge">{{
+                                                        'sociology.editedLocallyBadge' | translate
+                                                    }}</span>
+                                                }
+                                                <button type="button" class="soc-study__edit-q" (click)="openQuestionEditor(q)">
+                                                    {{ 'sociology.editQuestion' | translate }}
+                                                </button>
+                                            </div>
+                                            <div class="soc-study__q-heading-row">
+                                                <h4 class="soc-study__q-heading">
+                                                    <span class="soc-study__q-num">{{
+                                                        globalOrdinalByQuestionId().get(q.id)
+                                                    }}.</span>
+                                                    {{ q.question }}
+                                                </h4>
+                                            </div>
+                                            <p class="soc-study__q-type">
+                                                {{
+                                                    q.type === 'single'
+                                                        ? ('sociology.typeSingle' | translate)
+                                                        : ('sociology.typeMulti' | translate)
+                                                }}
+                                            </p>
+                                            <ul class="soc-study__options">
+                                                @for (opt of q.options; track $index) {
+                                                    <li
+                                                        class="soc-study__option"
+                                                        [class.soc-study__option--correct]="isCorrectOption(q, $index)"
+                                                    >
+                                                        @if (isCorrectOption(q, $index)) {
+                                                            <span class="soc-study__check" aria-hidden="true">&#10003;</span>
+                                                        }
+                                                        {{ opt }}
+                                                    </li>
+                                                }
+                                            </ul>
+                                            @if (q.explanation) {
+                                                <p class="soc-study__expl">
+                                                    <strong>{{ 'sociology.explanation' | translate }}:</strong>
+                                                    {{ q.explanation }}
+                                                </p>
+                                            }
+                                        </article>
+                                    }
+                                </div>
                             </div>
                         }
-                    </section>
+                    </article>
                 }
-            </article>
+            </div>
+        </div>
+
+        @if (editorQuestion(); as eq) {
+            <app-sociology-question-editor-sheet
+                [question]="eq"
+                (dismissed)="closeQuestionEditor()"
+                (saved)="closeQuestionEditor()"
+            />
         }
     }
 </section>
