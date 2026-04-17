@@ -17,7 +17,7 @@ import {
 import { evaluateSociologySelection } from '../../../../shared/utils/sociology-answer.utils';
 import type { SociologyOutcome } from '../../../../shared/utils/sociology-answer.utils';
 
-export type SociologyQuizPhase = 'question' | 'answer' | 'feedback';
+export type SociologyQuizPhase = 'question' | 'feedback';
 
 @Component({
     selector: 'app-sociology-quiz-page',
@@ -156,13 +156,6 @@ export class SociologyQuizPageComponent {
         }
         const o = evaluateSociologySelection(q, this.selectedIndices());
         this.outcome.set(o);
-        this.phase.set('answer');
-    }
-
-    protected continueToFeedback(): void {
-        if (this.phase() !== 'answer') {
-            return;
-        }
         this.phase.set('feedback');
     }
 

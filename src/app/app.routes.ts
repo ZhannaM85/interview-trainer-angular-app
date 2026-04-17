@@ -78,7 +78,7 @@ export const routes: Routes = [
                         './features/sociology-dashboard/pages/sociology-dashboard-page/sociology-dashboard-page.component'
                     ).then((m) => m.SociologyDashboardPageComponent)
             },
-            { path: '', pathMatch: 'full', redirectTo: 'quiz' }
+            { path: '', pathMatch: 'full', redirectTo: 'study' }
         ]
     },
     { path: '**', redirectTo: '' }

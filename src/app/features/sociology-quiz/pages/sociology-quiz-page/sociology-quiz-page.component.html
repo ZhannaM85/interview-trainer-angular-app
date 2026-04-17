@@ -140,7 +140,7 @@
                 </button>
             }
 
-            @if (ph === 'answer' || ph === 'feedback') {
+            @if (ph === 'feedback') {
                 <ul class="soc-quiz__reveal" role="list">
                     @for (opt of q.options; track $index) {
                         @let st = optionState($index);
@@ -160,21 +160,6 @@
                         </li>
                     }
                 </ul>
-                @if (q.explanation && ph === 'answer') {
-                    <p class="soc-quiz__explanation">
-                        <strong>{{ 'sociology.explanation' | translate }}:</strong>
-                        {{ q.explanation }}
-                    </p>
-                }
-            }
-
-            @if (ph === 'answer') {
-                <button type="button" class="soc-quiz__btn soc-quiz__btn--primary" (click)="continueToFeedback()">
-                    {{ 'sociology.seeResult' | translate }}
-                </button>
-            }
-
-            @if (ph === 'feedback') {
                 @let o = outcome();
                 <p
                     class="soc-quiz__feedback"
