@@ -175,7 +175,14 @@ export class App {
     }
 
     private pathOnly(url: string): string {
-        const path = url.split('?')[0].split('#')[0];
-        return path || '/';
+        const noQuery = url.split('?')[0];
+        if (noQuery.includes('#')) {
+            const afterHash = noQuery.split('#').pop() ?? '';
+            if (!afterHash) {
+                return '/';
+            }
+            return afterHash.startsWith('/') ? afterHash : `/${afterHash}`;
+        }
+        return noQuery || '/';
     }
 }
