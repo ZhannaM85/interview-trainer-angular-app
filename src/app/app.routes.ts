@@ -1,7 +1,14 @@
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-    { path: '', pathMatch: 'full', redirectTo: 'quiz' },
+    {
+        path: '',
+        pathMatch: 'full',
+        loadComponent: () =>
+            import('./features/subject-selector/pages/subject-selector-page/subject-selector-page.component').then(
+                (m) => m.SubjectSelectorPageComponent
+            )
+    },
     {
         path: 'quiz',
         loadComponent: () =>
@@ -40,5 +47,39 @@ export const routes: Routes = [
                 (m) => m.MyQuestionsPageComponent
             )
     },
-    { path: '**', redirectTo: 'quiz' }
+    {
+        path: 'sociology',
+        children: [
+            {
+                path: 'quiz',
+                loadComponent: () =>
+                    import('./features/sociology-quiz/pages/sociology-quiz-page/sociology-quiz-page.component').then(
+                        (m) => m.SociologyQuizPageComponent
+                    )
+            },
+            {
+                path: 'study',
+                loadComponent: () =>
+                    import(
+                        './features/sociology-study/pages/sociology-study-page/sociology-study-page.component'
+                    ).then((m) => m.SociologyStudyPageComponent)
+            },
+            {
+                path: 'plan',
+                loadComponent: () =>
+                    import(
+                        './features/sociology-plan/pages/sociology-plan-page/sociology-plan-page.component'
+                    ).then((m) => m.SociologyPlanPageComponent)
+            },
+            {
+                path: 'dashboard',
+                loadComponent: () =>
+                    import(
+                        './features/sociology-dashboard/pages/sociology-dashboard-page/sociology-dashboard-page.component'
+                    ).then((m) => m.SociologyDashboardPageComponent)
+            },
+            { path: '', pathMatch: 'full', redirectTo: 'quiz' }
+        ]
+    },
+    { path: '**', redirectTo: '' }
 ];

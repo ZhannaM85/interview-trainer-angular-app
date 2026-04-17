@@ -1,0 +1,95 @@
+<section class="soc-dash" aria-labelledby="soc-dash-title">
+    <h1 id="soc-dash-title" class="soc-dash__title">{{ 'sociology.dashboardTitle' | translate }}</h1>
+
+    @if (loadError()) {
+        <p class="soc-dash__message soc-dash__message--error" role="alert">
+            {{ 'sociology.loadError' | translate }}
+        </p>
+    } @else if (loading()) {
+        <p class="soc-dash__message">{{ 'sociology.loading' | translate }}</p>
+    } @else if (stats(); as s) {
+        @let at = activeTimeView();
+        <div class="soc-dash__layout">
+            <article class="soc-dash__card">
+                <h2 class="soc-dash__card-title">{{ 'sociology.accuracy' | translate }}</h2>
+                <p class="soc-dash__metric">{{ s.accuracyPct }}%</p>
+                <app-progress-bar
+                    [value]="s.accuracyPct"
+                    [max]="100"
+                    [label]="'sociology.accuracy' | translate"
+                />
+                <p class="soc-dash__hint">{{ 'sociology.accuracyHint' | translate }}</p>
+            </article>
+
+            <article class="soc-dash__card">
+                <h2 class="soc-dash__card-title">{{ 'sociology.questionsAnswered' | translate }}</h2>
+                <p class="soc-dash__metric">{{ s.totalAttempts }}</p>
+                <p class="soc-dash__hint">
+                    {{ 'sociology.questionsTouched' | translate: { count: s.questionsTouched } }}
+                </p>
+            </article>
+
+            <article class="soc-dash__card">
+                <h2 class="soc-dash__card-title">{{ 'dashboard.activeTimeHeading' | translate }}</h2>
+                <p class="soc-dash__metric" aria-live="polite">
+                    {{
+                        'dashboard.activeTimeMetric'
+                            | translate: {
+                                  hours: at.hours,
+                                  minutes: at.minutes
+                              }
+                    }}
+                </p>
+                @if (at.todaySeconds > 0) {
+                    <p class="soc-dash__hint">
+                        {{
+                            'dashboard.activeTimeTodayHint'
+                                | translate: {
+                                      hours: at.todayHours,
+                                      minutes: at.todayMinutes
+                                  }
+                        }}
+                    </p>
+                }
+                <p class="soc-dash__hint">{{ 'sociology.activeTimeDisclaimer' | translate }}</p>
+            </article>
+
+            <article class="soc-dash__card soc-dash__card--wide">
+                <h2 class="soc-dash__card-title">{{ 'sociology.weakSubtopics' | translate }}</h2>
+                @if (s.weakSubtopics.length === 0) {
+                    <p class="soc-dash__hint">{{ 'sociology.noWeakSubtopics' | translate }}</p>
+                } @else {
+                    <ul class="soc-dash__weak-list">
+                        @for (w of s.weakSubtopics; track w.subtopic) {
+                            <li class="soc-dash__weak-item">
+                                <a
+                                    class="soc-dash__weak-link"
+                                    routerLink="/sociology/study"
+                                    [queryParams]="{ topics: w.subtopic }"
+                                >
+                                    {{ w.subtopic }}
+                                </a>
+                                <span class="soc-dash__weak-meta">
+                                    {{ w.accuracyPct }}% · {{ w.attempts }}
+                                    {{ 'sociology.attempts' | translate }}
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </article>
+
+            <article class="soc-dash__card soc-dash__card--wide">
+                <app-activity-heatmap
+                    variant="sociology"
+                    headingKey="sociology.heatmapHeading"
+                    descriptionKey="sociology.heatmapDescription"
+                />
+            </article>
+        </div>
+
+        <p class="soc-dash__footer">
+            <a routerLink="/sociology/quiz" class="soc-dash__link">{{ 'nav.sociologyQuiz' | translate }}</a>
+        </p>
+    }
+</section>

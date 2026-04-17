@@ -5,6 +5,7 @@ import {
     effect,
     ElementRef,
     inject,
+    input,
     signal,
     viewChild
 } from '@angular/core';
@@ -13,6 +14,8 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { map } from 'rxjs';
 
 import { ActivityService } from '../../../../core/services/activity.service';
+import { SociologyActivityService } from '../../../../core/services/sociology-activity.service';
+import { sociologyPlanTopicIdDisplayLabel } from '../../../../shared/utils/sociology-topic-key.utils';
 import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
 
 const WEEKS = 26;
@@ -46,20 +49,31 @@ export interface HeatmapDayDetail {
 })
 export class ActivityHeatmapComponent {
     private readonly activityService = inject(ActivityService);
+    private readonly sociologyActivityService = inject(SociologyActivityService);
     private readonly translate = inject(TranslateService);
+
+    /** `interview` = main `activity-by-day`; `sociology` = isolated sociology store. */
+    readonly variant = input<'interview' | 'sociology'>('interview');
+
+    readonly headingKey = input<string>('heatmap.heading');
+    readonly descriptionKey = input<string>('heatmap.description');
+
+    private readonly activityMapForHeatmap = computed(() =>
+        this.variant() === 'sociology' ? this.sociologyActivityService.activityMap() : this.activityService.activityMap()
+    );
 
     /** Scroll container; scrolled to the right so the current week (today) is in view. */
     private readonly scrollHost = viewChild<ElementRef<HTMLElement>>('heatmapScroll');
 
     protected readonly dayDetail = signal<HeatmapDayDetail | null>(null);
 
-    private readonly activeLang = toSignal(
-        this.translate.onLangChange.pipe(map((e) => e.lang)),
-        { initialValue: this.translate.currentLang }
-    );
+    private readonly activeLang = toSignal(this.translate.onLangChange.pipe(map((e) => e.lang)), {
+        initialValue: this.translate.currentLang
+    });
 
     protected readonly weekColumns = computed(() => {
         void this.activeLang();
+        void this.activityMapForHeatmap();
         return this.buildGrid();
     });
 
@@ -90,7 +104,7 @@ export class ActivityHeatmapComponent {
         if (cell.isFuture) {
             return;
         }
-        const row = this.activityService.activityMap().get(cell.date);
+        const row = this.activityMapForHeatmap().get(cell.date);
         const loc = this.translate.currentLang === 'ru' ? 'ru-RU' : 'en-US';
         const dt = this.parseLocalYmd(cell.date);
         const dateLabel = dt.toLocaleDateString(loc, {
@@ -125,6 +139,10 @@ export class ActivityHeatmapComponent {
         return i >= 0 ? topicId.slice(i + 1) : topicId;
     }
 
+    protected sociologyTopicLabel(topicId: string): string {
+        return sociologyPlanTopicIdDisplayLabel(topicId);
+    }
+
     private parseLocalYmd(ymd: string): Date {
         const parts = ymd.split('-').map(Number);
         const y = parts[0] ?? 0;
@@ -141,7 +159,7 @@ export class ActivityHeatmapComponent {
         const gridStart = new Date(todaySunday);
         gridStart.setDate(gridStart.getDate() - (WEEKS - 1) * 7);
 
-        const map = this.activityService.activityMap();
+        const map = this.activityMapForHeatmap();
         const cols: HeatmapCell[][] = [];
 
         for (let w = 0; w < WEEKS; w++) {

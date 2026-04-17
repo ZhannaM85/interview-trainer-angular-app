@@ -4,9 +4,17 @@ import { NavigationEnd, Router } from '@angular/router';
 import { filter, fromEvent } from 'rxjs';
 
 import { ActivityService } from './activity.service';
+import { SociologyActivityService } from './sociology-activity.service';
 
 /** Routes where foreground tab time counts as “learning” time. */
-const LEARNING_PATHS = new Set(['/quiz', '/study', '/plan']);
+const LEARNING_PATHS = new Set([
+    '/quiz',
+    '/study',
+    '/plan',
+    '/sociology/quiz',
+    '/sociology/study',
+    '/sociology/plan'
+]);
 
 /** Persist batched seconds at most this often to limit localStorage writes. */
 const FLUSH_INTERVAL_SEC = 5;
@@ -18,9 +26,12 @@ export class ActiveTimeService {
     private readonly document = inject(DOCUMENT);
     private readonly router = inject(Router);
     private readonly activityService = inject(ActivityService);
+    private readonly sociologyActivityService = inject(SociologyActivityService);
     private readonly destroyRef = inject(DestroyRef);
 
-    private pendingSeconds = 0;
+    /** Split so navigation between tracks does not mis-attribute batched seconds. */
+    private pendingInterviewSeconds = 0;
+    private pendingSociologySeconds = 0;
     private intervalId: ReturnType<typeof setInterval> | null = null;
 
     constructor() {
@@ -56,8 +67,13 @@ export class ActiveTimeService {
         if (!this.shouldCountActiveTime()) {
             return;
         }
-        this.pendingSeconds += 1;
-        if (this.pendingSeconds >= FLUSH_INTERVAL_SEC) {
+        const path = this.learningPathOnly(this.router.url);
+        if (path.startsWith('/sociology')) {
+            this.pendingSociologySeconds += 1;
+        } else {
+            this.pendingInterviewSeconds += 1;
+        }
+        if (this.pendingInterviewSeconds + this.pendingSociologySeconds >= FLUSH_INTERVAL_SEC) {
             this.flush();
         }
     }
@@ -76,11 +92,13 @@ export class ActiveTimeService {
     }
 
     private flush(): void {
-        if (this.pendingSeconds <= 0) {
-            return;
+        if (this.pendingInterviewSeconds > 0) {
+            this.activityService.addActiveSeconds(this.pendingInterviewSeconds);
+            this.pendingInterviewSeconds = 0;
         }
-        const delta = this.pendingSeconds;
-        this.pendingSeconds = 0;
-        this.activityService.addActiveSeconds(delta);
+        if (this.pendingSociologySeconds > 0) {
+            this.sociologyActivityService.addActiveSeconds(this.pendingSociologySeconds);
+            this.pendingSociologySeconds = 0;
+        }
     }
 }
