@@ -204,6 +204,31 @@
     display: flex;
 }
 
+.app__nav-group {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.2rem;
+}
+
+.app__nav-group-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--it-text-muted);
+    padding: 0.35rem 0.65rem 0.1rem;
+    opacity: 0.9;
+}
+
+.app__nav-sep {
+    display: block;
+    height: 1px;
+    margin: 0.35rem 0;
+    background: var(--it-border);
+    flex-shrink: 0;
+}
+
 .app__nav a {
     padding: 0.55rem 0.65rem;
     border-radius: 0.5rem;
@@ -361,17 +386,36 @@
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
+        align-items: center;
         position: static;
         grid-column: 1 / -1;
         grid-row: 2;
         padding: 0;
         border: none;
         box-shadow: none;
-        gap: 0.35rem;
+        gap: 0.35rem 0.5rem;
     }
 
     .app__header--nav-open .app__nav {
         display: flex;
+    }
+
+    .app__nav-group {
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.35rem;
+    }
+
+    .app__nav-group-label {
+        padding: 0.35rem 0.25rem 0.35rem 0;
+        width: auto;
+    }
+
+    .app__nav-sep {
+        width: 1px;
+        height: 1.25rem;
+        margin: 0 0.15rem;
     }
 
     .app__nav a {

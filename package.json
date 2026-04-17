@@ -9,6 +9,7 @@
     "data:code-examples": "node scripts/build-code-examples.mjs",
     "data:read-more-links": "node scripts/merge-read-more-links.mjs",
     "data:i18n-questions": "node scripts/apply-russian-translations.mjs",
+    "data:pdf-text": "node scripts/pdf-extract-text.mjs",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "e2e": "playwright test",
@@ -47,6 +48,7 @@
     "@angular/compiler-cli": "^21.1.0",
     "@playwright/test": "^1.59.1",
     "jsdom": "^27.1.0",
+    "pdf-parse": "^2.4.5",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"
   }

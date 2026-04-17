@@ -14,7 +14,50 @@
         "plan": "План на сегодня",
         "quiz": "Практика",
         "dashboard": "Прогресс",
-        "myQuestions": "Мои вопросы"
+        "myQuestions": "Мои вопросы",
+        "sectionJs": "Собеседование",
+        "sectionSociology": "Социология",
+        "sociologyQuiz": "Социология — практика",
+        "sociologyStudy": "Социология — справочник",
+        "sociologyDashboard": "Социология — прогресс"
+    },
+    "subjectSelector": {
+        "title": "Выберите предмет",
+        "js": "Подготовка к собеседованию JS и Angular",
+        "sociology": "Социология",
+        "jsDescription": "Справочник, интервальные повторения и прогресс по JavaScript, Angular и RxJS.",
+        "sociologyDescription": "Тесты по методологии и методам социологии (формулировки на русском).",
+        "open": "Открыть"
+    },
+    "sociology": {
+        "correct": "Верно",
+        "wrong": "Неверно",
+        "partial": "Частично верно",
+        "next": "Следующий вопрос",
+        "submit": "Ответить",
+        "explanation": "Пояснение",
+        "loading": "Загрузка…",
+        "loadError": "Не удалось загрузить вопросы по социологии.",
+        "sessionComplete": "Раунд завершён",
+        "sessionCompleteHint": "Начните заново или откройте справочник / прогресс.",
+        "restart": "Практиковать снова",
+        "seeResult": "Показать результат",
+        "chooseOne": "Выберите один ответ",
+        "chooseMany": "Выберите один или несколько ответов",
+        "studyTitle": "Справочник по социологии",
+        "studyIntro": "Просмотр вопросов и верных ответов. Далее —",
+        "topicsFilterBanner": "Включён фильтр по подтеме.",
+        "clearFilter": "Показать всё",
+        "typeSingle": "Один верный",
+        "typeMulti": "Несколько верных",
+        "dashboardTitle": "Прогресс по социологии",
+        "accuracy": "Точность",
+        "accuracyHint": "Полностью верные ответы ÷ все попытки (частично верные не считаются полным попаданием).",
+        "questionsAnswered": "Всего попыток",
+        "questionsTouched": "Вопросов с хотя бы одной попыткой: {{count}}",
+        "weakSubtopics": "Подтемы для повторения",
+        "noWeakSubtopics": "Слабых подтем не видно (нужно ≥3 попыток и ниже 60% верных).",
+        "attempts": "попыток"
     },
     "locale": {
         "selectLabel": "Язык",
@@ -45,7 +88,8 @@
             "javascript": "JavaScript",
             "angular": "Angular",
             "rxjs": "RxJS",
-            "custom": "Мои вопросы"
+            "custom": "Мои вопросы",
+            "sociology": "Социология"
         },
         "markStudied": "Отметить как изучено",
         "markStudiedAddsToPractice": "Отметить как изучено (добавить в практику)",
@@ -263,7 +307,8 @@
         "javascript": "JavaScript",
         "angular": "Angular",
         "rxjs": "RxJS",
-        "custom": "Мои вопросы"
+        "custom": "Мои вопросы",
+        "sociology": "Социология"
     },
     "difficulty": {
         "beginner": "Начальный",

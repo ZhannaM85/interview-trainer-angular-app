@@ -1,0 +1,60 @@
+<section class="soc-study" aria-labelledby="soc-study-title">
+    <h1 id="soc-study-title" class="soc-study__title">{{ 'sociology.studyTitle' | translate }}</h1>
+
+    @if (loadError()) {
+        <p class="soc-study__message soc-study__message--error" role="alert">
+            {{ 'sociology.loadError' | translate }}
+        </p>
+    } @else if (loading()) {
+        <p class="soc-study__message">{{ 'sociology.loading' | translate }}</p>
+    } @else {
+        @if (topicsFocusActive()) {
+            <p class="soc-study__banner" role="status">
+                {{ 'sociology.topicsFilterBanner' | translate }}
+                <a routerLink="/sociology/study" class="soc-study__banner-link">{{ 'sociology.clearFilter' | translate }}</a>
+            </p>
+        }
+        <p class="soc-study__intro">
+            {{ 'sociology.studyIntro' | translate }}
+            <a routerLink="/sociology/quiz" class="soc-study__intro-link">{{ 'nav.sociologyQuiz' | translate }}</a>
+        </p>
+
+        @for (topic of visibleSections(); track topic.anchorId) {
+            <article class="soc-study__topic" [attr.id]="topic.anchorId">
+                <h2 class="soc-study__topic-title">{{ topic.topic }}</h2>
+                @for (sub of topic.subtopics; track sub.anchorId) {
+                    <section class="soc-study__sub" [attr.id]="sub.anchorId">
+                        <h3 class="soc-study__sub-title">{{ sub.subtopic }}</h3>
+                        @for (q of sub.questions; track q.id) {
+                            <div class="soc-study__q">
+                                <p class="soc-study__q-text">{{ q.question }}</p>
+                                <p class="soc-study__q-type">
+                                    {{ q.type === 'single' ? ('sociology.typeSingle' | translate) : ('sociology.typeMulti' | translate) }}
+                                </p>
+                                <ul class="soc-study__options">
+                                    @for (opt of q.options; track $index) {
+                                        <li
+                                            class="soc-study__option"
+                                            [class.soc-study__option--correct]="isCorrectOption(q, $index)"
+                                        >
+                                            @if (isCorrectOption(q, $index)) {
+                                                <span class="soc-study__check" aria-hidden="true">✓</span>
+                                            }
+                                            {{ opt }}
+                                        </li>
+                                    }
+                                </ul>
+                                @if (q.explanation) {
+                                    <p class="soc-study__expl">
+                                        <strong>{{ 'sociology.explanation' | translate }}:</strong>
+                                        {{ q.explanation }}
+                                    </p>
+                                }
+                            </div>
+                        }
+                    </section>
+                }
+            </article>
+        }
+    }
+</section>

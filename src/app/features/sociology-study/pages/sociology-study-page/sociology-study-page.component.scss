@@ -1,0 +1,124 @@
+.soc-study {
+    width: 100%;
+    max-width: 720px;
+    margin: 0 auto;
+    padding: 0 1rem 2.5rem;
+    box-sizing: border-box;
+}
+
+.soc-study__title {
+    margin: 0 0 1rem;
+    font-size: 1.45rem;
+    font-weight: 700;
+}
+
+.soc-study__message {
+    margin: 0;
+    color: var(--it-text-muted);
+}
+
+.soc-study__message--error {
+    color: var(--it-error);
+}
+
+.soc-study__banner {
+    margin: 0 0 1rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: 0.5rem;
+    background: var(--it-accent-dim);
+    border: 1px solid var(--it-border);
+    font-size: 0.9rem;
+    line-height: 1.4;
+}
+
+.soc-study__banner-link {
+    margin-left: 0.35rem;
+    font-weight: 700;
+    color: var(--it-accent);
+}
+
+.soc-study__intro {
+    margin: 0 0 1.5rem;
+    line-height: 1.45;
+    color: var(--it-text-muted);
+}
+
+.soc-study__intro-link {
+    font-weight: 700;
+    color: var(--it-accent);
+}
+
+.soc-study__topic {
+    margin-bottom: 2rem;
+}
+
+.soc-study__topic-title {
+    margin: 0 0 1rem;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--it-border);
+    padding-bottom: 0.35rem;
+}
+
+.soc-study__sub {
+    margin-bottom: 1.5rem;
+}
+
+.soc-study__sub-title {
+    margin: 0 0 0.75rem;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--it-text);
+}
+
+.soc-study__q {
+    margin-bottom: 1.25rem;
+    padding: 0.85rem 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+}
+
+.soc-study__q-text {
+    margin: 0 0 0.5rem;
+    font-weight: 600;
+    line-height: 1.45;
+}
+
+.soc-study__q-type {
+    margin: 0 0 0.5rem;
+    font-size: 0.8rem;
+    color: var(--it-text-muted);
+}
+
+.soc-study__options {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.35rem;
+}
+
+.soc-study__option {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.35rem;
+    font-size: 0.95rem;
+    line-height: 1.4;
+}
+
+.soc-study__option--correct {
+    font-weight: 600;
+    color: var(--it-accent);
+}
+
+.soc-study__check {
+    flex-shrink: 0;
+}
+
+.soc-study__expl {
+    margin: 0.65rem 0 0;
+    font-size: 0.9rem;
+    color: var(--it-text-muted);
+    line-height: 1.45;
+}

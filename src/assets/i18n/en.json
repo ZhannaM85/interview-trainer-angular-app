@@ -14,7 +14,50 @@
         "plan": "Plan for today",
         "quiz": "Practice",
         "dashboard": "Progress",
-        "myQuestions": "My Questions"
+        "myQuestions": "My Questions",
+        "sectionJs": "Interview prep",
+        "sectionSociology": "Sociology",
+        "sociologyQuiz": "Sociology — Practice",
+        "sociologyStudy": "Sociology — Study",
+        "sociologyDashboard": "Sociology — Progress"
+    },
+    "subjectSelector": {
+        "title": "Choose a subject",
+        "js": "JavaScript & Angular interview prep",
+        "sociology": "Sociology (RU)",
+        "jsDescription": "Study guide, spaced repetition practice, and progress for JS / Angular / RxJS.",
+        "sociologyDescription": "Multiple-choice sociology methodology and methods (questions in Russian).",
+        "open": "Open"
+    },
+    "sociology": {
+        "correct": "Correct",
+        "wrong": "Wrong",
+        "partial": "Partially correct",
+        "next": "Next question",
+        "submit": "Submit",
+        "explanation": "Explanation",
+        "loading": "Loading…",
+        "loadError": "Could not load sociology questions.",
+        "sessionComplete": "Round complete",
+        "sessionCompleteHint": "Restart to practice again, or open Study / Progress.",
+        "restart": "Practice again",
+        "seeResult": "See result",
+        "chooseOne": "Choose one answer",
+        "chooseMany": "Choose one or more answers",
+        "studyTitle": "Sociology study guide",
+        "studyIntro": "Review questions and correct answers (Russian). Then go to",
+        "topicsFilterBanner": "Filtered by subtopic.",
+        "clearFilter": "Show all",
+        "typeSingle": "Single choice",
+        "typeMulti": "Multiple choice",
+        "dashboardTitle": "Sociology progress",
+        "accuracy": "Accuracy",
+        "accuracyHint": "Fully correct answers ÷ all attempts (partial answers count as not fully correct).",
+        "questionsAnswered": "Total attempts",
+        "questionsTouched": "{{count}} questions with at least one attempt",
+        "weakSubtopics": "Subtopics to review",
+        "noWeakSubtopics": "No weak subtopics detected (need ≥3 attempts and below 60% correct).",
+        "attempts": "attempts"
     },
     "locale": {
         "selectLabel": "Language",
@@ -45,7 +88,8 @@
             "javascript": "JavaScript",
             "angular": "Angular",
             "rxjs": "RxJS",
-            "custom": "My Questions"
+            "custom": "My Questions",
+            "sociology": "Sociology"
         },
         "markStudied": "Mark as studied",
         "markStudiedAddsToPractice": "Mark as studied (adds to practice)",
@@ -263,7 +307,8 @@
         "javascript": "JavaScript",
         "angular": "Angular",
         "rxjs": "RxJS",
-        "custom": "My Questions"
+        "custom": "My Questions",
+        "sociology": "Sociology"
     },
     "difficulty": {
         "beginner": "Beginner",

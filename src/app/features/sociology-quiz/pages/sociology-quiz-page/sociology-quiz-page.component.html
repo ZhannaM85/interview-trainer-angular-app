@@ -1,0 +1,138 @@
+<section class="soc-quiz" aria-labelledby="soc-quiz-title">
+    <h1 id="soc-quiz-title" class="visually-hidden">{{ 'nav.sociologyQuiz' | translate }}</h1>
+
+    @if (loadError()) {
+        <p class="soc-quiz__message soc-quiz__message--error" role="alert">
+            {{ 'sociology.loadError' | translate }}
+        </p>
+    } @else if (loading()) {
+        <p class="soc-quiz__message">{{ 'sociology.loading' | translate }}</p>
+    } @else if (sessionComplete()) {
+        <div class="soc-quiz__done">
+            <h2 class="soc-quiz__done-title">{{ 'sociology.sessionComplete' | translate }}</h2>
+            <p class="soc-quiz__done-text">{{ 'sociology.sessionCompleteHint' | translate }}</p>
+            <div class="soc-quiz__done-actions">
+                <button type="button" class="soc-quiz__btn soc-quiz__btn--primary" (click)="restartSession()">
+                    {{ 'sociology.restart' | translate }}
+                </button>
+                <a routerLink="/sociology/study" class="soc-quiz__link">{{ 'nav.sociologyStudy' | translate }}</a>
+                <a routerLink="/sociology/dashboard" class="soc-quiz__link">{{ 'nav.sociologyDashboard' | translate }}</a>
+            </div>
+        </div>
+    } @else if (currentQuestion(); as q) {
+        @let ph = phase();
+        <div class="soc-quiz__panel">
+            <p class="soc-quiz__meta">
+                {{ sessionIndex() + 1 }} / {{ sessionTotal() }}
+            </p>
+            <h2 class="soc-quiz__question">{{ q.question }}</h2>
+
+            @if (ph === 'question') {
+                @if (q.type === 'single') {
+                    <fieldset class="soc-quiz__fieldset">
+                        <legend class="visually-hidden">{{ 'sociology.chooseOne' | translate }}</legend>
+                        @for (opt of q.options; track $index) {
+                            <label class="soc-quiz__option">
+                                <input
+                                    type="radio"
+                                    name="soc-single"
+                                    [value]="$index"
+                                    [checked]="isSelected($index)"
+                                    (change)="selectSingle($index)"
+                                />
+                                <span class="soc-quiz__option-text">{{ opt }}</span>
+                            </label>
+                        }
+                    </fieldset>
+                } @else {
+                    <fieldset class="soc-quiz__fieldset">
+                        <legend class="visually-hidden">{{ 'sociology.chooseMany' | translate }}</legend>
+                        @for (opt of q.options; track $index) {
+                            <label class="soc-quiz__option">
+                                <input
+                                    type="checkbox"
+                                    [checked]="isSelected($index)"
+                                    (change)="toggleMulti($index)"
+                                />
+                                <span class="soc-quiz__option-text">{{ opt }}</span>
+                            </label>
+                        }
+                    </fieldset>
+                }
+                <button
+                    type="button"
+                    class="soc-quiz__btn soc-quiz__btn--primary"
+                    (click)="submitQuestion()"
+                    [disabled]="!canSubmitQuestion()"
+                >
+                    {{ 'sociology.submit' | translate }}
+                </button>
+            }
+
+            @if (ph === 'answer' || ph === 'feedback') {
+                <ul class="soc-quiz__reveal" role="list">
+                    @for (opt of q.options; track $index) {
+                        @let st = optionState($index);
+                        <li
+                            class="soc-quiz__reveal-item"
+                            [class.soc-quiz__reveal-item--correct]="st === 'correct'"
+                            [class.soc-quiz__reveal-item--wrong]="st === 'wrong'"
+                            [class.soc-quiz__reveal-item--missed]="st === 'missed'"
+                        >
+                            @if (st === 'correct' || st === 'missed') {
+                                <span class="soc-quiz__mark" aria-hidden="true">✓</span>
+                            }
+                            @if (st === 'wrong') {
+                                <span class="soc-quiz__mark" aria-hidden="true">✗</span>
+                            }
+                            <span>{{ opt }}</span>
+                        </li>
+                    }
+                </ul>
+                @if (q.explanation && ph === 'answer') {
+                    <p class="soc-quiz__explanation">
+                        <strong>{{ 'sociology.explanation' | translate }}:</strong>
+                        {{ q.explanation }}
+                    </p>
+                }
+            }
+
+            @if (ph === 'answer') {
+                <button type="button" class="soc-quiz__btn soc-quiz__btn--primary" (click)="continueToFeedback()">
+                    {{ 'sociology.seeResult' | translate }}
+                </button>
+            }
+
+            @if (ph === 'feedback') {
+                @let o = outcome();
+                <p
+                    class="soc-quiz__feedback"
+                    [class.soc-quiz__feedback--ok]="o === 'correct'"
+                    [class.soc-quiz__feedback--bad]="o === 'wrong'"
+                    [class.soc-quiz__feedback--partial]="o === 'partial'"
+                    role="status"
+                >
+                    @if (o === 'correct') {
+                        <span aria-hidden="true">✅</span>
+                        {{ 'sociology.correct' | translate }}
+                    } @else if (o === 'wrong') {
+                        <span aria-hidden="true">❌</span>
+                        {{ 'sociology.wrong' | translate }}
+                    } @else if (o === 'partial') {
+                        <span aria-hidden="true">⚠️</span>
+                        {{ 'sociology.partial' | translate }}
+                    }
+                </p>
+                @if (q.explanation) {
+                    <p class="soc-quiz__explanation">
+                        <strong>{{ 'sociology.explanation' | translate }}:</strong>
+                        {{ q.explanation }}
+                    </p>
+                }
+                <button type="button" class="soc-quiz__btn soc-quiz__btn--primary" (click)="nextQuestion()">
+                    {{ 'sociology.next' | translate }}
+                </button>
+            }
+        </div>
+    }
+</section>

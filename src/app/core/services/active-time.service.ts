@@ -6,7 +6,13 @@ import { filter, fromEvent } from 'rxjs';
 import { ActivityService } from './activity.service';
 
 /** Routes where foreground tab time counts as “learning” time. */
-const LEARNING_PATHS = new Set(['/quiz', '/study', '/plan']);
+const LEARNING_PATHS = new Set([
+    '/quiz',
+    '/study',
+    '/plan',
+    '/sociology/quiz',
+    '/sociology/study'
+]);
 
 /** Persist batched seconds at most this often to limit localStorage writes. */
 const FLUSH_INTERVAL_SEC = 5;
