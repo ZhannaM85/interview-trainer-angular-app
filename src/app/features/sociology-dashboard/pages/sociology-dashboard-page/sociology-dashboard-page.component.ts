@@ -13,8 +13,8 @@ import { ProgressBarComponent } from '../../../../shared/components/progress-bar
 
 export interface SociologyWeakSubtopic {
     subtopic: string;
-    accuracyPct: number;
-    attempts: number;
+    /** How many more fully correct answers (across this subtopic) clear it from the weak list. */
+    clearNeeded: number;
 }
 
 export interface SociologyDashboardStats {
@@ -108,11 +108,12 @@ export class SociologyDashboardPageComponent {
 
         const weakSubtopics: SociologyWeakSubtopic[] = [];
         for (const [subtopic, agg] of bySubtopic) {
-            if (agg.attempts >= 3 && agg.correct / agg.attempts < 0.6) {
+            // Any non–fully-correct attempt (wrong or partial) flags the subtopic so the user
+            // can jump back from Progress; unlike the interview dashboard’s 3×60% rule.
+            if (agg.attempts >= 1 && agg.correct < agg.attempts) {
                 weakSubtopics.push({
                     subtopic,
-                    accuracyPct: Math.round((agg.correct / agg.attempts) * 1000) / 10,
-                    attempts: agg.attempts
+                    clearNeeded: agg.attempts - agg.correct
                 });
             }
         }

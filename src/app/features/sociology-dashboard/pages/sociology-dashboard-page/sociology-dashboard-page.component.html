@@ -55,24 +55,29 @@
             </article>
 
             <article class="soc-dash__card soc-dash__card--wide">
-                <h2 class="soc-dash__card-title">{{ 'sociology.weakSubtopics' | translate }}</h2>
+                <h2 class="soc-dash__card-title">{{ 'dashboard.weakTopics' | translate }}</h2>
                 @if (s.weakSubtopics.length === 0) {
                     <p class="soc-dash__hint">{{ 'sociology.noWeakSubtopics' | translate }}</p>
                 } @else {
-                    <ul class="soc-dash__weak-list">
+                    <ul class="soc-dash__list">
                         @for (w of s.weakSubtopics; track w.subtopic) {
-                            <li class="soc-dash__weak-item">
+                            <li>
                                 <a
-                                    class="soc-dash__weak-link"
+                                    class="soc-dash__topic"
                                     routerLink="/sociology/study"
                                     [queryParams]="{ topics: w.subtopic }"
+                                    [attr.aria-label]="
+                                        'sociology.weakSubtopicStudyAria' | translate: { topic: w.subtopic }
+                                    "
                                 >
-                                    {{ w.subtopic }}
+                                    <div class="soc-dash__topic-info">
+                                        <span class="soc-dash__topic-name">{{ w.subtopic }}</span>
+                                        <span class="soc-dash__topic-note">{{
+                                            'sociology.weakSubtopicNote' | translate: { count: w.clearNeeded }
+                                        }}</span>
+                                    </div>
+                                    <span class="soc-dash__topic-mark" aria-hidden="true">→</span>
                                 </a>
-                                <span class="soc-dash__weak-meta">
-                                    {{ w.accuracyPct }}% · {{ w.attempts }}
-                                    {{ 'sociology.attempts' | translate }}
-                                </span>
                             </li>
                         }
                     </ul>
