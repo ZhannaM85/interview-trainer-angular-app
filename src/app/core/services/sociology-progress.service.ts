@@ -5,6 +5,7 @@ import type { SociologyQuestion } from '../../shared/models/sociology-question.m
 import { StorageService } from './storage.service';
 
 const SOCIOLOGY_PROGRESS_KEY = 'sociology-progress';
+const MAX_PROGRESS_AGE_DAYS = 400;
 
 export type SociologyAnswerOutcome = 'correct' | 'partial' | 'wrong';
 
@@ -125,7 +126,14 @@ export class SociologyProgressService {
         if (!Array.isArray(raw)) {
             return [];
         }
-        return raw.map((row) => this.normalizeEntry(row as SociologyProgress));
+        const normalized = raw.map((row) => this.normalizeEntry(row as SociologyProgress));
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - MAX_PROGRESS_AGE_DAYS);
+        const pruned = normalized.filter((p) => !p.lastAnswered || new Date(p.lastAnswered) >= cutoff);
+        if (pruned.length < normalized.length) {
+            this.storage.set(SOCIOLOGY_PROGRESS_KEY, pruned);
+        }
+        return pruned;
     }
 
     private normalizeEntry(row: SociologyProgress): SociologyProgress {
