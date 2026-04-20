@@ -166,7 +166,10 @@
         "lastStudiedToday": "Сегодня",
         "lastStudiedAria": "Последняя активность по теме: {{date}}",
         "removeAll": "Убрать все",
-        "removeAllAria": "Убрать все изученные темы из плана на сегодня"
+        "removeAllAria": "Убрать все изученные темы из плана на сегодня",
+        "removeAllConfirm": "Убрать все?",
+        "removeAllYes": "Да",
+        "removeAllNo": "Отмена"
     },
     "heatmap": {
         "heading": "Активность",
