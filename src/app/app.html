@@ -91,9 +91,12 @@
                     <a routerLink="/dashboard" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
                         'nav.dashboard' | translate
                     }}</a>
-                    <a routerLink="/my-questions" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                        'nav.myQuestions' | translate
-                    }}</a>
+                    <a routerLink="/my-questions" routerLinkActive="app__link--active" (click)="closeNavMenu()">
+                        {{ 'nav.myQuestions' | translate }}
+                        @if (customQuestionCount() > 0) {
+                            <span class="app__nav-badge" aria-label="{{ customQuestionCount() }} custom questions">{{ customQuestionCount() }}</span>
+                        }
+                    </a>
                 </div>
             }
             @if (showInterviewNavSection() && showSociologyNavSection()) {

@@ -8,6 +8,7 @@ import { filter, fromEvent, map, merge, of } from 'rxjs';
 import { LOCALE_STORAGE_KEY } from './core/locale.constants';
 import { ActiveTimeService } from './core/services/active-time.service';
 import { ActivityService } from './core/services/activity.service';
+import { CustomQuestionService } from './core/services/custom-question.service';
 import { QuestionService } from './core/services/question.service';
 import { ThemeService } from './core/services/theme.service';
 import { formatLocalYmd } from './shared/utils/local-date.utils';
@@ -35,6 +36,9 @@ export class App {
 
     private readonly activityService = inject(ActivityService);
     private readonly questionService = inject(QuestionService);
+    private readonly customQuestionService = inject(CustomQuestionService);
+
+    protected readonly customQuestionCount = computed(() => this.customQuestionService.questions().length);
     private readonly allQuestions = toSignal(this.questionService.getQuestions(), { initialValue: [] });
 
     protected readonly currentLang = signal<'en' | 'ru'>('en');
