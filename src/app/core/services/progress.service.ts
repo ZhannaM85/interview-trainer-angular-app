@@ -26,6 +26,20 @@ function isLegacyProgress(row: unknown): row is LegacyProgress {
     );
 }
 
+function repairNextReview(value: unknown): string {
+    if (typeof value === 'string' && value && !isNaN(new Date(value).getTime())) {
+        return value;
+    }
+    return new Date().toISOString();
+}
+
+function repairLastAnswered(value: unknown): string {
+    if (typeof value === 'string' && value && !isNaN(new Date(value).getTime())) {
+        return value;
+    }
+    return '';
+}
+
 function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
     if (!isLegacyProgress(row)) {
         return {
@@ -33,8 +47,8 @@ function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
             nailedCount: row.nailedCount ?? 0,
             partialCount: row.partialCount ?? 0,
             didntKnowCount: row.didntKnowCount ?? 0,
-            lastAnswered: row.lastAnswered,
-            nextReview: row.nextReview
+            lastAnswered: repairLastAnswered(row.lastAnswered),
+            nextReview: repairNextReview(row.nextReview)
         };
     }
     return {
@@ -42,8 +56,8 @@ function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
         nailedCount: row.correctCount ?? 0,
         partialCount: 0,
         didntKnowCount: row.incorrectCount ?? 0,
-        lastAnswered: row.lastAnswered,
-        nextReview: row.nextReview
+        lastAnswered: repairLastAnswered(row.lastAnswered),
+        nextReview: repairNextReview(row.nextReview)
     };
 }
 

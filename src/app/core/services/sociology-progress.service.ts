@@ -125,6 +125,18 @@ export class SociologyProgressService {
         if (!Array.isArray(raw)) {
             return [];
         }
-        return raw.map((row) => row as SociologyProgress);
+        return raw.map((row) => this.normalizeEntry(row as SociologyProgress));
+    }
+
+    private normalizeEntry(row: SociologyProgress): SociologyProgress {
+        const lastAnswered =
+            row.lastAnswered && !isNaN(new Date(row.lastAnswered).getTime())
+                ? row.lastAnswered
+                : '';
+        const nextReview =
+            row.nextReview && !isNaN(new Date(row.nextReview).getTime())
+                ? row.nextReview
+                : new Date().toISOString();
+        return { ...row, lastAnswered, nextReview };
     }
 }
