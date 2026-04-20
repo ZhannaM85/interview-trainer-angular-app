@@ -164,6 +164,19 @@
             </button>
         </div>
     }
+    @if (storageService.writeError()) {
+        <div class="app__storage-toast" role="alert" aria-live="assertive">
+            <span class="app__storage-toast-text">{{ 'app.storageError' | translate }}</span>
+            <button
+                type="button"
+                class="app__storage-toast-close"
+                (click)="storageService.clearWriteError()"
+                [attr.aria-label]="'app.storageErrorClose' | translate"
+            >
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    }
     <main class="app__main">
         <router-outlet />
     </main>

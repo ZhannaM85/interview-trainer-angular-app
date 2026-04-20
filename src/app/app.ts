@@ -10,6 +10,7 @@ import { ActiveTimeService } from './core/services/active-time.service';
 import { ActivityService } from './core/services/activity.service';
 import { CustomQuestionService } from './core/services/custom-question.service';
 import { QuestionService } from './core/services/question.service';
+import { StorageService } from './core/services/storage.service';
 import { ThemeService } from './core/services/theme.service';
 import { formatLocalYmd } from './shared/utils/local-date.utils';
 
@@ -37,6 +38,7 @@ export class App {
     private readonly activityService = inject(ActivityService);
     private readonly questionService = inject(QuestionService);
     private readonly customQuestionService = inject(CustomQuestionService);
+    protected readonly storageService = inject(StorageService);
 
     protected readonly customQuestionCount = computed(() => this.customQuestionService.questions().length);
     private readonly allQuestions = toSignal(this.questionService.getQuestions(), { initialValue: [] });

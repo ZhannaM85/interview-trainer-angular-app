@@ -6,7 +6,9 @@
         "menuClose": "Close menu",
         "retryBannerMsg": "You had trouble with {{count}} topic(s) recently.",
         "retryBannerLink": "Review in Study guide →",
-        "retryBannerClose": "Dismiss suggestion"
+        "retryBannerClose": "Dismiss suggestion",
+        "storageError": "Could not save data — storage quota exceeded. Free up space or clear old data.",
+        "storageErrorClose": "Dismiss"
     },
     "nav": {
         "about": "About",
