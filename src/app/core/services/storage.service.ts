@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, signal } from '@angular/core';
 
 const STORAGE_PREFIX = 'interview-trainer';
 
@@ -6,6 +6,8 @@ const STORAGE_PREFIX = 'interview-trainer';
     providedIn: 'root'
 })
 export class StorageService {
+    readonly writeError = signal(false);
+
     get<T>(key: string): T | null {
         try {
             const raw = localStorage.getItem(`${STORAGE_PREFIX}:${key}`);
@@ -22,7 +24,11 @@ export class StorageService {
         try {
             localStorage.setItem(`${STORAGE_PREFIX}:${key}`, JSON.stringify(value));
         } catch {
-            // Quota or privacy mode — ignore silently for MVP
+            this.writeError.set(true);
         }
+    }
+
+    clearWriteError(): void {
+        this.writeError.set(false);
     }
 }

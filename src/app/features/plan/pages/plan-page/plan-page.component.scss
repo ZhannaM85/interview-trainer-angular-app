@@ -101,6 +101,19 @@
     border-radius: 0.25rem;
 }
 
+.plan__remove-all--danger {
+    color: var(--it-error);
+}
+
+.plan__remove-all-confirm {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: var(--it-text-muted);
+}
+
 .plan__summary-empty {
     margin: 0;
     font-size: 0.88rem;

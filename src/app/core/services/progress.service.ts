@@ -9,6 +9,13 @@ import { QuestionService } from './question.service';
 import { StorageService } from './storage.service';
 
 const PROGRESS_KEY = 'progress';
+const MAX_PROGRESS_AGE_DAYS = 400;
+
+function pruneStaleProgress(list: Progress[]): Progress[] {
+    const cutoff = new Date();
+    cutoff.setDate(cutoff.getDate() - MAX_PROGRESS_AGE_DAYS);
+    return list.filter((p) => !p.lastAnswered || new Date(p.lastAnswered) >= cutoff);
+}
 
 /** Points shown on the feedback screen after a self-rating. */
 export const SCORE_BY_RATING: Record<SelfRating, number> = {
@@ -26,6 +33,20 @@ function isLegacyProgress(row: unknown): row is LegacyProgress {
     );
 }
 
+function repairNextReview(value: unknown): string {
+    if (typeof value === 'string' && value && !isNaN(new Date(value).getTime())) {
+        return value;
+    }
+    return new Date().toISOString();
+}
+
+function repairLastAnswered(value: unknown): string {
+    if (typeof value === 'string' && value && !isNaN(new Date(value).getTime())) {
+        return value;
+    }
+    return '';
+}
+
 function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
     if (!isLegacyProgress(row)) {
         return {
@@ -33,8 +54,8 @@ function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
             nailedCount: row.nailedCount ?? 0,
             partialCount: row.partialCount ?? 0,
             didntKnowCount: row.didntKnowCount ?? 0,
-            lastAnswered: row.lastAnswered,
-            nextReview: row.nextReview
+            lastAnswered: repairLastAnswered(row.lastAnswered),
+            nextReview: repairNextReview(row.nextReview)
         };
     }
     return {
@@ -42,8 +63,8 @@ function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
         nailedCount: row.correctCount ?? 0,
         partialCount: 0,
         didntKnowCount: row.incorrectCount ?? 0,
-        lastAnswered: row.lastAnswered,
-        nextReview: row.nextReview
+        lastAnswered: repairLastAnswered(row.lastAnswered),
+        nextReview: repairNextReview(row.nextReview)
     };
 }
 
@@ -115,7 +136,12 @@ export class ProgressService {
         if (!Array.isArray(raw)) {
             return [];
         }
-        return raw.map((row) => normalizeProgressEntry(row as Progress | LegacyProgress));
+        const normalized = raw.map((row) => normalizeProgressEntry(row as Progress | LegacyProgress));
+        const pruned = pruneStaleProgress(normalized);
+        if (pruned.length < normalized.length) {
+            this.storage.set(PROGRESS_KEY, pruned);
+        }
+        return pruned;
     }
 
     getDueQuestions(): Observable<Question[]> {
@@ -138,6 +164,10 @@ export class ProgressService {
             }
             return new Date(p.nextReview) <= now;
         });
-        return due.sort((a, b) => a.id - b.id);
+        for (let i = due.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [due[i], due[j]] = [due[j], due[i]];
+        }
+        return due;
     }
 }

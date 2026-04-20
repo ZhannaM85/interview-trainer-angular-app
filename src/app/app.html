@@ -91,9 +91,12 @@
                     <a routerLink="/dashboard" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
                         'nav.dashboard' | translate
                     }}</a>
-                    <a routerLink="/my-questions" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                        'nav.myQuestions' | translate
-                    }}</a>
+                    <a routerLink="/my-questions" routerLinkActive="app__link--active" (click)="closeNavMenu()">
+                        {{ 'nav.myQuestions' | translate }}
+                        @if (customQuestionCount() > 0) {
+                            <span class="app__nav-badge" aria-label="{{ customQuestionCount() }} custom questions">{{ customQuestionCount() }}</span>
+                        }
+                    </a>
                 </div>
             }
             @if (showInterviewNavSection() && showSociologyNavSection()) {
@@ -156,6 +159,19 @@
                 class="app__retry-banner-close"
                 (click)="retryBannerDismissed.set(true)"
                 [attr.aria-label]="'app.retryBannerClose' | translate"
+            >
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    }
+    @if (storageService.writeError()) {
+        <div class="app__storage-toast" role="alert" aria-live="assertive">
+            <span class="app__storage-toast-text">{{ 'app.storageError' | translate }}</span>
+            <button
+                type="button"
+                class="app__storage-toast-close"
+                (click)="storageService.clearWriteError()"
+                [attr.aria-label]="'app.storageErrorClose' | translate"
             >
                 <span aria-hidden="true">×</span>
             </button>
