@@ -230,6 +230,8 @@
 }
 
 .app__nav a {
+    display: flex;
+    align-items: center;
     padding: 0.55rem 0.65rem;
     border-radius: 0.5rem;
     text-decoration: none;
@@ -246,6 +248,23 @@
 .app__link--active {
     color: var(--it-accent);
     background: var(--it-nav-active-bg);
+}
+
+.app__nav-badge {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.3rem;
+    margin-left: 0.35rem;
+    border-radius: 999px;
+    background: var(--it-accent);
+    color: #fff;
+    font-size: 0.7rem;
+    font-weight: 700;
+    line-height: 1;
+    vertical-align: middle;
 }
 
 .app__nav-backdrop {
@@ -334,6 +353,55 @@
 }
 
 .app__retry-banner-close:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.app__storage-toast {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6rem 2.5rem 0.6rem 1rem;
+    background: rgba(239, 68, 68, 0.12);
+    border-bottom: 1px solid rgba(239, 68, 68, 0.3);
+    font-size: 0.88rem;
+}
+
+.app__storage-toast-text {
+    flex: 1 1 auto;
+    color: var(--it-error);
+    font-weight: 600;
+}
+
+.app__storage-toast-close {
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.75rem;
+    height: 1.75rem;
+    margin: 0;
+    padding: 0;
+    border: none;
+    border-radius: 0.4rem;
+    background: transparent;
+    color: var(--it-error);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.app__storage-toast-close:hover {
+    background: rgba(239, 68, 68, 0.12);
+}
+
+.app__storage-toast-close:focus-visible {
     outline: 2px solid var(--it-focus);
     outline-offset: 2px;
 }

@@ -6,7 +6,9 @@
         "menuClose": "Close menu",
         "retryBannerMsg": "You had trouble with {{count}} topic(s) recently.",
         "retryBannerLink": "Review in Study guide →",
-        "retryBannerClose": "Dismiss suggestion"
+        "retryBannerClose": "Dismiss suggestion",
+        "storageError": "Could not save data — storage quota exceeded. Free up space or clear old data.",
+        "storageErrorClose": "Dismiss"
     },
     "nav": {
         "about": "About",
@@ -166,7 +168,10 @@
         "lastStudiedToday": "Today",
         "lastStudiedAria": "Last activity in this topic: {{date}}",
         "removeAll": "Remove all",
-        "removeAllAria": "Remove all done topics from today's plan"
+        "removeAllAria": "Remove all done topics from today's plan",
+        "removeAllConfirm": "Remove all?",
+        "removeAllYes": "Yes",
+        "removeAllNo": "Cancel"
     },
     "heatmap": {
         "heading": "Activity",

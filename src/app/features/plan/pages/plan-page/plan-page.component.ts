@@ -132,10 +132,21 @@ export class PlanPageComponent {
         this.todayPlan.clearStudied(id);
     }
 
-    protected removeAllDoneTopics(): void {
+    protected readonly confirmRemoveAll = signal(false);
+
+    protected requestRemoveAll(): void {
+        this.confirmRemoveAll.set(true);
+    }
+
+    protected confirmRemoveAllDoneTopics(): void {
         for (const id of this.doneTopics()) {
             this.todayPlan.clearStudied(id);
         }
+        this.confirmRemoveAll.set(false);
+    }
+
+    protected cancelRemoveAll(): void {
+        this.confirmRemoveAll.set(false);
     }
 
     protected topicLastStudiedHint(cat: StudyCategorySection, sub: StudySubtopicSection): TopicLastStudiedHint {
