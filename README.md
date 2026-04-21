@@ -2,48 +2,65 @@
 
 ![Karkas — interview prep](docs/karkas-github-hero.png)
 
-**Karkas** (*Russian: “frame”*) is an interview prep app: a solid frame helps you build something strong. It combines a **study guide**, **timed practice**, and **progress** tracking so you can turn technical knowledge into clear, confident answers. All practice data stays in your browser.
+**Karkas** (*Russian: "frame"*) is a browser-based interview prep app. It combines a **study guide**, **spaced-repetition practice**, and **progress tracking** so you can turn technical knowledge into clear, confident answers. All data stays in your browser — no backend, no account required.
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) 21.1.4.
+## Features
 
-## Development server
+### Interview prep (JavaScript · Angular · RxJS)
+- **Study guide** — questions grouped by category and subtopic, with code examples and external links
+- **Quiz** — timed self-rating practice with spaced repetition (nailed +3 days, partial +2 days, didn't know +1 day); due questions are shuffled each session
+- **Daily plan** — pick subtopics to focus on today; plan auto-resets at midnight
+- **Dashboard** — activity heatmap, lifetime stats, and per-rating breakdown
+- **My Questions** — add, edit, and delete your own custom questions; count badge on the nav link shows how many you have
+- **Retry banner** — surfaces topics you struggled with recently so you can review them
 
-```bash
-ng serve
-```
+### Sociology track
+- Separate question bank, quiz, study guide, plan, and dashboard
 
-Open `http://localhost:4200/`. The app reloads when you change source files.
+### App-wide
+- Light / dark theme
+- English / Russian (bilingual via `@ngx-translate`)
+- localStorage persistence — no data leaves the browser
+- Storage quota warning if the browser's storage limit is reached
+- Progress records older than 400 days are automatically pruned to keep storage lean
 
-## Code scaffolding
-
-```bash
-ng generate component component-name
-```
-
-```bash
-ng generate --help
-```
-
-## Build
-
-```bash
-ng build
-```
-
-Artifacts are written to `dist/karkas/browser` (production configuration).
-
-## Unit tests
+## Development
 
 ```bash
-ng test
+npm install
+npm start          # dev server → http://localhost:4200
+ng build           # production build → dist/karkas/browser/
+ng test            # unit tests (Vitest)
+npm run e2e        # Playwright e2e (requires npm start running first)
+npm run e2e:ui     # Playwright interactive UI mode
 ```
 
-Uses the [Vitest](https://vitest.dev/) runner via `@angular/build`.
+Run a single test file:
+```bash
+ng test --include="**/progress.service.spec.ts"
+```
 
-## GitHub social preview
+After a fresh clone, install Playwright browsers before running e2e:
+```bash
+npx playwright install chromium
+```
 
-For the repository card image, upload `docs/karkas-github-hero.png` under **Settings → General → Social preview**.
+## Data pipeline
 
-## More
+Regenerate `src/assets/data/questions-bilingual.json`:
+```bash
+npm run data:code-examples      # merge code examples
+npm run data:read-more-links    # merge external article links
+npm run data:i18n-questions     # apply Russian translations
+```
 
-[Angular CLI reference](https://angular.dev/tools/cli)
+## Tech stack
+
+| | |
+|---|---|
+| Framework | Angular 21 (standalone components, signals, OnPush) |
+| Styling | SCSS with CSS custom properties |
+| i18n | @ngx-translate |
+| Tests | Vitest (unit) · Playwright (e2e) |
+| Routing | Hash-based (`withHashLocation`) for GitHub Pages |
+| Persistence | localStorage via `StorageService` (prefix `interview-trainer:`) |
