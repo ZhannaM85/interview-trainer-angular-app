@@ -136,7 +136,7 @@
                         [attr.aria-labelledby]="cat.anchorId + '__heading'"
                     >
                         <h2 class="study__cat-heading" [attr.id]="cat.anchorId + '__heading'">
-                            {{ ('study.category.' + cat.category) | translate }}
+                            {{ ('study.category.' + cat.category) | translate }}<span class="study__cat-count">({{ categoryQuestionCount(cat) }})</span>
                         </h2>
 
                         @for (sub of cat.subtopics; track sub.anchorId) {
