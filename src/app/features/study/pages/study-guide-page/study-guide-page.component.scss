@@ -418,6 +418,14 @@
     border-bottom: 1px solid var(--it-border);
 }
 
+.study__cat-count {
+    margin-left: 0.45rem;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--it-text-muted);
+    letter-spacing: 0;
+}
+
 .study__sub-accordion {
     scroll-margin-top: 1rem;
     margin-bottom: 1.75rem;

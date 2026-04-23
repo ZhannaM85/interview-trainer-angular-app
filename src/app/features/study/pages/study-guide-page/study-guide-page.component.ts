@@ -203,6 +203,10 @@ export class StudyGuidePageComponent {
         return m;
     });
 
+    protected categoryQuestionCount(cat: StudyCategorySection): number {
+        return cat.subtopics.reduce((sum, sub) => sum + sub.questions.length, 0);
+    }
+
     protected onTocShellToggle(event: Event): void {
         const el = event.currentTarget as HTMLDetailsElement | null;
         if (!el || el.tagName !== 'DETAILS') {
