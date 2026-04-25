@@ -110,6 +110,9 @@ export class App {
         return !this.retryBannerDismissed() && this.retryTopicIds().length > 0;
     });
 
+    /** True when the user is already on the Study Guide page — hides the redundant retry link. */
+    protected readonly isOnStudyPage = computed(() => this.locationPath().startsWith('/study'));
+
     /** Main nav: interview block hidden while browsing sociology routes. */
     protected readonly showInterviewNavSection = computed(() => !this.locationPath().startsWith('/sociology'));
 

@@ -147,13 +147,15 @@
             <span class="app__retry-banner-text">
                 {{ 'app.retryBannerMsg' | translate: { count: retryTopicIds().length } }}
             </span>
-            <a
-                [routerLink]="['/study']"
-                [queryParams]="retryStudyQueryParams()"
-                class="app__retry-banner-link"
-            >
-                {{ 'app.retryBannerLink' | translate }}
-            </a>
+            @if (!isOnStudyPage()) {
+                <a
+                    [routerLink]="['/study']"
+                    [queryParams]="retryStudyQueryParams()"
+                    class="app__retry-banner-link"
+                >
+                    {{ 'app.retryBannerLink' | translate }}
+                </a>
+            }
             <button
                 type="button"
                 class="app__retry-banner-close"
