@@ -357,6 +357,78 @@
     outline-offset: 2px;
 }
 
+.app__practice-reminder {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 0.4rem 0.75rem;
+    padding: 0.6rem 2.5rem 0.6rem 0.75rem;
+    background: var(--it-heat-1-bg);
+    border-bottom: 1px solid var(--it-heat-1-border);
+    font-size: 0.88rem;
+    line-height: 1.4;
+}
+
+.app__practice-reminder-icon {
+    flex-shrink: 0;
+    font-size: 1rem;
+}
+
+.app__practice-reminder-text {
+    flex: 1 1 auto;
+    min-width: 0;
+    color: var(--it-text);
+    font-weight: 500;
+}
+
+.app__practice-reminder-link {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-weight: 700;
+    color: var(--it-accent);
+    text-decoration: underline;
+    text-underline-offset: 0.15em;
+    white-space: normal;
+    word-break: break-word;
+}
+
+.app__practice-reminder-link:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+    border-radius: 0.2rem;
+}
+
+.app__practice-reminder-close {
+    position: absolute;
+    top: 0.5rem;
+    right: 0.5rem;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    padding: 0;
+    border: none;
+    border-radius: 0.25rem;
+    background: transparent;
+    color: var(--it-text-muted);
+    font-size: 1.25rem;
+    line-height: 1;
+    cursor: pointer;
+}
+
+.app__practice-reminder-close:hover {
+    color: var(--it-text);
+    background: var(--it-panel-close-hover-bg);
+}
+
+.app__practice-reminder-close:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
 .app__storage-toast {
     position: relative;
     display: flex;
