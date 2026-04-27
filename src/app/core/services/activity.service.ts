@@ -1,4 +1,4 @@
-import { Injectable, inject, signal } from '@angular/core';
+import { Injectable, computed, inject, signal } from '@angular/core';
 
 import type { DailyActivity } from '../../shared/models/activity.model';
 import type { SelfRating } from '../../shared/models/self-rating.model';
@@ -65,6 +65,12 @@ export class ActivityService {
     private readonly byDate = signal<ReadonlyMap<string, DailyActivity>>(this.loadMap());
 
     readonly activityMap = this.byDate.asReadonly();
+
+    /** True when the user has answered at least one question today. Reactive — updates as activity is recorded. */
+    readonly practicedToday = computed(() => {
+        const row = this.byDate().get(formatLocalYmd(new Date()));
+        return (row?.questionsAnswered ?? 0) > 0;
+    });
 
     /**
      * Sum of `activeSeconds` across all stored days (lifetime approximate).

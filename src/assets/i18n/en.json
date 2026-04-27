@@ -10,6 +10,11 @@
         "storageError": "Could not save data — storage quota exceeded. Free up space or clear old data.",
         "storageErrorClose": "Dismiss"
     },
+    "practiceReminder": {
+        "message": "You haven't practiced today — keep your streak alive!",
+        "cta": "Start practicing →",
+        "dismiss": "Dismiss reminder"
+    },
     "nav": {
         "about": "About",
         "study": "Study guide",

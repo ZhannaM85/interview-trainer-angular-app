@@ -141,6 +141,23 @@
             [attr.aria-label]="'app.menuClose' | translate"
         ></button>
     }
+    @if (showPracticeReminder()) {
+        <div class="app__practice-reminder" role="status" aria-live="polite">
+            <span class="app__practice-reminder-icon" aria-hidden="true">🔔</span>
+            <span class="app__practice-reminder-text">{{ 'practiceReminder.message' | translate }}</span>
+            <a routerLink="/quiz" class="app__practice-reminder-link">
+                {{ 'practiceReminder.cta' | translate }}
+            </a>
+            <button
+                type="button"
+                class="app__practice-reminder-close"
+                (click)="practiceReminderDismissed.set(true)"
+                [attr.aria-label]="'practiceReminder.dismiss' | translate"
+            >
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    }
     @if (showRetryBanner()) {
         <div class="app__retry-banner" role="status" aria-live="polite">
             <span class="app__retry-banner-icon" aria-hidden="true">💡</span>

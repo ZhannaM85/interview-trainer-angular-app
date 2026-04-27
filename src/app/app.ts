@@ -46,6 +46,7 @@ export class App {
     protected readonly currentLang = signal<'en' | 'ru'>('en');
     protected readonly navMenuOpen = signal(false);
     protected readonly retryBannerDismissed = signal(false);
+    protected readonly practiceReminderDismissed = signal(false);
 
     /** Path without query/hash; updates on navigation (for gating JS-only UI such as the retry banner). */
     private readonly locationPath = toSignal(
@@ -108,6 +109,15 @@ export class App {
             return false;
         }
         return !this.retryBannerDismissed() && this.retryTopicIds().length > 0;
+    });
+
+    /** True when the user should see the practice reminder banner (no practice today, not dismissed, on an interview page). */
+    protected readonly showPracticeReminder = computed(() => {
+        const p = this.locationPath();
+        if (p.startsWith('/sociology') || !INTERVIEW_RETRY_BANNER_PATHS.has(p)) {
+            return false;
+        }
+        return !this.practiceReminderDismissed() && !this.activityService.practicedToday();
     });
 
     /** True when the user is already on the Study Guide page — hides the redundant retry link. */
