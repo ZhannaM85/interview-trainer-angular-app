@@ -137,7 +137,9 @@ export class App {
     });
 
     protected retryStudyQueryParams(): Record<string, string> {
-        return { topics: this.retryTopicIds().join(',') };
+        const ids = this.retryTopicIds();
+        const pick = ids[Math.floor(Math.random() * ids.length)];
+        return { topics: pick };
     }
 
     constructor() {
