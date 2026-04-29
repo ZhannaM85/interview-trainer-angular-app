@@ -1,8 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
-import { RouterLink } from '@angular/router';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { take } from 'rxjs';
+import { distinctUntilChanged, map, take } from 'rxjs';
 
 import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService, SCORE_BY_RATING } from '../../../../core/services/progress.service';
@@ -53,6 +53,16 @@ export class QuizPageComponent {
     private readonly todayPlan = inject(TodayPlanService);
     private readonly activityService = inject(ActivityService);
     private readonly translate = inject(TranslateService);
+    private readonly route = inject(ActivatedRoute);
+
+    /** `?topics=cat:sub` — when present, restrict the session to questions in those topic IDs. */
+    private readonly topicsFocusParam = toSignal(
+        this.route.queryParamMap.pipe(
+            map((m) => m.get('topics') ?? ''),
+            distinctUntilChanged()
+        ),
+        { initialValue: this.route.snapshot.queryParamMap.get('topics') ?? '' }
+    );
 
     protected readonly currentQuestion = signal<Question | null>(null);
     protected readonly phase = signal<QuizPhase>('question');
@@ -257,13 +267,20 @@ export class QuizPageComponent {
             .pipe(take(1))
             .subscribe({
                 next: (all) => {
+                    const topicsParam = this.topicsFocusParam();
+                    const topicsFocusSet = topicsParam
+                        ? new Set(topicsParam.split(',').filter(Boolean))
+                        : null;
+                    const base = topicsFocusSet
+                        ? all.filter((q) => topicsFocusSet.has(topicIdFromQuestion(q)))
+                        : all;
                     const studied = this.todayPlan.studiedTopicIds();
                     const studiedSet = new Set(studied);
                     const useTodayTopicFilter =
-                        studied.length > 0 && this.practiceScope() === 'planFocused';
+                        !topicsFocusSet && studied.length > 0 && this.practiceScope() === 'planFocused';
                     const candidate = useTodayTopicFilter
-                        ? all.filter((q) => studiedSet.has(topicIdFromQuestion(q)))
-                        : all;
+                        ? base.filter((q) => studiedSet.has(topicIdFromQuestion(q)))
+                        : base;
                     const due = this.progressService.getDueQuestionsSync(candidate);
                     const fullBankMode = this.practiceScope() === 'full';
                     /** Due-only queue when focusing on today’s topics; full bank includes every question in the candidate set. */

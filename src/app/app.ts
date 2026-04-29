@@ -46,6 +46,7 @@ export class App {
     protected readonly currentLang = signal<'en' | 'ru'>('en');
     protected readonly navMenuOpen = signal(false);
     protected readonly retryBannerDismissed = signal(false);
+    protected readonly practiceReminderDismissed = signal(false);
 
     /** Path without query/hash; updates on navigation (for gating JS-only UI such as the retry banner). */
     private readonly locationPath = toSignal(
@@ -110,6 +111,18 @@ export class App {
         return !this.retryBannerDismissed() && this.retryTopicIds().length > 0;
     });
 
+    /** True when the user should see the practice reminder banner (no practice today, not dismissed, on an interview page). */
+    protected readonly showPracticeReminder = computed(() => {
+        const p = this.locationPath();
+        if (p.startsWith('/sociology') || !INTERVIEW_RETRY_BANNER_PATHS.has(p)) {
+            return false;
+        }
+        return !this.practiceReminderDismissed() && !this.activityService.practicedToday();
+    });
+
+    /** True when the user is already on the Study Guide page — hides the redundant retry link. */
+    protected readonly isOnStudyPage = computed(() => this.locationPath().startsWith('/study'));
+
     /** Main nav: interview block hidden while browsing sociology routes. */
     protected readonly showInterviewNavSection = computed(() => !this.locationPath().startsWith('/sociology'));
 
@@ -124,7 +137,18 @@ export class App {
     });
 
     protected retryStudyQueryParams(): Record<string, string> {
-        return { topics: this.retryTopicIds().join(',') };
+        const ids = this.retryTopicIds();
+        const pick = ids[Math.floor(Math.random() * ids.length)];
+        return { topics: pick };
+    }
+
+    protected practiceReminderQueryParams(): Record<string, string> {
+        const ids = this.retryTopicIds();
+        if (ids.length === 0) {
+            return {};
+        }
+        const pick = ids[Math.floor(Math.random() * ids.length)];
+        return { topics: pick };
     }
 
     constructor() {

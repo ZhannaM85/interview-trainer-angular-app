@@ -78,7 +78,9 @@ export class DashboardPageComponent {
             }
         }
 
-        const currentDays = this.countBackwardStreakFrom(new Date(), active);
+        const todayYmd = formatLocalYmd(new Date());
+        const startYmd = active.has(todayYmd) ? todayYmd : this.shiftYmdByDays(todayYmd, -1);
+        const currentDays = this.countBackwardStreakFrom(startYmd, active);
 
         let bestDays = 0;
         for (const d of active) {
@@ -221,9 +223,9 @@ export class DashboardPageComponent {
         return (row.questionsAnswered ?? 0) > 0 || (row.topicsStudied ?? 0) > 0;
     }
 
-    private countBackwardStreakFrom(from: Date, activeDays: Set<string>): number {
+    private countBackwardStreakFrom(from: string, activeDays: Set<string>): number {
         let n = 0;
-        let cursor = formatLocalYmd(from);
+        let cursor = from;
         while (activeDays.has(cursor)) {
             n += 1;
             cursor = this.shiftYmdByDays(cursor, -1);
