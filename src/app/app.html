@@ -145,7 +145,7 @@
         <div class="app__practice-reminder" role="status" aria-live="polite">
             <span class="app__practice-reminder-icon" aria-hidden="true">🔔</span>
             <span class="app__practice-reminder-text">{{ 'practiceReminder.message' | translate }}</span>
-            <a routerLink="/quiz" class="app__practice-reminder-link">
+            <a routerLink="/quiz" [queryParams]="practiceReminderQueryParams()" class="app__practice-reminder-link">
                 {{ 'practiceReminder.cta' | translate }}
             </a>
             <button

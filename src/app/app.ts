@@ -142,6 +142,15 @@ export class App {
         return { topics: pick };
     }
 
+    protected practiceReminderQueryParams(): Record<string, string> {
+        const ids = this.retryTopicIds();
+        if (ids.length === 0) {
+            return {};
+        }
+        const pick = ids[Math.floor(Math.random() * ids.length)];
+        return { topics: pick };
+    }
+
     constructor() {
         inject(ActiveTimeService);
         this.currentLang.set(this.normalizeLang(this.translate.currentLang));
