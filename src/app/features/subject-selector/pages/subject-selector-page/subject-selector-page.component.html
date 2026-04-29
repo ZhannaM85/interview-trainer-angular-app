@@ -3,12 +3,12 @@
         {{ 'subjectSelector.title' | translate }}
     </h1>
     <div class="subject-selector__grid">
-        <a routerLink="/quiz" class="subject-selector__card subject-selector__card--js">
+        <a routerLink="/quiz" (click)="saveSubject('js')" class="subject-selector__card subject-selector__card--js">
             <h2 class="subject-selector__card-title">{{ 'subjectSelector.js' | translate }}</h2>
             <p class="subject-selector__card-desc">{{ 'subjectSelector.jsDescription' | translate }}</p>
             <span class="subject-selector__card-cta">{{ 'subjectSelector.open' | translate }}</span>
         </a>
-        <a [routerLink]="['/sociology', 'study']" class="subject-selector__card subject-selector__card--soc">
+        <a [routerLink]="['/sociology', 'study']" (click)="saveSubject('sociology')" class="subject-selector__card subject-selector__card--soc">
             <h2 class="subject-selector__card-title">{{ 'subjectSelector.sociology' | translate }}</h2>
             <p class="subject-selector__card-desc">{{ 'subjectSelector.sociologyDescription' | translate }}</p>
             <span class="subject-selector__card-cta">{{ 'subjectSelector.open' | translate }}</span>
