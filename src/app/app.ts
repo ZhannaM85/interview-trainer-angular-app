@@ -111,10 +111,10 @@ export class App {
         return !this.retryBannerDismissed() && this.retryTopicIds().length > 0;
     });
 
-    /** True when the user should see the practice reminder banner (no practice today, not dismissed, on an interview page). */
+    /** True when the user should see the practice reminder banner (no practice today, not dismissed, on an interview page, not already on quiz). */
     protected readonly showPracticeReminder = computed(() => {
         const p = this.locationPath();
-        if (p.startsWith('/sociology') || !INTERVIEW_RETRY_BANNER_PATHS.has(p)) {
+        if (p.startsWith('/sociology') || !INTERVIEW_RETRY_BANNER_PATHS.has(p) || p.startsWith('/quiz')) {
             return false;
         }
         return !this.practiceReminderDismissed() && !this.activityService.practicedToday();
