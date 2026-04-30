@@ -138,8 +138,10 @@ export class App {
 
     protected retryStudyQueryParams(): Record<string, string> {
         const ids = this.retryTopicIds();
-        const pick = ids[Math.floor(Math.random() * ids.length)];
-        return { topics: pick };
+        if (ids.length === 0) {
+            return {};
+        }
+        return { topics: ids.join(',') };
     }
 
     protected practiceReminderQueryParams(): Record<string, string> {
