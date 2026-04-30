@@ -13,6 +13,7 @@ import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { distinctUntilChanged, filter, map } from 'rxjs';
 
+import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
@@ -27,6 +28,12 @@ import {
     type StudyCategorySection,
     type StudySubtopicSection
 } from '../../study-guide-grouping';
+
+type StudyFilterMode = 'all' | 'studied' | 'unstudied';
+
+function parseFilterMode(v: string | null): StudyFilterMode {
+    return v === 'studied' || v === 'unstudied' ? v : 'all';
+}
 
 /** Shown next to a question when it was answered in Practice (self-rating). */
 type StudyQuestionPracticeHint =
@@ -51,6 +58,7 @@ function isSameLocalCalendarDay(a: Date, b: Date): boolean {
 export class StudyGuidePageComponent {
     private readonly questionService = inject(QuestionService);
     private readonly progressService = inject(ProgressService);
+    private readonly activityService = inject(ActivityService);
     protected readonly todayPlan = inject(TodayPlanService);
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
@@ -91,8 +99,15 @@ export class StudyGuidePageComponent {
      */
     private readonly accordionBulkNextIsCollapse = signal(false);
 
-    /** Show only subtopics where no question has been answered in Practice yet. */
-    protected readonly showUntouchedOnly = signal(false);
+    protected readonly filterModes: readonly StudyFilterMode[] = ['all', 'studied', 'unstudied'];
+
+    protected readonly filterMode = toSignal(
+        this.route.queryParamMap.pipe(
+            map((m): StudyFilterMode => parseFilterMode(m.get('filter'))),
+            distinctUntilChanged()
+        ),
+        { initialValue: parseFilterMode(this.route.snapshot.queryParamMap.get('filter')) }
+    );
 
     /**
      * Topic ids captured when entering `?today=1`.
@@ -153,7 +168,10 @@ export class StudyGuidePageComponent {
                 }
             }
         }
-        if (this.showUntouchedOnly()) {
+        const mode = this.filterMode();
+        if (mode === 'studied') {
+            all = filterStudyGuideSectionsByTopicIds(all, this.activityService.everStudiedTopicIds());
+        } else if (mode === 'unstudied') {
             all = filterStudyGuideSectionsWithoutPractice(all, this.practicedQuestionIds());
         }
         return all;
@@ -358,8 +376,12 @@ export class StudyGuidePageComponent {
         this.showPlanCompleteBanner.set(false);
     }
 
-    protected toggleUntouchedFilter(checked: boolean): void {
-        this.showUntouchedOnly.set(checked);
+    protected setFilterMode(mode: StudyFilterMode): void {
+        this.router.navigate([], {
+            relativeTo: this.route,
+            queryParams: { filter: mode === 'all' ? null : mode },
+            queryParamsHandling: 'merge'
+        });
     }
 
     /**

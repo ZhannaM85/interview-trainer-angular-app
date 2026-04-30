@@ -149,6 +149,14 @@
         "filteredRetryBanner": "Showing topics you had trouble with recently.",
         "filteredRetryClear": "Show all topics"
     },
+    "studyFilter": {
+        "label": "Filter topics",
+        "all": "All",
+        "studied": "Studied",
+        "unstudied": "Not practiced",
+        "studiedBanner": "Showing only topics you've studied at least once.",
+        "studiedEmpty": "No studied topics found yet. Mark topics as studied from the study guide to see them here."
+    },
     "plan": {
         "title": "Plan for today",
         "intro": "Choose topics you want to cover today, read them in the Study guide, then practice. Your plan resets at midnight (local time).",
