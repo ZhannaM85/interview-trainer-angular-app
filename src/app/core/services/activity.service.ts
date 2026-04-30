@@ -87,6 +87,17 @@ export class ActivityService {
 
     readonly totalActiveSeconds = this._totalActiveSeconds.asReadonly();
 
+    /** Union of all `coveredTopicIds` across every stored activity day. */
+    readonly everStudiedTopicIds = computed((): ReadonlySet<string> => {
+        const result = new Set<string>();
+        for (const row of this.byDate().values()) {
+            for (const id of row.coveredTopicIds ?? []) {
+                result.add(id);
+            }
+        }
+        return result;
+    });
+
     bumpQuestionsAnswered(delta = 1): void {
         if (delta <= 0) {
             return;

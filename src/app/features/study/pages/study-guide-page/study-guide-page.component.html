@@ -13,16 +13,18 @@
     </div>
 
     <div class="study__toolbar">
-        <div class="study__filter-row">
-            <label class="study__untouched-label">
-                <input
-                    type="checkbox"
-                    class="study__untouched-input"
-                    [checked]="showUntouchedOnly()"
-                    (change)="toggleUntouchedFilter($any($event.target).checked)"
-                />
-                <span>{{ 'study.showUntouchedOnly' | translate }}</span>
-            </label>
+        <div class="study__filter-row" role="group" [attr.aria-label]="'studyFilter.label' | translate">
+            @for (mode of filterModes; track mode) {
+                <button
+                    type="button"
+                    class="study__filter-btn"
+                    [class.study__filter-btn--active]="filterMode() === mode"
+                    [attr.aria-pressed]="filterMode() === mode"
+                    (click)="setFilterMode(mode)"
+                >
+                    {{ ('studyFilter.' + mode) | translate }}
+                </button>
+            }
         </div>
         @if (!loadError() && !loading() && hasAccordionSubtopics()) {
             <button type="button" class="study__expand-collapse-all" (click)="toggleExpandCollapseAll()">
@@ -73,7 +75,11 @@
         </p>
     }
 
-    @if (showUntouchedOnly()) {
+    @if (filterMode() === 'studied') {
+        <p class="study__filter-banner" role="status">
+            {{ 'studyFilter.studiedBanner' | translate }}
+        </p>
+    } @else if (filterMode() === 'unstudied') {
         <p class="study__filter-banner" role="status">
             {{ 'study.untouchedFilterBanner' | translate }}
         </p>
@@ -85,7 +91,9 @@
         </p>
     } @else if (loading()) {
         <p class="study__message">{{ 'study.loading' | translate }}</p>
-    } @else if (showUntouchedOnly() && sections().length === 0) {
+    } @else if (filterMode() === 'studied' && sections().length === 0) {
+        <p class="study__message">{{ 'studyFilter.studiedEmpty' | translate }}</p>
+    } @else if (filterMode() === 'unstudied' && sections().length === 0) {
         <p class="study__message">{{ 'study.untouchedFilterEmpty' | translate }}</p>
     } @else {
         <div class="study__layout">
