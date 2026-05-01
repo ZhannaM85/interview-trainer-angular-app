@@ -371,7 +371,7 @@ export class QuizPageComponent {
         return [...ids].sort((a, b) => a.localeCompare(b));
     }
 
-    /** Subtopic i18n key from `category:subtopic` id. */
+    /** Subtopic i18n key from a `category:subtopic` id. */
     protected stackSubtopicKey(topicId: string): string {
         const i = topicId.indexOf(':');
         return i >= 0 ? topicId.slice(i + 1) : topicId;
