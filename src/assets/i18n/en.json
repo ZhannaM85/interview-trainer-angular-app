@@ -154,8 +154,11 @@
         "all": "All",
         "studied": "Studied",
         "unstudied": "Not practiced",
+        "never-studied": "Not yet studied",
         "studiedBanner": "Showing only topics you've studied at least once.",
-        "studiedEmpty": "No studied topics found yet. Mark topics as studied from the study guide to see them here."
+        "studiedEmpty": "No studied topics found yet. Mark topics as studied from the study guide to see them here.",
+        "neverStudiedBanner": "Showing topics you haven't marked as studied yet.",
+        "neverStudiedEmpty": "You've explored every topic — great work!"
     },
     "plan": {
         "title": "Plan for today",
