@@ -76,7 +76,7 @@ export class QuizPageComponent {
     /** Unique `category:subtopic` ids in the current session queue (stable for the round). */
     protected readonly sessionStackTopicIds = signal<string[]>([]);
 
-    /** Today’s plan has topics selected but none marked studied yet — practice still uses full catalog. */
+    /** Today's plan has topics selected but none marked studied yet — practice still uses full catalog. */
     protected readonly planFocusHint = computed(
         () => this.todayPlan.hasSelection() && !this.todayPlan.hasStudiedTopics()
     );
@@ -84,11 +84,12 @@ export class QuizPageComponent {
     /**
      * `planFocused` — only questions in topics marked studied today (when any exist).
      * `full` — entire catalog (same due / fallback rules as before).
+     * `studiedTopics` — questions from all topics ever marked as studied (across all time).
      */
-    protected readonly practiceScope = signal<'planFocused' | 'full'>('planFocused');
+    protected readonly practiceScope = signal<'planFocused' | 'full' | 'studiedTopics'>('planFocused');
 
     /**
-     * When today’s studied topics have no due items, we used to jump straight to “all questions in those topics”.
+     * When today's studied topics have no due items, we used to jump straight to “all questions in those topics”.
      * We first show a dialog; this flag skips that dialog on the next load (user chose to practice anyway).
      */
     private readonly acceptPlanTopicFallback = signal(false);
@@ -103,7 +104,23 @@ export class QuizPageComponent {
     );
 
     protected readonly showBackToTodaysTopicsOption = computed(
-        () => this.todayPlan.studiedTopicIds().length > 0 && this.practiceScope() === 'full'
+        () =>
+            this.todayPlan.studiedTopicIds().length > 0 &&
+            (this.practiceScope() === 'full' || this.practiceScope() === 'studiedTopics')
+    );
+
+    /** Scope is restricted to ever-studied topics and there is at least one. */
+    protected readonly studiedTopicsFilterActive = computed(
+        () =>
+            this.practiceScope() === 'studiedTopics' &&
+            this.activityService.everStudiedTopicIds().size > 0
+    );
+
+    /** Show the “Practice all studied topics” button when not already in that scope and ever-studied topics exist. */
+    protected readonly showSwitchToStudiedOption = computed(
+        () =>
+            this.practiceScope() !== 'studiedTopics' &&
+            this.activityService.everStudiedTopicIds().size > 0
     );
 
     /** Persisted across language switches while feedback phase is showing. */
@@ -204,7 +221,13 @@ export class QuizPageComponent {
         this.loadQuiz();
     }
 
-    /** User confirmed: practice every question in today’s studied topics (former automatic fallback). */
+    protected switchToAllStudiedTopics(): void {
+        this.acceptPlanTopicFallback.set(false);
+        this.practiceScope.set('studiedTopics');
+        this.loadQuiz();
+    }
+
+    /** User confirmed: practice every question in today's studied topics (former automatic fallback). */
     protected confirmPracticePlanTopicsAnyway(): void {
         this.showPlanTopicsCoveredDialog.set(false);
         this.acceptPlanTopicFallback.set(true);
@@ -267,6 +290,7 @@ export class QuizPageComponent {
             .pipe(take(1))
             .subscribe({
                 next: (all) => {
+                    const scope = this.practiceScope();
                     const topicsParam = this.topicsFocusParam();
                     const topicsFocusSet = topicsParam
                         ? new Set(topicsParam.split(',').filter(Boolean))
@@ -276,18 +300,23 @@ export class QuizPageComponent {
                         : all;
                     const studied = this.todayPlan.studiedTopicIds();
                     const studiedSet = new Set(studied);
+                    const everStudied = this.activityService.everStudiedTopicIds();
                     const useTodayTopicFilter =
-                        !topicsFocusSet && studied.length > 0 && this.practiceScope() === 'planFocused';
+                        !topicsFocusSet && studied.length > 0 && scope === 'planFocused';
+                    const useEverStudiedFilter = !topicsFocusSet && scope === 'studiedTopics';
                     const candidate = useTodayTopicFilter
                         ? base.filter((q) => studiedSet.has(topicIdFromQuestion(q)))
-                        : base;
+                        : useEverStudiedFilter
+                            ? base.filter((q) => everStudied.has(topicIdFromQuestion(q)))
+                            : base;
                     const due = this.progressService.getDueQuestionsSync(candidate);
-                    const fullBankMode = this.practiceScope() === 'full';
-                    /** Due-only queue when focusing on today’s topics; full bank includes every question in the candidate set. */
+                    const fullBankMode = scope === 'full';
+                    /** Due-only queue when focusing on today's or ever-studied topics; full bank includes every question. */
                     const useFallback = !fullBankMode && due.length === 0;
                     const skipDialog = this.acceptPlanTopicFallback();
                     if (
                         useFallback &&
+                        scope === 'planFocused' &&
                         studied.length > 0 &&
                         candidate.length > 0 &&
                         !skipDialog

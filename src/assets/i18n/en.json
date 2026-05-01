@@ -277,7 +277,11 @@
         "planTopicsCoveredBody": "Nothing in the topics you studied today is due for spaced review right now. You can keep practicing every question in those topics, or switch to the full question bank (all topics).",
         "planTopicsCoveredPractice": "Practice today’s topics",
         "planTopicsCoveredOtherTopics": "Full question bank",
-        "planTopicsCoveredGotoPlan": "Plan for today"
+        "planTopicsCoveredGotoPlan": "Plan for today",
+        "practiceAllStudied": "Practice all studied topics",
+        "practicingStudiedTopicsHint": "All-studied mode — questions from every topic you have ever marked as studied.",
+        "studiedTopicsFallbackHint": "Nothing in your studied topics is due for review — practicing every question in those topics for now.",
+        "studiedTopicsFallbackDoneHint": "No questions from your studied topics were due for review, so this round used all of them."
     },
     "dashboard": {
         "title": "Interview Progress",
