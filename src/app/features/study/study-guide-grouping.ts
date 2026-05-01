@@ -96,3 +96,20 @@ export function filterStudyGuideSectionsWithoutPractice(
     }
     return out;
 }
+
+/** Keep only subtopics whose `category:subtopic` id is NOT in `topicIds`. Drops empty categories. */
+export function filterStudyGuideSectionsExcludingTopicIds(
+    sections: StudyCategorySection[],
+    topicIds: ReadonlySet<string>
+): StudyCategorySection[] {
+    const out: StudyCategorySection[] = [];
+    for (const cat of sections) {
+        const subs = cat.subtopics.filter((sub) =>
+            !topicIds.has(topicIdFromParts(cat.category, sub.subtopic))
+        );
+        if (subs.length > 0) {
+            out.push({ ...cat, subtopics: subs });
+        }
+    }
+    return out;
+}

@@ -24,15 +24,16 @@ import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import {
     buildStudyGuideSections,
     filterStudyGuideSectionsByTopicIds,
+    filterStudyGuideSectionsExcludingTopicIds,
     filterStudyGuideSectionsWithoutPractice,
     type StudyCategorySection,
     type StudySubtopicSection
 } from '../../study-guide-grouping';
 
-type StudyFilterMode = 'all' | 'studied' | 'unstudied';
+type StudyFilterMode = 'all' | 'studied' | 'unstudied' | 'never-studied';
 
 function parseFilterMode(v: string | null): StudyFilterMode {
-    return v === 'studied' || v === 'unstudied' ? v : 'all';
+    return v === 'studied' || v === 'unstudied' || v === 'never-studied' ? v : 'all';
 }
 
 /** Shown next to a question when it was answered in Practice (self-rating). */
@@ -99,7 +100,7 @@ export class StudyGuidePageComponent {
      */
     private readonly accordionBulkNextIsCollapse = signal(false);
 
-    protected readonly filterModes: readonly StudyFilterMode[] = ['all', 'studied', 'unstudied'];
+    protected readonly filterModes: readonly StudyFilterMode[] = ['all', 'studied', 'unstudied', 'never-studied'];
 
     protected readonly filterMode = toSignal(
         this.route.queryParamMap.pipe(
@@ -173,6 +174,8 @@ export class StudyGuidePageComponent {
             all = filterStudyGuideSectionsByTopicIds(all, this.activityService.everStudiedTopicIds());
         } else if (mode === 'unstudied') {
             all = filterStudyGuideSectionsWithoutPractice(all, this.practicedQuestionIds());
+        } else if (mode === 'never-studied') {
+            all = filterStudyGuideSectionsExcludingTopicIds(all, this.activityService.everStudiedTopicIds());
         }
         return all;
     });

@@ -83,6 +83,10 @@
         <p class="study__filter-banner" role="status">
             {{ 'study.untouchedFilterBanner' | translate }}
         </p>
+    } @else if (filterMode() === 'never-studied') {
+        <p class="study__filter-banner" role="status">
+            {{ 'studyFilter.neverStudiedBanner' | translate }}
+        </p>
     }
 
     @if (loadError()) {
@@ -95,6 +99,8 @@
         <p class="study__message">{{ 'studyFilter.studiedEmpty' | translate }}</p>
     } @else if (filterMode() === 'unstudied' && sections().length === 0) {
         <p class="study__message">{{ 'study.untouchedFilterEmpty' | translate }}</p>
+    } @else if (filterMode() === 'never-studied' && sections().length === 0) {
+        <p class="study__message">{{ 'studyFilter.neverStudiedEmpty' | translate }}</p>
     } @else {
         <div class="study__layout">
             <details
