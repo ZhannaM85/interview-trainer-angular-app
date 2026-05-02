@@ -323,7 +323,12 @@
         "practiceRatingsTotalAnswers": "Всего ответов: {{count}}",
         "practiceRatingsEmptyDay": "Сегодня ещё нет оценок в практике.",
         "practiceRatingsEmptyAllDays": "Пока нет сохранённых дневных оценок — новые сессии практики заполнят этот блок.",
-        "practiceRatingsEmptyAttempts": "Пока ни одна оценка не сохранена."
+        "practiceRatingsEmptyAttempts": "Пока ни одна оценка не сохранена.",
+        "bestTopics": {
+            "title": "Ваши сильнейшие темы",
+            "empty": "Пока нет данных — ответьте на несколько вопросов в практике, чтобы увидеть сильнейшие темы.",
+            "nailedPct": "{{pct}}% отлично"
+        }
     },
     "answerBlocks": {
         "weak": "Слабый ответ",
