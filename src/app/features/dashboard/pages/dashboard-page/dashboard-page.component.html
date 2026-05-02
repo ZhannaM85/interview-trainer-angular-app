@@ -132,6 +132,31 @@
                 }
             </article>
 
+            <article class="dashboard__card">
+                <h2 class="dashboard__card-title">{{ 'dashboard.bestTopics.title' | translate }}</h2>
+                @if (bestTopicsView().length === 0) {
+                    <p class="dashboard__hint">{{ 'dashboard.bestTopics.empty' | translate }}</p>
+                } @else {
+                    <ul class="dashboard__best-list">
+                        @for (entry of bestTopicsView(); track entry.id) {
+                            <li class="dashboard__best-item">
+                                <div class="dashboard__best-info">
+                                    <span class="dashboard__best-name">{{
+                                        ('subtopics.' + entry.subtopic) | translate
+                                    }}</span>
+                                    <span class="dashboard__best-badge dashboard__best-badge--{{ entry.category }}">{{
+                                        ('category.' + entry.category) | translate
+                                    }}</span>
+                                </div>
+                                <span class="dashboard__best-pct">{{
+                                    'dashboard.bestTopics.nailedPct' | translate: { pct: entry.nailedPct }
+                                }}</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </article>
+
             <article class="dashboard__card dashboard__card--wide">
                 <h2 class="dashboard__card-title">{{ 'dashboard.practiceRatingsHeading' | translate }}</h2>
                 <p class="dashboard__hint dashboard__ratings-intro">{{ 'dashboard.practiceRatingsIntro' | translate }}</p>

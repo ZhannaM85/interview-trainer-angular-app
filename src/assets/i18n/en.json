@@ -323,7 +323,12 @@
         "practiceRatingsTotalAnswers": "{{count}} answers total",
         "practiceRatingsEmptyDay": "No practice ratings recorded yet today.",
         "practiceRatingsEmptyAllDays": "No per-day ratings stored yet. New practice sessions will fill this in.",
-        "practiceRatingsEmptyAttempts": "No answers rated yet."
+        "practiceRatingsEmptyAttempts": "No answers rated yet.",
+        "bestTopics": {
+            "title": "Your strongest topics",
+            "empty": "No practice data yet — rate a few answers to see your strongest topics here.",
+            "nailedPct": "{{pct}}% nailed"
+        }
     },
     "answerBlocks": {
         "weak": "Weak answer",

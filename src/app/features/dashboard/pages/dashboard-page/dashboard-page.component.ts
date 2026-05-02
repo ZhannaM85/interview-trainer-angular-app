@@ -28,6 +28,17 @@ export interface WeakTopic {
     nailedNeeded: number;
 }
 
+export interface TopicStrengthEntry {
+    id: string;
+    category: string;
+    subtopic: string;
+    nailedPct: number;
+    nailed: number;
+    partial: number;
+    didntKnow: number;
+    total: number;
+}
+
 export interface DashboardStats {
     totalAnswered: number;
     accuracyPct: number;
@@ -114,6 +125,53 @@ export class DashboardPageComponent {
     protected readonly loading = signal(true);
     protected readonly loadError = signal(false);
 
+    private readonly questionsSignal = signal<Question[]>([]);
+
+    protected readonly bestTopicsView = computed((): TopicStrengthEntry[] => {
+        const qs = this.questionsSignal();
+        if (qs.length === 0) {
+            return [];
+        }
+        const idToTopic = new Map<string, string>();
+        for (const q of qs) {
+            idToTopic.set(String(q.id), topicIdFromParts(q.category, q.subtopic));
+        }
+        const byTopic = new Map<string, { nailed: number; partial: number; didntKnow: number }>();
+        for (const row of this.activityService.activityMap().values()) {
+            if (!row.practiceRatingBest) {
+                continue;
+            }
+            for (const [qId, rating] of Object.entries(row.practiceRatingBest)) {
+                const topicId = idToTopic.get(qId);
+                if (!topicId) {
+                    continue;
+                }
+                const agg = byTopic.get(topicId) ?? { nailed: 0, partial: 0, didntKnow: 0 };
+                if (rating === 'nailed') {
+                    agg.nailed++;
+                } else if (rating === 'partial') {
+                    agg.partial++;
+                } else if (rating === 'didntKnow') {
+                    agg.didntKnow++;
+                }
+                byTopic.set(topicId, agg);
+            }
+        }
+        const entries: TopicStrengthEntry[] = [];
+        for (const [id, agg] of byTopic) {
+            const total = agg.nailed + agg.partial + agg.didntKnow;
+            if (total === 0) {
+                continue;
+            }
+            const ci = id.indexOf(':');
+            const category = ci >= 0 ? id.slice(0, ci) : id;
+            const subtopic = ci >= 0 ? id.slice(ci + 1) : id;
+            entries.push({ id, category, subtopic, nailedPct: Math.round((agg.nailed / total) * 100), ...agg, total });
+        }
+        entries.sort((a, b) => b.nailedPct - a.nailedPct || a.id.localeCompare(b.id));
+        return entries.slice(0, 5);
+    });
+
     protected toggleMetricHelp(which: 'accuracy' | 'confidence'): void {
         this.openMetricHelp.update((current) => (current === which ? null : which));
     }
@@ -135,6 +193,7 @@ export class DashboardPageComponent {
                 next: (questions) => {
                     const progress = this.progressService.getProgress();
                     this.stats.set(this.computeStats(questions, progress));
+                    this.questionsSignal.set(questions);
                     this.loading.set(false);
                     this.loadError.set(false);
                 },
