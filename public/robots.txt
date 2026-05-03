@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://zhannam85.github.io/interview-trainer-angular-app/sitemap.xml
