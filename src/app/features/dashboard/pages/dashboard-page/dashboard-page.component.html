@@ -259,6 +259,11 @@
                         }}
                     </p>
                 }
+                @if (longerThanYesterday()) {
+                    <p class="dashboard__achievement" role="status" aria-live="polite">
+                        ▲ {{ 'dashboard.achievement.longerThanYesterday' | translate }}
+                    </p>
+                }
                 <div class="dashboard__active-time-bar">
                     <app-progress-bar
                         [value]="at.totalSeconds"

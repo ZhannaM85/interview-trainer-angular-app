@@ -328,6 +328,9 @@
             "title": "Your strongest topics",
             "empty": "No practice data yet — rate a few answers to see your strongest topics here.",
             "nailedPct": "{{pct}}% nailed"
+        },
+        "achievement": {
+            "longerThanYesterday": "Studied longer than yesterday"
         }
     },
     "answerBlocks": {
