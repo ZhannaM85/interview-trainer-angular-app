@@ -77,6 +77,15 @@ export class DashboardPageComponent {
         return { hours, minutes, totalSeconds, todaySeconds, todayHours, todayMinutes };
     });
 
+    protected readonly longerThanYesterday = computed(() => {
+        const map = this.activityService.activityMap();
+        const todayYmd = formatLocalYmd(new Date());
+        const yesterdayYmd = this.shiftYmdByDays(todayYmd, -1);
+        const todaySeconds = Math.max(0, map.get(todayYmd)?.activeSeconds ?? 0);
+        const yesterdaySeconds = Math.max(0, map.get(yesterdayYmd)?.activeSeconds ?? 0);
+        return todaySeconds > 0 && todaySeconds > yesterdaySeconds;
+    });
+
     protected readonly streakView = computed(() => {
         const map = this.activityService.activityMap();
         const active = new Set<string>();
