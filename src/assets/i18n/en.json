@@ -284,7 +284,9 @@
         "practiceAllStudied": "Practice all studied topics",
         "practicingStudiedTopicsHint": "All-studied mode — questions from every topic you have ever marked as studied.",
         "studiedTopicsFallbackHint": "Nothing in your studied topics is due for review — practicing every question in those topics for now.",
-        "studiedTopicsFallbackDoneHint": "No questions from your studied topics were due for review, so this round used all of them."
+        "studiedTopicsFallbackDoneHint": "No questions from your studied topics were due for review, so this round used all of them.",
+        "keyboardHintRate": "Press 1 · 2 · 3 to rate",
+        "keyboardHintNext": "Press Enter for next question"
     },
     "dashboard": {
         "title": "Interview Progress",

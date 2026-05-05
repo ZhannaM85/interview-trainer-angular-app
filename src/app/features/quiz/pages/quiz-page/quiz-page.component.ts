@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, HostListener, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -171,6 +171,36 @@ export class QuizPageComponent {
         });
 
         this.loadQuiz();
+    }
+
+    @HostListener('document:keydown', ['$event'])
+    protected handleKeydown(event: KeyboardEvent): void {
+        if (this.showPlanTopicsCoveredDialog() || this.loading() || this.sessionComplete() || !this.currentQuestion()) {
+            return;
+        }
+        const target = event.target as HTMLElement;
+        const tag = target.tagName;
+        const isTyping = tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT';
+        const isInteractive = isTyping || tag === 'BUTTON' || tag === 'A';
+        const ph = this.phase();
+
+        if (ph === 'question') {
+            if (!isInteractive && (event.key === 'Enter' || event.key === ' ')) {
+                event.preventDefault();
+                this.goToAnswer();
+            }
+        } else if (ph === 'answer') {
+            if (!isTyping) {
+                if (event.key === '1') { event.preventDefault(); this.onSelfRated('didntKnow'); }
+                else if (event.key === '2') { event.preventDefault(); this.onSelfRated('partial'); }
+                else if (event.key === '3') { event.preventDefault(); this.onSelfRated('nailed'); }
+            }
+        } else if (ph === 'feedback') {
+            if (!isInteractive && (event.key === 'Enter' || event.key === ' ')) {
+                event.preventDefault();
+                this.onNextQuestion();
+            }
+        }
     }
 
     protected goToAnswer(): void {
