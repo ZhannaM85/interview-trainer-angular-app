@@ -180,12 +180,14 @@
                             (next)="onNextQuestion()"
                         />
                     </div>
+                    <p class="quiz__keyboard-hint" aria-hidden="true">{{ 'quiz.keyboardHintNext' | translate }}</p>
                 }
             }
         </div>
 
         @if (phase() === 'answer') {
             <footer class="quiz__eval-footer">
+                <p class="quiz__keyboard-hint quiz__keyboard-hint--footer" aria-hidden="true">{{ 'quiz.keyboardHintRate' | translate }}</p>
                 <app-self-evaluation (rated)="onSelfRated($event)" />
             </footer>
         }
