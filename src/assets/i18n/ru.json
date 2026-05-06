@@ -286,7 +286,10 @@
         "studiedTopicsFallbackHint": "В ваших изученных темах нет вопросов к повторению — пока показаны все вопросы по этим темам.",
         "studiedTopicsFallbackDoneHint": "В изученных темах не было вопросов к повторению, поэтому в раунде использованы все вопросы по этим темам.",
         "keyboardHintRate": "Нажмите 1 · 2 · 3 для оценки",
-        "keyboardHintNext": "Нажмите Enter для следующего вопроса"
+        "keyboardHintNext": "Нажмите Enter для следующего вопроса",
+        "summaryRatingsAria": "Итоги сессии по оценкам",
+        "summaryBestStreak": "Лучшая серия: {{count}} «отлично» подряд",
+        "doneGotoDashboard": "Прогресс"
     },
     "dashboard": {
         "title": "Прогресс по собеседованиям",

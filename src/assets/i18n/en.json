@@ -286,7 +286,10 @@
         "studiedTopicsFallbackHint": "Nothing in your studied topics is due for review — practicing every question in those topics for now.",
         "studiedTopicsFallbackDoneHint": "No questions from your studied topics were due for review, so this round used all of them.",
         "keyboardHintRate": "Press 1 · 2 · 3 to rate",
-        "keyboardHintNext": "Press Enter for next question"
+        "keyboardHintNext": "Press Enter for next question",
+        "summaryRatingsAria": "Session rating breakdown",
+        "summaryBestStreak": "Best streak: {{count}} nailed in a row",
+        "doneGotoDashboard": "Progress"
     },
     "dashboard": {
         "title": "Interview Progress",

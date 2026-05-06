@@ -76,6 +76,12 @@ export class QuizPageComponent {
     /** Unique `category:subtopic` ids in the current session queue (stable for the round). */
     protected readonly sessionStackTopicIds = signal<string[]>([]);
 
+    protected readonly sessionNailed = signal(0);
+    protected readonly sessionPartial = signal(0);
+    protected readonly sessionDidntKnow = signal(0);
+    protected readonly sessionBestStreak = signal(0);
+    private currentStreak = 0;
+
     /** Today's plan has topics selected but none marked studied yet — practice still uses full catalog. */
     protected readonly planFocusHint = computed(
         () => this.todayPlan.hasSelection() && !this.todayPlan.hasStudiedTopics()
@@ -218,6 +224,17 @@ export class QuizPageComponent {
         this.progressService.recordSelfRating(q.id, rating);
         this.activityService.bumpQuestionsAnswered(1);
         this.activityService.addCoveredTopic(topicIdFromQuestion(q));
+        if (rating === 'nailed') {
+            this.sessionNailed.update((n) => n + 1);
+            this.currentStreak++;
+            if (this.currentStreak > this.sessionBestStreak()) {
+                this.sessionBestStreak.set(this.currentStreak);
+            }
+        } else {
+            if (rating === 'partial') { this.sessionPartial.update((n) => n + 1); }
+            else { this.sessionDidntKnow.update((n) => n + 1); }
+            this.currentStreak = 0;
+        }
         const updated = this.progressService.getProgress().find((p) => p.questionId === q.id);
         const nextReviewIso = updated?.nextReview ?? new Date().toISOString();
         this.feedbackCtx.set({
@@ -315,6 +332,11 @@ export class QuizPageComponent {
         this.phase.set('question');
         this.feedbackSnapshot.set(null);
         this.feedbackCtx.set(null);
+        this.sessionNailed.set(0);
+        this.sessionPartial.set(0);
+        this.sessionDidntKnow.set(0);
+        this.sessionBestStreak.set(0);
+        this.currentStreak = 0;
         this.questionService
             .getQuestions()
             .pipe(take(1))
