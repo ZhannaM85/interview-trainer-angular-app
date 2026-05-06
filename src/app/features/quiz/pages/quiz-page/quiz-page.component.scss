@@ -359,6 +359,12 @@
     opacity: 0.7;
 }
 
+@media (pointer: coarse) {
+    .quiz__keyboard-hint {
+        display: none;
+    }
+}
+
 .quiz__keyboard-hint--footer {
     max-width: 700px;
     align-self: center;
