@@ -75,20 +75,97 @@
     justify-content: center;
 }
 
-.quiz__done {
+.quiz__summary {
     width: 100%;
     max-width: 28rem;
     align-self: center;
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 1rem;
+    gap: 1.25rem;
     padding: 2rem 1.5rem;
-    border-radius: 1rem;
-    border: 1px solid var(--it-border);
-    background: var(--it-card);
-    box-shadow: var(--it-shadow);
     text-align: center;
+}
+
+.quiz__summary-title {
+    margin: 0;
+    font-size: 1.05rem;
+    font-weight: 700;
+}
+
+.quiz__summary-ratings {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.5rem;
+    width: 100%;
+}
+
+.quiz__rating-stat {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.75rem 0.5rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card-elevated);
+}
+
+.quiz__rating-count {
+    font-size: 1.85rem;
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
+}
+
+.quiz__rating-label {
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: var(--it-text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+}
+
+.quiz__rating-stat--nailed {
+    border-color: var(--it-self-eval-border-green);
+    background: rgba(34, 197, 94, 0.07);
+
+    .quiz__rating-count {
+        color: var(--it-accent);
+    }
+}
+
+.quiz__rating-stat--partial {
+    border-color: var(--it-self-eval-border-yellow);
+    background: var(--it-self-eval-bg-yellow);
+
+    .quiz__rating-count {
+        color: var(--it-warning);
+    }
+}
+
+.quiz__rating-stat--missed {
+    border-color: var(--it-self-eval-border-red);
+    background: var(--it-self-eval-bg-red);
+
+    .quiz__rating-count {
+        color: var(--it-error);
+    }
+}
+
+.quiz__summary-streak {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--it-accent);
+}
+
+.quiz__summary-topics {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .quiz__hint {
@@ -212,13 +289,7 @@
     text-align: left;
 }
 
-.quiz__done .quiz__message {
-    font-size: 1.05rem;
-    font-weight: 700;
-    margin: 0;
-}
-
-.quiz__done .quiz__hint {
+.quiz__summary .quiz__hint {
     margin: 0;
 }
 

@@ -35,26 +35,49 @@
             </div>
         </div>
     } @else if (sessionComplete()) {
-        @if (sessionStackTopicIds().length > 0) {
-            <div class="quiz__stack-topics" [attr.aria-label]="'quiz.sessionStackAria' | translate">
-                <p class="quiz__stack-topics-heading">{{ 'quiz.sessionStackHeading' | translate }}</p>
-                <ul class="quiz__stack-topics-list" role="list">
-                    @for (tid of sessionStackTopicIds(); track tid) {
-                        <li class="quiz__stack-topic" role="listitem">
-                            <span class="quiz__stack-topic-label">
-                                @if (tid.startsWith('custom:')) {
-                                    {{ stackSubtopicKey(tid) }}
-                                } @else {
-                                    {{ ('subtopics.' + stackSubtopicKey(tid)) | translate }}
-                                }
-                            </span>
-                        </li>
-                    }
-                </ul>
+        <div class="quiz__summary card-phase" aria-live="polite">
+            <p class="quiz__summary-title">{{ 'quiz.sessionDone' | translate }}</p>
+
+            <div class="quiz__summary-ratings" role="group" [attr.aria-label]="'quiz.summaryRatingsAria' | translate">
+                <div class="quiz__rating-stat quiz__rating-stat--nailed">
+                    <span class="quiz__rating-count">{{ sessionNailed() }}</span>
+                    <span class="quiz__rating-label">{{ 'selfEval.nailed' | translate }}</span>
+                </div>
+                <div class="quiz__rating-stat quiz__rating-stat--partial">
+                    <span class="quiz__rating-count">{{ sessionPartial() }}</span>
+                    <span class="quiz__rating-label">{{ 'selfEval.partial' | translate }}</span>
+                </div>
+                <div class="quiz__rating-stat quiz__rating-stat--missed">
+                    <span class="quiz__rating-count">{{ sessionDidntKnow() }}</span>
+                    <span class="quiz__rating-label">{{ 'selfEval.didntKnow' | translate }}</span>
+                </div>
             </div>
-        }
-        <div class="quiz__done card-phase">
-            <p class="quiz__message">{{ 'quiz.sessionDone' | translate }}</p>
+
+            @if (sessionBestStreak() > 1) {
+                <p class="quiz__summary-streak">
+                    {{ 'quiz.summaryBestStreak' | translate: {count: sessionBestStreak()} }}
+                </p>
+            }
+
+            @if (sessionStackTopicIds().length > 0) {
+                <div class="quiz__summary-topics" [attr.aria-label]="'quiz.sessionStackAria' | translate">
+                    <p class="quiz__stack-topics-heading">{{ 'quiz.sessionStackHeading' | translate }}</p>
+                    <ul class="quiz__stack-topics-list" role="list">
+                        @for (tid of sessionStackTopicIds(); track tid) {
+                            <li class="quiz__stack-topic" role="listitem">
+                                <span class="quiz__stack-topic-label">
+                                    @if (tid.startsWith('custom:')) {
+                                        {{ stackSubtopicKey(tid) }}
+                                    } @else {
+                                        {{ ('subtopics.' + stackSubtopicKey(tid)) | translate }}
+                                    }
+                                </span>
+                            </li>
+                        }
+                    </ul>
+                </div>
+            }
+
             @if (usingFallbackQueue()) {
                 @if (todayTopicsFilterActive()) {
                     <p class="quiz__hint">{{ 'quiz.fallbackHintDoneTodaysTopics' | translate }}</p>
@@ -64,6 +87,7 @@
                     <p class="quiz__hint">{{ 'quiz.fallbackHintDone' | translate }}</p>
                 }
             }
+
             <div class="quiz__done-actions">
                 <button type="button" class="quiz__restart" (click)="restartSession()">
                     {{ 'quiz.restart' | translate }}
@@ -71,8 +95,8 @@
                 <a routerLink="/study" class="quiz__done-nav quiz__done-nav--secondary">
                     {{ 'quiz.doneGotoStudy' | translate }}
                 </a>
-                <a routerLink="/plan" class="quiz__done-nav quiz__done-nav--secondary">
-                    {{ 'quiz.doneGotoPlan' | translate }}
+                <a routerLink="/dashboard" class="quiz__done-nav quiz__done-nav--secondary">
+                    {{ 'quiz.doneGotoDashboard' | translate }}
                 </a>
             </div>
         </div>
