@@ -97,6 +97,18 @@ Unit tests use Angular `TestBed`. Translations are stubbed with a custom `Transl
 
 E2E tests live in `e2e/` and use Playwright against the running dev server. Locally `reuseExistingServer` is enabled, so start `ng serve` before running `npm run e2e`.
 
+### Issue Tracking Rule — mandatory when resolving a GitHub issue
+
+**Whenever an issue is implemented and complete, mark it as done in `docs/issues-priority.md`** using the same strikethrough format as existing entries:
+
+```markdown
+| ~~[#N](url)~~ | ~~Issue title~~ | ✅ Done — [PR #M](url) |
+```
+
+Do this in the same commit as the implementation. If no PR number is known yet, omit the PR link (`✅ Done`).
+
+---
+
 ### Testing Rule — mandatory for every component or service change
 
 **Any change to a service or component must be accompanied by tests in the same PR/commit:**
