@@ -96,3 +96,12 @@ All components are standalone with `ChangeDetectionStrategy.OnPush`. State is ma
 Unit tests use Angular `TestBed`. Translations are stubbed with a custom `TranslateLoader` that returns a minimal `TranslationObject`. `provideHttpClient()` and `provideRouter(routes)` are standard setup providers. See `src/app/app.spec.ts` for the canonical stub pattern.
 
 E2E tests live in `e2e/` and use Playwright against the running dev server. Locally `reuseExistingServer` is enabled, so start `ng serve` before running `npm run e2e`.
+
+### Testing Rule — mandatory for every component or service change
+
+**Any change to a service or component must be accompanied by tests in the same PR/commit:**
+
+- **Unit test** (`*.spec.ts` next to the changed file) — cover every public method and every new/modified code path. For services, mock `StorageService` via `TestBed`; for components, use shallow rendering and assert `@Input` bindings and `@Output` emissions.
+- **E2E test** (`e2e/<feature>.spec.ts`) — cover the user-facing flow affected by the change. If a matching spec file already exists, add a new `test()` block to it; otherwise create one.
+
+Do not mark a task complete or generate a commit message until both test layers exist and `ng test` / `npm run e2e` pass locally.
