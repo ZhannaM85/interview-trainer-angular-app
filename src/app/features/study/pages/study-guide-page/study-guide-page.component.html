@@ -32,6 +32,19 @@
             </button>
         }
     </div>
+    <div class="study__filter-row study__difficulty-row" role="group" [attr.aria-label]="'studyDifficulty.label' | translate">
+        @for (diff of difficultyFilters; track diff) {
+            <button
+                type="button"
+                class="study__filter-btn"
+                [class.study__filter-btn--active]="difficultyFilter() === diff"
+                [attr.aria-pressed]="difficultyFilter() === diff"
+                (click)="setDifficultyFilter(diff)"
+            >
+                {{ (diff === 'all' ? 'studyFilter.all' : 'difficulty.' + diff) | translate }}
+            </button>
+        }
+    </div>
 
     @if (showPlanCompleteBanner()) {
         <div

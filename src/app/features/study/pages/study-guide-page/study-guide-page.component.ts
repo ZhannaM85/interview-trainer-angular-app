@@ -19,10 +19,11 @@ import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { AnswerBlocksComponent } from '../../../../shared/components/answer-blocks/answer-blocks.component';
 import { SplitQuestionCodePipe } from '../../../../shared/pipes/split-question-code.pipe';
-import type { Question } from '../../../../shared/models/question.model';
+import type { Question, QuestionDifficulty } from '../../../../shared/models/question.model';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import {
     buildStudyGuideSections,
+    filterStudyGuideSectionsByDifficulty,
     filterStudyGuideSectionsByTopicIds,
     filterStudyGuideSectionsExcludingTopicIds,
     filterStudyGuideSectionsWithoutPractice,
@@ -31,6 +32,8 @@ import {
 } from '../../study-guide-grouping';
 
 type StudyFilterMode = 'all' | 'studied' | 'unstudied' | 'never-studied';
+
+type StudyDifficultyFilter = 'all' | QuestionDifficulty;
 
 function parseFilterMode(v: string | null): StudyFilterMode {
     return v === 'studied' || v === 'unstudied' || v === 'never-studied' ? v : 'all';
@@ -101,6 +104,10 @@ export class StudyGuidePageComponent {
     private readonly accordionBulkNextIsCollapse = signal(false);
 
     protected readonly filterModes: readonly StudyFilterMode[] = ['all', 'studied', 'unstudied', 'never-studied'];
+
+    protected readonly difficultyFilters: readonly StudyDifficultyFilter[] = ['all', 'beginner', 'intermediate', 'advanced'];
+
+    protected readonly difficultyFilter = signal<StudyDifficultyFilter>('all');
 
     protected readonly filterMode = toSignal(
         this.route.queryParamMap.pipe(
@@ -176,6 +183,10 @@ export class StudyGuidePageComponent {
             all = filterStudyGuideSectionsWithoutPractice(all, this.practicedQuestionIds());
         } else if (mode === 'never-studied') {
             all = filterStudyGuideSectionsExcludingTopicIds(all, this.activityService.everStudiedTopicIds());
+        }
+        const diff = this.difficultyFilter();
+        if (diff !== 'all') {
+            all = filterStudyGuideSectionsByDifficulty(all, diff);
         }
         return all;
     });
@@ -377,6 +388,10 @@ export class StudyGuidePageComponent {
 
     protected dismissPlanCompleteBanner(): void {
         this.showPlanCompleteBanner.set(false);
+    }
+
+    protected setDifficultyFilter(f: StudyDifficultyFilter): void {
+        this.difficultyFilter.set(f);
     }
 
     protected setFilterMode(mode: StudyFilterMode): void {

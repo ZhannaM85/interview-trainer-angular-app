@@ -149,6 +149,9 @@
         "filteredRetryBanner": "Showing topics you had trouble with recently.",
         "filteredRetryClear": "Show all topics"
     },
+    "studyDifficulty": {
+        "label": "Filter by difficulty"
+    },
     "studyFilter": {
         "label": "Filter topics",
         "all": "All",
