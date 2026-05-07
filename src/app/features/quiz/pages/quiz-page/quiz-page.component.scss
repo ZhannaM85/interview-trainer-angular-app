@@ -474,3 +474,41 @@
 .quiz__keyboard-hint--undo {
     flex: 1;
 }
+
+.quiz__shuffle-row {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.quiz__shuffle-row--inline {
+    justify-content: flex-end;
+}
+
+.quiz__shuffle-toggle {
+    padding: 0.3rem 0.75rem;
+    border-radius: 0.5rem;
+    border: 1px solid var(--it-border);
+    background: transparent;
+    color: var(--it-text-muted);
+    font: inherit;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: border-color 0.12s ease, color 0.12s ease;
+}
+
+.quiz__shuffle-toggle:hover {
+    border-color: var(--it-accent);
+    color: var(--it-accent);
+}
+
+.quiz__shuffle-toggle:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.quiz__shuffle-toggle--active {
+    border-color: var(--it-accent);
+    color: var(--it-accent);
+    background: var(--it-accent-dim);
+}

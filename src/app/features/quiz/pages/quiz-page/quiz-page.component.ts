@@ -150,6 +150,8 @@ export class QuizPageComponent {
         nextReviewIso: string;
     } | null>(null);
 
+    protected readonly shuffleEnabled = this.questionService.shuffleEnabled;
+
     protected readonly sessionProgressCounts = computed((): SessionProgressCounts | null => {
         const total = this.sessionTotal();
         if (total <= 0) {
@@ -275,6 +277,10 @@ export class QuizPageComponent {
 
     protected onNextQuestion(): void {
         this.advanceToNextQuestion();
+    }
+
+    protected toggleShuffle(): void {
+        this.questionService.toggleShuffle();
     }
 
     protected restartSession(): void {
