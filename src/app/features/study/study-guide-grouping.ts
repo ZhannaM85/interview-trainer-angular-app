@@ -1,4 +1,4 @@
-import type { Question, QuestionCategory } from '../../shared/models/question.model';
+import type { Question, QuestionCategory, QuestionDifficulty } from '../../shared/models/question.model';
 import { topicIdFromParts } from '../../shared/utils/topic-key.utils';
 
 const CATEGORY_ORDER: QuestionCategory[] = ['javascript', 'angular', 'rxjs', 'custom'];
@@ -90,6 +90,27 @@ export function filterStudyGuideSectionsWithoutPractice(
         const subs = cat.subtopics.filter((sub) =>
             sub.questions.every((q) => !practicedQuestionIds.has(q.id))
         );
+        if (subs.length > 0) {
+            out.push({ ...cat, subtopics: subs });
+        }
+    }
+    return out;
+}
+
+/** Keep only questions matching `difficulty` within each subtopic. Drops empty subtopics/categories. */
+export function filterStudyGuideSectionsByDifficulty(
+    sections: StudyCategorySection[],
+    difficulty: QuestionDifficulty
+): StudyCategorySection[] {
+    const out: StudyCategorySection[] = [];
+    for (const cat of sections) {
+        const subs: StudySubtopicSection[] = [];
+        for (const sub of cat.subtopics) {
+            const questions = sub.questions.filter((q) => q.difficulty === difficulty);
+            if (questions.length > 0) {
+                subs.push({ ...sub, questions });
+            }
+        }
         if (subs.length > 0) {
             out.push({ ...cat, subtopics: subs });
         }

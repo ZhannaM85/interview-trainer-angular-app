@@ -149,6 +149,9 @@
         "filteredRetryBanner": "Показаны темы, с которыми были затруднения недавно.",
         "filteredRetryClear": "Показать все темы"
     },
+    "studyDifficulty": {
+        "label": "Фильтр по сложности"
+    },
     "studyFilter": {
         "label": "Фильтр тем",
         "all": "Все",
