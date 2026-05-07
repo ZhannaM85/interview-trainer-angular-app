@@ -287,6 +287,8 @@
         "studiedTopicsFallbackDoneHint": "No questions from your studied topics were due for review, so this round used all of them.",
         "keyboardHintRate": "Press 1 · 2 · 3 to rate",
         "keyboardHintNext": "Press Enter for next question",
+        "undoRating": "Undo last rating",
+        "keyboardHintUndo": "← to undo",
         "summaryRatingsAria": "Session rating breakdown",
         "summaryBestStreak": "Best streak: {{count}} nailed in a row",
         "doneGotoDashboard": "Progress"

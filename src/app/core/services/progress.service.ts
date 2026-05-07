@@ -131,6 +131,24 @@ export class ProgressService {
         return this._progress();
     }
 
+    /**
+     * Reverts a previously recorded self-rating. Pass the progress snapshot captured
+     * just before calling `recordSelfRating` — null means the question had no entry yet.
+     */
+    revertProgress(questionId: number, previous: Progress | null): void {
+        this._progress.update((list) => {
+            if (previous === null) {
+                return list.filter((p) => p.questionId !== questionId);
+            }
+            const exists = list.some((p) => p.questionId === questionId);
+            if (exists) {
+                return list.map((p) => (p.questionId === questionId ? previous : p));
+            }
+            return [...list, previous];
+        });
+        this.storage.set(PROGRESS_KEY, this._progress());
+    }
+
     private loadProgress(): Progress[] {
         const raw = this.storage.get<unknown>(PROGRESS_KEY);
         if (!Array.isArray(raw)) {

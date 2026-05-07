@@ -108,6 +108,13 @@ export class ActivityService {
         }));
     }
 
+    undoQuestionsAnswered(): void {
+        this.updateDay(formatLocalYmd(new Date()), (row) => ({
+            ...row,
+            questionsAnswered: Math.max(0, row.questionsAnswered - 1)
+        }));
+    }
+
     bumpTopicsStudied(delta = 1): void {
         if (delta <= 0) {
             return;

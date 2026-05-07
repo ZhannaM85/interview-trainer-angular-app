@@ -8,6 +8,7 @@ import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService, SCORE_BY_RATING } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
+import type { Progress } from '../../../../shared/models/progress.model';
 import type { Question, QuestionCategory } from '../../../../shared/models/question.model';
 import { topicIdFromQuestion } from '../../../../shared/utils/topic-key.utils';
 import type { SelfRating } from '../../../../shared/models/self-rating.model';
@@ -30,6 +31,16 @@ export interface SessionProgressCounts {
     answered: number;
     remaining: number;
     total: number;
+}
+
+interface UndoSnapshot {
+    question: Question;
+    previousProgress: Progress | null;
+    sessionNailed: number;
+    sessionPartial: number;
+    sessionDidntKnow: number;
+    sessionBestStreak: number;
+    streak: number;
 }
 
 @Component({
@@ -81,6 +92,8 @@ export class QuizPageComponent {
     protected readonly sessionDidntKnow = signal(0);
     protected readonly sessionBestStreak = signal(0);
     private currentStreak = 0;
+
+    protected readonly undoSnapshot = signal<UndoSnapshot | null>(null);
 
     /** Today's plan has topics selected but none marked studied yet — practice still uses full catalog. */
     protected readonly planFocusHint = computed(
@@ -194,6 +207,9 @@ export class QuizPageComponent {
             if (!isInteractive && (event.key === 'Enter' || event.key === ' ')) {
                 event.preventDefault();
                 this.goToAnswer();
+            } else if (!isInteractive && event.key === 'ArrowLeft' && this.undoSnapshot()) {
+                event.preventDefault();
+                this.onUndoRating();
             }
         } else if (ph === 'answer') {
             if (!isTyping) {
@@ -221,6 +237,16 @@ export class QuizPageComponent {
         if (!q || this.phase() !== 'answer') {
             return;
         }
+        const previousProgress = this.progressService.getProgress().find((p) => p.questionId === q.id) ?? null;
+        this.undoSnapshot.set({
+            question: q,
+            previousProgress,
+            sessionNailed: this.sessionNailed(),
+            sessionPartial: this.sessionPartial(),
+            sessionDidntKnow: this.sessionDidntKnow(),
+            sessionBestStreak: this.sessionBestStreak(),
+            streak: this.currentStreak
+        });
         this.progressService.recordSelfRating(q.id, rating);
         this.activityService.bumpQuestionsAnswered(1);
         this.activityService.addCoveredTopic(topicIdFromQuestion(q));
@@ -323,6 +349,27 @@ export class QuizPageComponent {
         return target.toLocaleDateString(loc, { weekday: 'short', month: 'short', day: 'numeric' });
     }
 
+    protected onUndoRating(): void {
+        const snap = this.undoSnapshot();
+        if (!snap) {
+            return;
+        }
+        this.progressService.revertProgress(snap.question.id, snap.previousProgress);
+        this.activityService.undoQuestionsAnswered();
+        this.questionService.stepBack();
+        this.sessionNailed.set(snap.sessionNailed);
+        this.sessionPartial.set(snap.sessionPartial);
+        this.sessionDidntKnow.set(snap.sessionDidntKnow);
+        this.sessionBestStreak.set(snap.sessionBestStreak);
+        this.currentStreak = snap.streak;
+        this.sessionIndex.update((i) => i - 1);
+        this.currentQuestion.set(snap.question);
+        this.feedbackSnapshot.set(null);
+        this.feedbackCtx.set(null);
+        this.undoSnapshot.set(null);
+        this.phase.set('answer');
+    }
+
     private loadQuiz(): void {
         this.loading.set(true);
         this.loadError.set(false);
@@ -332,6 +379,7 @@ export class QuizPageComponent {
         this.phase.set('question');
         this.feedbackSnapshot.set(null);
         this.feedbackCtx.set(null);
+        this.undoSnapshot.set(null);
         this.sessionNailed.set(0);
         this.sessionPartial.set(0);
         this.sessionDidntKnow.set(0);
