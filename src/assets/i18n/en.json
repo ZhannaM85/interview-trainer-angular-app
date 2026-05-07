@@ -294,7 +294,9 @@
         "keyboardHintUndo": "← to undo",
         "summaryRatingsAria": "Session rating breakdown",
         "summaryBestStreak": "Best streak: {{count}} nailed in a row",
-        "doneGotoDashboard": "Progress"
+        "doneGotoDashboard": "Progress",
+        "shuffleOn": "Shuffle: On",
+        "shuffleOff": "Shuffle: Off"
     },
     "dashboard": {
         "title": "Interview Progress",

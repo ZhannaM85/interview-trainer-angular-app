@@ -294,7 +294,9 @@
         "keyboardHintUndo": "← отменить",
         "summaryRatingsAria": "Итоги сессии по оценкам",
         "summaryBestStreak": "Лучшая серия: {{count}} «отлично» подряд",
-        "doneGotoDashboard": "Прогресс"
+        "doneGotoDashboard": "Прогресс",
+        "shuffleOn": "Перемешивание: вкл",
+        "shuffleOff": "Перемешивание: выкл"
     },
     "dashboard": {
         "title": "Прогресс по собеседованиям",

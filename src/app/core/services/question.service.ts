@@ -1,10 +1,11 @@
 import { HttpClient } from '@angular/common/http';
-import { Injectable, inject } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { toObservable } from '@angular/core/rxjs-interop';
 import { TranslateService } from '@ngx-translate/core';
 import { Observable, combineLatest, distinctUntilChanged, map, merge, of, shareReplay } from 'rxjs';
 
 import { CustomQuestionService } from './custom-question.service';
+import { StorageService } from './storage.service';
 
 import type {
     Question,
@@ -49,6 +50,9 @@ export class QuestionService {
     private readonly http = inject(HttpClient);
     private readonly translate = inject(TranslateService);
     private readonly customQuestionService = inject(CustomQuestionService);
+    private readonly storage = inject(StorageService);
+
+    readonly shuffleEnabled = signal<boolean>(this.storage.get<boolean>('quiz-shuffle') ?? true);
 
     private readonly rawQuestions$ = this.http.get<QuestionBilingualRow[]>('assets/data/questions-bilingual.json').pipe(
         shareReplay(1)
@@ -88,8 +92,18 @@ export class QuestionService {
         return questions.filter((q) => q.difficulty === difficulty);
     }
 
+    toggleShuffle(): void {
+        const next = !this.shuffleEnabled();
+        this.shuffleEnabled.set(next);
+        this.storage.set('quiz-shuffle', next);
+    }
+
     initializeQueue(questions: Question[]): void {
-        this.queue = [...questions];
+        const q = [...questions];
+        if (this.shuffleEnabled()) {
+            this.shuffleInPlace(q);
+        }
+        this.queue = q;
         this.index = -1;
     }
 
@@ -116,6 +130,13 @@ export class QuestionService {
     /** Find a question by id from the latest mapped list (same order as `getQuestions()` emissions). */
     getQuestionByIdFromList(questions: Question[], id: number): Question | null {
         return questions.find((q) => q.id === id) ?? null;
+    }
+
+    private shuffleInPlace<T>(arr: T[]): void {
+        for (let i = arr.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            [arr[i], arr[j]] = [arr[j], arr[i]];
+        }
     }
 
     private resolveLocale(lang: string | undefined): LocaleCode {

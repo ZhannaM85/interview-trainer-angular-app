@@ -88,6 +88,17 @@
                 }
             }
 
+            <div class="quiz__shuffle-row">
+                <button
+                    type="button"
+                    class="quiz__shuffle-toggle"
+                    [class.quiz__shuffle-toggle--active]="shuffleEnabled()"
+                    (click)="toggleShuffle()"
+                >
+                    {{ (shuffleEnabled() ? 'quiz.shuffleOn' : 'quiz.shuffleOff') | translate }}
+                </button>
+            </div>
+
             <div class="quiz__done-actions">
                 <button type="button" class="quiz__restart" (click)="restartSession()">
                     {{ 'quiz.restart' | translate }}
@@ -185,6 +196,17 @@
                 <p class="quiz__keyboard-hint quiz__keyboard-hint--undo" aria-hidden="true">{{ 'quiz.keyboardHintUndo' | translate }}</p>
             </div>
         }
+
+        <div class="quiz__shuffle-row quiz__shuffle-row--inline">
+            <button
+                type="button"
+                class="quiz__shuffle-toggle"
+                [class.quiz__shuffle-toggle--active]="shuffleEnabled()"
+                (click)="toggleShuffle()"
+            >
+                {{ (shuffleEnabled() ? 'quiz.shuffleOn' : 'quiz.shuffleOff') | translate }}
+            </button>
+        </div>
 
         <div class="quiz__card-wrap" [attr.data-phase]="phase()">
             @if (phase() === 'question') {
