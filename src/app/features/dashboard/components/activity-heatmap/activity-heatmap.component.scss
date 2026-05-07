@@ -175,6 +175,7 @@
 
 .heatmap__cell--l0:not(.heatmap__cell--future) {
     background: var(--it-track);
+    border-color: var(--it-heat-0-border);
 }
 
 .heatmap__cell--l1 {
@@ -225,6 +226,7 @@
 
 .heatmap__legend-swatch--0 {
     background: var(--it-track);
+    border-color: var(--it-heat-0-border);
 }
 
 .heatmap__legend-swatch--1 {
