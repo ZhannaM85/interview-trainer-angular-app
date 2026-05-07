@@ -177,6 +177,15 @@
             </div>
         }
 
+        @if (phase() === 'question' && undoSnapshot()) {
+            <div class="quiz__undo-row">
+                <button type="button" class="quiz__undo-btn" (click)="onUndoRating()">
+                    ← {{ 'quiz.undoRating' | translate }}
+                </button>
+                <p class="quiz__keyboard-hint quiz__keyboard-hint--undo" aria-hidden="true">{{ 'quiz.keyboardHintUndo' | translate }}</p>
+            </div>
+        }
+
         <div class="quiz__card-wrap" [attr.data-phase]="phase()">
             @if (phase() === 'question') {
                 <div class="quiz__phase card-phase">

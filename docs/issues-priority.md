@@ -9,7 +9,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | # | Issue | Why first |
 |---|-------|-----------|
 | ~~[#58](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/58)~~ | ~~Heatmap contrast in dark mode~~ | ✅ Done — [PR #65](https://github.com/ZhannaM85/interview-trainer-angular-app/pull/65) |
-| [#38](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/38) | Undo last quiz rating | Reduces quiz frustration, self-contained |
+| ~~[#38](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/38)~~ | ~~Undo last quiz rating~~ | ✅ Done — [PR #66](https://github.com/ZhannaM85/interview-trainer-angular-app/pull/66) |
 | [#49](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/49) | Randomize question order | One-liner in QuestionService, prevents recall by position |
 | [#55](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/55) | Collapsible code examples in study guide | Big mobile UX improvement, no data changes |
 | [#54](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/54) | Bulk "Mark all as studied" in plan | Low effort, plan page already has the logic |

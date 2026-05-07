@@ -101,6 +101,13 @@ export class QuestionService {
         return this.queue[this.index];
     }
 
+    /** Moves the queue cursor back one position so the next getNextQuestion() call re-delivers the current question. */
+    stepBack(): void {
+        if (this.index > 0) {
+            this.index -= 1;
+        }
+    }
+
     resetQueue(): void {
         this.queue = [];
         this.index = -1;

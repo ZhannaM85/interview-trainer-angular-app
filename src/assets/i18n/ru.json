@@ -287,6 +287,8 @@
         "studiedTopicsFallbackDoneHint": "В изученных темах не было вопросов к повторению, поэтому в раунде использованы все вопросы по этим темам.",
         "keyboardHintRate": "Нажмите 1 · 2 · 3 для оценки",
         "keyboardHintNext": "Нажмите Enter для следующего вопроса",
+        "undoRating": "Отменить последнюю оценку",
+        "keyboardHintUndo": "← отменить",
         "summaryRatingsAria": "Итоги сессии по оценкам",
         "summaryBestStreak": "Лучшая серия: {{count}} «отлично» подряд",
         "doneGotoDashboard": "Прогресс"
