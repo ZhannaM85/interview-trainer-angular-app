@@ -1,5 +1,22 @@
 <section class="myq" aria-labelledby="myq-title">
-    <h1 id="myq-title" class="myq__title">{{ 'myQuestions.title' | translate }}</h1>
+    <div class="myq__header">
+        <h1 id="myq-title" class="myq__title">{{ 'myQuestions.title' | translate }}</h1>
+        <div class="myq__toolbar">
+            <button type="button" class="myq__btn myq__btn--secondary myq__btn--sm" (click)="onExport()" [disabled]="questions().length === 0">
+                {{ 'myQuestions.export' | translate }}
+            </button>
+            <label class="myq__btn myq__btn--secondary myq__btn--sm myq__btn--import-label">
+                {{ 'myQuestions.import' | translate }}
+                <input type="file" accept=".json" class="myq__file-input" (change)="onFileChange($event)" />
+            </label>
+        </div>
+    </div>
+
+    @if (toast(); as t) {
+        <div class="myq__toast" [class.myq__toast--error]="t.type === 'error'" role="status" aria-live="polite">
+            {{ t.message }}
+        </div>
+    }
 
     <div class="myq__form-card">
         <h2 class="myq__form-heading">
