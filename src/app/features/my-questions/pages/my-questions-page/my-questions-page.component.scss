@@ -6,11 +6,51 @@
     box-sizing: border-box;
 }
 
+.myq__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.25rem;
+}
+
+.myq__toolbar {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+}
+
 .myq__title {
-    margin: 0 0 1.25rem;
+    margin: 0;
     font-size: 1.35rem;
     font-weight: 800;
     letter-spacing: -0.03em;
+}
+
+.myq__file-input {
+    display: none;
+}
+
+.myq__btn--import-label {
+    cursor: pointer;
+}
+
+.myq__toast {
+    margin-bottom: 1rem;
+    padding: 0.65rem 1rem;
+    border-radius: 0.65rem;
+    border: 1px solid var(--it-accent);
+    background: var(--it-accent-dim);
+    color: var(--it-accent);
+    font-size: 0.88rem;
+    font-weight: 600;
+}
+
+.myq__toast--error {
+    border-color: var(--it-error);
+    background: color-mix(in srgb, var(--it-error) 10%, transparent);
+    color: var(--it-error);
 }
 
 /* Form card */

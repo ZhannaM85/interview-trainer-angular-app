@@ -22,7 +22,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 
 | # | Issue | Notes |
 |---|-------|-------|
-| [#42](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/42) | Export/import custom questions | Labeled quick-win, small scope |
+| ~~[#42](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/42)~~ | ~~Export/import custom questions~~ | ✅ Done |
 | [#43](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/43) | Export full progress data as JSON | Foundation — #56 should come after this |
 
 ---

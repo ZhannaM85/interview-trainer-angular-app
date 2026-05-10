@@ -406,7 +406,11 @@
         "edit": "Edit",
         "delete": "Delete",
         "empty": "No custom questions yet. Add your first one above.",
-        "validationRequired": "Please fill in all required fields."
+        "validationRequired": "Please fill in all required fields.",
+        "export": "Export",
+        "import": "Import",
+        "importSuccess": "Imported {{added}} question(s), {{skipped}} skipped.",
+        "importError": "Invalid file — could not read or parse the JSON."
     },
     "category": {
         "javascript": "JavaScript",
