@@ -15,7 +15,33 @@
             <h2 id="plan-summary-heading" class="plan__summary-heading">{{ 'plan.summaryHeading' | translate }}</h2>
             <div class="plan__summary-cols">
                 <div class="plan__summary-col">
-                    <h3 class="plan__summary-sub">{{ 'plan.toStudy' | translate }}</h3>
+                    <div class="plan__summary-sub-row">
+                        <h3 class="plan__summary-sub">{{ 'plan.toStudy' | translate }}</h3>
+                        @if (topicsRemainingToStudyJs().length > 0) {
+                            @if (confirmMarkAllStudied() === 'global') {
+                                <span class="plan__remove-all-confirm">
+                                    {{ 'plan.markAllStudiedConfirm' | translate }}
+                                    <button
+                                        type="button"
+                                        class="plan__remove-all plan__remove-all--danger"
+                                        (click)="confirmMarkAllStudiedTopics()"
+                                    >{{ 'plan.markAllStudiedYes' | translate }}</button>
+                                    <button
+                                        type="button"
+                                        class="plan__remove-all"
+                                        (click)="cancelMarkAllStudied()"
+                                    >{{ 'plan.removeAllNo' | translate }}</button>
+                                </span>
+                            } @else {
+                                <button
+                                    type="button"
+                                    class="plan__remove-all"
+                                    [attr.aria-label]="'plan.markAllStudiedAria' | translate"
+                                    (click)="requestMarkAllStudied('global')"
+                                >{{ 'plan.markAllStudied' | translate }}</button>
+                            }
+                        }
+                    </div>
                     @if (topicsRemainingToStudyJs().length === 0) {
                         <p class="plan__summary-empty">{{ 'plan.toStudyEmpty' | translate }}</p>
                     } @else {
@@ -128,9 +154,35 @@
 
         @for (cat of sections(); track cat.anchorId) {
             <section class="plan__cat" [attr.aria-labelledby]="cat.anchorId + '__heading'">
-                <h3 class="plan__cat-heading" [attr.id]="cat.anchorId + '__heading'">
-                    {{ ('study.category.' + cat.category) | translate }}
-                </h3>
+                <div class="plan__cat-heading-row">
+                    <h3 class="plan__cat-heading" [attr.id]="cat.anchorId + '__heading'">
+                        {{ ('study.category.' + cat.category) | translate }}
+                    </h3>
+                    @if (categorySelectedUnstudiedCount(cat) > 0) {
+                        @if (confirmMarkAllStudied() === cat.anchorId) {
+                            <span class="plan__remove-all-confirm">
+                                {{ 'plan.markAllStudiedConfirm' | translate }}
+                                <button
+                                    type="button"
+                                    class="plan__remove-all plan__remove-all--danger"
+                                    (click)="confirmMarkAllStudiedTopics()"
+                                >{{ 'plan.markAllStudiedYes' | translate }}</button>
+                                <button
+                                    type="button"
+                                    class="plan__remove-all"
+                                    (click)="cancelMarkAllStudied()"
+                                >{{ 'plan.removeAllNo' | translate }}</button>
+                            </span>
+                        } @else {
+                            <button
+                                type="button"
+                                class="plan__remove-all"
+                                [attr.aria-label]="'plan.markAllStudiedCatAria' | translate: { cat: ('study.category.' + cat.category | translate) }"
+                                (click)="requestMarkAllStudied(cat.anchorId)"
+                            >{{ 'plan.markAllStudied' | translate }}</button>
+                        }
+                    }
+                </div>
                 <ul class="plan__topic-list">
                     @for (sub of cat.subtopics; track sub.anchorId) {
                         <li class="plan__topic-item">

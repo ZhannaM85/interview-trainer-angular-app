@@ -149,6 +149,50 @@ export class PlanPageComponent {
         this.confirmRemoveAll.set(false);
     }
 
+    /**
+     * Holds `'global'` or a category `anchorId` while waiting for confirmation.
+     * Only one pending confirmation at a time.
+     */
+    protected readonly confirmMarkAllStudied = signal<string | null>(null);
+
+    protected categorySelectedUnstudiedCount(cat: StudyCategorySection): number {
+        return cat.subtopics.filter((sub) => {
+            const id = this.topicId(cat, sub);
+            return this.todayPlan.isSelected(id) && !this.todayPlan.isStudied(id);
+        }).length;
+    }
+
+    protected requestMarkAllStudied(key: string): void {
+        this.confirmMarkAllStudied.set(key);
+    }
+
+    protected confirmMarkAllStudiedTopics(): void {
+        const key = this.confirmMarkAllStudied();
+        if (!key) return;
+
+        if (key === 'global') {
+            for (const id of [...this.topicsRemainingToStudyJs()]) {
+                this.todayPlan.markStudied(id);
+            }
+        } else {
+            const cat = this.sections().find((c) => c.anchorId === key);
+            if (cat) {
+                for (const sub of cat.subtopics) {
+                    const id = this.topicId(cat, sub);
+                    if (this.todayPlan.isSelected(id) && !this.todayPlan.isStudied(id)) {
+                        this.todayPlan.markStudied(id);
+                    }
+                }
+            }
+        }
+
+        this.confirmMarkAllStudied.set(null);
+    }
+
+    protected cancelMarkAllStudied(): void {
+        this.confirmMarkAllStudied.set(null);
+    }
+
     protected topicLastStudiedHint(cat: StudyCategorySection, sub: StudySubtopicSection): TopicLastStudiedHint {
         return this.topicLastStudiedById().get(this.topicId(cat, sub)) ?? { kind: 'none' };
     }

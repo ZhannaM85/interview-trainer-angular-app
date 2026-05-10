@@ -190,7 +190,12 @@
         "removeAllAria": "Убрать все изученные темы из плана на сегодня",
         "removeAllConfirm": "Убрать все?",
         "removeAllYes": "Да",
-        "removeAllNo": "Отмена"
+        "removeAllNo": "Отмена",
+        "markAllStudied": "Отметить все как изученные",
+        "markAllStudiedAria": "Отметить все выбранные темы как изученные",
+        "markAllStudiedCatAria": "Отметить все темы {{cat}} как изученные",
+        "markAllStudiedConfirm": "Отметить все как изученные?",
+        "markAllStudiedYes": "Да, отметить"
     },
     "heatmap": {
         "heading": "Активность",

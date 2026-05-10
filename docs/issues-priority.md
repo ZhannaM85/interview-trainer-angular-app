@@ -12,7 +12,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | ~~[#38](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/38)~~ | ~~Undo last quiz rating~~ | ✅ Done — [PR #66](https://github.com/ZhannaM85/interview-trainer-angular-app/pull/66) |
 | ~~[#49](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/49)~~ | ~~Randomize question order~~ | ✅ Done |
 | ~~[#55](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/55)~~ | ~~Collapsible code examples in study guide~~ | ✅ Done |
-| [#54](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/54) | Bulk "Mark all as studied" in plan | Low effort, plan page already has the logic |
+| ~~[#54](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/54)~~ | ~~Bulk "Mark all as studied" in plan~~ | ✅ Done |
 | ~~[#40](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/40)~~ | ~~Difficulty filter in study guide~~ | ✅ Done — [PR #73](https://github.com/ZhannaM85/interview-trainer-angular-app/pull/73) |
 | [#39](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/39) | Full-text search in study guide | In-memory filter, naturally pairs with #40 |
 
