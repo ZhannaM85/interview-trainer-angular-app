@@ -1,16 +1,17 @@
-import { buildStudyGuideSections, filterStudyGuideSectionsByDifficulty } from './study-guide-grouping';
+import { buildStudyGuideSections, filterStudyGuideSectionsByDifficulty, filterStudyGuideSectionsBySearch } from './study-guide-grouping';
 import type { Question } from '../../shared/models/question.model';
 
 function makeQuestion(
     id: number,
     category: 'javascript' | 'angular',
     subtopic: string,
-    difficulty: 'beginner' | 'intermediate' | 'advanced'
+    difficulty: 'beginner' | 'intermediate' | 'advanced',
+    overrides: Partial<{ question: string; answer: string }> = {}
 ): Question {
     return {
         id,
-        question: `Q${id}`,
-        answer: '',
+        question: overrides.question ?? `Q${id}`,
+        answer: overrides.answer ?? '',
         weakAnswer: '',
         technicalAnswer: '',
         interviewAnswer: '',
@@ -21,6 +22,58 @@ function makeQuestion(
         difficulty
     };
 }
+
+describe('filterStudyGuideSectionsBySearch', () => {
+    const questions: Question[] = [
+        makeQuestion(1, 'javascript', 'closures', 'beginner', { question: 'What is a closure?', answer: 'A function retaining its scope.' }),
+        makeQuestion(2, 'javascript', 'closures', 'intermediate', { question: 'Closure use cases', answer: 'Data encapsulation.' }),
+        makeQuestion(3, 'angular', 'signals', 'beginner', { question: 'What are Angular signals?', answer: 'Reactive primitives.' }),
+        makeQuestion(4, 'angular', 'pipes', 'beginner', { question: 'Built-in pipes', answer: 'DatePipe, CurrencyPipe.' })
+    ];
+
+    const sections = buildStudyGuideSections(questions);
+
+    it('returns all sections when query is empty', () => {
+        expect(filterStudyGuideSectionsBySearch(sections, '')).toStrictEqual(sections);
+    });
+
+    it('matches by question text (case-insensitive)', () => {
+        const result = filterStudyGuideSectionsBySearch(sections, 'closure');
+        expect(result).toHaveLength(1);
+        expect(result[0].category).toBe('javascript');
+        expect(result[0].subtopics[0].questions.map((q) => q.id)).toEqual([1, 2]);
+    });
+
+    it('matches by answer text', () => {
+        const result = filterStudyGuideSectionsBySearch(sections, 'reactive');
+        expect(result).toHaveLength(1);
+        expect(result[0].subtopics[0].questions[0].id).toBe(3);
+    });
+
+    it('matches by subtopic name and includes all questions in that subtopic', () => {
+        const result = filterStudyGuideSectionsBySearch(sections, 'signals');
+        expect(result).toHaveLength(1);
+        expect(result[0].subtopics[0].subtopic).toBe('signals');
+        expect(result[0].subtopics[0].questions).toHaveLength(1);
+    });
+
+    it('drops subtopics with no matching questions', () => {
+        const result = filterStudyGuideSectionsBySearch(sections, 'datepipe');
+        expect(result).toHaveLength(1);
+        expect(result[0].subtopics).toHaveLength(1);
+        expect(result[0].subtopics[0].subtopic).toBe('pipes');
+    });
+
+    it('drops categories with no matches', () => {
+        const result = filterStudyGuideSectionsBySearch(sections, 'reactive');
+        const categories = result.map((c) => c.category);
+        expect(categories).not.toContain('javascript');
+    });
+
+    it('returns empty array when nothing matches', () => {
+        expect(filterStudyGuideSectionsBySearch(sections, 'xyznotfound')).toHaveLength(0);
+    });
+});
 
 describe('filterStudyGuideSectionsByDifficulty', () => {
     const questions: Question[] = [

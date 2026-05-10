@@ -18,12 +18,14 @@ import { ProgressService } from '../../../../core/services/progress.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { AnswerBlocksComponent } from '../../../../shared/components/answer-blocks/answer-blocks.component';
+import { SearchHighlightPipe } from '../../../../shared/pipes/search-highlight.pipe';
 import { SplitQuestionCodePipe } from '../../../../shared/pipes/split-question-code.pipe';
 import type { Question, QuestionDifficulty } from '../../../../shared/models/question.model';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import {
     buildStudyGuideSections,
     filterStudyGuideSectionsByDifficulty,
+    filterStudyGuideSectionsBySearch,
     filterStudyGuideSectionsByTopicIds,
     filterStudyGuideSectionsExcludingTopicIds,
     filterStudyGuideSectionsWithoutPractice,
@@ -54,7 +56,7 @@ function isSameLocalCalendarDay(a: Date, b: Date): boolean {
 
 @Component({
     selector: 'app-study-guide-page',
-    imports: [AnswerBlocksComponent, RouterLink, SplitQuestionCodePipe, TranslatePipe],
+    imports: [AnswerBlocksComponent, RouterLink, SearchHighlightPipe, SplitQuestionCodePipe, TranslatePipe],
     templateUrl: './study-guide-page.component.html',
     styleUrl: './study-guide-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush
@@ -108,6 +110,10 @@ export class StudyGuidePageComponent {
     protected readonly difficultyFilters: readonly StudyDifficultyFilter[] = ['all', 'beginner', 'intermediate', 'advanced'];
 
     protected readonly difficultyFilter = signal<StudyDifficultyFilter>('all');
+
+    protected readonly searchQuery = signal('');
+    protected readonly searchQueryTrimmed = computed(() => this.searchQuery().trim().toLowerCase());
+    protected readonly searchActive = computed(() => this.searchQueryTrimmed().length > 0);
 
     protected readonly filterMode = toSignal(
         this.route.queryParamMap.pipe(
@@ -188,7 +194,21 @@ export class StudyGuidePageComponent {
         if (diff !== 'all') {
             all = filterStudyGuideSectionsByDifficulty(all, diff);
         }
+        const sq = this.searchQueryTrimmed();
+        if (sq) {
+            all = filterStudyGuideSectionsBySearch(all, sq);
+        }
         return all;
+    });
+
+    protected readonly searchResultCount = computed(() => {
+        let count = 0;
+        for (const cat of this.sections()) {
+            for (const sub of cat.subtopics) {
+                count += sub.questions.length;
+            }
+        }
+        return count;
     });
 
     protected readonly planTodayFilterActive = computed(() => {
@@ -275,6 +295,7 @@ export class StudyGuidePageComponent {
     }
 
     protected subtopicAccordionOpen(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
+        if (this.searchActive()) return true;
         const id = topicIdFromParts(cat.category, sub.subtopic);
         const m = this.subtopicAccordionState();
         if (m.has(id)) {
@@ -392,6 +413,10 @@ export class StudyGuidePageComponent {
 
     protected setDifficultyFilter(f: StudyDifficultyFilter): void {
         this.difficultyFilter.set(f);
+    }
+
+    protected onSearchInput(event: Event): void {
+        this.searchQuery.set((event.target as HTMLInputElement).value);
     }
 
     protected setFilterMode(mode: StudyFilterMode): void {

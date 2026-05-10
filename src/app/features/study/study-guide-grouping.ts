@@ -118,6 +118,38 @@ export function filterStudyGuideSectionsByDifficulty(
     return out;
 }
 
+/**
+ * Keep only questions whose `question`, `answer`, or `subtopic` (case-insensitive) contains `query`.
+ * If the subtopic name itself matches, all its questions are kept.
+ * Drops empty subtopics/categories. Expects `query` to be already lowercased and trimmed.
+ */
+export function filterStudyGuideSectionsBySearch(
+    sections: StudyCategorySection[],
+    query: string
+): StudyCategorySection[] {
+    const out: StudyCategorySection[] = [];
+    for (const cat of sections) {
+        const subs: StudySubtopicSection[] = [];
+        for (const sub of cat.subtopics) {
+            const subtopicMatches = sub.subtopic.toLowerCase().includes(query);
+            const questions = subtopicMatches
+                ? sub.questions
+                : sub.questions.filter(
+                      (q) =>
+                          q.question.toLowerCase().includes(query) ||
+                          q.answer.toLowerCase().includes(query)
+                  );
+            if (questions.length > 0) {
+                subs.push({ ...sub, questions });
+            }
+        }
+        if (subs.length > 0) {
+            out.push({ ...cat, subtopics: subs });
+        }
+    }
+    return out;
+}
+
 /** Keep only subtopics whose `category:subtopic` id is NOT in `topicIds`. Drops empty categories. */
 export function filterStudyGuideSectionsExcludingTopicIds(
     sections: StudyCategorySection[],

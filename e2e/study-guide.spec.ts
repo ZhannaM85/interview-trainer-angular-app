@@ -53,6 +53,82 @@ test.describe('Study guide difficulty filter', () => {
     });
 });
 
+test.describe('Study guide full-text search', () => {
+    test('search input is visible on the study guide page', async ({ page }) => {
+        await page.goto('/study');
+        const input = page.locator('.study__search-input');
+        await expect(input).toBeVisible({ timeout: 10_000 });
+    });
+
+    test('typing a query filters questions and shows result count', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
+
+        await page.locator('.study__search-input').fill('what');
+        await expect(page.locator('.study__search-count')).toBeVisible();
+        await expect(page.locator('.study__cat')).not.toHaveCount(0);
+    });
+
+    test('search expands all subtopic accordions automatically', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
+
+        // Collapse everything first
+        const collapseBtn = page.locator('.study__expand-collapse-all');
+        if (await collapseBtn.isVisible()) {
+            // Click until text indicates collapsed (if possible); just click once to get a consistent state
+            await collapseBtn.click();
+        }
+
+        await page.locator('.study__search-input').fill('closure');
+
+        // All visible accordions should be open
+        const accordions = page.locator('.study__sub-accordion');
+        const count = await accordions.count();
+        for (let i = 0; i < count; i++) {
+            await expect(accordions.nth(i)).toHaveClass(/study__sub-accordion--open/);
+        }
+    });
+
+    test('shows no-results message when query matches nothing', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
+
+        await page.locator('.study__search-input').fill('xyzabcnotfound123');
+        await expect(page.locator('.study__message')).toBeVisible();
+        await expect(page.locator('.study__cat')).toHaveCount(0);
+    });
+
+    test('clearing the search restores the full guide', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
+
+        await page.locator('.study__search-input').fill('xyzabcnotfound123');
+        await expect(page.locator('.study__message')).toBeVisible();
+
+        await page.locator('.study__search-input').fill('');
+        await expect(page.locator('.study__cat')).not.toHaveCount(0);
+        await expect(page.locator('.study__search-count')).not.toBeVisible();
+    });
+
+    test('search works together with the difficulty filter', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
+
+        // Apply difficulty filter first
+        await page.locator('.study__difficulty-row button').nth(1).click();
+        // Then search
+        await page.locator('.study__search-input').fill('what');
+
+        const diffBtn = page.locator('.study__difficulty-row button').nth(1);
+        await expect(diffBtn).toHaveAttribute('aria-pressed', 'true');
+        // Either results or no-results message should be visible
+        const hasCats = await page.locator('.study__cat').count();
+        const hasMsg = await page.locator('.study__message').count();
+        expect(hasCats + hasMsg).toBeGreaterThan(0);
+    });
+});
+
 test.describe('Study guide collapsible code examples', () => {
     async function openFirstSubtopic(page: Parameters<typeof test>[1]['page']): Promise<Locator> {
         await page.goto('/study');
