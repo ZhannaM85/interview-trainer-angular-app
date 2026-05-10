@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, input } from '@angular/core';
+import { ChangeDetectionStrategy, Component, input, signal } from '@angular/core';
 import { TranslatePipe } from '@ngx-translate/core';
 
 import type { Question } from '../../models/question.model';
@@ -13,4 +13,11 @@ import type { Question } from '../../models/question.model';
 export class AnswerBlocksComponent {
     readonly question = input.required<Question>();
     readonly animated = input(false);
+    readonly collapsibleCode = input(false);
+
+    protected readonly codeExpanded = signal(false);
+
+    protected toggleCode(): void {
+        this.codeExpanded.update((v) => !v);
+    }
 }

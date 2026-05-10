@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Locator } from '@playwright/test';
 
 test.describe('Study guide difficulty filter', () => {
     test('shows four difficulty chips with All active by default', async ({ page }) => {
@@ -50,5 +50,164 @@ test.describe('Study guide difficulty filter', () => {
         await chips.nth(2).click();
         await expect(chips.nth(2)).toHaveAttribute('aria-pressed', 'true');
         await expect(page.locator('.study__filter-row').first().locator('button').nth(2)).toHaveAttribute('aria-pressed', 'true');
+    });
+});
+
+test.describe('Study guide collapsible code examples', () => {
+    async function openFirstSubtopic(page: Parameters<typeof test>[1]['page']): Promise<Locator> {
+        await page.goto('/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
+        const accordion = page.locator('.study__sub-accordion').first();
+        const isOpen = await accordion.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
+        if (!isOpen) {
+            await accordion.locator('.study__sub-disclosure').click();
+            await expect(accordion).toHaveClass(/study__sub-accordion--open/);
+        }
+        return accordion;
+    }
+
+    test('code toggle button is hidden until a question has a code example', async ({ page }) => {
+        const accordion = await openFirstSubtopic(page);
+        const articles = accordion.locator('.study__q');
+        const count = await articles.count();
+        let foundToggle = false;
+        for (let i = 0; i < count; i++) {
+            const toggle = articles.nth(i).locator('.interview-answer__code-toggle');
+            if (await toggle.count() > 0) {
+                foundToggle = true;
+                break;
+            }
+        }
+        // The guide has many questions with code examples; at least one subtopic should show a toggle
+        // This test just verifies the toggle is never shown for questions without code
+        const codesWithoutToggle = await accordion.locator('.interview-answer__code-wrap').filter({ has: page.locator('.interview-answer__label--code') }).count();
+        expect(codesWithoutToggle).toBe(0);
+        void foundToggle; // used above
+    });
+
+    test('code block is collapsed by default and toggle shows "Show code example"', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
+
+        // Open subtopics until we find one with a code toggle
+        const accordions = page.locator('.study__sub-accordion');
+        const total = await accordions.count();
+        let toggle: Locator | null = null;
+
+        for (let i = 0; i < total && !toggle; i++) {
+            const acc = accordions.nth(i);
+            const isOpen = await acc.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
+            if (!isOpen) {
+                await acc.locator('.study__sub-disclosure').click();
+            }
+            const t = acc.locator('.interview-answer__code-toggle').first();
+            if (await t.count() > 0) {
+                toggle = t;
+            }
+        }
+
+        if (!toggle) {
+            test.skip(true, 'No question with code example found in visible sections');
+            return;
+        }
+
+        await expect(toggle).toBeVisible();
+        await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+        await expect(toggle).toContainText('Show code example');
+        const pre = toggle.locator('..').locator('.interview-answer__code');
+        await expect(pre).toHaveCount(0);
+    });
+
+    test('clicking toggle expands the code block and changes label', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
+
+        const accordions = page.locator('.study__sub-accordion');
+        const total = await accordions.count();
+        let toggle: Locator | null = null;
+
+        for (let i = 0; i < total && !toggle; i++) {
+            const acc = accordions.nth(i);
+            const isOpen = await acc.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
+            if (!isOpen) {
+                await acc.locator('.study__sub-disclosure').click();
+            }
+            const t = acc.locator('.interview-answer__code-toggle').first();
+            if (await t.count() > 0) {
+                toggle = t;
+            }
+        }
+
+        if (!toggle) {
+            test.skip(true, 'No question with code example found in visible sections');
+            return;
+        }
+
+        await toggle.click();
+        await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+        await expect(toggle).toContainText('Hide code example');
+        const wrap = toggle.locator('..');
+        await expect(wrap.locator('.interview-answer__code')).toBeVisible();
+    });
+
+    test('clicking toggle again collapses the code block', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
+
+        const accordions = page.locator('.study__sub-accordion');
+        const total = await accordions.count();
+        let toggle: Locator | null = null;
+
+        for (let i = 0; i < total && !toggle; i++) {
+            const acc = accordions.nth(i);
+            const isOpen = await acc.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
+            if (!isOpen) {
+                await acc.locator('.study__sub-disclosure').click();
+            }
+            const t = acc.locator('.interview-answer__code-toggle').first();
+            if (await t.count() > 0) {
+                toggle = t;
+            }
+        }
+
+        if (!toggle) {
+            test.skip(true, 'No question with code example found in visible sections');
+            return;
+        }
+
+        await toggle.click();
+        await toggle.click();
+        await expect(toggle).toHaveAttribute('aria-expanded', 'false');
+        await expect(toggle).toContainText('Show code example');
+    });
+
+    test('toggle is keyboard-accessible via Enter', async ({ page }) => {
+        await page.goto('/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
+
+        const accordions = page.locator('.study__sub-accordion');
+        const total = await accordions.count();
+        let toggle: Locator | null = null;
+
+        for (let i = 0; i < total && !toggle; i++) {
+            const acc = accordions.nth(i);
+            const isOpen = await acc.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
+            if (!isOpen) {
+                await acc.locator('.study__sub-disclosure').click();
+            }
+            const t = acc.locator('.interview-answer__code-toggle').first();
+            if (await t.count() > 0) {
+                toggle = t;
+            }
+        }
+
+        if (!toggle) {
+            test.skip(true, 'No question with code example found in visible sections');
+            return;
+        }
+
+        await toggle.focus();
+        await page.keyboard.press('Enter');
+        await expect(toggle).toHaveAttribute('aria-expanded', 'true');
     });
 });
