@@ -321,7 +321,7 @@
                                             @if (cat.category === 'custom') {
                                                 <div class="study__custom-answer">{{ q.answer }}</div>
                                             } @else {
-                                                <app-answer-blocks [question]="q" [animated]="false" />
+                                                <app-answer-blocks [question]="q" [animated]="false" [collapsibleCode]="true" />
                                             }
                                         </div>
                                     </article>

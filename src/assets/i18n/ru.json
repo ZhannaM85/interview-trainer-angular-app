@@ -350,6 +350,8 @@
         "technical": "Технический ответ",
         "interview": "Ответ для собеседования",
         "codeExample": "Пример кода",
+        "showCode": "Показать пример кода",
+        "hideCode": "Скрыть пример кода",
         "readMore": "Читать дальше"
     },
     "interviewQuestion": {

@@ -41,14 +41,33 @@
         [class.interview-answer__reveal]="animated()"
         [class.interview-answer__reveal--4]="animated()"
     >
-        <p class="interview-answer__label interview-answer__label--code">
-            {{ 'answerBlocks.codeExample' | translate }}
-        </p>
-        <pre
-            class="interview-answer__code"
-            role="region"
-            [attr.aria-label]="'answerBlocks.codeExample' | translate"
-        ><code>{{ question().codeExample }}</code></pre>
+        @if (collapsibleCode()) {
+            <button
+                type="button"
+                class="interview-answer__code-toggle"
+                [attr.aria-expanded]="codeExpanded()"
+                (click)="toggleCode()"
+            >
+                <span class="interview-answer__code-toggle-chevron" aria-hidden="true"></span>
+                {{ (codeExpanded() ? 'answerBlocks.hideCode' : 'answerBlocks.showCode') | translate }}
+            </button>
+            @if (codeExpanded()) {
+                <pre
+                    class="interview-answer__code interview-answer__code--collapsible"
+                    role="region"
+                    [attr.aria-label]="'answerBlocks.codeExample' | translate"
+                ><code>{{ question().codeExample }}</code></pre>
+            }
+        } @else {
+            <p class="interview-answer__label interview-answer__label--code">
+                {{ 'answerBlocks.codeExample' | translate }}
+            </p>
+            <pre
+                class="interview-answer__code"
+                role="region"
+                [attr.aria-label]="'answerBlocks.codeExample' | translate"
+            ><code>{{ question().codeExample }}</code></pre>
+        }
     </div>
 }
 

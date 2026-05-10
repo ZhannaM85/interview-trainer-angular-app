@@ -350,6 +350,8 @@
         "technical": "Technical answer",
         "interview": "Interview answer",
         "codeExample": "Code example",
+        "showCode": "Show code example",
+        "hideCode": "Hide code example",
         "readMore": "Read more"
     },
     "interviewQuestion": {
