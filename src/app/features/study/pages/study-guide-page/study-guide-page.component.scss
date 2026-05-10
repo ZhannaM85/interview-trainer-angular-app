@@ -97,7 +97,47 @@
 }
 
 .study__difficulty-row {
+    margin-bottom: 0.65rem;
+}
+
+.study__search-wrap {
     margin-bottom: 0.85rem;
+}
+
+.study__search-input {
+    display: block;
+    width: 100%;
+    padding: 0.5rem 0.85rem;
+    border-radius: 0.55rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    color: var(--it-text);
+    font: inherit;
+    font-size: 0.9rem;
+    box-sizing: border-box;
+    transition: border-color 0.12s ease;
+}
+
+.study__search-input:focus {
+    outline: none;
+    border-color: var(--it-accent);
+}
+
+.study__search-input::placeholder {
+    color: var(--it-text-muted);
+}
+
+.study__search-count {
+    margin: 0.4rem 0 0;
+    font-size: 0.82rem;
+    color: var(--it-text-muted);
+}
+
+.study__search-highlight {
+    background: color-mix(in srgb, var(--it-accent) 25%, transparent);
+    color: inherit;
+    border-radius: 0.2rem;
+    padding: 0 0.05em;
 }
 
 .study__expand-collapse-all {

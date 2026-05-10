@@ -46,6 +46,22 @@
         }
     </div>
 
+    <div class="study__search-wrap">
+        <input
+            type="search"
+            class="study__search-input"
+            [placeholder]="'study.searchPlaceholder' | translate"
+            [attr.aria-label]="'study.searchLabel' | translate"
+            [value]="searchQuery()"
+            (input)="onSearchInput($event)"
+        />
+        @if (searchActive()) {
+            <p class="study__search-count" role="status" aria-live="polite">
+                {{ 'study.searchResultCount' | translate: { count: searchResultCount() } }}
+            </p>
+        }
+    </div>
+
     @if (showPlanCompleteBanner()) {
         <div
             id="study-plan-complete-banner"
@@ -114,6 +130,8 @@
         <p class="study__message">{{ 'study.untouchedFilterEmpty' | translate }}</p>
     } @else if (filterMode() === 'never-studied' && sections().length === 0) {
         <p class="study__message">{{ 'studyFilter.neverStudiedEmpty' | translate }}</p>
+    } @else if (searchActive() && sections().length === 0) {
+        <p class="study__message">{{ 'study.searchNoResults' | translate }}</p>
     } @else {
         <div class="study__layout">
             <details
@@ -311,7 +329,7 @@
                                                 <span class="study__q-num">{{
                                                     globalOrdinalByQuestionId().get(q.id)
                                                 }}.</span>
-                                                {{ qParts.lead }}
+                                                <span [innerHTML]="qParts.lead | searchHighlight:searchQueryTrimmed()"></span>
                                             </h4>
                                         </div>
                                         @if (qParts.code) {

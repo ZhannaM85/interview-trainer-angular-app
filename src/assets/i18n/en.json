@@ -147,7 +147,11 @@
         "lastPracticeAria": "Last answered in Practice on {{date}}",
         "expandCollapseAll": "Expand / collapse all",
         "filteredRetryBanner": "Showing topics you had trouble with recently.",
-        "filteredRetryClear": "Show all topics"
+        "filteredRetryClear": "Show all topics",
+        "searchPlaceholder": "Search questions…",
+        "searchLabel": "Search study guide",
+        "searchResultCount": "{{count}} question(s) found",
+        "searchNoResults": "No questions match your search."
     },
     "studyDifficulty": {
         "label": "Filter by difficulty"
