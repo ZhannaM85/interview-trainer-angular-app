@@ -352,6 +352,16 @@
         },
         "achievement": {
             "longerThanYesterday": "Studied longer than yesterday"
+        },
+        "dataBackup": {
+            "title": "Data backup",
+            "exportBtn": "Export data",
+            "importBtn": "Import / restore",
+            "importConfirmTitle": "Restore from backup?",
+            "importConfirmBody": "Will overwrite {{progress}} progress record(s), {{days}} activity day(s), and {{questions}} custom question(s).",
+            "importConfirm": "Restore",
+            "importCancel": "Cancel",
+            "importError": "Invalid file — could not read or parse the backup JSON."
         }
     },
     "answerBlocks": {

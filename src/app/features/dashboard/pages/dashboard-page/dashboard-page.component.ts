@@ -13,6 +13,8 @@ import { TranslatePipe } from '@ngx-translate/core';
 import { ActivityService } from '../../../../core/services/activity.service';
 import type { DailyActivity } from '../../../../shared/models/activity.model';
 import type { PracticeRatingBreakdown } from '../../../../core/services/activity.service';
+import { DataExportService } from '../../../../core/services/data-export.service';
+import type { AppBackup, BackupDiff } from '../../../../core/services/data-export.service';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Progress } from '../../../../shared/models/progress.model';
@@ -60,6 +62,7 @@ export class DashboardPageComponent {
     private readonly progressService = inject(ProgressService);
     private readonly questionService = inject(QuestionService);
     private readonly activityService = inject(ActivityService);
+    private readonly dataExportService = inject(DataExportService);
 
     /** Inline help for Accuracy / Confidence (tap icon on mobile; hover title still works on desktop). */
     protected readonly openMetricHelp = signal<'accuracy' | 'confidence' | null>(null);
@@ -133,6 +136,13 @@ export class DashboardPageComponent {
     protected readonly stats = signal<DashboardStats | null>(null);
     protected readonly loading = signal(true);
     protected readonly loadError = signal(false);
+
+    protected readonly importPending = signal<AppBackup | null>(null);
+    protected readonly importDiff = computed<BackupDiff | null>(() => {
+        const pending = this.importPending();
+        return pending ? this.dataExportService.diffBackup(pending) : null;
+    });
+    protected readonly importError = signal(false);
 
     private readonly questionsSignal = signal<Question[]>([]);
 
@@ -211,6 +221,38 @@ export class DashboardPageComponent {
                     this.loading.set(false);
                 }
             });
+    }
+
+    protected exportData(): void {
+        this.dataExportService.exportBackup();
+    }
+
+    protected onImportFileChange(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        const file = input.files?.[0];
+        if (!file) return;
+        this.dataExportService.parseBackupFile(file).then(
+            (backup) => {
+                this.importError.set(false);
+                this.importPending.set(backup);
+            },
+            () => {
+                this.importError.set(true);
+                this.importPending.set(null);
+            }
+        );
+        input.value = '';
+    }
+
+    protected confirmImport(): void {
+        const backup = this.importPending();
+        if (!backup) return;
+        this.dataExportService.applyBackup(backup);
+    }
+
+    protected cancelImport(): void {
+        this.importPending.set(null);
+        this.importError.set(false);
     }
 
     private computeStats(questions: Question[], progress: Progress[]): DashboardStats {

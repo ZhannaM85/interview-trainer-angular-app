@@ -299,6 +299,71 @@
                 <app-activity-heatmap />
             </article>
 
+            <article class="dashboard__card">
+                <h2 class="dashboard__card-title">{{ 'dashboard.dataBackup.title' | translate }}</h2>
+                <input
+                    type="file"
+                    accept=".json,application/json"
+                    #importInput
+                    class="dashboard__file-input"
+                    (change)="onImportFileChange($event)"
+                />
+                @if (importError()) {
+                    <p class="dashboard__message dashboard__message--error" role="alert">
+                        {{ 'dashboard.dataBackup.importError' | translate }}
+                    </p>
+                }
+                @if (importPending(); as pending) {
+                    @let diff = importDiff();
+                    <div class="dashboard__backup-confirm">
+                        <p class="dashboard__backup-confirm-body">
+                            {{
+                                'dashboard.dataBackup.importConfirmBody'
+                                    | translate
+                                        : {
+                                              progress: diff?.progressCount,
+                                              days: diff?.activityDaysCount,
+                                              questions: diff?.customQuestionsCount
+                                          }
+                            }}
+                        </p>
+                        <div class="dashboard__backup-actions">
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn dashboard__backup-btn--primary"
+                                (click)="confirmImport()"
+                            >
+                                {{ 'dashboard.dataBackup.importConfirm' | translate }}
+                            </button>
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn"
+                                (click)="cancelImport()"
+                            >
+                                {{ 'dashboard.dataBackup.importCancel' | translate }}
+                            </button>
+                        </div>
+                    </div>
+                } @else {
+                    <div class="dashboard__backup-actions">
+                        <button
+                            type="button"
+                            class="dashboard__backup-btn"
+                            (click)="exportData()"
+                        >
+                            {{ 'dashboard.dataBackup.exportBtn' | translate }}
+                        </button>
+                        <button
+                            type="button"
+                            class="dashboard__backup-btn"
+                            (click)="importInput.click()"
+                        >
+                            {{ 'dashboard.dataBackup.importBtn' | translate }}
+                        </button>
+                    </div>
+                }
+            </article>
+
             <div class="dashboard__cta-wrap">
                 <div class="dashboard__cta-row">
                     <a routerLink="/study" class="dashboard__cta-secondary">{{ 'dashboard.browseQa' | translate }}</a>

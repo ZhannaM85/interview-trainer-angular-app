@@ -352,6 +352,16 @@
         },
         "achievement": {
             "longerThanYesterday": "Занимались дольше, чем вчера"
+        },
+        "dataBackup": {
+            "title": "Резервная копия данных",
+            "exportBtn": "Экспортировать данные",
+            "importBtn": "Импортировать / восстановить",
+            "importConfirmTitle": "Восстановить из резервной копии?",
+            "importConfirmBody": "Будут перезаписаны: {{progress}} запис(ей) прогресса, {{days}} день(дней) активности и {{questions}} пользовательских вопрос(ов).",
+            "importConfirm": "Восстановить",
+            "importCancel": "Отмена",
+            "importError": "Некорректный файл — не удалось прочитать или разобрать резервный JSON."
         }
     },
     "answerBlocks": {
