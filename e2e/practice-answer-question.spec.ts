@@ -1,8 +1,30 @@
 import { test, expect } from '@playwright/test';
 
+test.describe('Practice / session mode picker', () => {
+  test('shows session mode picker before quiz starts', async ({ page }) => {
+    await page.goto('/quiz');
+    await expect(page.locator('.quiz__session-picker')).toBeVisible();
+    await expect(page.locator('.quiz__session-mode-btn')).toHaveCount(3);
+  });
+
+  test('starts quiz after picking a mode', async ({ page }) => {
+    await page.goto('/quiz');
+    await page.locator('.quiz__session-mode-btn').nth(1).click();
+    await expect(page.locator('.quiz__session-picker')).not.toBeVisible();
+    await expect(page.locator('.interview-q__cta')).toBeVisible({ timeout: 60_000 });
+  });
+
+  test('hides picker after selection', async ({ page }) => {
+    await page.goto('/quiz');
+    await page.locator('.quiz__session-mode-btn').first().click();
+    await expect(page.locator('.quiz__session-picker')).not.toBeVisible();
+  });
+});
+
 test.describe('Practice / quiz answer phase', () => {
   test('question sits on the same styled card as answers', async ({ page }) => {
     await page.goto('/quiz');
+    await page.locator('.quiz__session-mode-btn').nth(1).click();
     await expect(page.locator('.interview-q__cta')).toBeVisible({ timeout: 60_000 });
     await page.locator('.interview-q__cta').click();
 

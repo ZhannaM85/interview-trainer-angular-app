@@ -305,7 +305,16 @@
         "summaryBestStreak": "Best streak: {{count}} nailed in a row",
         "doneGotoDashboard": "Progress",
         "shuffleOn": "Shuffle: On",
-        "shuffleOff": "Shuffle: Off"
+        "shuffleOff": "Shuffle: Off",
+        "sessionPickerTitle": "Choose session length",
+        "sessionPickerOptionsAria": "Session length options",
+        "sessionModeQuick": "Quick",
+        "sessionModeQuickDesc": "5 questions — ideal for a short warm-up",
+        "sessionModeStandard": "Standard",
+        "sessionModeStandardDesc": "15 questions — balanced daily practice",
+        "sessionModeDeep": "Deep",
+        "sessionModeDeepDesc": "All due questions — full review session",
+        "sessionFewNote": "Only {{count}} questions were available — using all of them."
     },
     "dashboard": {
         "title": "Interview Progress",

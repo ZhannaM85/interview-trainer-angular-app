@@ -305,7 +305,16 @@
         "summaryBestStreak": "Лучшая серия: {{count}} «отлично» подряд",
         "doneGotoDashboard": "Прогресс",
         "shuffleOn": "Перемешивание: вкл",
-        "shuffleOff": "Перемешивание: выкл"
+        "shuffleOff": "Перемешивание: выкл",
+        "sessionPickerTitle": "Выберите длину сессии",
+        "sessionPickerOptionsAria": "Варианты длины сессии",
+        "sessionModeQuick": "Быстро",
+        "sessionModeQuickDesc": "5 вопросов — быстрая разминка",
+        "sessionModeStandard": "Стандарт",
+        "sessionModeStandardDesc": "15 вопросов — сбалансированная ежедневная практика",
+        "sessionModeDeep": "Углублённо",
+        "sessionModeDeepDesc": "Все вопросы к повторению — полная сессия",
+        "sessionFewNote": "Доступно только {{count}} вопросов — используем все."
     },
     "dashboard": {
         "title": "Прогресс по собеседованиям",

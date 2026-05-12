@@ -7,6 +7,7 @@ import { distinctUntilChanged, map, take } from 'rxjs';
 import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService, SCORE_BY_RATING } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
+import { StorageService } from '../../../../core/services/storage.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import type { Progress } from '../../../../shared/models/progress.model';
 import type { Question, QuestionCategory } from '../../../../shared/models/question.model';
@@ -19,6 +20,13 @@ import { InterviewQuestionComponent } from '../../components/interview-question/
 import { SelfEvaluationComponent } from '../../components/self-evaluation/self-evaluation.component';
 
 export type QuizPhase = 'question' | 'answer' | 'feedback';
+export type SessionMode = 'quick' | 'standard' | 'deep';
+
+const SESSION_MODE_LIMIT: Record<SessionMode, number | undefined> = {
+    quick: 5,
+    standard: 15,
+    deep: undefined
+};
 
 export interface FeedbackSnapshot {
     headline: string;
@@ -65,6 +73,7 @@ export class QuizPageComponent {
     private readonly activityService = inject(ActivityService);
     private readonly translate = inject(TranslateService);
     private readonly route = inject(ActivatedRoute);
+    private readonly storage = inject(StorageService);
 
     /** `?topics=cat:sub` — when present, restrict the session to questions in those topic IDs. */
     private readonly topicsFocusParam = toSignal(
@@ -74,6 +83,12 @@ export class QuizPageComponent {
         ),
         { initialValue: this.route.snapshot.queryParamMap.get('topics') ?? '' }
     );
+
+    protected readonly sessionMode = signal<SessionMode>(
+        this.storage.get<SessionMode>('quiz-session-mode') ?? 'standard'
+    );
+    protected readonly showSessionModePicker = signal(true);
+    protected readonly sessionTruncated = signal(false);
 
     protected readonly currentQuestion = signal<Question | null>(null);
     protected readonly phase = signal<QuizPhase>('question');
@@ -190,13 +205,11 @@ export class QuizPageComponent {
                 this.rebuildFeedbackSnapshot();
             }
         });
-
-        this.loadQuiz();
     }
 
     @HostListener('document:keydown', ['$event'])
     protected handleKeydown(event: KeyboardEvent): void {
-        if (this.showPlanTopicsCoveredDialog() || this.loading() || this.sessionComplete() || !this.currentQuestion()) {
+        if (this.showSessionModePicker() || this.showPlanTopicsCoveredDialog() || this.loading() || this.sessionComplete() || !this.currentQuestion()) {
             return;
         }
         const target = event.target as HTMLElement;
@@ -283,8 +296,15 @@ export class QuizPageComponent {
         this.questionService.toggleShuffle();
     }
 
-    protected restartSession(): void {
+    protected startSession(mode: SessionMode): void {
+        this.sessionMode.set(mode);
+        this.storage.set('quiz-session-mode', mode);
+        this.showSessionModePicker.set(false);
         this.loadQuiz();
+    }
+
+    protected restartSession(): void {
+        this.showSessionModePicker.set(true);
     }
 
     protected switchToFullQuestionBank(): void {
@@ -381,6 +401,7 @@ export class QuizPageComponent {
         this.loadError.set(false);
         this.sessionComplete.set(false);
         this.showPlanTopicsCoveredDialog.set(false);
+        this.sessionTruncated.set(false);
         this.currentQuestion.set(null);
         this.phase.set('question');
         this.feedbackSnapshot.set(null);
@@ -441,10 +462,14 @@ export class QuizPageComponent {
                     }
                     this.usingFallbackQueue.set(useFallback);
                     const queue = fullBankMode ? candidate : useFallback ? candidate : due;
-                    this.sessionTotal.set(queue.length);
+                    const limit = SESSION_MODE_LIMIT[this.sessionMode()];
+                    this.sessionTruncated.set(
+                        limit != null && queue.length < limit && queue.length > 0
+                    );
+                    const finalQueue = this.questionService.initializeQueue(queue, limit);
+                    this.sessionTotal.set(finalQueue.length);
                     this.sessionIndex.set(0);
-                    this.sessionStackTopicIds.set(this.uniqueSortedTopicIds(queue));
-                    this.questionService.initializeQueue(queue);
+                    this.sessionStackTopicIds.set(this.uniqueSortedTopicIds(finalQueue));
                     this.loading.set(false);
                     this.advanceToNextQuestion();
                 },
