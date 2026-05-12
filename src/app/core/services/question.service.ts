@@ -98,13 +98,14 @@ export class QuestionService {
         this.storage.set('quiz-shuffle', next);
     }
 
-    initializeQueue(questions: Question[]): void {
+    initializeQueue(questions: Question[], limit?: number): Question[] {
         const q = [...questions];
         if (this.shuffleEnabled()) {
             this.shuffleInPlace(q);
         }
-        this.queue = q;
+        this.queue = limit != null ? q.slice(0, limit) : q;
         this.index = -1;
+        return this.queue;
     }
 
     getNextQuestion(): Question | null {
