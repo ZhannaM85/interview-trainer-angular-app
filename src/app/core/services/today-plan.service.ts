@@ -1,6 +1,6 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 
-import type { TodayPlanState } from '../../shared/models/today-plan.model';
+import type { PlanCarryover, TodayPlanState } from '../../shared/models/today-plan.model';
 import { formatLocalYmd } from '../../shared/utils/local-date.utils';
 import { isSociologyPlanTopicId } from '../../shared/utils/sociology-topic-key.utils';
 import { ActivityService } from './activity.service';
@@ -8,6 +8,7 @@ import { SociologyActivityService } from './sociology-activity.service';
 import { StorageService } from './storage.service';
 
 const TODAY_PLAN_KEY = 'today-plan';
+const CARRYOVER_KEY = 'plan-carryover';
 
 function emptyStateForToday(): TodayPlanState {
     return {
@@ -36,7 +37,10 @@ export class TodayPlanService {
     private readonly activityService = inject(ActivityService);
     private readonly sociologyActivityService = inject(SociologyActivityService);
 
+    // loadInitial() may write to CARRYOVER_KEY when a rollover is detected
     private readonly state = signal<TodayPlanState>(this.loadInitial());
+    // loadCarryover() reads from CARRYOVER_KEY after loadInitial() has potentially written it
+    readonly carryoverPending = signal<PlanCarryover | null>(this.loadCarryover());
 
     /** Resolved state after day rollover. */
     readonly plan = this.state.asReadonly();
@@ -115,6 +119,27 @@ export class TodayPlanService {
         });
     }
 
+    /** Add yesterday's unfinished topics to today's plan and clear the carryover prompt. */
+    acceptCarryover(): void {
+        const carryover = this.carryoverPending();
+        if (!carryover) return;
+        this.ensureCurrentDay();
+        const s = this.state();
+        const selectedSet = new Set(s.selectedTopicIds);
+        const newIds = carryover.topicIds.filter((id) => !selectedSet.has(id));
+        if (newIds.length > 0) {
+            this.save({ ...s, selectedTopicIds: [...s.selectedTopicIds, ...newIds] });
+        }
+        this.storage.set(CARRYOVER_KEY, null);
+        this.carryoverPending.set(null);
+    }
+
+    /** Dismiss the carryover prompt without adding topics. */
+    dismissCarryover(): void {
+        this.storage.set(CARRYOVER_KEY, null);
+        this.carryoverPending.set(null);
+    }
+
     private ensureCurrentDay(): void {
         const today = formatLocalYmd(new Date());
         const s = this.state();
@@ -135,6 +160,13 @@ export class TodayPlanService {
             return emptyStateForToday();
         }
         if (raw.planDate !== today) {
+            const yesterday = new Date();
+            yesterday.setDate(yesterday.getDate() - 1);
+            const studiedSet = new Set(raw.studiedTopicIds);
+            const unfinished = raw.selectedTopicIds.filter((id) => !studiedSet.has(id));
+            if (unfinished.length > 0 && raw.planDate === formatLocalYmd(yesterday)) {
+                this.storage.set(CARRYOVER_KEY, { fromDate: raw.planDate, topicIds: unfinished } satisfies PlanCarryover);
+            }
             const fresh = emptyStateForToday();
             this.storage.set(TODAY_PLAN_KEY, fresh);
             return fresh;
@@ -144,6 +176,31 @@ export class TodayPlanService {
             selectedTopicIds: [...new Set(raw.selectedTopicIds)],
             studiedTopicIds: [...new Set(raw.studiedTopicIds)]
         };
+    }
+
+    private loadCarryover(): PlanCarryover | null {
+        const yesterday = new Date();
+        yesterday.setDate(yesterday.getDate() - 1);
+        const yesterdayStr = formatLocalYmd(yesterday);
+        const raw = this.storage.get<unknown>(CARRYOVER_KEY);
+        if (!this.isCarryoverShape(raw)) return null;
+        if (raw.fromDate !== yesterdayStr) {
+            // Stale entry (older than yesterday); clear it
+            this.storage.set(CARRYOVER_KEY, null);
+            return null;
+        }
+        return raw;
+    }
+
+    private isCarryoverShape(raw: unknown): raw is PlanCarryover {
+        return (
+            typeof raw === 'object' &&
+            raw !== null &&
+            'fromDate' in raw &&
+            typeof (raw as PlanCarryover).fromDate === 'string' &&
+            'topicIds' in raw &&
+            Array.isArray((raw as PlanCarryover).topicIds)
+        );
     }
 
     private isPersistedShape(raw: unknown): raw is TodayPlanState {

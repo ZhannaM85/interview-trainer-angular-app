@@ -199,7 +199,10 @@
         "markAllStudiedAria": "Mark all selected topics as studied",
         "markAllStudiedCatAria": "Mark all {{cat}} topics as studied",
         "markAllStudiedConfirm": "Mark all as studied?",
-        "markAllStudiedYes": "Yes, mark all"
+        "markAllStudiedYes": "Yes, mark all",
+        "carryoverPrompt": "You had {{count}} unfinished topic(s) from yesterday — add them to today's plan?",
+        "carryoverAccept": "Add to plan",
+        "carryoverDismiss": "Skip"
     },
     "heatmap": {
         "heading": "Activity",

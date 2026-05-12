@@ -6,6 +6,22 @@
     <h1 id="plan-title" class="plan__title">{{ 'plan.title' | translate }}</h1>
     <p class="plan__intro">{{ 'plan.intro' | translate }}</p>
 
+    @if (carryoverTopicIds().length > 0) {
+        <div class="plan__carryover" role="status">
+            <p class="plan__carryover-msg">
+                {{ 'plan.carryoverPrompt' | translate: { count: carryoverTopicIds().length } }}
+            </p>
+            <div class="plan__carryover-actions">
+                <button type="button" class="plan__carryover-accept" (click)="acceptCarryover()">
+                    {{ 'plan.carryoverAccept' | translate }}
+                </button>
+                <button type="button" class="plan__carryover-dismiss" (click)="dismissCarryover()">
+                    {{ 'plan.carryoverDismiss' | translate }}
+                </button>
+            </div>
+        </div>
+    }
+
     @if (loadError()) {
         <p class="plan__message plan__message--error" role="alert">{{ 'plan.loadError' | translate }}</p>
     } @else if (loading()) {
