@@ -4,3 +4,9 @@ export interface TodayPlanState {
     selectedTopicIds: string[];
     studiedTopicIds: string[];
 }
+
+/** Persisted carry-over from the previous day's unfinished topics. */
+export interface PlanCarryover {
+    fromDate: string;
+    topicIds: string[];
+}

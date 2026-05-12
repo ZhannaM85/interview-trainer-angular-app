@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 
 import { PlanPageComponent } from './plan-page.component';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
+import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
 
 class StubLoader implements TranslateLoader {
     getTranslation(): Observable<TranslationObject> {
@@ -13,8 +14,11 @@ class StubLoader implements TranslateLoader {
     }
 }
 
-async function setup() {
+async function setup(storageEntries: Record<string, unknown> = {}) {
     localStorage.clear();
+    for (const [key, value] of Object.entries(storageEntries)) {
+        localStorage.setItem(`interview-trainer:${key}`, JSON.stringify(value));
+    }
     await TestBed.configureTestingModule({
         imports: [PlanPageComponent],
         providers: [
@@ -27,6 +31,9 @@ async function setup() {
     const fixture = TestBed.createComponent(PlanPageComponent);
     const component = fixture.componentInstance as unknown as {
         confirmMarkAllStudied: ReturnType<typeof import('@angular/core').signal<string | null>>;
+        carryoverTopicIds: () => string[];
+        acceptCarryover(): void;
+        dismissCarryover(): void;
         requestMarkAllStudied(key: string): void;
         confirmMarkAllStudiedTopics(): void;
         cancelMarkAllStudied(): void;
@@ -34,6 +41,12 @@ async function setup() {
     };
     fixture.detectChanges();
     return { fixture, component, plan: TestBed.inject(TodayPlanService) };
+}
+
+function yesterdayStr(): string {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return formatLocalYmd(d);
 }
 
 describe('PlanPageComponent — bulk mark all as studied', () => {
@@ -110,5 +123,53 @@ describe('PlanPageComponent — bulk mark all as studied', () => {
         const { component } = await setup();
         component.requestMarkAllStudied('javascript__heading');
         expect(component.confirmMarkAllStudied()).toBe('javascript__heading');
+    });
+});
+
+describe('PlanPageComponent — carryover banner', () => {
+    afterEach(() => {
+        TestBed.resetTestingModule();
+        localStorage.clear();
+    });
+
+    it('carryoverTopicIds is empty when there is no carryover', async () => {
+        const { component } = await setup();
+        expect(component.carryoverTopicIds()).toEqual([]);
+    });
+
+    it('carryoverTopicIds reflects pending carryover topics (excluding sociology)', async () => {
+        const { component } = await setup({
+            'plan-carryover': { fromDate: yesterdayStr(), topicIds: ['javascript:closures', 'angular:signals'] }
+        });
+        expect(component.carryoverTopicIds()).toEqual(['javascript:closures', 'angular:signals']);
+    });
+
+    it('excludes sociology topics from carryoverTopicIds', async () => {
+        const { component } = await setup({
+            'plan-carryover': { fromDate: yesterdayStr(), topicIds: ['javascript:closures', 'sociology:topic:sub'] }
+        });
+        expect(component.carryoverTopicIds()).toEqual(['javascript:closures']);
+    });
+
+    it('acceptCarryover adds topics to today plan and clears carryoverTopicIds', async () => {
+        const { component, plan } = await setup({
+            'plan-carryover': { fromDate: yesterdayStr(), topicIds: ['javascript:closures'] }
+        });
+
+        component.acceptCarryover();
+
+        expect(component.carryoverTopicIds()).toEqual([]);
+        expect(plan.isSelected('javascript:closures')).toBe(true);
+    });
+
+    it('dismissCarryover clears carryoverTopicIds without adding to plan', async () => {
+        const { component, plan } = await setup({
+            'plan-carryover': { fromDate: yesterdayStr(), topicIds: ['javascript:closures'] }
+        });
+
+        component.dismissCarryover();
+
+        expect(component.carryoverTopicIds()).toEqual([]);
+        expect(plan.isSelected('javascript:closures')).toBe(false);
     });
 });

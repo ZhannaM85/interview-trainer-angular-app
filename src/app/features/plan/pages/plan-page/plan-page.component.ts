@@ -132,6 +132,21 @@ export class PlanPageComponent {
         this.todayPlan.clearStudied(id);
     }
 
+    /** Unfinished topics from yesterday (JS/Angular only — sociology excluded). */
+    protected readonly carryoverTopicIds = computed(() => {
+        const carryover = this.todayPlan.carryoverPending();
+        if (!carryover) return [];
+        return carryover.topicIds.filter((id) => !isSociologyPlanTopicId(id));
+    });
+
+    protected acceptCarryover(): void {
+        this.todayPlan.acceptCarryover();
+    }
+
+    protected dismissCarryover(): void {
+        this.todayPlan.dismissCarryover();
+    }
+
     protected readonly confirmRemoveAll = signal(false);
 
     protected requestRemoveAll(): void {
