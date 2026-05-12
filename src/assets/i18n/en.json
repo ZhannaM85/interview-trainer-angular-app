@@ -15,6 +15,12 @@
         "cta": "Start practicing →",
         "dismiss": "Dismiss reminder"
     },
+    "resumeSessionBanner": {
+        "message": "You left off at question {{question}} of {{total}} —",
+        "continue": "Continue →",
+        "startFresh": "Start fresh",
+        "dismiss": "Dismiss resume nudge"
+    },
     "nav": {
         "about": "About",
         "study": "Study guide",

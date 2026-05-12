@@ -158,6 +158,31 @@
             </button>
         </div>
     }
+    @if (showResumeBanner()) {
+        <div class="app__resume-banner" role="status" aria-live="polite">
+            <span class="app__resume-banner-text">
+                {{ 'resumeSessionBanner.message' | translate: { question: resumeSessionInfo()!.questionNumber, total: resumeSessionInfo()!.total } }}
+            </span>
+            <a routerLink="/quiz" class="app__resume-banner-continue" (click)="closeNavMenu()">
+                {{ 'resumeSessionBanner.continue' | translate }}
+            </a>
+            <button
+                type="button"
+                class="app__resume-banner-fresh"
+                (click)="onResumeStartFresh()"
+            >
+                {{ 'resumeSessionBanner.startFresh' | translate }}
+            </button>
+            <button
+                type="button"
+                class="app__resume-banner-close"
+                (click)="resumeBannerDismissed.set(true)"
+                [attr.aria-label]="'resumeSessionBanner.dismiss' | translate"
+            >
+                <span aria-hidden="true">×</span>
+            </button>
+        </div>
+    }
     @if (showRetryBanner()) {
         <div class="app__retry-banner" role="status" aria-live="polite">
             <span class="app__retry-banner-icon" aria-hidden="true">💡</span>

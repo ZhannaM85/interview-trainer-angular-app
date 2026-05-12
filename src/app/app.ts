@@ -12,6 +12,7 @@ import { CustomQuestionService } from './core/services/custom-question.service';
 import { QuestionService } from './core/services/question.service';
 import { StorageService } from './core/services/storage.service';
 import { ThemeService } from './core/services/theme.service';
+import type { ActiveSessionSnapshot } from './shared/models/active-session.model';
 import { formatLocalYmd } from './shared/utils/local-date.utils';
 
 /** Interview routes where the “topics to revisit” banner is relevant (not home, About, etc.). */
@@ -22,6 +23,11 @@ const INTERVIEW_RETRY_BANNER_PATHS = new Set([
     '/dashboard',
     '/my-questions'
 ]);
+
+/** Interview routes where the resume-session nudge is relevant (excludes /quiz, which has its own in-page handler). */
+const RESUME_BANNER_PATHS = new Set(['/', '/dashboard', '/study', '/plan', '/my-questions']);
+
+const SESSION_STALE_MS = 24 * 60 * 60 * 1000;
 
 @Component({
     selector: 'app-root',
@@ -47,6 +53,8 @@ export class App {
     protected readonly navMenuOpen = signal(false);
     protected readonly retryBannerDismissed = signal(false);
     protected readonly practiceReminderDismissed = signal(false);
+    protected readonly resumeBannerDismissed = signal(false);
+    protected readonly resumeSessionInfo = signal(this.readResumeSessionInfo());
 
     /** Path without query/hash; updates on navigation (for gating JS-only UI such as the retry banner). */
     private readonly locationPath = toSignal(
@@ -109,6 +117,15 @@ export class App {
             return false;
         }
         return !this.retryBannerDismissed() && this.retryTopicIds().length > 0;
+    });
+
+    /** True when the user should see the resume-session nudge (valid snapshot exists, not dismissed, on a relevant page). */
+    protected readonly showResumeBanner = computed(() => {
+        if (this.resumeBannerDismissed() || this.resumeSessionInfo() === null) {
+            return false;
+        }
+        const p = this.locationPath();
+        return RESUME_BANNER_PATHS.has(p);
     });
 
     /** True when the user should see the practice reminder banner (no practice today, not dismissed, on an interview page, not already on quiz). */
@@ -200,6 +217,22 @@ export class App {
 
     protected onThemeToggle(): void {
         this.themeService.toggleTheme();
+    }
+
+    protected onResumeStartFresh(): void {
+        localStorage.removeItem('interview-trainer:active-session');
+        this.resumeBannerDismissed.set(true);
+    }
+
+    private readResumeSessionInfo(): { questionNumber: number; total: number } | null {
+        const snap = this.storageService.get<ActiveSessionSnapshot>('active-session');
+        if (!snap || snap.queueIds.length === 0 || snap.currentIndex >= snap.queueIds.length) {
+            return null;
+        }
+        if (Date.now() - new Date(snap.savedAt).getTime() > SESSION_STALE_MS) {
+            return null;
+        }
+        return { questionNumber: snap.currentIndex + 1, total: snap.sessionTotal };
     }
 
     private normalizeLang(lang: string | undefined): 'en' | 'ru' {
