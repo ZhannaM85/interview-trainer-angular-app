@@ -317,7 +317,11 @@
         "sessionModeStandardDesc": "15 вопросов — сбалансированная ежедневная практика",
         "sessionModeDeep": "Углублённо",
         "sessionModeDeepDesc": "Все вопросы к повторению — полная сессия",
-        "sessionFewNote": "Доступно только {{count}} вопросов — используем все."
+        "sessionFewNote": "Доступно только {{count}} вопросов — используем все.",
+        "resumeSession": "Продолжить сессию (вопрос {{question}} из {{total}})",
+        "resumeBtn": "Продолжить",
+        "resumeDismiss": "Начать новую сессию",
+        "resumeBannerAria": "Продолжить предыдущую сессию"
     },
     "dashboard": {
         "title": "Прогресс по собеседованиям",

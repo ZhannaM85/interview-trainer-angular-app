@@ -128,6 +128,16 @@ export class QuestionService {
         this.index = -1;
     }
 
+    getQueueIds(): number[] {
+        return this.queue.map((q) => q.id);
+    }
+
+    /** Restore a saved queue, positioning the cursor so the next getNextQuestion() returns questions[startIndex]. */
+    restoreQueue(questions: Question[], startIndex: number): void {
+        this.queue = [...questions];
+        this.index = startIndex - 1;
+    }
+
     /** Find a question by id from the latest mapped list (same order as `getQuestions()` emissions). */
     getQuestionByIdFromList(questions: Question[], id: number): Question | null {
         return questions.find((q) => q.id === id) ?? null;

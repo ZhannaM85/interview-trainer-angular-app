@@ -317,7 +317,11 @@
         "sessionModeStandardDesc": "15 questions — balanced daily practice",
         "sessionModeDeep": "Deep",
         "sessionModeDeepDesc": "All due questions — full review session",
-        "sessionFewNote": "Only {{count}} questions were available — using all of them."
+        "sessionFewNote": "Only {{count}} questions were available — using all of them.",
+        "resumeSession": "Resume session (question {{question}} of {{total}})",
+        "resumeBtn": "Resume",
+        "resumeDismiss": "Start new session",
+        "resumeBannerAria": "Resume previous session"
     },
     "dashboard": {
         "title": "Interview Progress",

@@ -9,6 +9,7 @@ import { ProgressService, SCORE_BY_RATING } from '../../../../core/services/prog
 import { QuestionService } from '../../../../core/services/question.service';
 import { StorageService } from '../../../../core/services/storage.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
+import type { ActiveSessionSnapshot } from '../../../../shared/models/active-session.model';
 import type { Progress } from '../../../../shared/models/progress.model';
 import type { Question, QuestionCategory } from '../../../../shared/models/question.model';
 import { topicIdFromQuestion } from '../../../../shared/utils/topic-key.utils';
@@ -110,6 +111,8 @@ export class QuizPageComponent {
 
     protected readonly undoSnapshot = signal<UndoSnapshot | null>(null);
 
+    protected readonly resumeInfo = signal<{ questionNumber: number; total: number } | null>(null);
+
     /** Today's plan has topics selected but none marked studied yet — practice still uses full catalog. */
     protected readonly planFocusHint = computed(
         () => this.todayPlan.hasSelection() && !this.todayPlan.hasStudiedTopics()
@@ -181,6 +184,7 @@ export class QuizPageComponent {
 
     constructor() {
         this.todayPlan.syncCalendarDay();
+        this.checkForResumableSession();
 
         this.questionService
             .getQuestions()
@@ -297,6 +301,8 @@ export class QuizPageComponent {
     }
 
     protected startSession(mode: SessionMode): void {
+        this.clearSessionSnapshot();
+        this.resumeInfo.set(null);
         this.sessionMode.set(mode);
         this.storage.set('quiz-session-mode', mode);
         this.showSessionModePicker.set(false);
@@ -304,7 +310,65 @@ export class QuizPageComponent {
     }
 
     protected restartSession(): void {
+        this.clearSessionSnapshot();
+        this.resumeInfo.set(null);
         this.showSessionModePicker.set(true);
+    }
+
+    protected resumeSession(): void {
+        const snap = this.storage.get<ActiveSessionSnapshot>('active-session');
+        if (!snap) {
+            this.dismissResume();
+            return;
+        }
+        this.sessionMode.set(snap.sessionMode);
+        this.practiceScope.set(snap.practiceScope);
+        this.showSessionModePicker.set(false);
+        this.loading.set(true);
+        this.loadError.set(false);
+        this.sessionComplete.set(false);
+        this.showPlanTopicsCoveredDialog.set(false);
+        this.sessionTruncated.set(false);
+        this.phase.set('question');
+        this.feedbackSnapshot.set(null);
+        this.feedbackCtx.set(null);
+        this.undoSnapshot.set(null);
+        this.sessionNailed.set(snap.sessionNailed);
+        this.sessionPartial.set(snap.sessionPartial);
+        this.sessionDidntKnow.set(snap.sessionDidntKnow);
+        this.sessionBestStreak.set(snap.sessionBestStreak);
+        this.currentStreak = snap.currentStreak;
+        this.sessionTotal.set(snap.sessionTotal);
+        this.sessionStackTopicIds.set(snap.sessionStackTopicIds);
+        this.usingFallbackQueue.set(snap.usingFallbackQueue);
+        this.questionService.getQuestions().pipe(take(1)).subscribe({
+            next: (all) => {
+                const idMap = new Map(all.map((q) => [q.id, q]));
+                const queue = snap.queueIds
+                    .map((id) => idMap.get(id))
+                    .filter((q): q is Question => q != null);
+                if (queue.length === 0 || snap.currentIndex >= queue.length) {
+                    this.clearSessionSnapshot();
+                    this.resumeInfo.set(null);
+                    this.showSessionModePicker.set(true);
+                    this.loading.set(false);
+                    return;
+                }
+                this.questionService.restoreQueue(queue, snap.currentIndex);
+                this.sessionIndex.set(snap.currentIndex);
+                this.loading.set(false);
+                this.advanceToNextQuestion();
+            },
+            error: () => {
+                this.loadError.set(true);
+                this.loading.set(false);
+            }
+        });
+    }
+
+    protected dismissResume(): void {
+        this.clearSessionSnapshot();
+        this.resumeInfo.set(null);
     }
 
     protected switchToFullQuestionBank(): void {
@@ -331,6 +395,38 @@ export class QuizPageComponent {
         this.showPlanTopicsCoveredDialog.set(false);
         this.acceptPlanTopicFallback.set(true);
         this.loadQuiz();
+    }
+
+    private checkForResumableSession(): void {
+        const snap = this.storage.get<ActiveSessionSnapshot>('active-session');
+        if (snap && snap.queueIds.length > 0 && snap.currentIndex < snap.queueIds.length) {
+            this.resumeInfo.set({ questionNumber: snap.currentIndex + 1, total: snap.sessionTotal });
+            this.sessionMode.set(snap.sessionMode);
+        }
+    }
+
+    private saveSessionSnapshot(): void {
+        const snap: ActiveSessionSnapshot = {
+            queueIds: this.questionService.getQueueIds(),
+            currentIndex: this.sessionIndex() - 1,
+            sessionMode: this.sessionMode(),
+            practiceScope: this.practiceScope(),
+            topicsFocusParam: this.topicsFocusParam(),
+            sessionNailed: this.sessionNailed(),
+            sessionPartial: this.sessionPartial(),
+            sessionDidntKnow: this.sessionDidntKnow(),
+            sessionBestStreak: this.sessionBestStreak(),
+            currentStreak: this.currentStreak,
+            sessionTotal: this.sessionTotal(),
+            sessionStackTopicIds: this.sessionStackTopicIds(),
+            usingFallbackQueue: this.usingFallbackQueue(),
+            savedAt: new Date().toISOString()
+        };
+        this.storage.set('active-session', snap);
+    }
+
+    private clearSessionSnapshot(): void {
+        localStorage.removeItem('interview-trainer:active-session');
     }
 
     private rebuildFeedbackSnapshot(): void {
@@ -488,8 +584,11 @@ export class QuizPageComponent {
         this.feedbackCtx.set(null);
         if (next) {
             this.sessionIndex.update((i) => i + 1);
+            this.saveSessionSnapshot();
         }
         if (!next) {
+            this.clearSessionSnapshot();
+            this.resumeInfo.set(null);
             this.sessionComplete.set(true);
         }
     }

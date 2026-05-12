@@ -33,7 +33,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 |---|-------|-------|
 | ~~[#50](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/50)~~ | ~~Session length picker~~ | ✅ Done |
 | ~~[#53](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/53)~~ | ~~Carry over unfinished plan topics~~ | ✅ Done |
-| [#44](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/44) | Save and resume incomplete session | **Unlocks #60** — do before it |
+| ~~[#44](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/44)~~ | ~~Save and resume incomplete session~~ | ✅ Done |
 | [#60](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/60) | Resume session nudge on app load | Depends on #44 |
 
 ---
