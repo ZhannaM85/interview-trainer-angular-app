@@ -8,6 +8,19 @@
 
     @if (showSessionModePicker()) {
         <div class="quiz__session-picker card-phase" role="region" aria-labelledby="session-picker-title">
+            @if (resumeInfo(); as info) {
+                <div class="quiz__resume-banner" role="status" aria-label="{{ 'quiz.resumeBannerAria' | translate }}">
+                    <p class="quiz__resume-text">{{ 'quiz.resumeSession' | translate: { question: info.questionNumber, total: info.total } }}</p>
+                    <div class="quiz__resume-actions">
+                        <button type="button" class="quiz__resume-btn" (click)="resumeSession()">
+                            {{ 'quiz.resumeBtn' | translate }}
+                        </button>
+                        <button type="button" class="quiz__resume-dismiss" (click)="dismissResume()">
+                            {{ 'quiz.resumeDismiss' | translate }}
+                        </button>
+                    </div>
+                </div>
+            }
             <h2 id="session-picker-title" class="quiz__session-picker-title">{{ 'quiz.sessionPickerTitle' | translate }}</h2>
             <div class="quiz__session-picker-options" role="group" [attr.aria-label]="'quiz.sessionPickerOptionsAria' | translate">
                 <button

@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 
 import { QuizPageComponent, type SessionMode } from './quiz-page.component';
 import { QuestionService } from '../../../../core/services/question.service';
+import type { ActiveSessionSnapshot } from '../../../../shared/models/active-session.model';
 
 class StubLoader implements TranslateLoader {
     getTranslation(): Observable<TranslationObject> {
@@ -22,7 +23,11 @@ class StubLoader implements TranslateLoader {
                 sessionModeStandard: 'Standard',
                 sessionModeStandardDesc: '15 questions',
                 sessionModeDeep: 'Deep',
-                sessionModeDeepDesc: 'All due'
+                sessionModeDeepDesc: 'All due',
+                resumeSession: 'Resume ({{question}} of {{total}})',
+                resumeBtn: 'Resume',
+                resumeDismiss: 'Start new',
+                resumeBannerAria: 'Resume previous session'
             }
         });
     }
@@ -116,5 +121,118 @@ describe('QuizPageComponent — session mode picker', () => {
         expect(component.showSessionModePicker()).toBe(false);
         component.restartSession();
         expect(component.showSessionModePicker()).toBe(true);
+    });
+});
+
+describe('QuizPageComponent — session resume', () => {
+    const SNAPSHOT_KEY = 'interview-trainer:active-session';
+
+    const makeSnap = (partial?: Partial<ActiveSessionSnapshot>): ActiveSessionSnapshot => ({
+        queueIds: [1, 2, 3],
+        currentIndex: 1,
+        sessionMode: 'standard',
+        practiceScope: 'full',
+        topicsFocusParam: '',
+        sessionNailed: 1,
+        sessionPartial: 0,
+        sessionDidntKnow: 0,
+        sessionBestStreak: 1,
+        currentStreak: 1,
+        sessionTotal: 3,
+        sessionStackTopicIds: ['javascript:closures'],
+        usingFallbackQueue: false,
+        savedAt: new Date().toISOString(),
+        ...partial
+    });
+
+    beforeEach(async () => {
+        localStorage.clear();
+        await TestBed.configureTestingModule({
+            imports: [QuizPageComponent],
+            providers: testProviders
+        }).compileComponents();
+    });
+
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('sets resumeInfo when a valid snapshot exists in localStorage', () => {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(makeSnap()));
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            resumeInfo: () => { questionNumber: number; total: number } | null;
+        };
+        expect(component.resumeInfo()).toEqual({ questionNumber: 2, total: 3 });
+    });
+
+    it('does not set resumeInfo when no snapshot exists', () => {
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            resumeInfo: () => { questionNumber: number; total: number } | null;
+        };
+        expect(component.resumeInfo()).toBeNull();
+    });
+
+    it('does not set resumeInfo when snapshot has empty queueIds', () => {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(makeSnap({ queueIds: [] })));
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            resumeInfo: () => { questionNumber: number; total: number } | null;
+        };
+        expect(component.resumeInfo()).toBeNull();
+    });
+
+    it('does not set resumeInfo when currentIndex is out of bounds', () => {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(makeSnap({ currentIndex: 10 })));
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            resumeInfo: () => { questionNumber: number; total: number } | null;
+        };
+        expect(component.resumeInfo()).toBeNull();
+    });
+
+    it('restores sessionMode from snapshot', () => {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(makeSnap({ sessionMode: 'quick' })));
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            sessionMode: () => SessionMode;
+        };
+        expect(component.sessionMode()).toBe('quick');
+    });
+
+    it('dismissResume clears resumeInfo and removes snapshot from localStorage', () => {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(makeSnap()));
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            resumeInfo: () => { questionNumber: number; total: number } | null;
+            dismissResume: () => void;
+        };
+        expect(component.resumeInfo()).not.toBeNull();
+        component.dismissResume();
+        expect(component.resumeInfo()).toBeNull();
+        expect(localStorage.getItem(SNAPSHOT_KEY)).toBeNull();
+    });
+
+    it('startSession clears snapshot and resumeInfo', () => {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(makeSnap()));
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            resumeInfo: () => { questionNumber: number; total: number } | null;
+            startSession: (mode: SessionMode) => void;
+        };
+        component.startSession('deep');
+        expect(component.resumeInfo()).toBeNull();
+        expect(localStorage.getItem(SNAPSHOT_KEY)).toBeNull();
+    });
+
+    it('restartSession clears snapshot and resumeInfo', () => {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(makeSnap()));
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            resumeInfo: () => { questionNumber: number; total: number } | null;
+            restartSession: () => void;
+        };
+        component.restartSession();
+        expect(component.resumeInfo()).toBeNull();
+        expect(localStorage.getItem(SNAPSHOT_KEY)).toBeNull();
     });
 });
