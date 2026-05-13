@@ -1,5 +1,23 @@
 import { test, expect } from '@playwright/test';
 
+test.describe('Dashboard hardest questions', () => {
+    test('shows hardest questions card on dashboard', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        await expect(page.locator('text=/Hardest questions|Самые сложные вопросы/i')).toBeVisible({
+            timeout: 10_000
+        });
+    });
+
+    test('shows empty state when no questions have 3+ attempts', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        await expect(
+            page.locator(
+                'text=/No questions with 3\\+ attempts|Пока нет вопросов с 3\\+ попытками/i'
+            )
+        ).toBeVisible({ timeout: 10_000 });
+    });
+});
+
 test.describe('Dashboard trend chart', () => {
     test('shows trend chart card on dashboard', async ({ page }) => {
         await page.goto('/#/dashboard');

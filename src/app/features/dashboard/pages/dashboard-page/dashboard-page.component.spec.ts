@@ -1,0 +1,144 @@
+import { provideHttpClient } from '@angular/common/http';
+import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
+import {
+    TranslateLoader,
+    provideTranslateService,
+    type TranslationObject
+} from '@ngx-translate/core';
+import { Observable, of } from 'rxjs';
+
+import { ProgressService } from '../../../../core/services/progress.service';
+import { QuestionService } from '../../../../core/services/question.service';
+import type { Question } from '../../../../shared/models/question.model';
+import { DashboardPageComponent, type HardestQuestion } from './dashboard-page.component';
+
+class StubLoader implements TranslateLoader {
+    getTranslation(): Observable<TranslationObject> {
+        return of({});
+    }
+}
+
+type ComponentInternals = {
+    hardestQuestionsView: () => HardestQuestion[];
+};
+
+const testProviders = [
+    provideHttpClient(),
+    provideRouter([]),
+    ...provideTranslateService({ loader: { provide: TranslateLoader, useClass: StubLoader } })
+];
+
+function makeQuestion(overrides: Partial<Question> = {}): Question {
+    return {
+        id: 1,
+        question: 'What is a closure?',
+        answer: 'A closure is…',
+        weakAnswer: '',
+        technicalAnswer: '',
+        interviewAnswer: '',
+        codeExample: '',
+        readMoreLinks: [],
+        subtopic: 'closures',
+        category: 'javascript',
+        difficulty: 'intermediate',
+        ...overrides
+    };
+}
+
+function setup(questions: Question[] = []) {
+    TestBed.configureTestingModule({
+        imports: [DashboardPageComponent],
+        providers: testProviders
+    });
+    vi.spyOn(TestBed.inject(QuestionService), 'getQuestions').mockReturnValue(of(questions));
+    const fixture = TestBed.createComponent(DashboardPageComponent);
+    const component = fixture.componentInstance as unknown as ComponentInternals;
+    const progressService = TestBed.inject(ProgressService);
+    fixture.detectChanges();
+    return { fixture, component, progressService };
+}
+
+describe('DashboardPageComponent — hardestQuestionsView', () => {
+    beforeEach(() => localStorage.clear());
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('returns empty list when no questions are loaded', () => {
+        const { component } = setup([]);
+        expect(component.hardestQuestionsView()).toEqual([]);
+    });
+
+    it('excludes questions with fewer than 3 attempts', () => {
+        const { component, progressService } = setup([makeQuestion({ id: 10 })]);
+        progressService.recordSelfRating(10, 'didntKnow');
+        progressService.recordSelfRating(10, 'didntKnow');
+        expect(component.hardestQuestionsView()).toEqual([]);
+    });
+
+    it('includes questions with 3+ attempts', () => {
+        const q = makeQuestion({ id: 20, question: 'Hard question' });
+        const { component, progressService } = setup([q]);
+        progressService.recordSelfRating(20, 'didntKnow');
+        progressService.recordSelfRating(20, 'didntKnow');
+        progressService.recordSelfRating(20, 'partial');
+
+        const results = component.hardestQuestionsView();
+        expect(results.length).toBe(1);
+        expect(results[0].questionId).toBe(20);
+        expect(results[0].question).toBe('Hard question');
+    });
+
+    it('computes nailedPct correctly (0 nailed out of 3)', () => {
+        const { component, progressService } = setup([makeQuestion({ id: 30 })]);
+        progressService.recordSelfRating(30, 'didntKnow');
+        progressService.recordSelfRating(30, 'didntKnow');
+        progressService.recordSelfRating(30, 'didntKnow');
+
+        const results = component.hardestQuestionsView();
+        expect(results[0].nailedPct).toBe(0);
+        expect(results[0].total).toBe(3);
+    });
+
+    it('computes nailedPct correctly (all nailed)', () => {
+        const { component, progressService } = setup([makeQuestion({ id: 40 })]);
+        progressService.recordSelfRating(40, 'nailed');
+        progressService.recordSelfRating(40, 'nailed');
+        progressService.recordSelfRating(40, 'nailed');
+
+        const results = component.hardestQuestionsView();
+        expect(results[0].nailedPct).toBe(100);
+    });
+
+    it('sorts by nailedPct ascending (lowest first)', () => {
+        const q1 = makeQuestion({ id: 50, question: 'Easy' });
+        const q2 = makeQuestion({ id: 51, question: 'Hard' });
+        const { component, progressService } = setup([q1, q2]);
+
+        // q1: 3 nailed / 3 total → 100%
+        progressService.recordSelfRating(50, 'nailed');
+        progressService.recordSelfRating(50, 'nailed');
+        progressService.recordSelfRating(50, 'nailed');
+        // q2: 0 nailed / 3 total → 0%
+        progressService.recordSelfRating(51, 'didntKnow');
+        progressService.recordSelfRating(51, 'didntKnow');
+        progressService.recordSelfRating(51, 'didntKnow');
+
+        const results = component.hardestQuestionsView();
+        expect(results[0].questionId).toBe(51);
+        expect(results[1].questionId).toBe(50);
+    });
+
+    it('caps the list at 8 questions', () => {
+        const questions = Array.from({ length: 12 }, (_, i) =>
+            makeQuestion({ id: 100 + i, question: `Q${i}` })
+        );
+        const { component, progressService } = setup(questions);
+        for (const q of questions) {
+            for (let i = 0; i < 3; i++) {
+                progressService.recordSelfRating(q.id, 'didntKnow');
+            }
+        }
+
+        expect(component.hardestQuestionsView().length).toBe(8);
+    });
+});
