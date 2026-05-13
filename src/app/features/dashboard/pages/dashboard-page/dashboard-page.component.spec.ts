@@ -8,8 +8,10 @@ import {
 } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
+import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
+import { UserPreferencesService } from '../../../../core/services/user-preferences.service';
 import type { Question } from '../../../../shared/models/question.model';
 import { DashboardPageComponent, type DifficultyAccuracyEntry, type HardestQuestion } from './dashboard-page.component';
 
@@ -22,6 +24,7 @@ class StubLoader implements TranslateLoader {
 type ComponentInternals = {
     hardestQuestionsView: () => HardestQuestion[];
     difficultyBreakdownView: () => DifficultyAccuracyEntry[];
+    dailyGoalView: () => { answered: number; goal: number; pct: number; reached: boolean };
 };
 
 const testProviders = [
@@ -221,5 +224,63 @@ describe('DashboardPageComponent — difficultyBreakdownView', () => {
         expect(result[0].total).toBe(4);
         expect(result[0].nailed).toBe(2);
         expect(result[0].accuracyPct).toBe(50);
+    });
+});
+
+describe('DashboardPageComponent — dailyGoalView', () => {
+    beforeEach(() => localStorage.clear());
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('shows default goal of 10 and 0 answered when no activity', () => {
+        const { component } = setup([]);
+        const view = component.dailyGoalView();
+        expect(view.goal).toBe(10);
+        expect(view.answered).toBe(0);
+        expect(view.reached).toBe(false);
+    });
+
+    it('reflects today\'s answered questions in the view', () => {
+        const { component } = setup([]);
+        const activityService = TestBed.inject(ActivityService);
+        activityService.bumpQuestionsAnswered(3);
+        const view = component.dailyGoalView();
+        expect(view.answered).toBe(3);
+    });
+
+    it('reached is true when answered >= goal', () => {
+        const { component } = setup([]);
+        const activityService = TestBed.inject(ActivityService);
+        const prefsService = TestBed.inject(UserPreferencesService);
+        prefsService.setDailyGoal(5);
+        activityService.bumpQuestionsAnswered(5);
+        const view = component.dailyGoalView();
+        expect(view.reached).toBe(true);
+    });
+
+    it('reached is false when answered < goal', () => {
+        const { component } = setup([]);
+        const activityService = TestBed.inject(ActivityService);
+        const prefsService = TestBed.inject(UserPreferencesService);
+        prefsService.setDailyGoal(10);
+        activityService.bumpQuestionsAnswered(7);
+        const view = component.dailyGoalView();
+        expect(view.reached).toBe(false);
+    });
+
+    it('pct is capped at 100 even when answered exceeds goal', () => {
+        const { component } = setup([]);
+        const activityService = TestBed.inject(ActivityService);
+        const prefsService = TestBed.inject(UserPreferencesService);
+        prefsService.setDailyGoal(5);
+        activityService.bumpQuestionsAnswered(10);
+        const view = component.dailyGoalView();
+        expect(view.pct).toBe(100);
+    });
+
+    it('updates goal reactively when UserPreferencesService changes', () => {
+        const { component } = setup([]);
+        const prefsService = TestBed.inject(UserPreferencesService);
+        prefsService.setDailyGoal(20);
+        expect(component.dailyGoalView().goal).toBe(20);
     });
 });

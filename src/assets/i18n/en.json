@@ -398,6 +398,12 @@
         "achievement": {
             "longerThanYesterday": "Studied longer than yesterday"
         },
+        "dailyGoal": {
+            "title": "Daily goal",
+            "progress": "{{answered}} / {{goal}} questions today",
+            "reached": "Goal reached! Great work!",
+            "editLabel": "Change goal:"
+        },
         "dataBackup": {
             "title": "Data backup",
             "exportBtn": "Export data",

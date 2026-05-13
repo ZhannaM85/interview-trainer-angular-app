@@ -72,6 +72,12 @@ export class ActivityService {
         return (row?.questionsAnswered ?? 0) > 0;
     });
 
+    /** Number of questions answered today. Reactive — updates as activity is recorded. */
+    readonly todayQuestionsAnswered = computed(() => {
+        const row = this.byDate().get(formatLocalYmd(new Date()));
+        return row?.questionsAnswered ?? 0;
+    });
+
     /**
      * Sum of `activeSeconds` across all stored days (lifetime approximate).
      * Initialized once from stored data; updated incrementally in addActiveSeconds()
