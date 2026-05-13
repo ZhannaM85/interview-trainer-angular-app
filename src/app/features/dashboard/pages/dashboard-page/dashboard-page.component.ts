@@ -18,7 +18,7 @@ import type { AppBackup, BackupDiff } from '../../../../core/services/data-expor
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Progress } from '../../../../shared/models/progress.model';
-import type { Question } from '../../../../shared/models/question.model';
+import type { Question, QuestionDifficulty } from '../../../../shared/models/question.model';
 import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import { ActivityHeatmapComponent } from '../../components/activity-heatmap/activity-heatmap.component';
@@ -52,6 +52,15 @@ export interface TopicStrengthEntry {
     partial: number;
     didntKnow: number;
     total: number;
+}
+
+export interface DifficultyAccuracyEntry {
+    difficulty: QuestionDifficulty;
+    nailed: number;
+    partial: number;
+    didntKnow: number;
+    total: number;
+    accuracyPct: number;
 }
 
 export interface DashboardStats {
@@ -231,6 +240,41 @@ export class DashboardPageComponent {
         }
         result.sort((a, b) => a.nailedPct - b.nailedPct || a.questionId - b.questionId);
         return result.slice(0, 8);
+    });
+
+    protected readonly difficultyBreakdownView = computed((): DifficultyAccuracyEntry[] => {
+        const qs = this.questionsSignal();
+        if (qs.length === 0) return [];
+        const byId = new Map(this.progressService.getProgress().map((p) => [p.questionId, p]));
+        const byDifficulty = new Map<QuestionDifficulty, { nailed: number; partial: number; didntKnow: number }>();
+        for (const q of qs) {
+            const p = byId.get(q.id);
+            if (!p) continue;
+            const nailed = p.nailedCount ?? 0;
+            const partial = p.partialCount ?? 0;
+            const didntKnow = p.didntKnowCount ?? 0;
+            if (nailed + partial + didntKnow === 0) continue;
+            const agg = byDifficulty.get(q.difficulty) ?? { nailed: 0, partial: 0, didntKnow: 0 };
+            agg.nailed += nailed;
+            agg.partial += partial;
+            agg.didntKnow += didntKnow;
+            byDifficulty.set(q.difficulty, agg);
+        }
+        const order: QuestionDifficulty[] = ['beginner', 'intermediate', 'advanced'];
+        return order
+            .filter((d) => byDifficulty.has(d))
+            .map((difficulty) => {
+                const agg = byDifficulty.get(difficulty)!;
+                const total = agg.nailed + agg.partial + agg.didntKnow;
+                return {
+                    difficulty,
+                    nailed: agg.nailed,
+                    partial: agg.partial,
+                    didntKnow: agg.didntKnow,
+                    total,
+                    accuracyPct: Math.round((agg.nailed / total) * 100)
+                };
+            });
     });
 
     protected toggleMetricHelp(which: 'accuracy' | 'confidence'): void {

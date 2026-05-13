@@ -11,7 +11,7 @@ import { Observable, of } from 'rxjs';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Question } from '../../../../shared/models/question.model';
-import { DashboardPageComponent, type HardestQuestion } from './dashboard-page.component';
+import { DashboardPageComponent, type DifficultyAccuracyEntry, type HardestQuestion } from './dashboard-page.component';
 
 class StubLoader implements TranslateLoader {
     getTranslation(): Observable<TranslationObject> {
@@ -21,6 +21,7 @@ class StubLoader implements TranslateLoader {
 
 type ComponentInternals = {
     hardestQuestionsView: () => HardestQuestion[];
+    difficultyBreakdownView: () => DifficultyAccuracyEntry[];
 };
 
 const testProviders = [
@@ -140,5 +141,85 @@ describe('DashboardPageComponent — hardestQuestionsView', () => {
         }
 
         expect(component.hardestQuestionsView().length).toBe(8);
+    });
+});
+
+describe('DashboardPageComponent — difficultyBreakdownView', () => {
+    beforeEach(() => localStorage.clear());
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('returns empty list when no questions are loaded', () => {
+        const { component } = setup([]);
+        expect(component.difficultyBreakdownView()).toEqual([]);
+    });
+
+    it('returns empty list when no progress exists', () => {
+        const { component } = setup([makeQuestion({ id: 1, difficulty: 'beginner' })]);
+        expect(component.difficultyBreakdownView()).toEqual([]);
+    });
+
+    it('only includes difficulty levels that have at least one answered question', () => {
+        const q1 = makeQuestion({ id: 1, difficulty: 'beginner' });
+        const q2 = makeQuestion({ id: 2, difficulty: 'advanced' });
+        const { component, progressService } = setup([q1, q2]);
+        progressService.recordSelfRating(1, 'nailed');
+
+        const result = component.difficultyBreakdownView();
+        expect(result.length).toBe(1);
+        expect(result[0].difficulty).toBe('beginner');
+    });
+
+    it('orders levels beginner → intermediate → advanced', () => {
+        const q1 = makeQuestion({ id: 1, difficulty: 'advanced' });
+        const q2 = makeQuestion({ id: 2, difficulty: 'beginner' });
+        const q3 = makeQuestion({ id: 3, difficulty: 'intermediate' });
+        const { component, progressService } = setup([q1, q2, q3]);
+        progressService.recordSelfRating(1, 'nailed');
+        progressService.recordSelfRating(2, 'nailed');
+        progressService.recordSelfRating(3, 'nailed');
+
+        const result = component.difficultyBreakdownView();
+        expect(result.map((e) => e.difficulty)).toEqual(['beginner', 'intermediate', 'advanced']);
+    });
+
+    it('computes accuracyPct correctly (all nailed)', () => {
+        const q = makeQuestion({ id: 10, difficulty: 'intermediate' });
+        const { component, progressService } = setup([q]);
+        progressService.recordSelfRating(10, 'nailed');
+        progressService.recordSelfRating(10, 'nailed');
+
+        const result = component.difficultyBreakdownView();
+        expect(result[0].accuracyPct).toBe(100);
+        expect(result[0].total).toBe(2);
+    });
+
+    it('computes accuracyPct correctly (mixed ratings)', () => {
+        const q = makeQuestion({ id: 20, difficulty: 'advanced' });
+        const { component, progressService } = setup([q]);
+        progressService.recordSelfRating(20, 'nailed');
+        progressService.recordSelfRating(20, 'didntKnow');
+        progressService.recordSelfRating(20, 'didntKnow');
+        progressService.recordSelfRating(20, 'didntKnow');
+
+        const result = component.difficultyBreakdownView();
+        expect(result[0].accuracyPct).toBe(25);
+        expect(result[0].total).toBe(4);
+    });
+
+    it('aggregates multiple questions of the same difficulty', () => {
+        const q1 = makeQuestion({ id: 30, difficulty: 'beginner' });
+        const q2 = makeQuestion({ id: 31, difficulty: 'beginner' });
+        const { component, progressService } = setup([q1, q2]);
+        progressService.recordSelfRating(30, 'nailed');
+        progressService.recordSelfRating(30, 'nailed');
+        progressService.recordSelfRating(31, 'didntKnow');
+        progressService.recordSelfRating(31, 'didntKnow');
+
+        const result = component.difficultyBreakdownView();
+        expect(result.length).toBe(1);
+        expect(result[0].difficulty).toBe('beginner');
+        expect(result[0].total).toBe(4);
+        expect(result[0].nailed).toBe(2);
+        expect(result[0].accuracyPct).toBe(50);
     });
 });

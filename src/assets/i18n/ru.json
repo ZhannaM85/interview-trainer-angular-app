@@ -389,6 +389,12 @@
             "nailedPct": "{{pct}}% отлично",
             "attempts": "{{count}} попыток"
         },
+        "difficultyBreakdown": {
+            "title": "Точность по уровню сложности",
+            "empty": "Пока нет данных — ответьте на несколько вопросов, чтобы увидеть точность по уровням.",
+            "attempts": "{{count}} попыт(ок)",
+            "accuracyAria": "{{level}}: точность {{pct}}%"
+        },
         "achievement": {
             "longerThanYesterday": "Занимались дольше, чем вчера"
         },
