@@ -383,6 +383,12 @@
             "empty": "No practice data yet — rate a few answers to see your strongest topics here.",
             "nailedPct": "{{pct}}% nailed"
         },
+        "hardestQuestions": {
+            "title": "Hardest questions",
+            "empty": "No questions with 3+ attempts yet — keep practicing to see your hardest ones here.",
+            "nailedPct": "{{pct}}% nailed",
+            "attempts": "{{count}} attempts"
+        },
         "achievement": {
             "longerThanYesterday": "Studied longer than yesterday"
         },

@@ -157,6 +157,37 @@
                 }
             </article>
 
+            <article class="dashboard__card">
+                <h2 class="dashboard__card-title">{{ 'dashboard.hardestQuestions.title' | translate }}</h2>
+                @if (hardestQuestionsView().length === 0) {
+                    <p class="dashboard__hint">{{ 'dashboard.hardestQuestions.empty' | translate }}</p>
+                } @else {
+                    <ul class="dashboard__hardest-list">
+                        @for (item of hardestQuestionsView(); track item.questionId) {
+                            <li class="dashboard__hardest-item">
+                                <div class="dashboard__hardest-meta">
+                                    <span
+                                        class="dashboard__best-badge dashboard__best-badge--{{ item.category }}"
+                                        aria-hidden="true"
+                                    >{{ ('category.' + item.category) | translate }}</span>
+                                </div>
+                                <p class="dashboard__hardest-question">{{ item.question }}</p>
+                                <div class="dashboard__hardest-stats">
+                                    <span
+                                        class="dashboard__hardest-pct"
+                                        [class.dashboard__hardest-pct--low]="item.nailedPct < 40"
+                                        [attr.aria-label]="'dashboard.hardestQuestions.nailedPct' | translate: { pct: item.nailedPct }"
+                                    >{{ item.nailedPct }}%</span>
+                                    <span class="dashboard__hardest-attempts">{{
+                                        'dashboard.hardestQuestions.attempts' | translate: { count: item.total }
+                                    }}</span>
+                                </div>
+                            </li>
+                        }
+                    </ul>
+                }
+            </article>
+
             <article class="dashboard__card dashboard__card--wide">
                 <app-trend-chart />
             </article>

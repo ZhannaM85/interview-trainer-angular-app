@@ -25,6 +25,18 @@ import { ActivityHeatmapComponent } from '../../components/activity-heatmap/acti
 import { TrendChartComponent } from '../../components/trend-chart/trend-chart.component';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
 
+export interface HardestQuestion {
+    questionId: number;
+    question: string;
+    category: string;
+    subtopic: string;
+    nailedPct: number;
+    nailed: number;
+    partial: number;
+    didntKnow: number;
+    total: number;
+}
+
 export interface WeakTopic {
     id: string;
     /** Minimum "Nailed it" ratings (assuming every future attempt is nailed) to reach 60%. */
@@ -190,6 +202,35 @@ export class DashboardPageComponent {
         }
         entries.sort((a, b) => b.nailedPct - a.nailedPct || a.id.localeCompare(b.id));
         return entries.slice(0, 5);
+    });
+
+    protected readonly hardestQuestionsView = computed((): HardestQuestion[] => {
+        const qs = this.questionsSignal();
+        if (qs.length === 0) return [];
+        const byId = new Map(this.progressService.getProgress().map((p) => [p.questionId, p]));
+        const result: HardestQuestion[] = [];
+        for (const q of qs) {
+            const p = byId.get(q.id);
+            if (!p) continue;
+            const nailed = p.nailedCount ?? 0;
+            const partial = p.partialCount ?? 0;
+            const didntKnow = p.didntKnowCount ?? 0;
+            const total = nailed + partial + didntKnow;
+            if (total < 3) continue;
+            result.push({
+                questionId: q.id,
+                question: q.question,
+                category: q.category,
+                subtopic: q.subtopic,
+                nailedPct: Math.round((nailed / total) * 100),
+                nailed,
+                partial,
+                didntKnow,
+                total
+            });
+        }
+        result.sort((a, b) => a.nailedPct - b.nailedPct || a.questionId - b.questionId);
+        return result.slice(0, 8);
     });
 
     protected toggleMetricHelp(which: 'accuracy' | 'confidence'): void {
