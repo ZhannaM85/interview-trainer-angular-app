@@ -18,6 +18,24 @@ test.describe('Dashboard hardest questions', () => {
     });
 });
 
+test.describe('Dashboard difficulty breakdown', () => {
+    test('shows accuracy by difficulty card on dashboard', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        await expect(
+            page.locator('text=/Accuracy by difficulty|Точность по уровню сложности/i')
+        ).toBeVisible({ timeout: 10_000 });
+    });
+
+    test('shows empty state when no practice data exists', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        await expect(
+            page.locator(
+                'text=/No practice data yet — answer|Пока нет данных — ответьте/i'
+            )
+        ).toBeVisible({ timeout: 10_000 });
+    });
+});
+
 test.describe('Dashboard trend chart', () => {
     test('shows trend chart card on dashboard', async ({ page }) => {
         await page.goto('/#/dashboard');

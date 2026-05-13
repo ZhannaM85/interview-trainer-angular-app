@@ -188,6 +188,36 @@
                 }
             </article>
 
+            <article class="dashboard__card">
+                <h2 class="dashboard__card-title">{{ 'dashboard.difficultyBreakdown.title' | translate }}</h2>
+                @if (difficultyBreakdownView().length === 0) {
+                    <p class="dashboard__hint">{{ 'dashboard.difficultyBreakdown.empty' | translate }}</p>
+                } @else {
+                    <ul class="dashboard__diff-list" [attr.aria-label]="'dashboard.difficultyBreakdown.title' | translate">
+                        @for (entry of difficultyBreakdownView(); track entry.difficulty) {
+                            <li class="dashboard__diff-item">
+                                <div class="dashboard__diff-header">
+                                    <span class="dashboard__diff-label dashboard__diff-label--{{ entry.difficulty }}">
+                                        {{ ('difficulty.' + entry.difficulty) | translate }}
+                                    </span>
+                                    <span class="dashboard__diff-pct"
+                                        [class.dashboard__diff-pct--high]="entry.accuracyPct >= 70"
+                                        [class.dashboard__diff-pct--low]="entry.accuracyPct < 40"
+                                        [attr.aria-label]="'dashboard.difficultyBreakdown.accuracyAria' | translate: { level: ('difficulty.' + entry.difficulty | translate), pct: entry.accuracyPct }"
+                                    >{{ entry.accuracyPct }}%</span>
+                                </div>
+                                <div class="dashboard__diff-bar-track" aria-hidden="true">
+                                    <div class="dashboard__diff-bar dashboard__diff-bar--{{ entry.difficulty }}" [style.width.%]="entry.accuracyPct"></div>
+                                </div>
+                                <p class="dashboard__diff-attempts">
+                                    {{ 'dashboard.difficultyBreakdown.attempts' | translate: { count: entry.total } }}
+                                </p>
+                            </li>
+                        }
+                    </ul>
+                }
+            </article>
+
             <article class="dashboard__card dashboard__card--wide">
                 <app-trend-chart />
             </article>

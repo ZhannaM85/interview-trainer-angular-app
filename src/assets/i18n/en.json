@@ -389,6 +389,12 @@
             "nailedPct": "{{pct}}% nailed",
             "attempts": "{{count}} attempts"
         },
+        "difficultyBreakdown": {
+            "title": "Accuracy by difficulty",
+            "empty": "No practice data yet — answer a few questions to see accuracy by difficulty level.",
+            "attempts": "{{count}} attempt(s)",
+            "accuracyAria": "{{level}}: {{pct}}% accuracy"
+        },
         "achievement": {
             "longerThanYesterday": "Studied longer than yesterday"
         },
