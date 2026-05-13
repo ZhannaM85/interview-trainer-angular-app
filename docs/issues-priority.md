@@ -42,7 +42,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 
 | # | Issue | Notes |
 |---|-------|-------|
-| [#45](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/45) | Accuracy/confidence trend chart | Existing `ActivityService` data, no model change |
+| ~~[#45](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/45)~~ | ~~Accuracy/confidence trend chart~~ | ✅ Done |
 | [#46](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/46) | Per-question performance analytics | Existing `ProgressService` data |
 | [#59](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/59) | Accuracy breakdown by difficulty | Pairs well with #46 |
 | [#51](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/51) | Daily practice goals | #41 "Goal getter" achievement waits on this |
