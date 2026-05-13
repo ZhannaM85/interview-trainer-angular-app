@@ -157,6 +157,47 @@
     margin-bottom: 0.75rem;
 }
 
+.dashboard__daily-goal-progress {
+    margin: 0 0 0.65rem;
+    font-size: 1.15rem;
+    font-weight: 700;
+}
+
+.dashboard__achievement--goal {
+    margin-top: 0.65rem;
+}
+
+.dashboard__daily-goal-edit {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+}
+
+.dashboard__daily-goal-label {
+    font-size: 0.82rem;
+    color: var(--it-text-muted);
+    font-weight: 600;
+}
+
+.dashboard__daily-goal-input {
+    width: 5rem;
+    padding: 0.3rem 0.5rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--it-border);
+    background: var(--it-card);
+    color: var(--it-text);
+    font-size: 0.9rem;
+    font-family: inherit;
+    text-align: center;
+
+    &:focus {
+        outline: 2px solid var(--it-accent);
+        outline-offset: 1px;
+    }
+}
+
 .dashboard__metric--streak {
     margin-bottom: 0.35rem;
 }

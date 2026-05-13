@@ -17,6 +17,7 @@ import { DataExportService } from '../../../../core/services/data-export.service
 import type { AppBackup, BackupDiff } from '../../../../core/services/data-export.service';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
+import { UserPreferencesService } from '../../../../core/services/user-preferences.service';
 import type { Progress } from '../../../../shared/models/progress.model';
 import type { Question, QuestionDifficulty } from '../../../../shared/models/question.model';
 import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
@@ -85,9 +86,18 @@ export class DashboardPageComponent {
     private readonly questionService = inject(QuestionService);
     private readonly activityService = inject(ActivityService);
     private readonly dataExportService = inject(DataExportService);
+    protected readonly userPreferencesService = inject(UserPreferencesService);
 
     /** Inline help for Accuracy / Confidence (tap icon on mobile; hover title still works on desktop). */
     protected readonly openMetricHelp = signal<'accuracy' | 'confidence' | null>(null);
+
+    /** Daily goal progress view: answered / goal / reached. */
+    protected readonly dailyGoalView = computed(() => {
+        const answered = this.activityService.todayQuestionsAnswered();
+        const goal = this.userPreferencesService.dailyGoal();
+        const pct = Math.min(100, Math.round((answered / goal) * 100));
+        return { answered, goal, pct, reached: answered >= goal };
+    });
 
     /** Illustrative bar max (10,000 h in seconds) — not a literal goal. */
     protected readonly tenKHoursSeconds = 10_000 * 3600;
@@ -279,6 +289,14 @@ export class DashboardPageComponent {
 
     protected toggleMetricHelp(which: 'accuracy' | 'confidence'): void {
         this.openMetricHelp.update((current) => (current === which ? null : which));
+    }
+
+    protected onDailyGoalChange(event: Event): void {
+        const input = event.target as HTMLInputElement;
+        const n = parseInt(input.value, 10);
+        if (Number.isFinite(n) && n > 0) {
+            this.userPreferencesService.setDailyGoal(n);
+        }
     }
 
     @HostListener('document:pointerdown', ['$event'])

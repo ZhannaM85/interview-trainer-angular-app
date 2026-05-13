@@ -79,3 +79,28 @@ test.describe('Dashboard trend chart', () => {
         await expect(buttons.nth(1)).not.toHaveClass(/trend-chart__window-btn--active/);
     });
 });
+
+test.describe('Dashboard daily goal', () => {
+    test('shows daily goal card with default goal of 10', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const card = page.locator('[data-testid="daily-goal-card"]');
+        await expect(card).toBeVisible({ timeout: 10_000 });
+        await expect(card).toContainText(/0 \/ 10|Daily goal|Дневная цель/i);
+    });
+
+    test('daily goal input is present with default value 10', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const input = page.locator('#dashboard-daily-goal-input');
+        await expect(input).toBeVisible({ timeout: 10_000 });
+        await expect(input).toHaveValue('10');
+    });
+
+    test('changing the goal input updates the displayed goal', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const input = page.locator('#dashboard-daily-goal-input');
+        await expect(input).toBeVisible({ timeout: 10_000 });
+        await input.fill('20');
+        await input.dispatchEvent('change');
+        await expect(page.locator('[data-testid="daily-goal-card"]')).toContainText(/20/);
+    });
+});

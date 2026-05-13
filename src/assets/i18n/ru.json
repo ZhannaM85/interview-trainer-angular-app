@@ -398,6 +398,12 @@
         "achievement": {
             "longerThanYesterday": "Занимались дольше, чем вчера"
         },
+        "dailyGoal": {
+            "title": "Дневная цель",
+            "progress": "{{answered}} / {{goal}} вопросов сегодня",
+            "reached": "Цель достигнута! Отличная работа!",
+            "editLabel": "Изменить цель:"
+        },
         "dataBackup": {
             "title": "Резервная копия данных",
             "exportBtn": "Экспортировать данные",

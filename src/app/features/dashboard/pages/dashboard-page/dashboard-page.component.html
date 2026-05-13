@@ -360,6 +360,35 @@
                 </p>
             </article>
 
+            <article class="dashboard__card" data-testid="daily-goal-card">
+                @let dg = dailyGoalView();
+                <h2 class="dashboard__card-title">{{ 'dashboard.dailyGoal.title' | translate }}</h2>
+                <p class="dashboard__daily-goal-progress" aria-live="polite">
+                    {{ 'dashboard.dailyGoal.progress' | translate: { answered: dg.answered, goal: dg.goal } }}
+                </p>
+                <app-progress-bar [value]="dg.answered" [max]="dg.goal" [label]="'dashboard.dailyGoal.title' | translate" />
+                @if (dg.reached) {
+                    <p class="dashboard__achievement dashboard__achievement--goal" role="status" aria-live="polite">
+                        🎉 {{ 'dashboard.dailyGoal.reached' | translate }}
+                    </p>
+                }
+                <div class="dashboard__daily-goal-edit">
+                    <label class="dashboard__daily-goal-label" for="dashboard-daily-goal-input">
+                        {{ 'dashboard.dailyGoal.editLabel' | translate }}
+                    </label>
+                    <input
+                        id="dashboard-daily-goal-input"
+                        type="number"
+                        class="dashboard__daily-goal-input"
+                        [value]="dg.goal"
+                        min="1"
+                        max="200"
+                        (change)="onDailyGoalChange($event)"
+                        [attr.aria-label]="'dashboard.dailyGoal.editLabel' | translate"
+                    />
+                </div>
+            </article>
+
             <article class="dashboard__card dashboard__card--wide">
                 <app-activity-heatmap />
             </article>
