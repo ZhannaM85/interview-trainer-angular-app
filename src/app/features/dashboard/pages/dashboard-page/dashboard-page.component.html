@@ -158,6 +158,10 @@
             </article>
 
             <article class="dashboard__card dashboard__card--wide">
+                <app-trend-chart />
+            </article>
+
+            <article class="dashboard__card dashboard__card--wide">
                 <h2 class="dashboard__card-title">{{ 'dashboard.practiceRatingsHeading' | translate }}</h2>
                 <p class="dashboard__hint dashboard__ratings-intro">{{ 'dashboard.practiceRatingsIntro' | translate }}</p>
                 @let pr = practiceRatingsView();

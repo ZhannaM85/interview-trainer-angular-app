@@ -367,6 +367,17 @@
         "practiceRatingsEmptyDay": "No practice ratings recorded yet today.",
         "practiceRatingsEmptyAllDays": "No per-day ratings stored yet. New practice sessions will fill this in.",
         "practiceRatingsEmptyAttempts": "No answers rated yet.",
+        "trendChart": {
+            "title": "Accuracy & Confidence Trend",
+            "window7d": "7 days",
+            "window30d": "30 days",
+            "windowAll": "All time",
+            "windowAria": "Time window selector",
+            "empty": "Practice a few questions to see your trend here.",
+            "svgAria": "Accuracy and confidence trend chart",
+            "accuracyLabel": "Accuracy",
+            "confidenceLabel": "Confidence"
+        },
         "bestTopics": {
             "title": "Your strongest topics",
             "empty": "No practice data yet — rate a few answers to see your strongest topics here.",

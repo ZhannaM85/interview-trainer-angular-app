@@ -22,6 +22,7 @@ import type { Question } from '../../../../shared/models/question.model';
 import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import { ActivityHeatmapComponent } from '../../components/activity-heatmap/activity-heatmap.component';
+import { TrendChartComponent } from '../../components/trend-chart/trend-chart.component';
 import { ProgressBarComponent } from '../../../../shared/components/progress-bar/progress-bar.component';
 
 export interface WeakTopic {
@@ -53,7 +54,7 @@ export interface DashboardStats {
 
 @Component({
     selector: 'app-dashboard-page',
-    imports: [ActivityHeatmapComponent, ProgressBarComponent, RouterLink, TranslatePipe],
+    imports: [ActivityHeatmapComponent, TrendChartComponent, ProgressBarComponent, RouterLink, TranslatePipe],
     templateUrl: './dashboard-page.component.html',
     styleUrl: './dashboard-page.component.scss',
     changeDetection: ChangeDetectionStrategy.OnPush

@@ -1,0 +1,77 @@
+<div class="trend-chart">
+    <div class="trend-chart__header">
+        <h2 class="trend-chart__title">{{ 'dashboard.trendChart.title' | translate }}</h2>
+        <div class="trend-chart__windows" role="group" [attr.aria-label]="'dashboard.trendChart.windowAria' | translate">
+            @for (w of windows; track w.key) {
+                <button
+                    type="button"
+                    class="trend-chart__window-btn"
+                    [class.trend-chart__window-btn--active]="activeWindow() === w.key"
+                    [attr.aria-pressed]="activeWindow() === w.key"
+                    (click)="setWindow(w.key)"
+                >{{ w.label | translate }}</button>
+            }
+        </div>
+    </div>
+
+    @if (trendPoints().length === 0) {
+        <p class="trend-chart__empty">{{ 'dashboard.trendChart.empty' | translate }}</p>
+    } @else {
+        <svg
+            #svgEl
+            [attr.viewBox]="viewbox"
+            class="trend-chart__svg"
+            role="img"
+            [attr.aria-label]="'dashboard.trendChart.svgAria' | translate"
+            (pointermove)="onPointerMove($event, svgEl)"
+            (pointerleave)="onPointerLeave()"
+        >
+            <!-- Y-axis gridlines -->
+            <line [attr.x1]="plotL" [attr.x2]="plotR" [attr.y1]="plotT" [attr.y2]="plotT" class="trend-chart__grid" />
+            <line [attr.x1]="plotL" [attr.x2]="plotR" [attr.y1]="midY" [attr.y2]="midY" class="trend-chart__grid" />
+            <line [attr.x1]="plotL" [attr.x2]="plotR" [attr.y1]="plotB" [attr.y2]="plotB" class="trend-chart__grid" />
+
+            <!-- Y-axis labels -->
+            <text [attr.x]="plotL - 4" [attr.y]="plotT" dominant-baseline="middle" class="trend-chart__label" text-anchor="end">100%</text>
+            <text [attr.x]="plotL - 4" [attr.y]="midY" dominant-baseline="middle" class="trend-chart__label" text-anchor="end">50%</text>
+            <text [attr.x]="plotL - 4" [attr.y]="plotB" dominant-baseline="middle" class="trend-chart__label" text-anchor="end">0%</text>
+
+            <!-- Confidence line (drawn first so accuracy renders on top) -->
+            <polyline [attr.points]="confidencePolyline()" class="trend-chart__line trend-chart__line--conf" fill="none" />
+
+            <!-- Accuracy line -->
+            <polyline [attr.points]="accuracyPolyline()" class="trend-chart__line trend-chart__line--acc" fill="none" />
+
+            <!-- Hover crosshair and dots -->
+            @if (hoveredPt(); as hp) {
+                <line [attr.x1]="hp.x" [attr.x2]="hp.x" [attr.y1]="plotT" [attr.y2]="plotB" class="trend-chart__crosshair" />
+                <circle [attr.cx]="hp.x" [attr.cy]="hp.yAcc" r="4" class="trend-chart__dot trend-chart__dot--acc" />
+                <circle [attr.cx]="hp.x" [attr.cy]="hp.yConf" r="4" class="trend-chart__dot trend-chart__dot--conf" />
+            }
+
+            <!-- X-axis labels -->
+            @for (lbl of xLabels(); track lbl.x) {
+                <text [attr.x]="lbl.x" [attr.y]="plotB + 10" dominant-baseline="hanging" class="trend-chart__label" text-anchor="middle">{{ lbl.label }}</text>
+            }
+        </svg>
+
+        <!-- Tooltip -->
+        @if (hoveredPt(); as hp) {
+            <div class="trend-chart__tooltip" aria-live="polite">
+                <span class="trend-chart__tooltip-date">{{ hp.data.date }}</span>
+                <span class="trend-chart__tooltip-row">
+                    {{ 'dashboard.trendChart.accuracyLabel' | translate }}: <strong class="trend-chart__val--acc">{{ hp.data.accuracyPct }}%</strong>
+                </span>
+                <span class="trend-chart__tooltip-row">
+                    {{ 'dashboard.trendChart.confidenceLabel' | translate }}: <strong class="trend-chart__val--conf">{{ hp.data.confidencePct }}%</strong>
+                </span>
+            </div>
+        }
+
+        <!-- Legend -->
+        <div class="trend-chart__legend" aria-hidden="true">
+            <span class="trend-chart__legend-acc">{{ 'dashboard.trendChart.accuracyLabel' | translate }}</span>
+            <span class="trend-chart__legend-conf">{{ 'dashboard.trendChart.confidenceLabel' | translate }}</span>
+        </div>
+    }
+</div>
