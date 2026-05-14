@@ -716,6 +716,44 @@
     color: var(--it-text);
 }
 
+.dashboard__badge-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.dashboard__badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+    padding: 0.35rem 0.75rem;
+    border-radius: 2rem;
+    border: 1px solid var(--it-heat-1-border);
+    background: var(--it-heat-1);
+    color: var(--it-heat-1-border);
+    font-size: 0.82rem;
+    font-weight: 600;
+}
+
+.dashboard__badge-icon {
+    font-size: 1rem;
+    line-height: 1;
+}
+
+.dashboard__badge-name {
+    font-weight: 700;
+}
+
+.dashboard__badge-date {
+    font-size: 0.72rem;
+    font-weight: 500;
+    opacity: 0.75;
+    font-variant-numeric: tabular-nums;
+}
+
 @media (max-width: 640px) {
     .dashboard {
         max-width: 100%;

@@ -6,6 +6,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter, fromEvent, map, merge, of } from 'rxjs';
 
 import { LOCALE_STORAGE_KEY } from './core/locale.constants';
+import { AchievementService } from './core/services/achievement.service';
 import { ActiveTimeService } from './core/services/active-time.service';
 import { ActivityService } from './core/services/activity.service';
 import { CustomQuestionService } from './core/services/custom-question.service';
@@ -45,6 +46,7 @@ export class App {
     private readonly questionService = inject(QuestionService);
     private readonly customQuestionService = inject(CustomQuestionService);
     protected readonly storageService = inject(StorageService);
+    private readonly achievementService = inject(AchievementService);
 
     protected readonly customQuestionCount = computed(() => this.customQuestionService.questions().length);
     private readonly allQuestions = toSignal(this.questionService.getQuestions(), { initialValue: [] });
@@ -213,6 +215,7 @@ export class App {
         const lang = this.normalizeLang(raw);
         localStorage.setItem(LOCALE_STORAGE_KEY, lang);
         this.translate.use(lang).subscribe();
+        this.achievementService.recordLanguageSwitched();
     }
 
     protected onThemeToggle(): void {

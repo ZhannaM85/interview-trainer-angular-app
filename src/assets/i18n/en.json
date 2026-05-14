@@ -398,6 +398,60 @@
         "achievement": {
             "longerThanYesterday": "Studied longer than yesterday"
         },
+        "achievements": {
+            "title": "Achievements",
+            "empty": "No badges earned yet — keep practicing!",
+            "first-steps": {
+                "icon": "🐣",
+                "name": "First steps",
+                "desc": "Answer your first question"
+            },
+            "on-a-roll": {
+                "icon": "🔥",
+                "name": "On a roll",
+                "desc": "Answer 10 questions in a single session"
+            },
+            "century": {
+                "icon": "💯",
+                "name": "Century",
+                "desc": "Answer 100 questions all-time"
+            },
+            "week-warrior": {
+                "icon": "🗓️",
+                "name": "Week warrior",
+                "desc": "Maintain a 7-day practice streak"
+            },
+            "topic-master": {
+                "icon": "🏆",
+                "name": "Topic master",
+                "desc": "Nail every question in a subtopic"
+            },
+            "speed-run": {
+                "icon": "⚡",
+                "name": "Speed run",
+                "desc": "Complete a 10-question session in under 3 minutes"
+            },
+            "no-mercy": {
+                "icon": "😤",
+                "name": "No mercy",
+                "desc": "Zero \"didn't know\" in a 10-question session"
+            },
+            "polyglot": {
+                "icon": "🌐",
+                "name": "Polyglot",
+                "desc": "Switch UI language and practice"
+            },
+            "come-back": {
+                "icon": "🔙",
+                "name": "Come back",
+                "desc": "Practice after a 3+ day absence"
+            },
+            "goal-getter": {
+                "icon": "🎯",
+                "name": "Goal getter",
+                "desc": "Hit your daily practice goal"
+            }
+        },
         "dailyGoal": {
             "title": "Daily goal",
             "progress": "{{answered}} / {{goal}} questions today",
