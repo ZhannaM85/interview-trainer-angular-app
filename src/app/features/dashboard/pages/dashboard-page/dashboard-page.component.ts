@@ -10,6 +10,8 @@ import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
 
+import { AchievementService } from '../../../../core/services/achievement.service';
+import type { EarnedBadge } from '../../../../core/services/achievement.service';
 import { ActivityService } from '../../../../core/services/activity.service';
 import type { DailyActivity } from '../../../../shared/models/activity.model';
 import type { PracticeRatingBreakdown } from '../../../../core/services/activity.service';
@@ -86,6 +88,7 @@ export class DashboardPageComponent {
     private readonly questionService = inject(QuestionService);
     private readonly activityService = inject(ActivityService);
     private readonly dataExportService = inject(DataExportService);
+    private readonly achievementService = inject(AchievementService);
     protected readonly userPreferencesService = inject(UserPreferencesService);
 
     /** Inline help for Accuracy / Confidence (tap icon on mobile; hover title still works on desktop). */
@@ -101,6 +104,25 @@ export class DashboardPageComponent {
 
     /** Illustrative bar max (10,000 h in seconds) — not a literal goal. */
     protected readonly tenKHoursSeconds = 10_000 * 3600;
+
+    protected readonly achievementsView = computed((): EarnedBadge[] => {
+        const s = this.stats();
+        if (!s) {
+            return this.achievementService.earnedBadges();
+        }
+        const streak = this.streakView();
+        this.achievementService.checkAndGrantLifetime({
+            totalAnswered: s.totalAnswered,
+            questions: this.questionsSignal(),
+            progress: this.progressService.getProgress(),
+            activityMap: this.activityService.activityMap(),
+            currentStreakDays: streak.currentDays,
+            bestStreakDays: streak.bestDays,
+            dailyGoal: this.userPreferencesService.dailyGoal(),
+            todayAnswered: this.activityService.todayQuestionsAnswered()
+        });
+        return this.achievementService.earnedBadges();
+    });
 
     protected readonly activeTimeView = computed(() => {
         const totalSeconds = this.activityService.totalActiveSeconds();

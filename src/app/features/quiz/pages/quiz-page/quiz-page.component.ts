@@ -4,6 +4,7 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { distinctUntilChanged, map, take } from 'rxjs';
 
+import { AchievementService } from '../../../../core/services/achievement.service';
 import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService, SCORE_BY_RATING } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
@@ -72,9 +73,13 @@ export class QuizPageComponent {
     private readonly progressService = inject(ProgressService);
     private readonly todayPlan = inject(TodayPlanService);
     private readonly activityService = inject(ActivityService);
+    private readonly achievementService = inject(AchievementService);
     private readonly translate = inject(TranslateService);
     private readonly route = inject(ActivatedRoute);
     private readonly storage = inject(StorageService);
+
+    /** Epoch ms when the current session started (set in startSession / resumeSession). */
+    private sessionStartMs = 0;
 
     /** `?topics=cat:sub` — when present, restrict the session to questions in those topic IDs. */
     private readonly topicsFocusParam = toSignal(
@@ -306,6 +311,7 @@ export class QuizPageComponent {
         this.sessionMode.set(mode);
         this.storage.set('quiz-session-mode', mode);
         this.showSessionModePicker.set(false);
+        this.sessionStartMs = Date.now();
         this.loadQuiz();
     }
 
@@ -590,6 +596,13 @@ export class QuizPageComponent {
             this.clearSessionSnapshot();
             this.resumeInfo.set(null);
             this.sessionComplete.set(true);
+            this.achievementService.checkAndGrantSession({
+                total: this.sessionTotal(),
+                nailed: this.sessionNailed(),
+                partial: this.sessionPartial(),
+                didntKnow: this.sessionDidntKnow(),
+                durationMs: this.sessionStartMs > 0 ? Date.now() - this.sessionStartMs : Infinity
+            });
         }
     }
 

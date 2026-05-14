@@ -458,6 +458,27 @@
                 }
             </article>
 
+            <article class="dashboard__card dashboard__card--wide" data-testid="achievements-card">
+                <h2 class="dashboard__card-title">{{ 'dashboard.achievements.title' | translate }}</h2>
+                @if (achievementsView().length === 0) {
+                    <p class="dashboard__hint">{{ 'dashboard.achievements.empty' | translate }}</p>
+                } @else {
+                    <ul class="dashboard__badge-list" [attr.aria-label]="'dashboard.achievements.title' | translate">
+                        @for (badge of achievementsView(); track badge.id) {
+                            <li class="dashboard__badge">
+                                <span class="dashboard__badge-icon" aria-hidden="true">
+                                    {{ 'dashboard.achievements.' + badge.id + '.icon' | translate }}
+                                </span>
+                                <span class="dashboard__badge-name">
+                                    {{ 'dashboard.achievements.' + badge.id + '.name' | translate }}
+                                </span>
+                                <span class="dashboard__badge-date">{{ badge.earnedAt }}</span>
+                            </li>
+                        }
+                    </ul>
+                }
+            </article>
+
             <div class="dashboard__cta-wrap">
                 <div class="dashboard__cta-row">
                     <a routerLink="/study" class="dashboard__cta-secondary">{{ 'dashboard.browseQa' | translate }}</a>
