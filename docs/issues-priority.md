@@ -59,3 +59,17 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | [#52](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/52) | Topic mastery indicator | Noticeably better after #47 |
 | [#56](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/56) | Storage usage & purge | Do after #43 (export before purging) |
 | [#57](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/57) | Focus management after dismissing banners | Best done last — depends on #44, #48, #53, #60 |
+
+---
+
+## Tier 6 — AI-powered vacancy analysis (implement in order)
+
+New feature: user pastes a job vacancy description → Claude API generates tailored interview Q&A pairs → user reviews and imports them as custom questions.
+
+| # | Issue | Notes |
+|---|-------|-------|
+| [#90](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/90) | Add AI provider API key settings | **Start here** — prerequisite for all other vacancy issues |
+| [#91](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/91) | Add /vacancy page for job description input | UI skeleton; depends on #90 for key-present check |
+| [#92](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/92) | Implement AI question generation service | Core logic; calls Claude API; depends on #90 and #91 |
+| [#93](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/93) | Add review and import flow for AI-generated questions | Depends on #92 returning data and existing CustomQuestionService |
+| [#94](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/94) | Vacancy analysis UX polish (loading, errors, empty states) | Do last — ties together #91, #92, #93 |
