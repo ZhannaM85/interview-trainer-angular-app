@@ -153,6 +153,17 @@
     }
 }
 
+.quiz__summary-interview-ready {
+    margin: 0;
+    padding: 0.6rem 1rem;
+    border-radius: 0.5rem;
+    background: var(--it-accent-subtle, color-mix(in srgb, var(--it-accent) 12%, transparent));
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--it-accent);
+    text-align: center;
+}
+
 .quiz__summary-streak {
     margin: 0;
     font-size: 0.88rem;

@@ -99,6 +99,12 @@
                 </div>
             </div>
 
+            @if (interviewReadySession()) {
+                <p class="quiz__summary-interview-ready" role="status">
+                    {{ 'quiz.interviewReadyMessage' | translate }}
+                </p>
+            }
+
             @if (sessionBestStreak() > 1) {
                 <p class="quiz__summary-streak">
                     {{ 'quiz.summaryBestStreak' | translate: {count: sessionBestStreak()} }}

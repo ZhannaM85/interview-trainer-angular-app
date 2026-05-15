@@ -327,7 +327,8 @@
         "resumeSession": "Resume session (question {{question}} of {{total}})",
         "resumeBtn": "Resume",
         "resumeDismiss": "Start new session",
-        "resumeBannerAria": "Resume previous session"
+        "resumeBannerAria": "Resume previous session",
+        "interviewReadyMessage": "Based on your performance today, you're ready for the interview!"
     },
     "dashboard": {
         "title": "Interview Progress",
@@ -450,6 +451,11 @@
                 "icon": "🎯",
                 "name": "Goal getter",
                 "desc": "Hit your daily practice goal"
+            },
+            "interview-ready": {
+                "icon": "🎓",
+                "name": "Interview Ready",
+                "desc": "Nail 80%+ of questions in a 10+ question session"
             }
         },
         "dailyGoal": {

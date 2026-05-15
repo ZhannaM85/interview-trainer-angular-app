@@ -116,6 +116,9 @@ export class QuizPageComponent {
 
     protected readonly undoSnapshot = signal<UndoSnapshot | null>(null);
 
+    /** True when the session met the "interview ready" threshold (80%+ nailed, 10+ questions). */
+    protected readonly interviewReadySession = signal(false);
+
     protected readonly resumeInfo = signal<{ questionNumber: number; total: number } | null>(null);
 
     /** Today's plan has topics selected but none marked studied yet — practice still uses full catalog. */
@@ -514,6 +517,7 @@ export class QuizPageComponent {
         this.sessionDidntKnow.set(0);
         this.sessionBestStreak.set(0);
         this.currentStreak = 0;
+        this.interviewReadySession.set(false);
         this.questionService
             .getQuestions()
             .pipe(take(1))
@@ -596,13 +600,14 @@ export class QuizPageComponent {
             this.clearSessionSnapshot();
             this.resumeInfo.set(null);
             this.sessionComplete.set(true);
-            this.achievementService.checkAndGrantSession({
+            const ready = this.achievementService.checkAndGrantSession({
                 total: this.sessionTotal(),
                 nailed: this.sessionNailed(),
                 partial: this.sessionPartial(),
                 didntKnow: this.sessionDidntKnow(),
                 durationMs: this.sessionStartMs > 0 ? Date.now() - this.sessionStartMs : Infinity
             });
+            this.interviewReadySession.set(ready);
         }
     }
 

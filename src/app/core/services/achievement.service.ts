@@ -16,7 +16,8 @@ export type AchievementId =
     | 'no-mercy'
     | 'polyglot'
     | 'come-back'
-    | 'goal-getter';
+    | 'goal-getter'
+    | 'interview-ready';
 
 export interface EarnedBadge {
     id: AchievementId;
@@ -112,10 +113,11 @@ export class AchievementService {
     /**
      * Checks session-based achievements at the end of a quiz session.
      * Called by the quiz page when a session completes.
+     * Returns true when the 'interview-ready' threshold was met this session.
      */
-    checkAndGrantSession(stats: SessionAchievementStats): void {
+    checkAndGrantSession(stats: SessionAchievementStats): boolean {
         const today = formatLocalYmd(new Date());
-        const { total, didntKnow, durationMs } = stats;
+        const { total, nailed, didntKnow, durationMs } = stats;
 
         if (total >= 10) {
             this.grant('on-a-roll', today);
@@ -126,6 +128,11 @@ export class AchievementService {
         if (total >= 10 && didntKnow === 0) {
             this.grant('no-mercy', today);
         }
+        const interviewReady = total >= 10 && nailed / total >= 0.8;
+        if (interviewReady) {
+            this.grant('interview-ready', today);
+        }
+        return interviewReady;
     }
 
     private grant(id: AchievementId, earnedAt: string): void {
@@ -218,7 +225,7 @@ export class AchievementService {
         const validIds = new Set<string>([
             'first-steps', 'on-a-roll', 'century', 'week-warrior',
             'topic-master', 'speed-run', 'no-mercy', 'polyglot',
-            'come-back', 'goal-getter'
+            'come-back', 'goal-getter', 'interview-ready'
         ]);
         const result: EarnedBadge[] = [];
         for (const item of raw) {

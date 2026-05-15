@@ -276,6 +276,52 @@ describe('AchievementService', () => {
         });
     });
 
+    describe('interview-ready', () => {
+        it('grants when total >= 10 and nailed / total >= 0.8', () => {
+            const svc = setup();
+            svc.checkAndGrantSession({ total: 10, nailed: 8, partial: 2, didntKnow: 0, durationMs: 600_000 });
+            expect(svc.earnedBadges().find((b) => b.id === 'interview-ready')).toBeDefined();
+        });
+
+        it('grants at exactly 80% nailed', () => {
+            const svc = setup();
+            svc.checkAndGrantSession({ total: 10, nailed: 8, partial: 0, didntKnow: 2, durationMs: 600_000 });
+            expect(svc.earnedBadges().find((b) => b.id === 'interview-ready')).toBeDefined();
+        });
+
+        it('does not grant when nailed / total < 0.8', () => {
+            const svc = setup();
+            svc.checkAndGrantSession({ total: 10, nailed: 7, partial: 3, didntKnow: 0, durationMs: 600_000 });
+            expect(svc.earnedBadges().find((b) => b.id === 'interview-ready')).toBeUndefined();
+        });
+
+        it('does not grant when total < 10 even with 100% nailed', () => {
+            const svc = setup();
+            svc.checkAndGrantSession({ total: 9, nailed: 9, partial: 0, didntKnow: 0, durationMs: 60_000 });
+            expect(svc.earnedBadges().find((b) => b.id === 'interview-ready')).toBeUndefined();
+        });
+
+        it('returns true when threshold is met', () => {
+            const svc = setup();
+            const result = svc.checkAndGrantSession({ total: 10, nailed: 8, partial: 2, didntKnow: 0, durationMs: 600_000 });
+            expect(result).toBe(true);
+        });
+
+        it('returns false when threshold is not met', () => {
+            const svc = setup();
+            const result = svc.checkAndGrantSession({ total: 10, nailed: 7, partial: 3, didntKnow: 0, durationMs: 600_000 });
+            expect(result).toBe(false);
+        });
+
+        it('is idempotent — granted only once across sessions', () => {
+            const svc = setup();
+            svc.checkAndGrantSession({ total: 10, nailed: 8, partial: 2, didntKnow: 0, durationMs: 600_000 });
+            svc.checkAndGrantSession({ total: 10, nailed: 10, partial: 0, didntKnow: 0, durationMs: 600_000 });
+            const count = svc.earnedBadges().filter((b) => b.id === 'interview-ready').length;
+            expect(count).toBe(1);
+        });
+    });
+
     describe('persistence', () => {
         it('does not grant the same badge twice', () => {
             const svc = setup();
