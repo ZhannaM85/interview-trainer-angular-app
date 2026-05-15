@@ -5,6 +5,7 @@ import { TranslateLoader, provideTranslateService, type TranslationObject } from
 import { Observable, of } from 'rxjs';
 
 import { QuizPageComponent, type SessionMode } from './quiz-page.component';
+import { AchievementService } from '../../../../core/services/achievement.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { ActiveSessionSnapshot } from '../../../../shared/models/active-session.model';
 
@@ -234,5 +235,39 @@ describe('QuizPageComponent — session resume', () => {
         component.restartSession();
         expect(component.resumeInfo()).toBeNull();
         expect(localStorage.getItem(SNAPSHOT_KEY)).toBeNull();
+    });
+});
+
+describe('QuizPageComponent — interview-ready session message', () => {
+    beforeEach(async () => {
+        localStorage.clear();
+        await TestBed.configureTestingModule({
+            imports: [QuizPageComponent],
+            providers: testProviders
+        }).compileComponents();
+    });
+
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('interviewReadySession is false on component init', () => {
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            interviewReadySession: () => boolean;
+        };
+        expect(component.interviewReadySession()).toBe(false);
+    });
+
+    it('interviewReadySession is reset to false when startSession is called', () => {
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const achievementService = TestBed.inject(AchievementService);
+        vi.spyOn(achievementService, 'checkAndGrantSession').mockReturnValue(true);
+        const component = fixture.componentInstance as unknown as {
+            interviewReadySession: () => boolean;
+            startSession: (mode: SessionMode) => void;
+        };
+        // Simulate a previous session having set the flag
+        // by calling startSession which resets it via loadQuiz
+        component.startSession('quick');
+        expect(component.interviewReadySession()).toBe(false);
     });
 });

@@ -45,4 +45,18 @@ test.describe('Achievements card on dashboard', () => {
             page.locator('[data-testid="achievements-card"]').locator('text=/First steps|Первые шаги/i')
         ).toBeVisible();
     });
+
+    test('shows interview-ready badge on dashboard after qualifying session', async ({ page }) => {
+        // Seed localStorage with a qualifying session result
+        await page.goto('/#/dashboard');
+        await page.evaluate(() => {
+            const today = new Date().toISOString().slice(0, 10);
+            const achievements = { earned: [{ id: 'interview-ready', earnedAt: today }], langSwitched: false };
+            localStorage.setItem('interview-trainer:achievements', JSON.stringify(achievements));
+        });
+        await page.reload();
+        await expect(
+            page.locator('[data-testid="achievements-card"]').locator('text=/Interview Ready|Готов к собеседованию/i')
+        ).toBeVisible({ timeout: 10_000 });
+    });
 });
