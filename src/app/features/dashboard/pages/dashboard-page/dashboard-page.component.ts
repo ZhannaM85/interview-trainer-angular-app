@@ -3,6 +3,7 @@ import {
     Component,
     HostListener,
     computed,
+    effect,
     inject,
     signal
 } from '@angular/core';
@@ -105,24 +106,9 @@ export class DashboardPageComponent {
     /** Illustrative bar max (10,000 h in seconds) — not a literal goal. */
     protected readonly tenKHoursSeconds = 10_000 * 3600;
 
-    protected readonly achievementsView = computed((): EarnedBadge[] => {
-        const s = this.stats();
-        if (!s) {
-            return this.achievementService.earnedBadges();
-        }
-        const streak = this.streakView();
-        this.achievementService.checkAndGrantLifetime({
-            totalAnswered: s.totalAnswered,
-            questions: this.questionsSignal(),
-            progress: this.progressService.getProgress(),
-            activityMap: this.activityService.activityMap(),
-            currentStreakDays: streak.currentDays,
-            bestStreakDays: streak.bestDays,
-            dailyGoal: this.userPreferencesService.dailyGoal(),
-            todayAnswered: this.activityService.todayQuestionsAnswered()
-        });
-        return this.achievementService.earnedBadges();
-    });
+    protected readonly achievementsView = computed((): EarnedBadge[] =>
+        this.achievementService.earnedBadges()
+    );
 
     protected readonly activeTimeView = computed(() => {
         const totalSeconds = this.activityService.totalActiveSeconds();
@@ -331,6 +317,22 @@ export class DashboardPageComponent {
     }
 
     constructor() {
+        effect(() => {
+            const s = this.stats();
+            if (!s) return;
+            const streak = this.streakView();
+            this.achievementService.checkAndGrantLifetime({
+                totalAnswered: s.totalAnswered,
+                questions: this.questionsSignal(),
+                progress: this.progressService.getProgress(),
+                activityMap: this.activityService.activityMap(),
+                currentStreakDays: streak.currentDays,
+                bestStreakDays: streak.bestDays,
+                dailyGoal: this.userPreferencesService.dailyGoal(),
+                todayAnswered: this.activityService.todayQuestionsAnswered()
+            });
+        });
+
         this.questionService
             .getQuestions()
             .pipe(takeUntilDestroyed())
