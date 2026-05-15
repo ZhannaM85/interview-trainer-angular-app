@@ -47,6 +47,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | ~~[#59](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/59)~~ | ~~Accuracy breakdown by difficulty~~ | ✅ Done |
 | ~~[#51](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/51)~~ | ~~Daily practice goals~~ | ✅ Done |
 | ~~[#41](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/41)~~ | ~~More achievement badges~~ | ✅ Done |
+| [#96](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/96) | 'Interview Ready' badge + session-end message | Extends existing achievement system; do after #41 |
 
 ---
 
