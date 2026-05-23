@@ -354,6 +354,22 @@
     border-radius: 0.5rem;
     background: var(--it-dashboard-streak-bg);
     border: 1px solid var(--it-dashboard-streak-border);
+    text-decoration: none;
+    color: inherit;
+    cursor: pointer;
+    transition:
+        border-color 0.12s ease,
+        background-color 0.12s ease;
+}
+
+.dashboard__hardest-item:hover {
+    border-color: color-mix(in srgb, var(--it-accent) 35%, var(--it-dashboard-streak-border));
+    background: color-mix(in srgb, var(--it-accent) 8%, var(--it-dashboard-streak-bg));
+}
+
+.dashboard__hardest-item:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
 }
 
 .dashboard__hardest-meta {

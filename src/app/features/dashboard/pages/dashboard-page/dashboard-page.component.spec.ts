@@ -145,6 +145,35 @@ describe('DashboardPageComponent — hardestQuestionsView', () => {
 
         expect(component.hardestQuestionsView().length).toBe(8);
     });
+
+    it('exposes category and subtopic for link construction', () => {
+        const q = makeQuestion({ id: 20, category: 'angular', subtopic: 'signals' });
+        const { component, progressService } = setup([q]);
+        progressService.recordSelfRating(20, 'didntKnow');
+        progressService.recordSelfRating(20, 'partial');
+        progressService.recordSelfRating(20, 'didntKnow');
+
+        const results = component.hardestQuestionsView();
+        expect(results.length).toBe(1);
+        expect(results[0].category).toBe('angular');
+        expect(results[0].subtopic).toBe('signals');
+    });
+
+    it('renders an anchor link to the study page with the correct topic query param', () => {
+        const q = makeQuestion({ id: 20, category: 'javascript', subtopic: 'closures' });
+        const { fixture, progressService } = setup([q]);
+        progressService.recordSelfRating(20, 'didntKnow');
+        progressService.recordSelfRating(20, 'didntKnow');
+        progressService.recordSelfRating(20, 'didntKnow');
+        fixture.detectChanges();
+
+        const link = fixture.nativeElement.querySelector('.dashboard__hardest-item') as HTMLAnchorElement;
+        expect(link).toBeTruthy();
+        expect(link.tagName.toLowerCase()).toBe('a');
+        const href = decodeURIComponent(link.getAttribute('href') ?? '');
+        expect(href).toContain('/study');
+        expect(href).toContain('javascript:closures');
+    });
 });
 
 describe('DashboardPageComponent — difficultyBreakdownView', () => {

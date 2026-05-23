@@ -164,24 +164,30 @@
                 } @else {
                     <ul class="dashboard__hardest-list">
                         @for (item of hardestQuestionsView(); track item.questionId) {
-                            <li class="dashboard__hardest-item">
-                                <div class="dashboard__hardest-meta">
-                                    <span
-                                        class="dashboard__best-badge dashboard__best-badge--{{ item.category }}"
-                                        aria-hidden="true"
-                                    >{{ ('category.' + item.category) | translate }}</span>
-                                </div>
-                                <p class="dashboard__hardest-question">{{ item.question }}</p>
-                                <div class="dashboard__hardest-stats">
-                                    <span
-                                        class="dashboard__hardest-pct"
-                                        [class.dashboard__hardest-pct--low]="item.nailedPct < 40"
-                                        [attr.aria-label]="'dashboard.hardestQuestions.nailedPct' | translate: { pct: item.nailedPct }"
-                                    >{{ item.nailedPct }}%</span>
-                                    <span class="dashboard__hardest-attempts">{{
-                                        'dashboard.hardestQuestions.attempts' | translate: { count: item.total }
-                                    }}</span>
-                                </div>
+                            <li>
+                                <a
+                                    class="dashboard__hardest-item"
+                                    routerLink="/study"
+                                    [queryParams]="{ topics: item.category + ':' + item.subtopic }"
+                                >
+                                    <div class="dashboard__hardest-meta">
+                                        <span
+                                            class="dashboard__best-badge dashboard__best-badge--{{ item.category }}"
+                                            aria-hidden="true"
+                                        >{{ ('category.' + item.category) | translate }}</span>
+                                    </div>
+                                    <p class="dashboard__hardest-question">{{ item.question }}</p>
+                                    <div class="dashboard__hardest-stats">
+                                        <span
+                                            class="dashboard__hardest-pct"
+                                            [class.dashboard__hardest-pct--low]="item.nailedPct < 40"
+                                            [attr.aria-label]="'dashboard.hardestQuestions.nailedPct' | translate: { pct: item.nailedPct }"
+                                        >{{ item.nailedPct }}%</span>
+                                        <span class="dashboard__hardest-attempts">{{
+                                            'dashboard.hardestQuestions.attempts' | translate: { count: item.total }
+                                        }}</span>
+                                    </div>
+                                </a>
                             </li>
                         }
                     </ul>

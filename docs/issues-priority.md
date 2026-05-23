@@ -15,7 +15,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | ~~[#54](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/54)~~ | ~~Bulk "Mark all as studied" in plan~~ | ✅ Done |
 | ~~[#40](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/40)~~ | ~~Difficulty filter in study guide~~ | ✅ Done — [PR #73](https://github.com/ZhannaM85/interview-trainer-angular-app/pull/73) |
 | ~~[#39](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/39)~~ | ~~Full-text search in study guide~~ | ✅ Done |
-| [#98](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/98) | Make 'Hardest Questions' items on dashboard navigate to study guide | Low-effort nav improvement; data already available on each item |
+| ~~[#98](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/98)~~ | ~~Make 'Hardest Questions' items on dashboard navigate to study guide~~ | ✅ Done |
 
 ---
 
