@@ -16,6 +16,34 @@ test.describe('Dashboard hardest questions', () => {
             )
         ).toBeVisible({ timeout: 10_000 });
     });
+
+    test('clicking a hardest question item navigates to the study page filtered to its topic', async ({ page }) => {
+        // Seed progress for question 1 (javascript / this) with 3 didntKnow attempts
+        await page.addInitScript(() => {
+            const progress = [
+                {
+                    questionId: 1,
+                    nailedCount: 0,
+                    partialCount: 0,
+                    didntKnowCount: 3,
+                    lastAnswered: '2026-01-01',
+                    nextReview: '2026-01-02'
+                }
+            ];
+            localStorage.setItem('interview-trainer:progress', JSON.stringify(progress));
+        });
+
+        await page.goto('/#/dashboard');
+
+        const firstItem = page.locator('.dashboard__hardest-item').first();
+        await expect(firstItem).toBeVisible({ timeout: 10_000 });
+
+        await firstItem.click();
+
+        await expect(page).toHaveURL(/study/, { timeout: 5_000 });
+        const url = decodeURIComponent(page.url());
+        expect(url).toContain('topics=javascript');
+    });
 });
 
 test.describe('Dashboard difficulty breakdown', () => {
