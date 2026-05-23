@@ -4,6 +4,14 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 
 ---
 
+## Bugs — fix before new features
+
+| # | Issue | Notes |
+|---|-------|-------|
+| [#100](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/100) | Quiz session sometimes starts with only 1 question after picking session length | Intermittent; likely race condition in `loadQuiz()` |
+
+---
+
 ## Tier 1 — Quick wins (high impact, low risk)
 
 | # | Issue | Why first |
