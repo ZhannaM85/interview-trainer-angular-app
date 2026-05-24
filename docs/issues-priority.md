@@ -8,7 +8,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 
 | # | Issue | Notes |
 |---|-------|-------|
-| [#100](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/100) | Quiz session sometimes starts with only 1 question after picking session length | Intermittent; likely race condition in `loadQuiz()` |
+| ~~[#100](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/100)~~ | ~~Quiz session sometimes starts with only 1 question after picking session length~~ | ✅ Done — [PR #101](https://github.com/ZhannaM85/interview-trainer-angular-app/pull/101) |
 
 ---
 
