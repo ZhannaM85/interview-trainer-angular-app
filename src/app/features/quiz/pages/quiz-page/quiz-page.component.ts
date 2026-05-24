@@ -2,7 +2,7 @@ import { ChangeDetectionStrategy, Component, HostListener, computed, inject, sig
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
-import { distinctUntilChanged, map, take } from 'rxjs';
+import { distinctUntilChanged, filter, map, take } from 'rxjs';
 
 import { AchievementService } from '../../../../core/services/achievement.service';
 import { ActivityService } from '../../../../core/services/activity.service';
@@ -350,7 +350,7 @@ export class QuizPageComponent {
         this.sessionTotal.set(snap.sessionTotal);
         this.sessionStackTopicIds.set(snap.sessionStackTopicIds);
         this.usingFallbackQueue.set(snap.usingFallbackQueue);
-        this.questionService.getQuestions().pipe(take(1)).subscribe({
+        this.questionService.getQuestions().pipe(filter((qs) => qs.length > 0), take(1)).subscribe({
             next: (all) => {
                 const idMap = new Map(all.map((q) => [q.id, q]));
                 const queue = snap.queueIds
@@ -520,7 +520,7 @@ export class QuizPageComponent {
         this.interviewReadySession.set(false);
         this.questionService
             .getQuestions()
-            .pipe(take(1))
+            .pipe(filter((qs) => qs.length > 0), take(1))
             .subscribe({
                 next: (all) => {
                     const scope = this.practiceScope();
@@ -567,11 +567,23 @@ export class QuizPageComponent {
                         this.acceptPlanTopicFallback.set(false);
                     }
                     this.usingFallbackQueue.set(useFallback);
-                    const queue = fullBankMode ? candidate : useFallback ? candidate : due;
+                    let queue = fullBankMode ? candidate : useFallback ? candidate : due;
                     const limit = SESSION_MODE_LIMIT[this.sessionMode()];
                     this.sessionTruncated.set(
                         limit != null && queue.length < limit && queue.length > 0
                     );
+                    // When the due queue is smaller than the session limit, pad it with
+                    // non-due questions so the user always gets a full session.
+                    // This prevents 1-question sessions when only a few items are due.
+                    if (!fullBankMode && !useFallback && limit != null && queue.length > 0 && queue.length < limit) {
+                        const queueIdSet = new Set(queue.map((q) => q.id));
+                        const extras = candidate.filter((q) => !queueIdSet.has(q.id));
+                        for (let i = extras.length - 1; i > 0; i--) {
+                            const j = Math.floor(Math.random() * (i + 1));
+                            [extras[i], extras[j]] = [extras[j], extras[i]];
+                        }
+                        queue = [...queue, ...extras.slice(0, limit - queue.length)];
+                    }
                     const finalQueue = this.questionService.initializeQueue(queue, limit);
                     this.sessionTotal.set(finalQueue.length);
                     this.sessionIndex.set(0);
