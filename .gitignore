@@ -47,6 +47,9 @@ __screenshots__/
 # Claude Code
 .claude/
 
+# mouse-fixes tool state (local run artifacts, never commit)
+.mouse-fixes/
+
 # System files
 .DS_Store
 Thumbs.db
