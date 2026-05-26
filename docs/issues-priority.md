@@ -44,6 +44,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | ~~[#53](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/53)~~ | ~~Carry over unfinished plan topics~~ | ✅ Done |
 | ~~[#44](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/44)~~ | ~~Save and resume incomplete session~~ | ✅ Done |
 | ~~[#60](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/60)~~ | ~~Resume session nudge on app load~~ | ✅ Done |
+| [#102](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/102) | Sort by date on Planning page | Sort subtopics by last-studied date so users can surface stale topics |
 
 ---
 
