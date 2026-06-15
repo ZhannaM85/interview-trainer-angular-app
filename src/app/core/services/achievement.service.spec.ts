@@ -31,6 +31,9 @@ function makeProgress(overrides: Partial<Progress> = {}): Progress {
         didntKnowCount: 0,
         lastAnswered: '',
         nextReview: new Date().toISOString(),
+        easeFactor: 2.5,
+        repetitionCount: 0,
+        intervalDays: 0,
         ...overrides
     };
 }

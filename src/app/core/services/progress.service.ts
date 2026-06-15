@@ -10,6 +10,33 @@ import { StorageService } from './storage.service';
 
 const PROGRESS_KEY = 'progress';
 const MAX_PROGRESS_AGE_DAYS = 400;
+const SM2_INITIAL_EASE_FACTOR = 2.5;
+const SM2_MIN_EASE_FACTOR = 1.3;
+
+const GRADE_BY_RATING: Record<SelfRating, number> = {
+    nailed: 5,
+    partial: 3,
+    didntKnow: 1
+};
+
+export function sm2(
+    grade: number,
+    repetitionCount: number,
+    easeFactor: number,
+    lastIntervalDays: number
+): { nextIntervalDays: number; easeFactor: number; repetitionCount: number } {
+    const newEF = Math.max(
+        SM2_MIN_EASE_FACTOR,
+        easeFactor + (0.1 - (5 - grade) * (0.08 + (5 - grade) * 0.02))
+    );
+    if (grade < 3) {
+        return { nextIntervalDays: 1, easeFactor: newEF, repetitionCount: 0 };
+    }
+    const newN = repetitionCount + 1;
+    const nextIntervalDays =
+        newN === 1 ? 1 : newN === 2 ? 6 : Math.round(lastIntervalDays * newEF);
+    return { nextIntervalDays, easeFactor: newEF, repetitionCount: newN };
+}
 
 function pruneStaleProgress(list: Progress[]): Progress[] {
     const cutoff = new Date();
@@ -55,7 +82,10 @@ function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
             partialCount: row.partialCount ?? 0,
             didntKnowCount: row.didntKnowCount ?? 0,
             lastAnswered: repairLastAnswered(row.lastAnswered),
-            nextReview: repairNextReview(row.nextReview)
+            nextReview: repairNextReview(row.nextReview),
+            easeFactor: row.easeFactor ?? SM2_INITIAL_EASE_FACTOR,
+            repetitionCount: row.repetitionCount ?? 0,
+            intervalDays: row.intervalDays ?? 0
         };
     }
     return {
@@ -64,7 +94,10 @@ function normalizeProgressEntry(row: Progress | LegacyProgress): Progress {
         partialCount: 0,
         didntKnowCount: row.incorrectCount ?? 0,
         lastAnswered: repairLastAnswered(row.lastAnswered),
-        nextReview: repairNextReview(row.nextReview)
+        nextReview: repairNextReview(row.nextReview),
+        easeFactor: SM2_INITIAL_EASE_FACTOR,
+        repetitionCount: 0,
+        intervalDays: 0
     };
 }
 
@@ -78,22 +111,21 @@ export class ProgressService {
 
     private readonly _progress = signal<Progress[]>(this.loadProgress());
 
-    /**
-     * Spaced repetition: nailed -> +3 days, partial -> +2 days, didn't know -> +1 day.
-     */
     recordSelfRating(questionId: number, rating: SelfRating): void {
         const now = new Date();
-        const nextReview = new Date(now);
-        if (rating === 'nailed') {
-            nextReview.setDate(nextReview.getDate() + 3);
-        } else if (rating === 'partial') {
-            nextReview.setDate(nextReview.getDate() + 2);
-        } else {
-            nextReview.setDate(nextReview.getDate() + 1);
-        }
+        const grade = GRADE_BY_RATING[rating];
 
         this._progress.update((list) => {
             const existing = list.find((p) => p.questionId === questionId);
+            const result = sm2(
+                grade,
+                existing?.repetitionCount ?? 0,
+                existing?.easeFactor ?? SM2_INITIAL_EASE_FACTOR,
+                existing?.intervalDays ?? 0
+            );
+            const nextReview = new Date(now);
+            nextReview.setDate(nextReview.getDate() + result.nextIntervalDays);
+
             if (existing) {
                 return list.map((p) =>
                     p.questionId === questionId
@@ -104,7 +136,10 @@ export class ProgressService {
                               didntKnowCount:
                                   p.didntKnowCount + (rating === 'didntKnow' ? 1 : 0),
                               lastAnswered: now.toISOString(),
-                              nextReview: nextReview.toISOString()
+                              nextReview: nextReview.toISOString(),
+                              easeFactor: result.easeFactor,
+                              repetitionCount: result.repetitionCount,
+                              intervalDays: result.nextIntervalDays
                           }
                         : p
                 );
@@ -117,7 +152,10 @@ export class ProgressService {
                     partialCount: rating === 'partial' ? 1 : 0,
                     didntKnowCount: rating === 'didntKnow' ? 1 : 0,
                     lastAnswered: now.toISOString(),
-                    nextReview: nextReview.toISOString()
+                    nextReview: nextReview.toISOString(),
+                    easeFactor: result.easeFactor,
+                    repetitionCount: result.repetitionCount,
+                    intervalDays: result.nextIntervalDays
                 }
             ];
         });
