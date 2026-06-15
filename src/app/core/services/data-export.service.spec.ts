@@ -39,7 +39,10 @@ const SAMPLE_BACKUP: AppBackup = {
             partialCount: 1,
             didntKnowCount: 0,
             lastAnswered: '2026-01-01T00:00:00.000Z',
-            nextReview: '2026-01-04T00:00:00.000Z'
+            nextReview: '2026-01-04T00:00:00.000Z',
+            easeFactor: 2.5,
+            repetitionCount: 2,
+            intervalDays: 6
         }
     ],
     activityByDay: [
