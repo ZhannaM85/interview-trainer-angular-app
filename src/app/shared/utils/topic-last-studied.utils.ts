@@ -159,6 +159,25 @@ function formatShortStudyDate(d: Date, lang: 'ru-RU' | 'en-GB'): string {
     return d.toLocaleDateString(lang, opts);
 }
 
+/** Raw sortable Date per topic (null = never touched). Used for sort-by-date on the Plan page. */
+export function buildTopicLastStudiedDateMap(
+    questions: Question[],
+    activityMap: ReadonlyMap<string, DailyActivity>,
+    progress: Progress[]
+): Map<string, Date | null> {
+    const covered = lastCoveredYmdByTopic(activityMap);
+    const practice = lastPracticeIsoByTopic(questions, progress);
+    const topicIds = new Set<string>();
+    for (const q of questions) {
+        topicIds.add(topicIdFromParts(q.category, q.subtopic));
+    }
+    const result = new Map<string, Date | null>();
+    for (const tid of topicIds) {
+        result.set(tid, mergeLastEngagement(covered.get(tid), practice.get(tid)));
+    }
+    return result;
+}
+
 /** One hint per topic that appears in the question catalog. */
 export function buildTopicLastStudiedHintMap(
     questions: Question[],
