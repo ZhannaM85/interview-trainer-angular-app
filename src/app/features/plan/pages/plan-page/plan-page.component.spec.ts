@@ -4,7 +4,7 @@ import { provideRouter } from '@angular/router';
 import { TranslateLoader, TranslateService, provideTranslateService, type TranslationObject } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
-import { PlanPageComponent } from './plan-page.component';
+import { PlanPageComponent, type PlanSortMode } from './plan-page.component';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
 
@@ -31,6 +31,8 @@ async function setup(storageEntries: Record<string, unknown> = {}) {
     const fixture = TestBed.createComponent(PlanPageComponent);
     const component = fixture.componentInstance as unknown as {
         confirmMarkAllStudied: ReturnType<typeof import('@angular/core').signal<string | null>>;
+        sortMode: ReturnType<typeof import('@angular/core').signal<PlanSortMode>>;
+        sortedSections: () => import('../../../study/study-guide-grouping').StudyCategorySection[];
         carryoverTopicIds: () => string[];
         acceptCarryover(): void;
         dismissCarryover(): void;
@@ -38,6 +40,7 @@ async function setup(storageEntries: Record<string, unknown> = {}) {
         confirmMarkAllStudiedTopics(): void;
         cancelMarkAllStudied(): void;
         topicsRemainingToStudyJs: () => string[];
+        setSortMode(mode: PlanSortMode): void;
     };
     fixture.detectChanges();
     return { fixture, component, plan: TestBed.inject(TodayPlanService) };
@@ -171,5 +174,124 @@ describe('PlanPageComponent — carryover banner', () => {
 
         expect(component.carryoverTopicIds()).toEqual([]);
         expect(plan.isSelected('javascript:closures')).toBe(false);
+    });
+});
+
+describe('PlanPageComponent — sort by date', () => {
+    afterEach(() => {
+        TestBed.resetTestingModule();
+        localStorage.clear();
+    });
+
+    it('sortMode defaults to "default" when nothing is stored', async () => {
+        const { component } = await setup();
+        expect(component.sortMode()).toBe('default');
+    });
+
+    it('sortMode is loaded from localStorage on init', async () => {
+        const { component } = await setup({ 'plan-sort-mode': 'oldest-first' });
+        expect(component.sortMode()).toBe('oldest-first');
+    });
+
+    it('setSortMode updates the sortMode signal', async () => {
+        const { component } = await setup();
+        component.setSortMode('newest-first');
+        expect(component.sortMode()).toBe('newest-first');
+    });
+
+    it('setSortMode persists the choice to localStorage', async () => {
+        const { component } = await setup();
+        component.setSortMode('oldest-first');
+        const stored = JSON.parse(localStorage.getItem('interview-trainer:plan-sort-mode') ?? 'null');
+        expect(stored).toBe('oldest-first');
+    });
+
+    it('setSortMode("default") resets back to default', async () => {
+        const { component } = await setup({ 'plan-sort-mode': 'oldest-first' });
+        component.setSortMode('default');
+        expect(component.sortMode()).toBe('default');
+    });
+
+    it('sortedSections returns an array when sortMode is "default"', async () => {
+        const { component } = await setup();
+        const sorted = component.sortedSections();
+        expect(Array.isArray(sorted)).toBe(true);
+    });
+
+    it('sortedSections returns same structure in all sort modes', async () => {
+        const { component } = await setup();
+        await new Promise((r) => setTimeout(r, 50));
+
+        const defaultSections = component.sortedSections();
+        component.setSortMode('oldest-first');
+        const oldestSections = component.sortedSections();
+        component.setSortMode('newest-first');
+        const newestSections = component.sortedSections();
+
+        expect(oldestSections.length).toBe(defaultSections.length);
+        expect(newestSections.length).toBe(defaultSections.length);
+
+        for (let i = 0; i < defaultSections.length; i++) {
+            expect(oldestSections[i].category).toBe(defaultSections[i].category);
+            expect(oldestSections[i].subtopics.length).toBe(defaultSections[i].subtopics.length);
+            expect(newestSections[i].category).toBe(defaultSections[i].category);
+            expect(newestSections[i].subtopics.length).toBe(defaultSections[i].subtopics.length);
+        }
+    });
+
+    it('oldest-first puts never-studied topics before studied ones', async () => {
+        const today = new Date();
+        const todayStr = formatLocalYmd(today);
+        const { component } = await setup({
+            'activity-by-day': {
+                [todayStr]: {
+                    date: todayStr,
+                    questionsAnswered: 1,
+                    topicsStudied: 1,
+                    activeSeconds: 0,
+                    coveredTopicIds: ['javascript:closures']
+                }
+            }
+        });
+        await new Promise((r) => setTimeout(r, 50));
+
+        component.setSortMode('oldest-first');
+        const sections = component.sortedSections();
+        const jsCat = sections.find((c) => c.category === 'javascript');
+        if (!jsCat) return;
+
+        const closuresIdx = jsCat.subtopics.findIndex((s) => s.subtopic === 'closures');
+        const neverStudiedIdx = jsCat.subtopics.findIndex((s) => s.subtopic !== 'closures');
+        if (neverStudiedIdx >= 0 && closuresIdx >= 0) {
+            expect(neverStudiedIdx).toBeLessThan(closuresIdx);
+        }
+    });
+
+    it('newest-first puts recently-studied topics before never-studied ones', async () => {
+        const today = new Date();
+        const todayStr = formatLocalYmd(today);
+        const { component } = await setup({
+            'activity-by-day': {
+                [todayStr]: {
+                    date: todayStr,
+                    questionsAnswered: 1,
+                    topicsStudied: 1,
+                    activeSeconds: 0,
+                    coveredTopicIds: ['javascript:closures']
+                }
+            }
+        });
+        await new Promise((r) => setTimeout(r, 50));
+
+        component.setSortMode('newest-first');
+        const sections = component.sortedSections();
+        const jsCat = sections.find((c) => c.category === 'javascript');
+        if (!jsCat) return;
+
+        const closuresIdx = jsCat.subtopics.findIndex((s) => s.subtopic === 'closures');
+        const neverStudiedIdx = jsCat.subtopics.findIndex((s) => s.subtopic !== 'closures');
+        if (neverStudiedIdx >= 0 && closuresIdx >= 0) {
+            expect(closuresIdx).toBeLessThan(neverStudiedIdx);
+        }
     });
 });

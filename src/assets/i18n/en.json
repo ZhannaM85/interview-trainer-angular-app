@@ -208,7 +208,11 @@
         "markAllStudiedYes": "Yes, mark all",
         "carryoverPrompt": "You had {{count}} unfinished topic(s) from yesterday — add them to today's plan?",
         "carryoverAccept": "Add to plan",
-        "carryoverDismiss": "Skip"
+        "carryoverDismiss": "Skip",
+        "sortBy": "Sort:",
+        "sortDefault": "Default",
+        "sortOldestFirst": "Oldest first",
+        "sortNewestFirst": "Newest first"
     },
     "heatmap": {
         "heading": "Activity",

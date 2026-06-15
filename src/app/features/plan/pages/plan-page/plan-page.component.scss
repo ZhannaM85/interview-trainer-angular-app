@@ -268,10 +268,60 @@
 }
 
 .plan__picker-hint {
-    margin: 0 0 1rem;
+    margin: 0 0 0.65rem;
     font-size: 0.88rem;
     color: var(--it-text-muted);
     line-height: 1.45;
+}
+
+.plan__sort-row {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.plan__sort-label {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--it-text-muted);
+    white-space: nowrap;
+}
+
+.plan__sort-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+}
+
+.plan__sort-btn {
+    padding: 0.2rem 0.65rem;
+    border: 1px solid var(--it-border);
+    border-radius: 999px;
+    background: transparent;
+    color: var(--it-text-muted);
+    font: inherit;
+    font-size: 0.78rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: border-color 0.12s ease, color 0.12s ease, background 0.12s ease;
+}
+
+.plan__sort-btn:hover {
+    border-color: var(--it-accent);
+    color: var(--it-accent);
+}
+
+.plan__sort-btn:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
+.plan__sort-btn--active {
+    border-color: var(--it-accent);
+    background: var(--it-accent-dim);
+    color: var(--it-accent);
 }
 
 .plan__cat {

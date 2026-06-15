@@ -6,16 +6,21 @@ import { filter } from 'rxjs';
 
 import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService } from '../../../../core/services/progress.service';
+import { StorageService } from '../../../../core/services/storage.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { Question } from '../../../../shared/models/question.model';
 import { isSociologyPlanTopicId } from '../../../../shared/utils/sociology-topic-key.utils';
 import { topicIdFromParts } from '../../../../shared/utils/topic-key.utils';
 import {
+    buildTopicLastStudiedDateMap,
     buildTopicLastStudiedHintMap,
     type TopicLastStudiedHint
 } from '../../../../shared/utils/topic-last-studied.utils';
 import { buildStudyGuideSections, type StudyCategorySection, type StudySubtopicSection } from '../../../study/study-guide-grouping';
+
+export type PlanSortMode = 'default' | 'oldest-first' | 'newest-first';
+const PLAN_SORT_STORAGE_KEY = 'plan-sort-mode';
 
 @Component({
     selector: 'app-plan-page',
@@ -30,6 +35,7 @@ export class PlanPageComponent {
     private readonly activityService = inject(ActivityService);
     private readonly translate = inject(TranslateService);
     private readonly router = inject(Router);
+    private readonly storage = inject(StorageService);
     protected readonly todayPlan = inject(TodayPlanService);
 
     /** Recomputes last-studied hints when locale, navigation, or stored activity/progress may have changed. */
@@ -39,7 +45,45 @@ export class PlanPageComponent {
     protected readonly loading = signal(true);
     protected readonly loadError = signal(false);
 
+    protected readonly sortMode = signal<PlanSortMode>(
+        this.storage.get<PlanSortMode>(PLAN_SORT_STORAGE_KEY) ?? 'default'
+    );
+
     protected readonly sections = computed(() => buildStudyGuideSections(this.questions()));
+
+    private readonly topicLastStudiedDateById = computed(() => {
+        this.lastStudiedRefresh();
+        return buildTopicLastStudiedDateMap(
+            this.questions(),
+            this.activityService.activityMap(),
+            this.progressService.getProgress()
+        );
+    });
+
+    protected readonly sortedSections = computed(() => {
+        const secs = this.sections();
+        const mode = this.sortMode();
+        if (mode === 'default') return secs;
+        const dateMap = this.topicLastStudiedDateById();
+        return secs.map((cat) => {
+            const subtopics = [...cat.subtopics].sort((a, b) => {
+                const dA = dateMap.get(topicIdFromParts(cat.category, a.subtopic)) ?? null;
+                const dB = dateMap.get(topicIdFromParts(cat.category, b.subtopic)) ?? null;
+                if (mode === 'oldest-first') {
+                    if (!dA && !dB) return a.subtopic.localeCompare(b.subtopic);
+                    if (!dA) return -1;
+                    if (!dB) return 1;
+                    return dA.getTime() - dB.getTime();
+                } else {
+                    if (!dA && !dB) return a.subtopic.localeCompare(b.subtopic);
+                    if (!dA) return 1;
+                    if (!dB) return -1;
+                    return dB.getTime() - dA.getTime();
+                }
+            });
+            return { ...cat, subtopics };
+        });
+    });
 
     protected readonly selectedTopicIds = this.todayPlan.selectedTopicIds;
     protected readonly studiedTopicIds = this.todayPlan.studiedTopicIds;
@@ -233,8 +277,13 @@ export class PlanPageComponent {
         return id.startsWith('custom:');
     }
 
-    /** Query params for Study guide when opening today’s unread topics only. */
+    /** Query params for Study guide when opening today's unread topics only. */
     protected studyGuideQueryParams(): Record<string, string> | undefined {
         return this.topicsRemainingToStudyJs().length > 0 ? { today: '1' } : undefined;
+    }
+
+    protected setSortMode(mode: PlanSortMode): void {
+        this.sortMode.set(mode);
+        this.storage.set(PLAN_SORT_STORAGE_KEY, mode);
     }
 }

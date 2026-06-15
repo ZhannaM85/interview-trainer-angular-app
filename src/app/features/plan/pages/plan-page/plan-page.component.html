@@ -168,7 +168,31 @@
         <h2 class="plan__picker-heading">{{ 'plan.pickTopics' | translate }}</h2>
         <p class="plan__picker-hint">{{ 'plan.pickHint' | translate }}</p>
 
-        @for (cat of sections(); track cat.anchorId) {
+        <div class="plan__sort-row">
+            <span class="plan__sort-label">{{ 'plan.sortBy' | translate }}</span>
+            <div class="plan__sort-buttons" role="group" [attr.aria-label]="'plan.sortBy' | translate">
+                <button
+                    type="button"
+                    class="plan__sort-btn"
+                    [class.plan__sort-btn--active]="sortMode() === 'default'"
+                    (click)="setSortMode('default')"
+                >{{ 'plan.sortDefault' | translate }}</button>
+                <button
+                    type="button"
+                    class="plan__sort-btn"
+                    [class.plan__sort-btn--active]="sortMode() === 'oldest-first'"
+                    (click)="setSortMode('oldest-first')"
+                >{{ 'plan.sortOldestFirst' | translate }}</button>
+                <button
+                    type="button"
+                    class="plan__sort-btn"
+                    [class.plan__sort-btn--active]="sortMode() === 'newest-first'"
+                    (click)="setSortMode('newest-first')"
+                >{{ 'plan.sortNewestFirst' | translate }}</button>
+            </div>
+        </div>
+
+        @for (cat of sortedSections(); track cat.anchorId) {
             <section class="plan__cat" [attr.aria-labelledby]="cat.anchorId + '__heading'">
                 <div class="plan__cat-heading-row">
                     <h3 class="plan__cat-heading" [attr.id]="cat.anchorId + '__heading'">

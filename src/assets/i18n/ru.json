@@ -208,7 +208,11 @@
         "markAllStudiedYes": "Да, отметить",
         "carryoverPrompt": "Вчера вы не завершили {{count}} тем(у) — добавить их в план на сегодня?",
         "carryoverAccept": "Добавить в план",
-        "carryoverDismiss": "Пропустить"
+        "carryoverDismiss": "Пропустить",
+        "sortBy": "Сортировка:",
+        "sortDefault": "По умолчанию",
+        "sortOldestFirst": "Сначала старые",
+        "sortNewestFirst": "Сначала новые"
     },
     "heatmap": {
         "heading": "Активность",
