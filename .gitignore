@@ -55,3 +55,4 @@ __screenshots__/
 Thumbs.db
 .zm-index/
 *.zm-index.db
+logs/
