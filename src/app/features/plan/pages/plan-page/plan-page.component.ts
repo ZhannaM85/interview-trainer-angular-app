@@ -5,6 +5,7 @@ import { TranslatePipe, TranslateService } from '@ngx-translate/core';
 import { filter } from 'rxjs';
 
 import { ActivityService } from '../../../../core/services/activity.service';
+import { PlanSuggestionService } from '../../../../core/services/plan-suggestion.service';
 import { ProgressService } from '../../../../core/services/progress.service';
 import { StorageService } from '../../../../core/services/storage.service';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
@@ -33,6 +34,7 @@ export class PlanPageComponent {
     private readonly questionService = inject(QuestionService);
     private readonly progressService = inject(ProgressService);
     private readonly activityService = inject(ActivityService);
+    private readonly planSuggestionService = inject(PlanSuggestionService);
     private readonly translate = inject(TranslateService);
     private readonly router = inject(Router);
     private readonly storage = inject(StorageService);
@@ -285,5 +287,27 @@ export class PlanPageComponent {
     protected setSortMode(mode: PlanSortMode): void {
         this.sortMode.set(mode);
         this.storage.set(PLAN_SORT_STORAGE_KEY, mode);
+    }
+
+    /** null = not yet clicked; number = count of topics added by the last suggestion run. */
+    protected readonly lastSuggestionCount = signal<number | null>(null);
+
+    protected suggestTopics(): void {
+        const alreadyHandled = [
+            ...this.todayPlan.selectedTopicIds(),
+            ...this.todayPlan.studiedTopicIds()
+        ];
+        const suggestions = this.planSuggestionService.suggestTopics(
+            this.questions(),
+            this.progressService.getProgress(),
+            this.activityService.activityMap(),
+            alreadyHandled
+        );
+        for (const id of suggestions) {
+            if (!this.todayPlan.isSelected(id)) {
+                this.todayPlan.toggleTopicSelected(id);
+            }
+        }
+        this.lastSuggestionCount.set(suggestions.length);
     }
 }

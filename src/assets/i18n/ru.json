@@ -212,7 +212,10 @@
         "sortBy": "Сортировка:",
         "sortDefault": "По умолчанию",
         "sortOldestFirst": "Сначала старые",
-        "sortNewestFirst": "Сначала новые"
+        "sortNewestFirst": "Сначала новые",
+        "suggestButton": "Предложить темы",
+        "suggestApplied": "Добавлено тем: {{count}}",
+        "suggestNone": "Нет новых тем для предложения"
     },
     "heatmap": {
         "heading": "Активность",

@@ -212,7 +212,10 @@
         "sortBy": "Sort:",
         "sortDefault": "Default",
         "sortOldestFirst": "Oldest first",
-        "sortNewestFirst": "Newest first"
+        "sortNewestFirst": "Newest first",
+        "suggestButton": "Suggest topics",
+        "suggestApplied": "{{count}} topic(s) added",
+        "suggestNone": "No new topics to suggest"
     },
     "heatmap": {
         "heading": "Activity",

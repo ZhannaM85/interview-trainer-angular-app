@@ -168,6 +168,25 @@
         <h2 class="plan__picker-heading">{{ 'plan.pickTopics' | translate }}</h2>
         <p class="plan__picker-hint">{{ 'plan.pickHint' | translate }}</p>
 
+        <div class="plan__suggest-row">
+            <button
+                type="button"
+                class="plan__suggest-btn"
+                (click)="suggestTopics()"
+            >
+                {{ 'plan.suggestButton' | translate }}
+            </button>
+            @if (lastSuggestionCount() !== null) {
+                <span class="plan__suggest-result" role="status" aria-live="polite">
+                    @if (lastSuggestionCount()! > 0) {
+                        {{ 'plan.suggestApplied' | translate: { count: lastSuggestionCount() } }}
+                    } @else {
+                        {{ 'plan.suggestNone' | translate }}
+                    }
+                </span>
+            }
+        </div>
+
         <div class="plan__sort-row">
             <span class="plan__sort-label">{{ 'plan.sortBy' | translate }}</span>
             <div class="plan__sort-buttons" role="group" [attr.aria-label]="'plan.sortBy' | translate">

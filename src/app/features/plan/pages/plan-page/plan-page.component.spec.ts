@@ -6,6 +6,7 @@ import { Observable, of } from 'rxjs';
 
 import { PlanPageComponent, type PlanSortMode } from './plan-page.component';
 import { TodayPlanService } from '../../../../core/services/today-plan.service';
+import { PlanSuggestionService } from '../../../../core/services/plan-suggestion.service';
 import { formatLocalYmd } from '../../../../shared/utils/local-date.utils';
 
 class StubLoader implements TranslateLoader {
@@ -41,6 +42,8 @@ async function setup(storageEntries: Record<string, unknown> = {}) {
         cancelMarkAllStudied(): void;
         topicsRemainingToStudyJs: () => string[];
         setSortMode(mode: PlanSortMode): void;
+        lastSuggestionCount: ReturnType<typeof import('@angular/core').signal<number | null>>;
+        suggestTopics(): void;
     };
     fixture.detectChanges();
     return { fixture, component, plan: TestBed.inject(TodayPlanService) };
@@ -293,5 +296,58 @@ describe('PlanPageComponent — sort by date', () => {
         if (neverStudiedIdx >= 0 && closuresIdx >= 0) {
             expect(closuresIdx).toBeLessThan(neverStudiedIdx);
         }
+    });
+});
+
+describe('PlanPageComponent — suggest topics', () => {
+    afterEach(() => {
+        TestBed.resetTestingModule();
+        localStorage.clear();
+    });
+
+    it('lastSuggestionCount starts as null', async () => {
+        const { component } = await setup();
+        expect(component.lastSuggestionCount()).toBeNull();
+    });
+
+    it('suggestTopics sets lastSuggestionCount to a number', async () => {
+        const { component } = await setup();
+        component.suggestTopics();
+        expect(component.lastSuggestionCount()).not.toBeNull();
+    });
+
+    it('suggestTopics with no questions returns count 0', async () => {
+        const { component } = await setup();
+        // Questions load asynchronously; if empty, suggestion count is 0
+        component.suggestTopics();
+        const count = component.lastSuggestionCount();
+        expect(typeof count).toBe('number');
+        expect(count).toBeGreaterThanOrEqual(0);
+    });
+
+    it('suggestTopics delegates to PlanSuggestionService', async () => {
+        const { component } = await setup();
+        const suggestionService = TestBed.inject(PlanSuggestionService);
+        const spy = vi.spyOn(suggestionService, 'suggestTopics').mockReturnValue(['javascript:closures']);
+        component.suggestTopics();
+        expect(spy).toHaveBeenCalled();
+        expect(component.lastSuggestionCount()).toBe(1);
+    });
+
+    it('suggestTopics adds returned topic IDs to the plan', async () => {
+        const { component, plan } = await setup();
+        const suggestionService = TestBed.inject(PlanSuggestionService);
+        vi.spyOn(suggestionService, 'suggestTopics').mockReturnValue(['javascript:closures', 'angular:signals']);
+        component.suggestTopics();
+        expect(plan.isSelected('javascript:closures')).toBe(true);
+        expect(plan.isSelected('angular:signals')).toBe(true);
+    });
+
+    it('suggestTopics sets count to 0 when service returns empty array', async () => {
+        const { component } = await setup();
+        const suggestionService = TestBed.inject(PlanSuggestionService);
+        vi.spyOn(suggestionService, 'suggestTopics').mockReturnValue([]);
+        component.suggestTopics();
+        expect(component.lastSuggestionCount()).toBe(0);
     });
 });

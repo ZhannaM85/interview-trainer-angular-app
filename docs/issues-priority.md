@@ -66,7 +66,7 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | # | Issue | Notes |
 |---|-------|-------|
 | ~~[#47](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/47)~~ | ~~SM-2 spaced repetition~~ | ✅ Done |
-| [#48](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/48) | Smart daily plan suggestions | Noticeably better after #47 |
+| ~~[#48](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/48)~~ | ~~Smart daily plan suggestions~~ | ~~Noticeably better after #47~~ |
 | [#52](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/52) | Topic mastery indicator | Noticeably better after #47 |
 | [#56](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/56) | Storage usage & purge | Do after #43 (export before purging) |
 | [#57](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/57) | Focus management after dismissing banners | Best done last — depends on #44, #48, #53, #60 |
