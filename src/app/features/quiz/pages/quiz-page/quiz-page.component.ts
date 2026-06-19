@@ -569,21 +569,27 @@ export class QuizPageComponent {
                     this.usingFallbackQueue.set(useFallback);
                     let queue = fullBankMode ? candidate : useFallback ? candidate : due;
                     const limit = SESSION_MODE_LIMIT[this.sessionMode()];
-                    this.sessionTruncated.set(
-                        limit != null && queue.length < limit && queue.length > 0
-                    );
                     // When the due queue is smaller than the session limit, pad it with
                     // non-due questions so the user always gets a full session.
-                    // This prevents 1-question sessions when only a few items are due.
+                    // This prevents short sessions when only a few items are due.
                     if (!fullBankMode && !useFallback && limit != null && queue.length > 0 && queue.length < limit) {
                         const queueIdSet = new Set(queue.map((q) => q.id));
-                        const extras = candidate.filter((q) => !queueIdSet.has(q.id));
+                        const needed = limit - queue.length;
+                        let extras = candidate.filter((q) => !queueIdSet.has(q.id));
+                        // If the focused candidate set (e.g. studied topics) has no non-due items,
+                        // expand to the full base so short studied-topic sets still fill the session.
+                        if (extras.length < needed) {
+                            extras = base.filter((q) => !queueIdSet.has(q.id));
+                        }
                         for (let i = extras.length - 1; i > 0; i--) {
                             const j = Math.floor(Math.random() * (i + 1));
                             [extras[i], extras[j]] = [extras[j], extras[i]];
                         }
-                        queue = [...queue, ...extras.slice(0, limit - queue.length)];
+                        queue = [...queue, ...extras.slice(0, needed)];
                     }
+                    this.sessionTruncated.set(
+                        limit != null && queue.length < limit && queue.length > 0
+                    );
                     const finalQueue = this.questionService.initializeQueue(queue, limit);
                     this.sessionTotal.set(finalQueue.length);
                     this.sessionIndex.set(0);
