@@ -460,6 +460,13 @@
     color: var(--it-accent);
 }
 
+.plan__mastery-badge {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--it-warning);
+    line-height: 1;
+}
+
 @media (max-width: 640px) {
     .plan {
         max-width: 100%;

@@ -630,6 +630,14 @@
     overflow-wrap: anywhere;
 }
 
+.study__mastery-badge {
+    flex-shrink: 0;
+    align-self: center;
+    font-size: 1rem;
+    color: var(--it-warning);
+    line-height: 1;
+}
+
 .study__sub-topic-practice-badge {
     flex-shrink: 0;
     align-self: center;

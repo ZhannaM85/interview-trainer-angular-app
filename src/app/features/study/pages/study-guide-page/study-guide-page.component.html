@@ -209,6 +209,12 @@
                                         </span>
                                     </button>
                                     <div class="study__sub-aside">
+                                        @if (topicIsMastered(cat, sub)) {
+                                            <span
+                                                class="study__mastery-badge"
+                                                [attr.aria-label]="'mastery.badgeAria' | translate"
+                                            >★</span>
+                                        }
                                         @if (topicPracticeHint(cat, sub); as tHint) {
                                             <span
                                                 class="study__q-badge study__sub-topic-practice-badge"

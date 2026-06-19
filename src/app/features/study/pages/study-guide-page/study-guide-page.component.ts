@@ -255,6 +255,14 @@ export class StudyGuidePageComponent {
         return m;
     });
 
+    protected readonly masteredTopicIds = computed(() =>
+        this.progressService.getMasteredTopicIds(this.questions())
+    );
+
+    protected topicIsMastered(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
+        return this.masteredTopicIds().has(topicIdFromParts(cat.category, sub.subtopic));
+    }
+
     protected categoryQuestionCount(cat: StudyCategorySection): number {
         return cat.subtopics.reduce((sum, sub) => sum + sub.questions.length, 0);
     }

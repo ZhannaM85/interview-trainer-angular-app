@@ -337,6 +337,13 @@
     font-variant-numeric: tabular-nums;
 }
 
+.dashboard__mastery-badge {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    color: var(--it-warning);
+    line-height: 1;
+}
+
 .dashboard__hardest-list {
     margin: 0;
     padding: 0;

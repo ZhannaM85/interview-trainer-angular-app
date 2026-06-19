@@ -501,6 +501,9 @@
         "partial": "Частично",
         "nailed": "Отлично"
     },
+    "mastery": {
+        "badgeAria": "Тема освоена"
+    },
     "feedback": {
         "score": "Очки: +{{value}}",
         "weakArea": "Слабая зона",

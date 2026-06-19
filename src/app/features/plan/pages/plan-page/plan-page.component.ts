@@ -254,6 +254,14 @@ export class PlanPageComponent {
         this.confirmMarkAllStudied.set(null);
     }
 
+    protected readonly masteredTopicIds = computed(() =>
+        this.progressService.getMasteredTopicIds(this.questions())
+    );
+
+    protected isMastered(cat: StudyCategorySection, sub: StudySubtopicSection): boolean {
+        return this.masteredTopicIds().has(this.topicId(cat, sub));
+    }
+
     protected topicLastStudiedHint(cat: StudyCategorySection, sub: StudySubtopicSection): TopicLastStudiedHint {
         return this.topicLastStudiedById().get(this.topicId(cat, sub)) ?? { kind: 'none' };
     }
