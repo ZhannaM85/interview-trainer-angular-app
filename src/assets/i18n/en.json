@@ -501,6 +501,9 @@
         "partial": "Partial",
         "nailed": "Nailed it"
     },
+    "mastery": {
+        "badgeAria": "Topic mastered"
+    },
     "feedback": {
         "score": "Score: +{{value}}",
         "weakArea": "Weak area",

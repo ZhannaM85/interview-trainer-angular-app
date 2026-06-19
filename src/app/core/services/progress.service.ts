@@ -4,6 +4,7 @@ import { Observable, map } from 'rxjs';
 import type { LegacyProgress, Progress } from '../../shared/models/progress.model';
 import type { Question } from '../../shared/models/question.model';
 import type { SelfRating } from '../../shared/models/self-rating.model';
+import { topicIdFromParts } from '../../shared/utils/topic-key.utils';
 import { ActivityService } from './activity.service';
 import { QuestionService } from './question.service';
 import { StorageService } from './storage.service';
@@ -42,6 +43,32 @@ function pruneStaleProgress(list: Progress[]): Progress[] {
     const cutoff = new Date();
     cutoff.setDate(cutoff.getDate() - MAX_PROGRESS_AGE_DAYS);
     return list.filter((p) => !p.lastAnswered || new Date(p.lastAnswered) >= cutoff);
+}
+
+/**
+ * Minimum SM-2 consecutive-success repetition count for a question to be considered mastered.
+ * Resets to 0 on any `didntKnow` rating.
+ */
+export const MASTERY_MIN_REPETITIONS = 5;
+
+/** True when a question has accumulated enough consecutive SM-2 successes. */
+export function isQuestionMastered(p: Progress): boolean {
+    return p.repetitionCount >= MASTERY_MIN_REPETITIONS;
+}
+
+/**
+ * True when every question in the topic has been practiced and has reached mastery.
+ * Returns false for an empty question list.
+ */
+export function isTopicMastered(
+    questionIds: number[],
+    progressMap: ReadonlyMap<number, Progress>
+): boolean {
+    if (questionIds.length === 0) return false;
+    return questionIds.every((id) => {
+        const p = progressMap.get(id);
+        return p !== undefined && isQuestionMastered(p);
+    });
 }
 
 /** Points shown on the feedback screen after a self-rating. */
@@ -198,6 +225,28 @@ export class ProgressService {
             this.storage.set(PROGRESS_KEY, pruned);
         }
         return pruned;
+    }
+
+    /**
+     * Returns the set of `category:subtopic` IDs where every question has reached mastery.
+     * Reads `_progress()` reactively — safe to call from a `computed()`.
+     */
+    getMasteredTopicIds(questions: Question[]): Set<string> {
+        const progressMap = new Map(this._progress().map((p) => [p.questionId, p]));
+        const byTopic = new Map<string, number[]>();
+        for (const q of questions) {
+            const topicId = topicIdFromParts(q.category, q.subtopic);
+            const list = byTopic.get(topicId) ?? [];
+            list.push(q.id);
+            byTopic.set(topicId, list);
+        }
+        const mastered = new Set<string>();
+        for (const [topicId, ids] of byTopic) {
+            if (isTopicMastered(ids, progressMap)) {
+                mastered.add(topicId);
+            }
+        }
+        return mastered;
     }
 
     getDueQuestions(): Observable<Question[]> {

@@ -3,8 +3,10 @@ import { provideHttpClient } from '@angular/common/http';
 import { TranslateLoader, provideTranslateService, type TranslationObject } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
 
-import { ProgressService, sm2 } from './progress.service';
+import { MASTERY_MIN_REPETITIONS, ProgressService, isQuestionMastered, isTopicMastered, sm2 } from './progress.service';
 import { StorageService } from './storage.service';
+import type { Progress } from '../../shared/models/progress.model';
+import type { Question } from '../../shared/models/question.model';
 
 class StubLoader implements TranslateLoader {
     getTranslation(): Observable<TranslationObject> {
@@ -141,5 +143,98 @@ describe('ProgressService — migration of legacy records', () => {
         expect(p.easeFactor).toBe(2.5);
         expect(p.repetitionCount).toBe(0);
         expect(p.intervalDays).toBe(0);
+    });
+});
+
+function makeProgress(questionId: number, repetitionCount: number): Progress {
+    return {
+        questionId,
+        nailedCount: repetitionCount,
+        partialCount: 0,
+        didntKnowCount: 0,
+        lastAnswered: '2026-01-01T00:00:00.000Z',
+        nextReview: '2026-01-05T00:00:00.000Z',
+        easeFactor: 2.5,
+        repetitionCount,
+        intervalDays: 1
+    };
+}
+
+describe('isQuestionMastered', () => {
+    it('returns false when repetitionCount is below threshold', () => {
+        expect(isQuestionMastered(makeProgress(1, MASTERY_MIN_REPETITIONS - 1))).toBe(false);
+    });
+
+    it('returns true when repetitionCount equals the threshold', () => {
+        expect(isQuestionMastered(makeProgress(1, MASTERY_MIN_REPETITIONS))).toBe(true);
+    });
+
+    it('returns true when repetitionCount exceeds the threshold', () => {
+        expect(isQuestionMastered(makeProgress(1, MASTERY_MIN_REPETITIONS + 3))).toBe(true);
+    });
+});
+
+describe('isTopicMastered', () => {
+    it('returns false for an empty question list', () => {
+        expect(isTopicMastered([], new Map())).toBe(false);
+    });
+
+    it('returns false when a question has no progress entry', () => {
+        const map = new Map([[1, makeProgress(1, MASTERY_MIN_REPETITIONS)]]);
+        expect(isTopicMastered([1, 2], map)).toBe(false);
+    });
+
+    it('returns false when at least one question is not mastered', () => {
+        const map = new Map([
+            [1, makeProgress(1, MASTERY_MIN_REPETITIONS)],
+            [2, makeProgress(2, MASTERY_MIN_REPETITIONS - 1)]
+        ]);
+        expect(isTopicMastered([1, 2], map)).toBe(false);
+    });
+
+    it('returns true when all questions have reached the mastery threshold', () => {
+        const map = new Map([
+            [1, makeProgress(1, MASTERY_MIN_REPETITIONS)],
+            [2, makeProgress(2, MASTERY_MIN_REPETITIONS + 1)]
+        ]);
+        expect(isTopicMastered([1, 2], map)).toBe(true);
+    });
+});
+
+describe('ProgressService.getMasteredTopicIds', () => {
+    beforeEach(() => localStorage.clear());
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('returns an empty set when there is no progress', () => {
+        const { service } = setup();
+        const questions: Question[] = [
+            { id: 1, question: 'Q1', answer: 'A1', subtopic: 'closures', category: 'javascript', difficulty: 'beginner', weakAnswer: '', technicalAnswer: '', interviewAnswer: '', codeExample: '', readMoreLinks: [] }
+        ];
+        expect(service.getMasteredTopicIds(questions).size).toBe(0);
+    });
+
+    it('returns the topic ID when all its questions are mastered', () => {
+        const { service } = setup();
+        for (let i = 0; i < MASTERY_MIN_REPETITIONS; i++) {
+            service.recordSelfRating(1, 'nailed');
+        }
+        const questions: Question[] = [
+            { id: 1, question: 'Q1', answer: 'A1', subtopic: 'closures', category: 'javascript', difficulty: 'beginner', weakAnswer: '', technicalAnswer: '', interviewAnswer: '', codeExample: '', readMoreLinks: [] }
+        ];
+        expect(service.getMasteredTopicIds(questions).has('javascript:closures')).toBe(true);
+    });
+
+    it('does not mark a topic as mastered when one question is below the threshold', () => {
+        const { service } = setup();
+        for (let i = 0; i < MASTERY_MIN_REPETITIONS; i++) {
+            service.recordSelfRating(1, 'nailed');
+        }
+        // question 2 has fewer repetitions
+        service.recordSelfRating(2, 'nailed');
+        const questions: Question[] = [
+            { id: 1, question: 'Q1', answer: 'A1', subtopic: 'closures', category: 'javascript', difficulty: 'beginner', weakAnswer: '', technicalAnswer: '', interviewAnswer: '', codeExample: '', readMoreLinks: [] },
+            { id: 2, question: 'Q2', answer: 'A2', subtopic: 'closures', category: 'javascript', difficulty: 'beginner', weakAnswer: '', technicalAnswer: '', interviewAnswer: '', codeExample: '', readMoreLinks: [] }
+        ];
+        expect(service.getMasteredTopicIds(questions).has('javascript:closures')).toBe(false);
     });
 });

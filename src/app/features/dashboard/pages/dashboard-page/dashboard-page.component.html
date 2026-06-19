@@ -147,6 +147,12 @@
                                     <span class="dashboard__best-badge dashboard__best-badge--{{ entry.category }}">{{
                                         ('category.' + entry.category) | translate
                                     }}</span>
+                                    @if (entry.mastered) {
+                                        <span
+                                            class="dashboard__mastery-badge"
+                                            [attr.aria-label]="'mastery.badgeAria' | translate"
+                                        >★</span>
+                                    }
                                 </div>
                                 <span class="dashboard__best-pct">{{
                                     'dashboard.bestTopics.nailedPct' | translate: { pct: entry.nailedPct }

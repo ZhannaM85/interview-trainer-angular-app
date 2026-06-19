@@ -259,6 +259,12 @@
                                         {{ (labelKey(sub)) | translate }}
                                     }
                                 </span>
+                                @if (isMastered(cat, sub)) {
+                                    <span
+                                        class="plan__mastery-badge"
+                                        [attr.aria-label]="'mastery.badgeAria' | translate"
+                                    >★</span>
+                                }
                                 @if (topicStatusKey(cat, sub) !== 'plan.statusToStudy') {
                                     @if (topicLastStudiedHint(cat, sub); as hint) {
                                         <span

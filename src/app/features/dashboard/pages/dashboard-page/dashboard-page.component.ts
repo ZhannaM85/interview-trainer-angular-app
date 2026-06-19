@@ -56,6 +56,7 @@ export interface TopicStrengthEntry {
     partial: number;
     didntKnow: number;
     total: number;
+    mastered: boolean;
 }
 
 export interface DifficultyAccuracyEntry {
@@ -191,6 +192,7 @@ export class DashboardPageComponent {
         if (qs.length === 0) {
             return [];
         }
+        const masteredIds = this.progressService.getMasteredTopicIds(qs);
         const idToTopic = new Map<string, string>();
         for (const q of qs) {
             idToTopic.set(String(q.id), topicIdFromParts(q.category, q.subtopic));
@@ -225,7 +227,15 @@ export class DashboardPageComponent {
             const ci = id.indexOf(':');
             const category = ci >= 0 ? id.slice(0, ci) : id;
             const subtopic = ci >= 0 ? id.slice(ci + 1) : id;
-            entries.push({ id, category, subtopic, nailedPct: Math.round((agg.nailed / total) * 100), ...agg, total });
+            entries.push({
+                id,
+                category,
+                subtopic,
+                nailedPct: Math.round((agg.nailed / total) * 100),
+                ...agg,
+                total,
+                mastered: masteredIds.has(id)
+            });
         }
         entries.sort((a, b) => b.nailedPct - a.nailedPct || a.id.localeCompare(b.id));
         return entries.slice(0, 5);
