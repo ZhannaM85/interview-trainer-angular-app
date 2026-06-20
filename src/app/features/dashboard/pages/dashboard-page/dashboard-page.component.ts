@@ -7,6 +7,7 @@ import {
     inject,
     signal
 } from '@angular/core';
+import { StorageService } from '../../../../core/services/storage.service';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { RouterLink } from '@angular/router';
 import { TranslatePipe } from '@ngx-translate/core';
@@ -92,6 +93,18 @@ export class DashboardPageComponent {
     private readonly dataExportService = inject(DataExportService);
     private readonly achievementService = inject(AchievementService);
     protected readonly userPreferencesService = inject(UserPreferencesService);
+    protected readonly storageService = inject(StorageService);
+
+    protected readonly storageView = computed(() => {
+        const kb = this.storageService.usageKb();
+        const maxKb = 5120;
+        const pct = Math.min(100, Math.round((kb / maxKb) * 100));
+        return { kb, maxKb, pct, warning: this.storageService.nearQuota() };
+    });
+
+    protected readonly clearActivityDays = signal<30 | 90 | 180>(90);
+    protected readonly clearActivityPending = signal(false);
+    protected readonly resetStep = signal<0 | 1 | 2>(0);
 
     /** Inline help for Accuracy / Confidence (tap icon on mobile; hover title still works on desktop). */
     protected readonly openMetricHelp = signal<'accuracy' | 'confidence' | null>(null);
@@ -391,6 +404,43 @@ export class DashboardPageComponent {
     protected cancelImport(): void {
         this.importPending.set(null);
         this.importError.set(false);
+    }
+
+    protected onClearActivityDaysChange(event: Event): void {
+        const n = parseInt((event.target as HTMLSelectElement).value, 10);
+        if (n === 30 || n === 90 || n === 180) {
+            this.clearActivityDays.set(n);
+        }
+    }
+
+    protected requestClearActivity(): void {
+        this.clearActivityPending.set(true);
+    }
+
+    protected confirmClearActivity(): void {
+        this.activityService.clearOlderThan(this.clearActivityDays());
+        this.clearActivityPending.set(false);
+    }
+
+    protected cancelClearActivity(): void {
+        this.clearActivityPending.set(false);
+    }
+
+    protected startReset(): void {
+        this.resetStep.set(1);
+    }
+
+    protected confirmReset1(): void {
+        this.resetStep.set(2);
+    }
+
+    protected confirmReset2(): void {
+        this.storageService.clearAll();
+        location.reload();
+    }
+
+    protected cancelReset(): void {
+        this.resetStep.set(0);
     }
 
     private computeStats(questions: Question[], progress: Progress[]): DashboardStats {

@@ -470,6 +470,128 @@
                 }
             </article>
 
+            <article class="dashboard__card" data-testid="storage-card">
+                <h2 class="dashboard__card-title">{{ 'dashboard.storage.title' | translate }}</h2>
+                @let sv = storageView();
+                <p class="dashboard__storage-usage" [class.dashboard__storage-usage--warning]="sv.warning">
+                    {{ 'dashboard.storage.usage' | translate: { kb: sv.kb, maxKb: sv.maxKb, pct: sv.pct } }}
+                </p>
+                <div class="dashboard__storage-bar-track" aria-hidden="true">
+                    <div
+                        class="dashboard__storage-bar"
+                        [class.dashboard__storage-bar--warning]="sv.warning"
+                        [style.width.%]="sv.pct"
+                    ></div>
+                </div>
+                @if (sv.warning) {
+                    <p class="dashboard__storage-warning" role="alert">
+                        {{ 'dashboard.storage.warningMsg' | translate }}
+                    </p>
+                }
+
+                <div class="dashboard__storage-section">
+                    <h3 class="dashboard__storage-sub">{{ 'dashboard.storage.clearActivityTitle' | translate }}</h3>
+                    <p class="dashboard__hint">{{ 'dashboard.storage.clearActivityHint' | translate }}</p>
+                    @if (clearActivityPending()) {
+                        <p class="dashboard__storage-confirm-msg">
+                            {{ 'dashboard.storage.clearActivityConfirmMsg' | translate: { days: clearActivityDays() } }}
+                        </p>
+                        <div class="dashboard__backup-actions">
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn dashboard__backup-btn--primary"
+                                (click)="confirmClearActivity()"
+                            >
+                                {{ 'dashboard.storage.clearActivityConfirm' | translate }}
+                            </button>
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn"
+                                (click)="cancelClearActivity()"
+                            >
+                                {{ 'dashboard.dataBackup.importCancel' | translate }}
+                            </button>
+                        </div>
+                    } @else {
+                        <div class="dashboard__storage-clear-row">
+                            <label class="dashboard__daily-goal-label" for="dashboard-clear-activity-select">
+                                {{ 'dashboard.storage.clearActivityLabel' | translate }}
+                            </label>
+                            <select
+                                id="dashboard-clear-activity-select"
+                                class="dashboard__storage-select"
+                                (change)="onClearActivityDaysChange($event)"
+                            >
+                                <option value="30">{{ 'dashboard.storage.days30' | translate }}</option>
+                                <option value="90" selected>{{ 'dashboard.storage.days90' | translate }}</option>
+                                <option value="180">{{ 'dashboard.storage.days180' | translate }}</option>
+                            </select>
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn"
+                                (click)="requestClearActivity()"
+                            >
+                                {{ 'dashboard.storage.clearActivityBtn' | translate }}
+                            </button>
+                        </div>
+                    }
+                </div>
+
+                <div class="dashboard__storage-section">
+                    <h3 class="dashboard__storage-sub">{{ 'dashboard.storage.resetTitle' | translate }}</h3>
+                    <p class="dashboard__hint">{{ 'dashboard.storage.resetHint' | translate }}</p>
+                    @if (resetStep() === 0) {
+                        <button
+                            type="button"
+                            class="dashboard__backup-btn dashboard__backup-btn--danger"
+                            (click)="startReset()"
+                        >
+                            {{ 'dashboard.storage.resetBtn' | translate }}
+                        </button>
+                    } @else if (resetStep() === 1) {
+                        <p class="dashboard__storage-confirm-msg">
+                            {{ 'dashboard.storage.resetConfirm1Msg' | translate }}
+                        </p>
+                        <div class="dashboard__backup-actions">
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn dashboard__backup-btn--danger"
+                                (click)="confirmReset1()"
+                            >
+                                {{ 'dashboard.storage.resetConfirm1Btn' | translate }}
+                            </button>
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn"
+                                (click)="cancelReset()"
+                            >
+                                {{ 'dashboard.dataBackup.importCancel' | translate }}
+                            </button>
+                        </div>
+                    } @else {
+                        <p class="dashboard__storage-confirm-msg dashboard__storage-confirm-msg--danger">
+                            {{ 'dashboard.storage.resetConfirm2Msg' | translate }}
+                        </p>
+                        <div class="dashboard__backup-actions">
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn dashboard__backup-btn--danger"
+                                (click)="confirmReset2()"
+                            >
+                                {{ 'dashboard.storage.resetConfirm2Btn' | translate }}
+                            </button>
+                            <button
+                                type="button"
+                                class="dashboard__backup-btn"
+                                (click)="cancelReset()"
+                            >
+                                {{ 'dashboard.dataBackup.importCancel' | translate }}
+                            </button>
+                        </div>
+                    }
+                </div>
+            </article>
+
             <article class="dashboard__card dashboard__card--wide" data-testid="achievements-card">
                 <h2 class="dashboard__card-title">{{ 'dashboard.achievements.title' | translate }}</h2>
                 @if (achievementsView().length === 0) {

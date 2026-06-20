@@ -480,6 +480,27 @@
             "importConfirm": "Restore",
             "importCancel": "Cancel",
             "importError": "Invalid file — could not read or parse the backup JSON."
+        },
+        "storage": {
+            "title": "Storage",
+            "usage": "~{{kb}} KB used of ~{{maxKb}} KB ({{pct}}%)",
+            "warningMsg": "Storage is getting full. Consider clearing old activity or exporting a backup before data can no longer be saved.",
+            "clearActivityTitle": "Clear old activity",
+            "clearActivityHint": "Remove activity log entries older than the selected number of days. Practice progress is not affected.",
+            "clearActivityLabel": "Remove entries older than:",
+            "days30": "30 days",
+            "days90": "90 days",
+            "days180": "180 days",
+            "clearActivityBtn": "Clear old activity",
+            "clearActivityConfirmMsg": "This will permanently delete activity log entries older than {{days}} days. Continue?",
+            "clearActivityConfirm": "Delete old entries",
+            "resetTitle": "Reset all data",
+            "resetHint": "Wipe all practice progress, activity history, and settings to start fresh. This cannot be undone.",
+            "resetBtn": "Reset all data…",
+            "resetConfirm1Msg": "All progress, activity history, and settings will be permanently deleted.",
+            "resetConfirm1Btn": "Yes, I'm sure",
+            "resetConfirm2Msg": "Final confirmation: all data will be wiped and the page will reload.",
+            "resetConfirm2Btn": "Wipe everything"
         }
     },
     "answerBlocks": {
