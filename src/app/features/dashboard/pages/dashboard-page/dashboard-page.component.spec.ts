@@ -10,6 +10,7 @@ import { Observable, of } from 'rxjs';
 
 import { ActivityService } from '../../../../core/services/activity.service';
 import { ProgressService } from '../../../../core/services/progress.service';
+import { StorageService } from '../../../../core/services/storage.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import { UserPreferencesService } from '../../../../core/services/user-preferences.service';
 import type { Question } from '../../../../shared/models/question.model';
@@ -25,6 +26,17 @@ type ComponentInternals = {
     hardestQuestionsView: () => HardestQuestion[];
     difficultyBreakdownView: () => DifficultyAccuracyEntry[];
     dailyGoalView: () => { answered: number; goal: number; pct: number; reached: boolean };
+    storageView: () => { kb: number; maxKb: number; pct: number; warning: boolean };
+    clearActivityDays: () => 30 | 90 | 180;
+    clearActivityPending: () => boolean;
+    resetStep: () => 0 | 1 | 2;
+    requestClearActivity: () => void;
+    confirmClearActivity: () => void;
+    cancelClearActivity: () => void;
+    startReset: () => void;
+    confirmReset1: () => void;
+    cancelReset: () => void;
+    onClearActivityDaysChange: (event: Event) => void;
 };
 
 const testProviders = [
@@ -311,5 +323,115 @@ describe('DashboardPageComponent — dailyGoalView', () => {
         const prefsService = TestBed.inject(UserPreferencesService);
         prefsService.setDailyGoal(20);
         expect(component.dailyGoalView().goal).toBe(20);
+    });
+});
+
+describe('DashboardPageComponent — storageView', () => {
+    beforeEach(() => localStorage.clear());
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('returns 0 KB and 0 pct when no data is stored', () => {
+        const { component } = setup([]);
+        const sv = component.storageView();
+        expect(sv.kb).toBe(0);
+        expect(sv.pct).toBe(0);
+        expect(sv.warning).toBe(false);
+    });
+
+    it('pct updates reactively after data is written', () => {
+        const { component } = setup([]);
+        const storageService = TestBed.inject(StorageService);
+        const before = component.storageView().kb;
+        storageService.set('big', 'x'.repeat(2048));
+        expect(component.storageView().kb).toBeGreaterThan(before);
+    });
+
+    it('maxKb is always 5120', () => {
+        const { component } = setup([]);
+        expect(component.storageView().maxKb).toBe(5120);
+    });
+});
+
+describe('DashboardPageComponent — clear activity flow', () => {
+    beforeEach(() => localStorage.clear());
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('clearActivityPending starts false', () => {
+        const { component } = setup([]);
+        expect(component.clearActivityPending()).toBe(false);
+    });
+
+    it('requestClearActivity sets clearActivityPending to true', () => {
+        const { component } = setup([]);
+        component.requestClearActivity();
+        expect(component.clearActivityPending()).toBe(true);
+    });
+
+    it('cancelClearActivity resets clearActivityPending', () => {
+        const { component } = setup([]);
+        component.requestClearActivity();
+        component.cancelClearActivity();
+        expect(component.clearActivityPending()).toBe(false);
+    });
+
+    it('confirmClearActivity clears old activity and resets pending', () => {
+        const { component } = setup([]);
+        const activityService = TestBed.inject(ActivityService);
+        vi.spyOn(activityService, 'clearOlderThan');
+        component.requestClearActivity();
+        component.confirmClearActivity();
+        expect(activityService.clearOlderThan).toHaveBeenCalledWith(90);
+        expect(component.clearActivityPending()).toBe(false);
+    });
+
+    it('onClearActivityDaysChange updates clearActivityDays signal', () => {
+        const { component } = setup([]);
+        const event = { target: { value: '30' } } as unknown as Event;
+        component.onClearActivityDaysChange(event);
+        expect(component.clearActivityDays()).toBe(30);
+    });
+
+    it('renders the storage card in the DOM', () => {
+        const { fixture } = setup([]);
+        const card = fixture.nativeElement.querySelector('[data-testid="storage-card"]');
+        expect(card).toBeTruthy();
+    });
+});
+
+describe('DashboardPageComponent — reset flow', () => {
+    beforeEach(() => localStorage.clear());
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('resetStep starts at 0', () => {
+        const { component } = setup([]);
+        expect(component.resetStep()).toBe(0);
+    });
+
+    it('startReset advances to step 1', () => {
+        const { component } = setup([]);
+        component.startReset();
+        expect(component.resetStep()).toBe(1);
+    });
+
+    it('confirmReset1 advances to step 2', () => {
+        const { component } = setup([]);
+        component.startReset();
+        component.confirmReset1();
+        expect(component.resetStep()).toBe(2);
+    });
+
+    it('cancelReset from step 1 resets to 0', () => {
+        const { component } = setup([]);
+        component.startReset();
+        component.cancelReset();
+        expect(component.resetStep()).toBe(0);
+    });
+
+    it('cancelReset from step 2 resets to 0', () => {
+        const { component } = setup([]);
+        component.startReset();
+        component.confirmReset1();
+        component.cancelReset();
+        expect(component.resetStep()).toBe(0);
     });
 });

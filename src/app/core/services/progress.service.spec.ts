@@ -201,6 +201,29 @@ describe('isTopicMastered', () => {
     });
 });
 
+describe('ProgressService — resetAll', () => {
+    beforeEach(() => localStorage.clear());
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('clears all in-memory progress', () => {
+        const { service } = setup();
+        service.recordSelfRating(1, 'nailed');
+        expect(service.getProgress().length).toBeGreaterThan(0);
+        service.resetAll();
+        expect(service.getProgress()).toEqual([]);
+    });
+
+    it('persists the empty array to localStorage', () => {
+        const { service } = setup();
+        service.recordSelfRating(1, 'nailed');
+        service.resetAll();
+        const stored = JSON.parse(
+            localStorage.getItem('interview-trainer:progress') ?? 'null'
+        );
+        expect(stored).toEqual([]);
+    });
+});
+
 describe('ProgressService.getMasteredTopicIds', () => {
     beforeEach(() => localStorage.clear());
     afterEach(() => TestBed.resetTestingModule());

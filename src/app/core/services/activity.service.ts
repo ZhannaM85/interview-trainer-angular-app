@@ -183,6 +183,24 @@ export class ActivityService {
         this._totalActiveSeconds.update((t) => t + delta);
     }
 
+    /** Deletes activity log entries older than `days` calendar days. */
+    clearOlderThan(days: number): void {
+        if (days <= 0) {
+            return;
+        }
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - days);
+        const cutoffYmd = formatLocalYmd(cutoff);
+        const map = new Map(this.byDate());
+        for (const [date] of map) {
+            if (date < cutoffYmd) {
+                map.delete(date);
+            }
+        }
+        this.persist(map);
+        this.byDate.set(map);
+    }
+
     /** Records a `category:subtopic` touched on this calendar day (deduped). */
     addCoveredTopic(topicId: string): void {
         const trimmed = topicId.trim();

@@ -196,6 +196,12 @@ export class ProgressService {
         return this._progress();
     }
 
+    /** Wipes all stored progress records (used by the "Reset all data" flow). */
+    resetAll(): void {
+        this._progress.set([]);
+        this.storage.set(PROGRESS_KEY, []);
+    }
+
     /**
      * Reverts a previously recorded self-rating. Pass the progress snapshot captured
      * just before calling `recordSelfRating` — null means the question had no entry yet.

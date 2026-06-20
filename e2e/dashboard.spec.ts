@@ -108,6 +108,80 @@ test.describe('Dashboard trend chart', () => {
     });
 });
 
+test.describe('Dashboard storage card', () => {
+    test('shows storage card on dashboard', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const card = page.locator('[data-testid="storage-card"]');
+        await expect(card).toBeVisible({ timeout: 10_000 });
+    });
+
+    test('shows storage usage text', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        await expect(
+            page.locator('text=/Storage|Хранилище/i').first()
+        ).toBeVisible({ timeout: 10_000 });
+    });
+
+    test('clear old activity button is present', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const card = page.locator('[data-testid="storage-card"]');
+        await expect(card).toBeVisible({ timeout: 10_000 });
+        await expect(
+            card.locator('button', { hasText: /Clear old activity|Очистить/i }).first()
+        ).toBeVisible();
+    });
+
+    test('clicking clear old activity shows confirmation', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const card = page.locator('[data-testid="storage-card"]');
+        await expect(card).toBeVisible({ timeout: 10_000 });
+        const clearBtn = card.locator('button', { hasText: /Clear old activity|Очистить/i }).first();
+        await clearBtn.click();
+        await expect(card.locator('button', { hasText: /Delete old entries|Удалить старые записи/i })).toBeVisible();
+    });
+
+    test('reset all data button is present', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const card = page.locator('[data-testid="storage-card"]');
+        await expect(card).toBeVisible({ timeout: 10_000 });
+        await expect(
+            card.locator('button', { hasText: /Reset all data|Сбросить все данные/i })
+        ).toBeVisible();
+    });
+
+    test('clicking reset shows first confirmation step', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const card = page.locator('[data-testid="storage-card"]');
+        await expect(card).toBeVisible({ timeout: 10_000 });
+        await card.locator('button', { hasText: /Reset all data|Сбросить все данные/i }).click();
+        await expect(
+            card.locator('button', { hasText: /Yes, I.m sure|Да, я уверен/i })
+        ).toBeVisible();
+    });
+
+    test('second confirmation step appears after first confirm', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const card = page.locator('[data-testid="storage-card"]');
+        await expect(card).toBeVisible({ timeout: 10_000 });
+        await card.locator('button', { hasText: /Reset all data|Сбросить все данные/i }).click();
+        await card.locator('button', { hasText: /Yes, I.m sure|Да, я уверен/i }).click();
+        await expect(
+            card.locator('button', { hasText: /Wipe everything|Удалить всё/i })
+        ).toBeVisible();
+    });
+
+    test('cancel button dismisses the reset confirmation', async ({ page }) => {
+        await page.goto('/#/dashboard');
+        const card = page.locator('[data-testid="storage-card"]');
+        await expect(card).toBeVisible({ timeout: 10_000 });
+        await card.locator('button', { hasText: /Reset all data|Сбросить все данные/i }).click();
+        await card.locator('button', { hasText: /Cancel|Отмена/i }).first().click();
+        await expect(
+            card.locator('button', { hasText: /Reset all data|Сбросить все данные/i })
+        ).toBeVisible();
+    });
+});
+
 test.describe('Dashboard daily goal', () => {
     test('shows daily goal card with default goal of 10', async ({ page }) => {
         await page.goto('/#/dashboard');
