@@ -48,6 +48,13 @@ export const routes: Routes = [
             )
     },
     {
+        path: 'settings',
+        loadComponent: () =>
+            import('./features/settings/pages/settings-page/settings-page.component').then(
+                (m) => m.SettingsPageComponent
+            )
+    },
+    {
         path: 'sociology',
         children: [
             { path: '', pathMatch: 'full', redirectTo: 'study' },
