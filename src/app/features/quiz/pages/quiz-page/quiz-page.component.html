@@ -3,6 +3,7 @@
     [class.quiz--answer-footer]="phase() === 'answer'"
     [class.quiz--session-done]="sessionComplete()"
     aria-labelledby="quiz-title"
+    tabindex="-1"
 >
     <h1 id="quiz-title" class="quiz__title visually-hidden">{{ 'quiz.titleHidden' | translate }}</h1>
 

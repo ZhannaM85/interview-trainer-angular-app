@@ -151,7 +151,7 @@
             <button
                 type="button"
                 class="app__practice-reminder-close"
-                (click)="practiceReminderDismissed.set(true)"
+                (click)="dismissPracticeReminder()"
                 [attr.aria-label]="'practiceReminder.dismiss' | translate"
             >
                 <span aria-hidden="true">×</span>
@@ -176,7 +176,7 @@
             <button
                 type="button"
                 class="app__resume-banner-close"
-                (click)="resumeBannerDismissed.set(true)"
+                (click)="dismissResumeBanner()"
                 [attr.aria-label]="'resumeSessionBanner.dismiss' | translate"
             >
                 <span aria-hidden="true">×</span>
@@ -201,7 +201,7 @@
             <button
                 type="button"
                 class="app__retry-banner-close"
-                (click)="retryBannerDismissed.set(true)"
+                (click)="dismissRetryBanner()"
                 [attr.aria-label]="'app.retryBannerClose' | translate"
             >
                 <span aria-hidden="true">×</span>
@@ -221,7 +221,7 @@
             </button>
         </div>
     }
-    <main class="app__main">
+    <main class="app__main" tabindex="-1">
         <router-outlet />
     </main>
     <footer class="app__footer" aria-hidden="true"></footer>
