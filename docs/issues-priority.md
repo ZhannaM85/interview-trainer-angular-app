@@ -79,7 +79,7 @@ New feature: user pastes a job vacancy description → Claude API generates tail
 
 | # | Issue | Notes |
 |---|-------|-------|
-| [#90](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/90) | Add AI provider API key settings | **Start here** — prerequisite for all other vacancy issues |
+| ~~[#90](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/90)~~ | ~~Add AI provider API key settings~~ | ✅ Done |
 | [#91](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/91) | Add /vacancy page for job description input | UI skeleton; depends on #90 for key-present check |
 | [#92](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/92) | Implement AI question generation service | Core logic; calls Claude API; depends on #90 and #91 |
 | [#93](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/93) | Add review and import flow for AI-generated questions | Depends on #92 returning data and existing CustomQuestionService |

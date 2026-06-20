@@ -62,6 +62,11 @@ export class StorageService {
         this._tick.update((t) => t + 1);
     }
 
+    remove(key: string): void {
+        localStorage.removeItem(`${STORAGE_PREFIX}:${key}`);
+        this._tick.update((t) => t + 1);
+    }
+
     clearWriteError(): void {
         this.writeError.set(false);
     }
