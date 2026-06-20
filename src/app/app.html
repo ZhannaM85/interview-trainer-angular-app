@@ -97,9 +97,6 @@
                             <span class="app__nav-badge" aria-label="{{ customQuestionCount() }} custom questions">{{ customQuestionCount() }}</span>
                         }
                     </a>
-                    <a routerLink="/settings" routerLinkActive="app__link--active" (click)="closeNavMenu()">{{
-                        'nav.settings' | translate
-                    }}</a>
                 </div>
             }
             @if (showInterviewNavSection() && showSociologyNavSection()) {

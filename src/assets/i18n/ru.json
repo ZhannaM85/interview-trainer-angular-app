@@ -28,7 +28,6 @@
         "quiz": "Практика",
         "dashboard": "Прогресс",
         "myQuestions": "Мои вопросы",
-        "settings": "Настройки",
         "sectionJs": "Собеседование",
         "sectionSociology": "Социология",
         "sociologyQuiz": "Социология — практика",
@@ -564,21 +563,6 @@
         "import": "Импорт",
         "importSuccess": "Импортировано {{added}} вопрос(ов), пропущено {{skipped}}.",
         "importError": "Некорректный файл — не удалось прочитать или разобрать JSON."
-    },
-    "settings": {
-        "title": "Настройки",
-        "aiApiKeyHeading": "AI-провайдер (Anthropic / Claude)",
-        "aiApiKeyLabel": "API-ключ",
-        "aiApiKeyPlaceholder": "sk-ant-…",
-        "aiApiKeyHint": "Используется для функций на базе ИИ. Ключ хранится только в этом браузере — никуда не передаётся, кроме API Anthropic.",
-        "aiApiKeyReveal": "Показать ключ",
-        "aiApiKeyHide": "Скрыть ключ",
-        "aiApiKeySave": "Сохранить",
-        "aiApiKeyClear": "Очистить",
-        "aiApiKeySaved": "Ключ сохранён.",
-        "aiApiKeyCleared": "Ключ удалён.",
-        "aiApiKeyFormatError": "Неверный формат — ключи Anthropic начинаются с sk-ant-",
-        "aiApiKeySecurityWarning": "API-ключ хранится локально в браузере. Не используйте его на общих или публичных устройствах."
     },
     "category": {
         "javascript": "JavaScript",

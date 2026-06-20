@@ -28,7 +28,6 @@
         "quiz": "Practice",
         "dashboard": "Progress",
         "myQuestions": "My Questions",
-        "settings": "Settings",
         "sectionJs": "Interview prep",
         "sectionSociology": "Sociology",
         "sociologyQuiz": "Sociology — Practice",
@@ -564,21 +563,6 @@
         "import": "Import",
         "importSuccess": "Imported {{added}} question(s), {{skipped}} skipped.",
         "importError": "Invalid file — could not read or parse the JSON."
-    },
-    "settings": {
-        "title": "Settings",
-        "aiApiKeyHeading": "AI provider (Anthropic / Claude)",
-        "aiApiKeyLabel": "API key",
-        "aiApiKeyPlaceholder": "sk-ant-…",
-        "aiApiKeyHint": "Used for AI-powered features. Your key is stored only in this browser — never sent to any server other than Anthropic's API.",
-        "aiApiKeyReveal": "Show key",
-        "aiApiKeyHide": "Hide key",
-        "aiApiKeySave": "Save",
-        "aiApiKeyClear": "Clear",
-        "aiApiKeySaved": "Key saved.",
-        "aiApiKeyCleared": "Key cleared.",
-        "aiApiKeyFormatError": "Invalid format — Anthropic API keys start with sk-ant-",
-        "aiApiKeySecurityWarning": "Your API key is stored locally in this browser. Do not use this on shared or public devices."
     },
     "category": {
         "javascript": "JavaScript",
