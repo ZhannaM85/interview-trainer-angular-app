@@ -156,3 +156,78 @@ describe('App', () => {
         expect(app['showResumeBanner']()).toBe(false);
     });
 });
+
+describe('App — banner dismiss focus management', () => {
+    beforeEach(async () => {
+        localStorage.removeItem(SNAPSHOT_KEY);
+        await TestBed.configureTestingModule({
+            imports: [App],
+            providers: [
+                provideHttpClient(),
+                provideRouter(routes),
+                ...provideTranslateService({
+                    fallbackLang: 'en',
+                    loader: { provide: TranslateLoader, useClass: AppBrandStubLoader }
+                }),
+                provideAppInitializer(async () => {
+                    const translate = inject(TranslateService);
+                    await firstValueFrom(translate.use('en'));
+                })
+            ]
+        }).compileComponents();
+    });
+
+    afterEach(() => {
+        localStorage.removeItem(SNAPSHOT_KEY);
+    });
+
+    it('dismissRetryBanner sets retryBannerDismissed and focuses main content', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const app = fixture.componentInstance;
+        const main = fixture.nativeElement.querySelector('.app__main') as HTMLElement;
+        const focusSpy = vi.spyOn(main, 'focus');
+        app['dismissRetryBanner']();
+        expect(app['retryBannerDismissed']()).toBe(true);
+        expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
+    });
+
+    it('dismissPracticeReminder sets practiceReminderDismissed and focuses main content', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const app = fixture.componentInstance;
+        const main = fixture.nativeElement.querySelector('.app__main') as HTMLElement;
+        const focusSpy = vi.spyOn(main, 'focus');
+        app['dismissPracticeReminder']();
+        expect(app['practiceReminderDismissed']()).toBe(true);
+        expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
+    });
+
+    it('dismissResumeBanner sets resumeBannerDismissed and focuses main content', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const app = fixture.componentInstance;
+        const main = fixture.nativeElement.querySelector('.app__main') as HTMLElement;
+        const focusSpy = vi.spyOn(main, 'focus');
+        app['dismissResumeBanner']();
+        expect(app['resumeBannerDismissed']()).toBe(true);
+        expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
+    });
+
+    it('onResumeStartFresh clears storage, sets dismissed, and focuses main content', async () => {
+        localStorage.setItem(SNAPSHOT_KEY, JSON.stringify(makeSnapshot(3, 10)));
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const app = fixture.componentInstance;
+        const main = fixture.nativeElement.querySelector('.app__main') as HTMLElement;
+        const focusSpy = vi.spyOn(main, 'focus');
+        app['onResumeStartFresh']();
+        expect(localStorage.getItem(SNAPSHOT_KEY)).toBeNull();
+        expect(app['resumeBannerDismissed']()).toBe(true);
+        expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
+    });
+});

@@ -222,9 +222,30 @@ export class App {
         this.themeService.toggleTheme();
     }
 
+    protected dismissRetryBanner(): void {
+        this.retryBannerDismissed.set(true);
+        this.focusMainContent();
+    }
+
+    protected dismissPracticeReminder(): void {
+        this.practiceReminderDismissed.set(true);
+        this.focusMainContent();
+    }
+
+    protected dismissResumeBanner(): void {
+        this.resumeBannerDismissed.set(true);
+        this.focusMainContent();
+    }
+
     protected onResumeStartFresh(): void {
         localStorage.removeItem('interview-trainer:active-session');
         this.resumeBannerDismissed.set(true);
+        this.focusMainContent();
+    }
+
+    private focusMainContent(): void {
+        const el = this.document.querySelector<HTMLElement>('.app__main');
+        el?.focus({ preventScroll: true });
     }
 
     private readResumeSessionInfo(): { questionNumber: number; total: number } | null {

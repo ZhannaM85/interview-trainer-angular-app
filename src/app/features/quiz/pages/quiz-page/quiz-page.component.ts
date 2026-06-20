@@ -1,4 +1,4 @@
-import { ChangeDetectionStrategy, Component, HostListener, computed, inject, signal } from '@angular/core';
+import { ChangeDetectionStrategy, Component, ElementRef, HostListener, computed, inject, signal } from '@angular/core';
 import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, RouterLink } from '@angular/router';
 import { TranslatePipe, TranslateService } from '@ngx-translate/core';
@@ -77,6 +77,7 @@ export class QuizPageComponent {
     private readonly translate = inject(TranslateService);
     private readonly route = inject(ActivatedRoute);
     private readonly storage = inject(StorageService);
+    private readonly elementRef = inject(ElementRef);
 
     /** Epoch ms when the current session started (set in startSession / resumeSession). */
     private sessionStartMs = 0;
@@ -385,6 +386,7 @@ export class QuizPageComponent {
         this.acceptPlanTopicFallback.set(false);
         this.practiceScope.set('full');
         this.loadQuiz();
+        this.focusQuizContainer();
     }
 
     protected switchToTodaysStudiedTopics(): void {
@@ -404,6 +406,12 @@ export class QuizPageComponent {
         this.showPlanTopicsCoveredDialog.set(false);
         this.acceptPlanTopicFallback.set(true);
         this.loadQuiz();
+        this.focusQuizContainer();
+    }
+
+    private focusQuizContainer(): void {
+        const section = (this.elementRef.nativeElement as Element).querySelector<HTMLElement>('.quiz');
+        section?.focus({ preventScroll: true });
     }
 
     private checkForResumableSession(): void {

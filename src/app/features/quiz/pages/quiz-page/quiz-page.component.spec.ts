@@ -288,6 +288,48 @@ const makeQuestion = (id: number, subtopic = 'closures'): Question => ({
     difficulty: 'intermediate'
 });
 
+describe('QuizPageComponent — plan-topics-covered dialog focus', () => {
+    beforeEach(async () => {
+        localStorage.clear();
+        await TestBed.configureTestingModule({
+            imports: [QuizPageComponent],
+            providers: testProviders
+        }).compileComponents();
+    });
+
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('switchToFullQuestionBank hides dialog and focuses quiz section', () => {
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        fixture.detectChanges();
+        const component = fixture.componentInstance as unknown as {
+            showPlanTopicsCoveredDialog: { set: (v: boolean) => void; (): boolean };
+            switchToFullQuestionBank: () => void;
+        };
+        component.showPlanTopicsCoveredDialog.set(true);
+        const section = fixture.nativeElement.querySelector('.quiz') as HTMLElement;
+        const focusSpy = vi.spyOn(section, 'focus');
+        component.switchToFullQuestionBank();
+        expect(component.showPlanTopicsCoveredDialog()).toBe(false);
+        expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
+    });
+
+    it('confirmPracticePlanTopicsAnyway hides dialog and focuses quiz section', () => {
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        fixture.detectChanges();
+        const component = fixture.componentInstance as unknown as {
+            showPlanTopicsCoveredDialog: { set: (v: boolean) => void; (): boolean };
+            confirmPracticePlanTopicsAnyway: () => void;
+        };
+        component.showPlanTopicsCoveredDialog.set(true);
+        const section = fixture.nativeElement.querySelector('.quiz') as HTMLElement;
+        const focusSpy = vi.spyOn(section, 'focus');
+        component.confirmPracticePlanTopicsAnyway();
+        expect(component.showPlanTopicsCoveredDialog()).toBe(false);
+        expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
+    });
+});
+
 describe('QuizPageComponent — session queue padding', () => {
     beforeEach(async () => {
         localStorage.clear();
