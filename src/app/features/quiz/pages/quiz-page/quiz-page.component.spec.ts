@@ -6,8 +6,10 @@ import { Observable, of } from 'rxjs';
 
 import { QuizPageComponent, type SessionMode } from './quiz-page.component';
 import { AchievementService } from '../../../../core/services/achievement.service';
+import { ProgressService } from '../../../../core/services/progress.service';
 import { QuestionService } from '../../../../core/services/question.service';
 import type { ActiveSessionSnapshot } from '../../../../shared/models/active-session.model';
+import type { Question } from '../../../../shared/models/question.model';
 
 class StubLoader implements TranslateLoader {
     getTranslation(): Observable<TranslationObject> {
@@ -269,5 +271,95 @@ describe('QuizPageComponent — interview-ready session message', () => {
         // by calling startSession which resets it via loadQuiz
         component.startSession('quick');
         expect(component.interviewReadySession()).toBe(false);
+    });
+});
+
+const makeQuestion = (id: number, subtopic = 'closures'): Question => ({
+    id,
+    question: `Q${id}`,
+    answer: `A${id}`,
+    weakAnswer: '',
+    technicalAnswer: '',
+    interviewAnswer: '',
+    codeExample: '',
+    readMoreLinks: [],
+    subtopic,
+    category: 'javascript',
+    difficulty: 'intermediate'
+});
+
+describe('QuizPageComponent — session queue padding', () => {
+    beforeEach(async () => {
+        localStorage.clear();
+        await TestBed.configureTestingModule({
+            imports: [QuizPageComponent],
+            providers: testProviders
+        }).compileComponents();
+    });
+
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('pads queue to session limit when fewer items are due than the limit', async () => {
+        const allQuestions = Array.from({ length: 20 }, (_, i) => makeQuestion(i + 1));
+        const dueOnly = allQuestions.slice(0, 3);
+
+        const questionService = TestBed.inject(QuestionService);
+        const progressService = TestBed.inject(ProgressService);
+        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(dueOnly);
+        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
+
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            startSession: (mode: SessionMode) => void;
+            sessionTotal: () => number;
+        };
+        component.startSession('quick');
+        await fixture.whenStable();
+
+        const [paddedQueue] = initSpy.mock.calls[0];
+        expect(paddedQueue.length).toBe(5);
+    });
+
+    it('pads queue to limit in fallback mode (no due items, small candidate set in studiedTopics scope)', async () => {
+        // 3 questions in the ever-studied topic, 17 in other topics (total pool = 20)
+        const studiedQs = Array.from({ length: 3 }, (_, i) => makeQuestion(i + 1, 'closures'));
+        const otherQs = Array.from({ length: 17 }, (_, i) => makeQuestion(i + 4, 'prototypes'));
+        const allQuestions = [...studiedQs, ...otherQs];
+
+        // Seed activity BEFORE creating the component so ActivityService reads it on init
+        localStorage.setItem(
+            'interview-trainer:activity-by-day',
+            JSON.stringify([{
+                date: new Date().toISOString().slice(0, 10),
+                questionsAnswered: 3,
+                topicsStudied: 1,
+                activeSeconds: 0,
+                coveredTopicIds: ['javascript:closures'],
+                practiceRatingBest: {}
+            }])
+        );
+
+        // Inject and spy BEFORE createComponent to prevent the real HTTP fetch from firing
+        const questionService = TestBed.inject(QuestionService);
+        const progressService = TestBed.inject(ProgressService);
+        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue([]);
+        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(studiedQs);
+
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            startSession: (mode: SessionMode) => void;
+            practiceScope: { set: (v: string) => void };
+        };
+        // studiedTopics scope: candidate = only the 3 ever-studied questions
+        component.practiceScope.set('studiedTopics');
+
+        component.startSession('quick'); // limit = 5
+        await fixture.whenStable();
+
+        // initializeQueue must be called with a queue padded from 3 → 5
+        const [paddedQueue] = initSpy.mock.calls[0];
+        expect(paddedQueue.length).toBeGreaterThanOrEqual(5);
     });
 });

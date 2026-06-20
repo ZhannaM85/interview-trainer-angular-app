@@ -569,10 +569,10 @@ export class QuizPageComponent {
                     this.usingFallbackQueue.set(useFallback);
                     let queue = fullBankMode ? candidate : useFallback ? candidate : due;
                     const limit = SESSION_MODE_LIMIT[this.sessionMode()];
-                    // When the due queue is smaller than the session limit, pad it with
-                    // non-due questions so the user always gets a full session.
-                    // This prevents short sessions when only a few items are due.
-                    if (!fullBankMode && !useFallback && limit != null && queue.length > 0 && queue.length < limit) {
+                    // When the queue is smaller than the session limit, pad it with
+                    // other questions so the user always gets a full session.
+                    // Applies both when some items are due and when in fallback mode (no due items).
+                    if (!fullBankMode && limit != null && queue.length > 0 && queue.length < limit) {
                         const queueIdSet = new Set(queue.map((q) => q.id));
                         const needed = limit - queue.length;
                         let extras = candidate.filter((q) => !queueIdSet.has(q.id));
