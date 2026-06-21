@@ -1,8 +1,8 @@
 import { provideHttpClient } from '@angular/common/http';
 import { TestBed } from '@angular/core/testing';
-import { provideRouter } from '@angular/router';
+import { ActivatedRoute, convertToParamMap, provideRouter } from '@angular/router';
 import { TranslateLoader, provideTranslateService, type TranslationObject } from '@ngx-translate/core';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 
 import { QuizPageComponent, type SessionMode } from './quiz-page.component';
 import { AchievementService } from '../../../../core/services/achievement.service';
@@ -341,7 +341,7 @@ describe('QuizPageComponent — session queue padding', () => {
 
     afterEach(() => TestBed.resetTestingModule());
 
-    it('pads queue to session limit when fewer items are due than the limit', async () => {
+    it('uses full question bank when no topics are studied today (planFocused scope)', async () => {
         const allQuestions = Array.from({ length: 20 }, (_, i) => makeQuestion(i + 1));
         const dueOnly = allQuestions.slice(0, 3);
 
@@ -359,8 +359,30 @@ describe('QuizPageComponent — session queue padding', () => {
         component.startSession('quick');
         await fixture.whenStable();
 
-        const [paddedQueue] = initSpy.mock.calls[0];
-        expect(paddedQueue.length).toBe(5);
+        const [queueArg, limitArg] = initSpy.mock.calls[0];
+        expect(queueArg.length).toBe(20);
+        expect(limitArg).toBe(5);
+    });
+
+    it('startSession resets practiceScope to planFocused', async () => {
+        const allQuestions = Array.from({ length: 20 }, (_, i) => makeQuestion(i + 1));
+
+        const questionService = TestBed.inject(QuestionService);
+        const progressService = TestBed.inject(ProgressService);
+        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions.slice(0, 5));
+        vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
+
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            startSession: (mode: SessionMode) => void;
+            practiceScope: { set: (v: string) => void; (): string };
+        };
+        component.practiceScope.set('studiedTopics');
+        component.startSession('quick');
+        await fixture.whenStable();
+
+        expect(component.practiceScope()).toBe('planFocused');
     });
 
     it('pads queue to limit in fallback mode (no due items, small candidate set in studiedTopics scope)', async () => {
@@ -403,5 +425,53 @@ describe('QuizPageComponent — session queue padding', () => {
         // initializeQueue must be called with a queue padded from 3 → 5
         const [paddedQueue] = initSpy.mock.calls[0];
         expect(paddedQueue.length).toBeGreaterThanOrEqual(5);
+    });
+});
+
+describe('QuizPageComponent — ?topics= param padding', () => {
+    const topicParamMap = convertToParamMap({ topics: 'javascript:closures' });
+    const topicProviders = [
+        provideHttpClient(),
+        provideRouter([]),
+        ...provideTranslateService({ loader: { provide: TranslateLoader, useClass: StubLoader } }),
+        {
+            provide: ActivatedRoute,
+            useValue: {
+                queryParamMap: new BehaviorSubject(topicParamMap),
+                snapshot: { queryParamMap: topicParamMap }
+            }
+        }
+    ];
+
+    beforeEach(async () => {
+        localStorage.clear();
+        await TestBed.configureTestingModule({
+            imports: [QuizPageComponent],
+            providers: topicProviders
+        }).compileComponents();
+    });
+
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('pads queue from full question bank when ?topics= restricts base below session limit', async () => {
+        const closuresQs = Array.from({ length: 3 }, (_, i) => makeQuestion(i + 1, 'closures'));
+        const otherQs = Array.from({ length: 17 }, (_, i) => makeQuestion(i + 4, 'prototypes'));
+        const allQuestions = [...closuresQs, ...otherQs];
+
+        const questionService = TestBed.inject(QuestionService);
+        const progressService = TestBed.inject(ProgressService);
+        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(closuresQs);
+        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
+
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            startSession: (mode: SessionMode) => void;
+        };
+        component.startSession('quick');
+        await fixture.whenStable();
+
+        const [paddedQueue] = initSpy.mock.calls[0];
+        expect(paddedQueue.length).toBe(5);
     });
 });

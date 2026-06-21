@@ -314,6 +314,7 @@ export class QuizPageComponent {
         this.resumeInfo.set(null);
         this.sessionMode.set(mode);
         this.storage.set('quiz-session-mode', mode);
+        this.practiceScope.set('planFocused');
         this.showSessionModePicker.set(false);
         this.sessionStartMs = Date.now();
         this.loadQuiz();
@@ -551,7 +552,8 @@ export class QuizPageComponent {
                             ? base.filter((q) => everStudied.has(topicIdFromQuestion(q)))
                             : base;
                     const due = this.progressService.getDueQuestionsSync(candidate);
-                    const fullBankMode = scope === 'full';
+                    const fullBankMode = scope === 'full' ||
+                        (scope === 'planFocused' && studied.length === 0 && !topicsFocusSet);
                     /** Due-only queue when focusing on today's or ever-studied topics; full bank includes every question. */
                     const useFallback = !fullBankMode && due.length === 0;
                     const skipDialog = this.acceptPlanTopicFallback();
@@ -577,17 +579,12 @@ export class QuizPageComponent {
                     this.usingFallbackQueue.set(useFallback);
                     let queue = fullBankMode ? candidate : useFallback ? candidate : due;
                     const limit = SESSION_MODE_LIMIT[this.sessionMode()];
-                    // When the queue is smaller than the session limit, pad it with
-                    // other questions so the user always gets a full session.
-                    // Applies both when some items are due and when in fallback mode (no due items).
-                    if (!fullBankMode && limit != null && queue.length > 0 && queue.length < limit) {
+                    if (limit != null && queue.length > 0 && queue.length < limit) {
                         const queueIdSet = new Set(queue.map((q) => q.id));
                         const needed = limit - queue.length;
                         let extras = candidate.filter((q) => !queueIdSet.has(q.id));
-                        // If the focused candidate set (e.g. studied topics) has no non-due items,
-                        // expand to the full base so short studied-topic sets still fill the session.
                         if (extras.length < needed) {
-                            extras = base.filter((q) => !queueIdSet.has(q.id));
+                            extras = all.filter((q) => !queueIdSet.has(q.id));
                         }
                         for (let i = extras.length - 1; i > 0; i--) {
                             const j = Math.floor(Math.random() * (i + 1));
