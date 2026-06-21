@@ -341,7 +341,7 @@ describe('QuizPageComponent — session queue padding', () => {
 
     afterEach(() => TestBed.resetTestingModule());
 
-    it('pads queue to session limit when fewer items are due than the limit', async () => {
+    it('uses full question bank when no topics are studied today (planFocused scope)', async () => {
         const allQuestions = Array.from({ length: 20 }, (_, i) => makeQuestion(i + 1));
         const dueOnly = allQuestions.slice(0, 3);
 
@@ -359,8 +359,9 @@ describe('QuizPageComponent — session queue padding', () => {
         component.startSession('quick');
         await fixture.whenStable();
 
-        const [paddedQueue] = initSpy.mock.calls[0];
-        expect(paddedQueue.length).toBe(5);
+        const [queueArg, limitArg] = initSpy.mock.calls[0];
+        expect(queueArg.length).toBe(20);
+        expect(limitArg).toBe(5);
     });
 
     it('startSession resets practiceScope to planFocused', async () => {
