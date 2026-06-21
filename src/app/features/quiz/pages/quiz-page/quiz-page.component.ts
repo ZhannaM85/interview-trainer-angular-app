@@ -314,6 +314,7 @@ export class QuizPageComponent {
         this.resumeInfo.set(null);
         this.sessionMode.set(mode);
         this.storage.set('quiz-session-mode', mode);
+        this.practiceScope.set('planFocused');
         this.showSessionModePicker.set(false);
         this.sessionStartMs = Date.now();
         this.loadQuiz();
@@ -584,10 +585,11 @@ export class QuizPageComponent {
                         const queueIdSet = new Set(queue.map((q) => q.id));
                         const needed = limit - queue.length;
                         let extras = candidate.filter((q) => !queueIdSet.has(q.id));
-                        // If the focused candidate set (e.g. studied topics) has no non-due items,
-                        // expand to the full base so short studied-topic sets still fill the session.
                         if (extras.length < needed) {
                             extras = base.filter((q) => !queueIdSet.has(q.id));
+                        }
+                        if (extras.length < needed) {
+                            extras = all.filter((q) => !queueIdSet.has(q.id));
                         }
                         for (let i = extras.length - 1; i > 0; i--) {
                             const j = Math.floor(Math.random() * (i + 1));
