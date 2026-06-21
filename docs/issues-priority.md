@@ -1,6 +1,6 @@
 # Issue Priority Roadmap
 
-Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment.
+Updated 2026-06-21. Based on labels, dependencies, and effort/value assessment.
 
 ---
 
@@ -24,6 +24,8 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | ~~[#40](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/40)~~ | ~~Difficulty filter in study guide~~ | ✅ Done — [PR #73](https://github.com/ZhannaM85/interview-trainer-angular-app/pull/73) |
 | ~~[#39](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/39)~~ | ~~Full-text search in study guide~~ | ✅ Done |
 | ~~[#98](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/98)~~ | ~~Make 'Hardest Questions' items on dashboard navigate to study guide~~ | ✅ Done |
+| [#67](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/67) | Study guide: filter to show only non-studied items | `quick-win` `ux` |
+| [#68](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/68) | Practice: add scope option to practice only never-practiced questions | `quick-win` `ux` |
 
 ---
 
@@ -70,4 +72,23 @@ Generated 2026-05-06. Based on labels, dependencies, and effort/value assessment
 | ~~[#52](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/52)~~ | ~~Topic mastery indicator~~ | ✅ Done |
 | ~~[#56](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/56)~~ | ~~Storage usage & purge~~ | ~~Do after #43 (export before purging)~~ |
 | ~~[#57](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/57)~~ | ~~Focus management after dismissing banners~~ | ~~Best done last — depends on #44, #48, #53, #60~~ |
+
+---
+
+## Tier 6 — Testing & Quality
+
+| # | Issue | Notes |
+|---|-------|-------|
+| [#69](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/69) | Add comprehensive unit test suite with Jest | Increase coverage across all services/components |
+| [#70](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/70) | Expand e2e test coverage across all user-facing flows (Playwright) | Cover all major user journeys |
+
+---
+
+## Tier 7 — PWA & Infrastructure
+
+| # | Issue | Notes |
+|---|-------|-------|
+| [#71](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/71) | Add Progressive Web App (PWA) support | Offline access, installable app |
+| [#74](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/74) | Infrastructure: Move from GitHub Pages to dedicated hosting | Prerequisite for backend (#75) |
+| [#75](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/75) | Architecture: Introduce backend service for persistent user data | `backend` `api` `database` — depends on #74 |
 
