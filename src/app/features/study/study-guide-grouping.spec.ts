@@ -1,4 +1,4 @@
-import { buildStudyGuideSections, filterStudyGuideSectionsByDifficulty, filterStudyGuideSectionsBySearch } from './study-guide-grouping';
+import { buildStudyGuideSections, filterStudyGuideSectionsByDifficulty, filterStudyGuideSectionsBySearch, filterStudyGuideSectionsExcludingTopicIds } from './study-guide-grouping';
 import type { Question } from '../../shared/models/question.model';
 
 function makeQuestion(
@@ -123,5 +123,58 @@ describe('filterStudyGuideSectionsByDifficulty', () => {
         const subs = result[0].subtopics;
         expect(subs).toHaveLength(2);
         expect(subs.every((s) => s.questions.every((q) => q.difficulty === 'advanced'))).toBe(true);
+    });
+});
+
+describe('filterStudyGuideSectionsExcludingTopicIds', () => {
+    const questions: Question[] = [
+        makeQuestion(1, 'javascript', 'closures', 'beginner'),
+        makeQuestion(2, 'javascript', 'promises', 'intermediate'),
+        makeQuestion(3, 'angular', 'signals', 'beginner'),
+        makeQuestion(4, 'angular', 'pipes', 'advanced')
+    ];
+
+    const sections = buildStudyGuideSections(questions);
+
+    it('returns all sections when excludeSet is empty', () => {
+        const result = filterStudyGuideSectionsExcludingTopicIds(sections, new Set());
+        expect(result).toHaveLength(2);
+        expect(result[0].subtopics).toHaveLength(2);
+        expect(result[1].subtopics).toHaveLength(2);
+    });
+
+    it('excludes subtopics matching the given topic IDs', () => {
+        const result = filterStudyGuideSectionsExcludingTopicIds(sections, new Set(['javascript:closures']));
+        expect(result).toHaveLength(2);
+        const jsSubs = result.find((c) => c.category === 'javascript')!.subtopics;
+        expect(jsSubs).toHaveLength(1);
+        expect(jsSubs[0].subtopic).toBe('promises');
+    });
+
+    it('drops entire category when all its subtopics are excluded', () => {
+        const result = filterStudyGuideSectionsExcludingTopicIds(
+            sections,
+            new Set(['angular:signals', 'angular:pipes'])
+        );
+        expect(result).toHaveLength(1);
+        expect(result[0].category).toBe('javascript');
+    });
+
+    it('returns empty array when all topics are excluded', () => {
+        const result = filterStudyGuideSectionsExcludingTopicIds(
+            sections,
+            new Set(['javascript:closures', 'javascript:promises', 'angular:signals', 'angular:pipes'])
+        );
+        expect(result).toHaveLength(0);
+    });
+
+    it('ignores topic IDs not present in sections', () => {
+        const result = filterStudyGuideSectionsExcludingTopicIds(
+            sections,
+            new Set(['rxjs:observables'])
+        );
+        expect(result).toHaveLength(2);
+        expect(result[0].subtopics).toHaveLength(2);
+        expect(result[1].subtopics).toHaveLength(2);
     });
 });

@@ -129,6 +129,54 @@ test.describe('Study guide full-text search', () => {
     });
 });
 
+test.describe('Study guide "Not yet studied" filter', () => {
+    test('shows the "Not yet studied" chip in the filter row', async ({ page }) => {
+        await page.goto('/study');
+        const filterRow = page.locator('.study__filter-row').first();
+        await expect(filterRow).toBeVisible({ timeout: 10_000 });
+
+        const chips = filterRow.locator('button');
+        await expect(chips).toHaveCount(4);
+        const neverStudiedChip = chips.nth(3);
+        await expect(neverStudiedChip).toHaveAttribute('aria-pressed', 'false');
+    });
+
+    test('clicking "Not yet studied" activates the filter and updates the URL', async ({ page }) => {
+        await page.goto('/study');
+        const filterRow = page.locator('.study__filter-row').first();
+        await expect(filterRow).toBeVisible({ timeout: 10_000 });
+
+        const neverStudiedChip = filterRow.locator('button').nth(3);
+        await neverStudiedChip.click();
+
+        await expect(neverStudiedChip).toHaveAttribute('aria-pressed', 'true');
+        await expect(page).toHaveURL(/filter=never-studied/);
+    });
+
+    test('navigating directly to ?filter=never-studied activates the filter', async ({ page }) => {
+        await page.goto('/study?filter=never-studied');
+        const filterRow = page.locator('.study__filter-row').first();
+        await expect(filterRow).toBeVisible({ timeout: 10_000 });
+
+        const neverStudiedChip = filterRow.locator('button').nth(3);
+        await expect(neverStudiedChip).toHaveAttribute('aria-pressed', 'true');
+    });
+
+    test('shows the filter banner when "Not yet studied" is active', async ({ page }) => {
+        await page.goto('/study?filter=never-studied');
+        await expect(page.locator('.study__filter-row').first()).toBeVisible({ timeout: 10_000 });
+
+        await expect(page.locator('.study__filter-banner')).toBeVisible();
+    });
+
+    test('shows all topics when no topics have been studied (fresh state)', async ({ page }) => {
+        await page.goto('/study?filter=never-studied');
+        await expect(page.locator('.study__filter-row').first()).toBeVisible({ timeout: 10_000 });
+
+        await expect(page.locator('.study__cat')).not.toHaveCount(0);
+    });
+});
+
 test.describe('Study guide collapsible code examples', () => {
     async function openFirstSubtopic(page: Parameters<typeof test>[1]['page']): Promise<Locator> {
         await page.goto('/study');
