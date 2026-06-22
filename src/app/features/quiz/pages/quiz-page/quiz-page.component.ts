@@ -132,7 +132,7 @@ export class QuizPageComponent {
      * `full` — entire catalog (same due / fallback rules as before).
      * `studiedTopics` — questions from all topics ever marked as studied (across all time).
      */
-    protected readonly practiceScope = signal<'planFocused' | 'full' | 'studiedTopics'>('planFocused');
+    protected readonly practiceScope = signal<'planFocused' | 'full' | 'studiedTopics' | 'freshOnly'>('planFocused');
 
     /**
      * When today's studied topics have no due items, we used to jump straight to “all questions in those topics”.
@@ -152,7 +152,7 @@ export class QuizPageComponent {
     protected readonly showBackToTodaysTopicsOption = computed(
         () =>
             this.todayPlan.studiedTopicIds().length > 0 &&
-            (this.practiceScope() === 'full' || this.practiceScope() === 'studiedTopics')
+            (this.practiceScope() === 'full' || this.practiceScope() === 'studiedTopics' || this.practiceScope() === 'freshOnly')
     );
 
     /** Scope is restricted to ever-studied topics and there is at least one. */
@@ -166,8 +166,22 @@ export class QuizPageComponent {
     protected readonly showSwitchToStudiedOption = computed(
         () =>
             this.practiceScope() !== 'studiedTopics' &&
+            this.practiceScope() !== 'freshOnly' &&
             this.activityService.everStudiedTopicIds().size > 0
     );
+
+    /** True when the session is restricted to fresh (never-practiced) questions. */
+    protected readonly freshOnlyFilterActive = computed(
+        () => this.practiceScope() === 'freshOnly'
+    );
+
+    /** Show “Fresh questions only” button when not already in that scope. */
+    protected readonly showSwitchToFreshOption = computed(
+        () => this.practiceScope() !== 'freshOnly'
+    );
+
+    /** True when no fresh questions exist and session couldn't start. */
+    protected readonly noFreshQuestions = signal(false);
 
     /** Persisted across language switches while feedback phase is showing. */
     private readonly feedbackCtx = signal<{
@@ -402,6 +416,13 @@ export class QuizPageComponent {
         this.loadQuiz();
     }
 
+    protected switchToFreshQuestions(): void {
+        this.acceptPlanTopicFallback.set(false);
+        this.practiceScope.set('freshOnly');
+        this.noFreshQuestions.set(false);
+        this.loadQuiz();
+    }
+
     /** User confirmed: practice every question in today's studied topics (former automatic fallback). */
     protected confirmPracticePlanTopicsAnyway(): void {
         this.showPlanTopicsCoveredDialog.set(false);
@@ -515,6 +536,7 @@ export class QuizPageComponent {
         this.loadError.set(false);
         this.sessionComplete.set(false);
         this.showPlanTopicsCoveredDialog.set(false);
+        this.noFreshQuestions.set(false);
         this.sessionTruncated.set(false);
         this.currentQuestion.set(null);
         this.phase.set('question');
@@ -551,6 +573,34 @@ export class QuizPageComponent {
                         : useEverStudiedFilter
                             ? base.filter((q) => everStudied.has(topicIdFromQuestion(q)))
                             : base;
+                    if (scope === 'freshOnly') {
+                        const progress = this.progressService.getProgress();
+                        const practiced = new Set(progress.map((p) => p.questionId));
+                        const fresh = base.filter((q) => !practiced.has(q.id));
+                        if (fresh.length === 0) {
+                            this.noFreshQuestions.set(true);
+                            this.usingFallbackQueue.set(false);
+                            this.sessionTotal.set(0);
+                            this.sessionIndex.set(0);
+                            this.sessionStackTopicIds.set([]);
+                            this.questionService.initializeQueue([]);
+                            this.loading.set(false);
+                            return;
+                        }
+                        this.noFreshQuestions.set(false);
+                        this.usingFallbackQueue.set(false);
+                        const limit = SESSION_MODE_LIMIT[this.sessionMode()];
+                        this.sessionTruncated.set(
+                            limit != null && fresh.length < limit && fresh.length > 0
+                        );
+                        const finalQueue = this.questionService.initializeQueue(fresh, limit);
+                        this.sessionTotal.set(finalQueue.length);
+                        this.sessionIndex.set(0);
+                        this.sessionStackTopicIds.set(this.uniqueSortedTopicIds(finalQueue));
+                        this.loading.set(false);
+                        this.advanceToNextQuestion();
+                        return;
+                    }
                     const due = this.progressService.getDueQuestionsSync(candidate);
                     const fullBankMode = scope === 'full' ||
                         (scope === 'planFocused' && studied.length === 0 && !topicsFocusSet);
