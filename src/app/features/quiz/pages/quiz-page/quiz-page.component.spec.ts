@@ -475,3 +475,111 @@ describe('QuizPageComponent — ?topics= param padding', () => {
         expect(paddedQueue.length).toBe(5);
     });
 });
+
+describe('QuizPageComponent — freshOnly scope', () => {
+    beforeEach(async () => {
+        localStorage.clear();
+        await TestBed.configureTestingModule({
+            imports: [QuizPageComponent],
+            providers: testProviders
+        }).compileComponents();
+    });
+
+    afterEach(() => TestBed.resetTestingModule());
+
+    it('freshOnly scope filters to questions with no progress entry', async () => {
+        const allQuestions = Array.from({ length: 10 }, (_, i) => makeQuestion(i + 1));
+
+        const questionService = TestBed.inject(QuestionService);
+        const progressService = TestBed.inject(ProgressService);
+        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions);
+        // Questions 1–3 have progress entries
+        vi.spyOn(progressService, 'getProgress').mockReturnValue([
+            { questionId: 1, nailedCount: 1, partialCount: 0, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-04', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 },
+            { questionId: 2, nailedCount: 0, partialCount: 1, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-03', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 },
+            { questionId: 3, nailedCount: 0, partialCount: 0, didntKnowCount: 1, lastAnswered: '2026-01-01', nextReview: '2026-01-02', easeFactor: 2.5, repetitionCount: 0, intervalDays: 1 }
+        ]);
+        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(3));
+
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            startSession: (mode: SessionMode) => void;
+            switchToFreshQuestions: () => void;
+            noFreshQuestions: () => boolean;
+            sessionTotal: () => number;
+        };
+        // Start a session first (to hide the picker), then switch scope
+        component.startSession('deep');
+        await fixture.whenStable();
+        initSpy.mockClear();
+        initSpy.mockReturnValue(allQuestions.slice(3));
+
+        component.switchToFreshQuestions();
+        await fixture.whenStable();
+
+        // initializeQueue should have been called with the 7 fresh questions (ids 4–10)
+        const [freshQueue] = initSpy.mock.calls[0];
+        expect(freshQueue.length).toBe(7);
+        const freshIds = freshQueue.map((q: Question) => q.id);
+        expect(freshIds).not.toContain(1);
+        expect(freshIds).not.toContain(2);
+        expect(freshIds).not.toContain(3);
+    });
+
+    it('shows noFreshQuestions when all questions have been practiced', async () => {
+        const allQuestions = Array.from({ length: 3 }, (_, i) => makeQuestion(i + 1));
+
+        const questionService = TestBed.inject(QuestionService);
+        const progressService = TestBed.inject(ProgressService);
+        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions);
+        vi.spyOn(progressService, 'getProgress').mockReturnValue([
+            { questionId: 1, nailedCount: 1, partialCount: 0, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-04', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 },
+            { questionId: 2, nailedCount: 1, partialCount: 0, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-04', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 },
+            { questionId: 3, nailedCount: 1, partialCount: 0, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-04', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 }
+        ]);
+        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions);
+
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            startSession: (mode: SessionMode) => void;
+            switchToFreshQuestions: () => void;
+            noFreshQuestions: () => boolean;
+            sessionTotal: () => number;
+        };
+        // Start a session first, then switch to freshOnly
+        component.startSession('quick');
+        await fixture.whenStable();
+
+        component.switchToFreshQuestions();
+        await fixture.whenStable();
+
+        expect(component.noFreshQuestions()).toBe(true);
+        expect(component.sessionTotal()).toBe(0);
+    });
+
+    it('switchToFreshQuestions sets scope and reloads quiz', async () => {
+        const allQuestions = Array.from({ length: 10 }, (_, i) => makeQuestion(i + 1));
+
+        const questionService = TestBed.inject(QuestionService);
+        const progressService = TestBed.inject(ProgressService);
+        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        vi.spyOn(progressService, 'getProgress').mockReturnValue([]);
+        vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
+
+        const fixture = TestBed.createComponent(QuizPageComponent);
+        const component = fixture.componentInstance as unknown as {
+            startSession: (mode: SessionMode) => void;
+            switchToFreshQuestions: () => void;
+            practiceScope: () => string;
+        };
+        component.startSession('standard');
+        await fixture.whenStable();
+
+        component.switchToFreshQuestions();
+        await fixture.whenStable();
+
+        expect(component.practiceScope()).toBe('freshOnly');
+    });
+});

@@ -81,6 +81,18 @@
                 </a>
             </div>
         </div>
+    } @else if (noFreshQuestions()) {
+        <div class="quiz__empty-fresh card-phase" role="status">
+            <p class="quiz__empty-fresh-text">{{ 'quiz.noFreshQuestions' | translate }}</p>
+            <div class="quiz__done-actions">
+                <button type="button" class="quiz__scope-btn" (click)="switchToFullQuestionBank()">
+                    {{ 'quiz.practiceAll' | translate }}
+                </button>
+                <button type="button" class="quiz__restart" (click)="restartSession()">
+                    {{ 'quiz.restart' | translate }}
+                </button>
+            </div>
+        </div>
     } @else if (sessionComplete()) {
         <div class="quiz__summary card-phase" aria-live="polite">
             <p class="quiz__summary-title">{{ 'quiz.sessionDone' | translate }}</p>
@@ -174,6 +186,9 @@
         @if (studiedTopicsFilterActive()) {
             <p class="quiz__hint quiz__hint--scope" role="status">{{ 'quiz.practicingStudiedTopicsHint' | translate }}</p>
         }
+        @if (freshOnlyFilterActive()) {
+            <p class="quiz__hint quiz__hint--scope" role="status">{{ 'quiz.practicingFreshOnlyHint' | translate }}</p>
+        }
         @if (usingFallbackQueue()) {
             @if (todayTopicsFilterActive()) {
                 <p class="quiz__hint">{{ 'quiz.fallbackHintTodaysTopics' | translate }}</p>
@@ -201,6 +216,13 @@
             <div class="quiz__scope-actions">
                 <button type="button" class="quiz__scope-btn" (click)="switchToAllStudiedTopics()">
                     {{ 'quiz.practiceAllStudied' | translate }}
+                </button>
+            </div>
+        }
+        @if (showSwitchToFreshOption()) {
+            <div class="quiz__scope-actions">
+                <button type="button" class="quiz__scope-btn" (click)="switchToFreshQuestions()">
+                    {{ 'quiz.practiceFreshOnly' | translate }}
                 </button>
             </div>
         }

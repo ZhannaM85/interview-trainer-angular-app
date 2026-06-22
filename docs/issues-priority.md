@@ -25,7 +25,7 @@ Updated 2026-06-21. Based on labels, dependencies, and effort/value assessment.
 | ~~[#39](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/39)~~ | ~~Full-text search in study guide~~ | ✅ Done |
 | ~~[#98](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/98)~~ | ~~Make 'Hardest Questions' items on dashboard navigate to study guide~~ | ✅ Done |
 | ~~[#67](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/67)~~ | ~~Study guide: filter to show only non-studied items~~ | ✅ Done |
-| [#68](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/68) | Practice: add scope option to practice only never-practiced questions | `quick-win` `ux` |
+| ~~[#68](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/68)~~ | ~~Practice: add scope option to practice only never-practiced questions~~ | ✅ Done |
 
 ---
 
