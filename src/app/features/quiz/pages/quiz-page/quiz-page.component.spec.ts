@@ -262,7 +262,7 @@ describe('QuizPageComponent — interview-ready session message', () => {
     it('interviewReadySession is reset to false when startSession is called', () => {
         const fixture = TestBed.createComponent(QuizPageComponent);
         const achievementService = TestBed.inject(AchievementService);
-        vi.spyOn(achievementService, 'checkAndGrantSession').mockReturnValue(true);
+        jest.spyOn(achievementService, 'checkAndGrantSession').mockReturnValue(true);
         const component = fixture.componentInstance as unknown as {
             interviewReadySession: () => boolean;
             startSession: (mode: SessionMode) => void;
@@ -308,7 +308,7 @@ describe('QuizPageComponent — plan-topics-covered dialog focus', () => {
         };
         component.showPlanTopicsCoveredDialog.set(true);
         const section = fixture.nativeElement.querySelector('.quiz') as HTMLElement;
-        const focusSpy = vi.spyOn(section, 'focus');
+        const focusSpy = jest.spyOn(section, 'focus');
         component.switchToFullQuestionBank();
         expect(component.showPlanTopicsCoveredDialog()).toBe(false);
         expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
@@ -323,7 +323,7 @@ describe('QuizPageComponent — plan-topics-covered dialog focus', () => {
         };
         component.showPlanTopicsCoveredDialog.set(true);
         const section = fixture.nativeElement.querySelector('.quiz') as HTMLElement;
-        const focusSpy = vi.spyOn(section, 'focus');
+        const focusSpy = jest.spyOn(section, 'focus');
         component.confirmPracticePlanTopicsAnyway();
         expect(component.showPlanTopicsCoveredDialog()).toBe(false);
         expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
@@ -347,9 +347,9 @@ describe('QuizPageComponent — session queue padding', () => {
 
         const questionService = TestBed.inject(QuestionService);
         const progressService = TestBed.inject(ProgressService);
-        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
-        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(dueOnly);
-        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
+        jest.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        jest.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(dueOnly);
+        const initSpy = jest.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
 
         const fixture = TestBed.createComponent(QuizPageComponent);
         const component = fixture.componentInstance as unknown as {
@@ -369,9 +369,9 @@ describe('QuizPageComponent — session queue padding', () => {
 
         const questionService = TestBed.inject(QuestionService);
         const progressService = TestBed.inject(ProgressService);
-        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
-        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions.slice(0, 5));
-        vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
+        jest.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        jest.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions.slice(0, 5));
+        jest.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
 
         const fixture = TestBed.createComponent(QuizPageComponent);
         const component = fixture.componentInstance as unknown as {
@@ -407,9 +407,9 @@ describe('QuizPageComponent — session queue padding', () => {
         // Inject and spy BEFORE createComponent to prevent the real HTTP fetch from firing
         const questionService = TestBed.inject(QuestionService);
         const progressService = TestBed.inject(ProgressService);
-        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
-        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue([]);
-        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(studiedQs);
+        jest.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        jest.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue([]);
+        const initSpy = jest.spyOn(questionService, 'initializeQueue').mockReturnValue(studiedQs);
 
         const fixture = TestBed.createComponent(QuizPageComponent);
         const component = fixture.componentInstance as unknown as {
@@ -460,9 +460,9 @@ describe('QuizPageComponent — ?topics= param padding', () => {
 
         const questionService = TestBed.inject(QuestionService);
         const progressService = TestBed.inject(ProgressService);
-        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
-        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(closuresQs);
-        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
+        jest.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        jest.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(closuresQs);
+        const initSpy = jest.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
 
         const fixture = TestBed.createComponent(QuizPageComponent);
         const component = fixture.componentInstance as unknown as {
@@ -492,15 +492,15 @@ describe('QuizPageComponent — freshOnly scope', () => {
 
         const questionService = TestBed.inject(QuestionService);
         const progressService = TestBed.inject(ProgressService);
-        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
-        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions);
+        jest.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        jest.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions);
         // Questions 1–3 have progress entries
-        vi.spyOn(progressService, 'getProgress').mockReturnValue([
+        jest.spyOn(progressService, 'getProgress').mockReturnValue([
             { questionId: 1, nailedCount: 1, partialCount: 0, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-04', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 },
             { questionId: 2, nailedCount: 0, partialCount: 1, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-03', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 },
             { questionId: 3, nailedCount: 0, partialCount: 0, didntKnowCount: 1, lastAnswered: '2026-01-01', nextReview: '2026-01-02', easeFactor: 2.5, repetitionCount: 0, intervalDays: 1 }
         ]);
-        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(3));
+        const initSpy = jest.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(3));
 
         const fixture = TestBed.createComponent(QuizPageComponent);
         const component = fixture.componentInstance as unknown as {
@@ -532,14 +532,14 @@ describe('QuizPageComponent — freshOnly scope', () => {
 
         const questionService = TestBed.inject(QuestionService);
         const progressService = TestBed.inject(ProgressService);
-        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
-        vi.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions);
-        vi.spyOn(progressService, 'getProgress').mockReturnValue([
+        jest.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        jest.spyOn(progressService, 'getDueQuestionsSync').mockReturnValue(allQuestions);
+        jest.spyOn(progressService, 'getProgress').mockReturnValue([
             { questionId: 1, nailedCount: 1, partialCount: 0, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-04', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 },
             { questionId: 2, nailedCount: 1, partialCount: 0, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-04', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 },
             { questionId: 3, nailedCount: 1, partialCount: 0, didntKnowCount: 0, lastAnswered: '2026-01-01', nextReview: '2026-01-04', easeFactor: 2.5, repetitionCount: 1, intervalDays: 1 }
         ]);
-        const initSpy = vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions);
+        const initSpy = jest.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions);
 
         const fixture = TestBed.createComponent(QuizPageComponent);
         const component = fixture.componentInstance as unknown as {
@@ -564,9 +564,9 @@ describe('QuizPageComponent — freshOnly scope', () => {
 
         const questionService = TestBed.inject(QuestionService);
         const progressService = TestBed.inject(ProgressService);
-        vi.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
-        vi.spyOn(progressService, 'getProgress').mockReturnValue([]);
-        vi.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
+        jest.spyOn(questionService, 'getQuestions').mockReturnValue(of(allQuestions));
+        jest.spyOn(progressService, 'getProgress').mockReturnValue([]);
+        jest.spyOn(questionService, 'initializeQueue').mockReturnValue(allQuestions.slice(0, 5));
 
         const fixture = TestBed.createComponent(QuizPageComponent);
         const component = fixture.componentInstance as unknown as {

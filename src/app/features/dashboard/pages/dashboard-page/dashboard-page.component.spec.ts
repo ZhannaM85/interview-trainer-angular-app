@@ -67,7 +67,7 @@ function setup(questions: Question[] = []) {
         imports: [DashboardPageComponent],
         providers: testProviders
     });
-    vi.spyOn(TestBed.inject(QuestionService), 'getQuestions').mockReturnValue(of(questions));
+    jest.spyOn(TestBed.inject(QuestionService), 'getQuestions').mockReturnValue(of(questions));
     const fixture = TestBed.createComponent(DashboardPageComponent);
     const component = fixture.componentInstance as unknown as ComponentInternals;
     const progressService = TestBed.inject(ProgressService);
@@ -377,7 +377,7 @@ describe('DashboardPageComponent — clear activity flow', () => {
     it('confirmClearActivity clears old activity and resets pending', () => {
         const { component } = setup([]);
         const activityService = TestBed.inject(ActivityService);
-        vi.spyOn(activityService, 'clearOlderThan');
+        jest.spyOn(activityService, 'clearOlderThan');
         component.requestClearActivity();
         component.confirmClearActivity();
         expect(activityService.clearOlderThan).toHaveBeenCalledWith(90);

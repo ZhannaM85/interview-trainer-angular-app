@@ -328,7 +328,7 @@ describe('PlanPageComponent — suggest topics', () => {
     it('suggestTopics delegates to PlanSuggestionService', async () => {
         const { component } = await setup();
         const suggestionService = TestBed.inject(PlanSuggestionService);
-        const spy = vi.spyOn(suggestionService, 'suggestTopics').mockReturnValue(['javascript:closures']);
+        const spy = jest.spyOn(suggestionService, 'suggestTopics').mockReturnValue(['javascript:closures']);
         component.suggestTopics();
         expect(spy).toHaveBeenCalled();
         expect(component.lastSuggestionCount()).toBe(1);
@@ -337,7 +337,7 @@ describe('PlanPageComponent — suggest topics', () => {
     it('suggestTopics adds returned topic IDs to the plan', async () => {
         const { component, plan } = await setup();
         const suggestionService = TestBed.inject(PlanSuggestionService);
-        vi.spyOn(suggestionService, 'suggestTopics').mockReturnValue(['javascript:closures', 'angular:signals']);
+        jest.spyOn(suggestionService, 'suggestTopics').mockReturnValue(['javascript:closures', 'angular:signals']);
         component.suggestTopics();
         expect(plan.isSelected('javascript:closures')).toBe(true);
         expect(plan.isSelected('angular:signals')).toBe(true);
@@ -346,7 +346,7 @@ describe('PlanPageComponent — suggest topics', () => {
     it('suggestTopics sets count to 0 when service returns empty array', async () => {
         const { component } = await setup();
         const suggestionService = TestBed.inject(PlanSuggestionService);
-        vi.spyOn(suggestionService, 'suggestTopics').mockReturnValue([]);
+        jest.spyOn(suggestionService, 'suggestTopics').mockReturnValue([]);
         component.suggestTopics();
         expect(component.lastSuggestionCount()).toBe(0);
     });

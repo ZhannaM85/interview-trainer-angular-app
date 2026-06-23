@@ -69,7 +69,7 @@ function setup() {
                 useValue: {
                     get: (key: string) => storageMap.get(key) ?? null,
                     set: (key: string, value: unknown) => storageMap.set(key, value),
-                    writeError: { set: vi.fn() }
+                    writeError: { set: jest.fn() }
                 }
             }
         ]
@@ -208,7 +208,7 @@ describe('AchievementService', () => {
             ]);
             // Simulate today = 2026-05-14 by mocking the service internals
             // The gap is 4 days (10 → 14), so it should grant
-            vi.spyOn(Date.prototype, 'toISOString');
+            jest.spyOn(Date.prototype, 'toISOString');
             // We'll just call with 2026-05-14 implied
             svc.checkAndGrantLifetime({ ...baseParams, activityMap, totalAnswered: 3, todayAnswered: 3 });
             // The service reads `formatLocalYmd(new Date())` which equals today (2026-05-14)
