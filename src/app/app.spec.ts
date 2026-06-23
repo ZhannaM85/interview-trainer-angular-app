@@ -187,7 +187,7 @@ describe('App — banner dismiss focus management', () => {
         fixture.detectChanges();
         const app = fixture.componentInstance;
         const main = fixture.nativeElement.querySelector('.app__main') as HTMLElement;
-        const focusSpy = vi.spyOn(main, 'focus');
+        const focusSpy = jest.spyOn(main, 'focus');
         app['dismissRetryBanner']();
         expect(app['retryBannerDismissed']()).toBe(true);
         expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
@@ -199,7 +199,7 @@ describe('App — banner dismiss focus management', () => {
         fixture.detectChanges();
         const app = fixture.componentInstance;
         const main = fixture.nativeElement.querySelector('.app__main') as HTMLElement;
-        const focusSpy = vi.spyOn(main, 'focus');
+        const focusSpy = jest.spyOn(main, 'focus');
         app['dismissPracticeReminder']();
         expect(app['practiceReminderDismissed']()).toBe(true);
         expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
@@ -211,7 +211,7 @@ describe('App — banner dismiss focus management', () => {
         fixture.detectChanges();
         const app = fixture.componentInstance;
         const main = fixture.nativeElement.querySelector('.app__main') as HTMLElement;
-        const focusSpy = vi.spyOn(main, 'focus');
+        const focusSpy = jest.spyOn(main, 'focus');
         app['dismissResumeBanner']();
         expect(app['resumeBannerDismissed']()).toBe(true);
         expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
@@ -224,7 +224,7 @@ describe('App — banner dismiss focus management', () => {
         fixture.detectChanges();
         const app = fixture.componentInstance;
         const main = fixture.nativeElement.querySelector('.app__main') as HTMLElement;
-        const focusSpy = vi.spyOn(main, 'focus');
+        const focusSpy = jest.spyOn(main, 'focus');
         app['onResumeStartFresh']();
         expect(localStorage.getItem(SNAPSHOT_KEY)).toBeNull();
         expect(app['resumeBannerDismissed']()).toBe(true);

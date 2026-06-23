@@ -74,24 +74,31 @@ describe('MyQuestionsPageComponent — export button state', () => {
 });
 
 describe('MyQuestionsPageComponent — export download', () => {
-    beforeEach(() => localStorage.clear());
-    afterEach(() => TestBed.resetTestingModule());
+    const originalCreateObjectURL = URL.createObjectURL;
+    const originalRevokeObjectURL = URL.revokeObjectURL;
+
+    beforeEach(() => {
+        localStorage.clear();
+        URL.createObjectURL = jest.fn().mockReturnValue('blob:fake');
+        URL.revokeObjectURL = jest.fn();
+    });
+
+    afterEach(() => {
+        URL.createObjectURL = originalCreateObjectURL;
+        URL.revokeObjectURL = originalRevokeObjectURL;
+        TestBed.resetTestingModule();
+    });
 
     it('triggers URL.createObjectURL with a Blob when exporting', () => {
         const { fixture, service } = setup();
         service.add({ question: 'Q?', answer: 'A.', subtopic: 'X', difficulty: 'beginner' });
         fixture.detectChanges();
 
-        const createObjectURL = vi.spyOn(URL, 'createObjectURL').mockReturnValue('blob:fake');
-        vi.spyOn(URL, 'revokeObjectURL').mockImplementation(() => {});
-
         const exportBtn = Array.from(fixture.nativeElement.querySelectorAll('button') as NodeListOf<HTMLButtonElement>)
             .find((b) => b.textContent?.trim() === 'Export');
         exportBtn?.click();
 
-        expect(createObjectURL).toHaveBeenCalledWith(expect.any(Blob));
-
-        vi.restoreAllMocks();
+        expect(URL.createObjectURL).toHaveBeenCalledWith(expect.any(Blob));
     });
 });
 

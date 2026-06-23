@@ -3,8 +3,6 @@ import { provideHttpClient } from '@angular/common/http';
 import { provideRouter } from '@angular/router';
 import { TranslateLoader, provideTranslateService, type TranslationObject } from '@ngx-translate/core';
 import { Observable, of } from 'rxjs';
-import { vi } from 'vitest';
-
 import type { AppBackup } from './data-export.service';
 import { DataExportService } from './data-export.service';
 import { StorageService } from './storage.service';
@@ -128,19 +126,8 @@ describe('DataExportService — diffBackup', () => {
 });
 
 describe('DataExportService — applyBackup', () => {
-    const reloadMock = vi.fn();
-
-    beforeAll(() => {
-        Object.defineProperty(window, 'location', {
-            configurable: true,
-            writable: true,
-            value: { reload: reloadMock }
-        });
-    });
-
     beforeEach(() => {
         localStorage.clear();
-        reloadMock.mockClear();
     });
 
     afterEach(() => TestBed.resetTestingModule());
@@ -164,8 +151,13 @@ describe('DataExportService — applyBackup', () => {
 
     it('calls reload after writing storage', () => {
         const { service } = setup();
+        const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
         service.applyBackup(SAMPLE_BACKUP);
-        expect(reloadMock).toHaveBeenCalledOnce();
+        const reloadError = consoleSpy.mock.calls.find(
+            call => String(call[0]).includes('Not implemented: navigation')
+        );
+        expect(reloadError).toBeDefined();
+        consoleSpy.mockRestore();
     });
 
     it('skips writing todayPlan when it is null', () => {
