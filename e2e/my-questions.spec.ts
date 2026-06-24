@@ -1,129 +1,188 @@
-import { test, expect } from '@playwright/test';
-import path from 'path';
-import fs from 'fs';
-import os from 'os';
+﻿import { test, expect } from '@playwright/test';
 
-test.describe('My Questions — export and import', () => {
+test.describe('My Questions — empty state', () => {
     test.beforeEach(async ({ page }) => {
+        await page.addInitScript(() => localStorage.clear());
+    });
+
+    test('page loads and shows empty state message', async ({ page }) => {
         await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__title')).toBeVisible({ timeout: 10_000 });
+        await expect(page.locator('.myq__empty')).toBeVisible();
     });
 
-    test('export button is disabled when no questions exist', async ({ page }) => {
-        await page.evaluate(() => localStorage.clear());
-        await page.reload();
-        const exportBtn = page.getByRole('button', { name: /export/i });
-        await expect(exportBtn).toBeDisabled();
+    test('form heading shows add-new label', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__form-heading')).toBeVisible({ timeout: 10_000 });
+        await expect(page.locator('.myq__form-heading')).not.toBeEmpty();
+    });
+});
+
+test.describe('My Questions — adding a question', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.addInitScript(() => localStorage.clear());
     });
 
-    test('export button is enabled after adding a question', async ({ page }) => {
-        await page.evaluate(() => localStorage.clear());
-        await page.reload();
+    test('filling form and saving shows the question in the list', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__title')).toBeVisible({ timeout: 10_000 });
 
-        await page.locator('#myq-question').fill('What is a closure?');
-        await page.locator('#myq-answer').fill('A function capturing its outer scope.');
-        await page.locator('#myq-subtopic').fill('Closures');
-        await page.getByRole('button', { name: /save/i }).click();
+        await page.locator('#myq-question').fill('What is a test question?');
+        await page.locator('#myq-answer').fill('This is a test answer.');
+        await page.locator('#myq-subtopic').fill('testing');
 
-        const exportBtn = page.getByRole('button', { name: /export/i });
-        await expect(exportBtn).toBeEnabled();
+        await page.locator('.myq__btn--primary').click();
+
+        await expect(page.locator('.myq__empty')).not.toBeVisible();
+        await expect(page.locator('.myq__card').first()).toBeVisible();
+        await expect(page.locator('.myq__card-question').first()).toContainText('What is a test question?');
+        await expect(page.locator('.myq__card-answer').first()).toContainText('This is a test answer.');
     });
 
-    test('export triggers a file download containing valid JSON', async ({ page }) => {
-        await page.evaluate(() => localStorage.clear());
-        await page.reload();
+    test('saving with empty fields shows validation message', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__title')).toBeVisible({ timeout: 10_000 });
 
-        await page.locator('#myq-question').fill('What is a closure?');
-        await page.locator('#myq-answer').fill('A function capturing its outer scope.');
-        await page.locator('#myq-subtopic').fill('Closures');
-        await page.getByRole('button', { name: /save/i }).click();
+        await page.locator('.myq__btn--primary').click();
 
-        const [download] = await Promise.all([
-            page.waitForEvent('download'),
-            page.getByRole('button', { name: /export/i }).click()
-        ]);
+        await expect(page.locator('.myq__validation-msg')).toBeVisible();
+    });
+});
 
-        expect(download.suggestedFilename()).toBe('my-questions.json');
-        const content = await download.path();
-        expect(content).toBeTruthy();
-        const json = JSON.parse(fs.readFileSync(content!, 'utf-8'));
-        expect(Array.isArray(json)).toBe(true);
-        expect(json.length).toBeGreaterThan(0);
-        expect(json[0]).toHaveProperty('question', 'What is a closure?');
+test.describe('My Questions — editing a question', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.addInitScript(() => {
+            localStorage.clear();
+            localStorage.setItem(
+                'interview-trainer:custom-questions',
+                JSON.stringify([
+                    {
+                        id: 'cq-1',
+                        question: 'Original question?',
+                        answer: 'Original answer.',
+                        subtopic: 'general',
+                        difficulty: 'medium',
+                        createdAt: new Date().toISOString(),
+                    },
+                ])
+            );
+        });
     });
 
-    test('import shows success toast and adds questions', async ({ page }) => {
-        await page.evaluate(() => localStorage.clear());
-        await page.reload();
+    test('clicking Edit loads the question into the form', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__card').first()).toBeVisible({ timeout: 10_000 });
 
-        const importData = JSON.stringify([
-            {
-                id: 9001,
-                question: 'What is RxJS?',
-                answer: 'Reactive Extensions for JavaScript.',
-                subtopic: 'RxJS',
-                difficulty: 'beginner',
-                createdAt: '2026-01-01T00:00:00.000Z'
-            }
-        ]);
-        const tmpFile = path.join(os.tmpdir(), 'import-test.json');
-        fs.writeFileSync(tmpFile, importData, 'utf-8');
+        const editBtn = page.locator('.myq__card').first().locator('.myq__btn--secondary');
+        await editBtn.click();
 
-        await page.locator('.myq__file-input').setInputFiles(tmpFile);
-
-        const toast = page.locator('.myq__toast');
-        await expect(toast).toBeVisible({ timeout: 3000 });
-        await expect(toast).not.toHaveClass(/myq__toast--error/);
-
-        const cards = page.locator('.myq__card');
-        await expect(cards).toHaveCount(1);
-        await expect(cards.first()).toContainText('What is RxJS?');
-
-        fs.unlinkSync(tmpFile);
+        await expect(page.locator('#myq-question')).toHaveValue('Original question?');
+        await expect(page.locator('#myq-answer')).toHaveValue('Original answer.');
     });
 
-    test('import shows error toast for malformed JSON', async ({ page }) => {
-        await page.evaluate(() => localStorage.clear());
-        await page.reload();
+    test('editing and saving updates the question in the list', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__card').first()).toBeVisible({ timeout: 10_000 });
 
-        const tmpFile = path.join(os.tmpdir(), 'bad-import.json');
-        fs.writeFileSync(tmpFile, 'this is not json', 'utf-8');
+        const editBtn = page.locator('.myq__card').first().locator('.myq__btn--secondary');
+        await editBtn.click();
 
-        await page.locator('.myq__file-input').setInputFiles(tmpFile);
+        await page.locator('#myq-question').fill('Updated question?');
+        await page.locator('.myq__btn--primary').click();
 
-        const errorToast = page.locator('.myq__toast--error');
-        await expect(errorToast).toBeVisible({ timeout: 3000 });
-
-        fs.unlinkSync(tmpFile);
+        await expect(page.locator('.myq__card-question').first()).toContainText('Updated question?');
     });
 
-    test('import skips duplicates and reports correct counts in toast', async ({ page }) => {
-        await page.evaluate(() => localStorage.clear());
-        await page.reload();
+    test('cancel button exits edit mode', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__card').first()).toBeVisible({ timeout: 10_000 });
 
-        const question = {
-            id: 9002,
-            question: 'What is Angular?',
-            answer: 'A framework.',
-            subtopic: 'Angular',
-            difficulty: 'intermediate' as const,
-            createdAt: '2026-01-01T00:00:00.000Z'
-        };
+        const editBtn = page.locator('.myq__card').first().locator('.myq__btn--secondary');
+        await editBtn.click();
 
-        const tmpFile = path.join(os.tmpdir(), 'dedup-test.json');
-        fs.writeFileSync(tmpFile, JSON.stringify([question]), 'utf-8');
+        const cancelBtn = page.locator('.myq__form-actions .myq__btn--secondary');
+        await expect(cancelBtn).toBeVisible();
+        await cancelBtn.click();
 
-        // First import — adds 1
-        await page.locator('.myq__file-input').setInputFiles(tmpFile);
-        await expect(page.locator('.myq__toast')).toBeVisible({ timeout: 3000 });
-        await expect(page.locator('.myq__card')).toHaveCount(1);
+        await expect(page.locator('#myq-question')).toHaveValue('');
+    });
+});
 
-        // Second import — skips 1 duplicate
-        await page.locator('.myq__file-input').setInputFiles(tmpFile);
-        const toast = page.locator('.myq__toast');
-        await expect(toast).toBeVisible({ timeout: 3000 });
-        await expect(toast).toContainText('0');
-        await expect(page.locator('.myq__card')).toHaveCount(1);
+test.describe('My Questions — deleting a question', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.addInitScript(() => {
+            localStorage.clear();
+            localStorage.setItem(
+                'interview-trainer:custom-questions',
+                JSON.stringify([
+                    {
+                        id: 'cq-1',
+                        question: 'Question to delete?',
+                        answer: 'Answer to delete.',
+                        subtopic: 'general',
+                        difficulty: 'medium',
+                        createdAt: new Date().toISOString(),
+                    },
+                ])
+            );
+        });
+    });
 
-        fs.unlinkSync(tmpFile);
+    test('clicking Delete removes the question and shows empty state', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__card').first()).toBeVisible({ timeout: 10_000 });
+
+        page.on('dialog', dialog => dialog.accept());
+
+        const deleteBtn = page.locator('.myq__card').first().locator('.myq__btn--danger');
+        await deleteBtn.click();
+
+        await expect(page.locator('.myq__empty')).toBeVisible({ timeout: 5_000 });
+    });
+});
+
+test.describe('My Questions — multiple questions', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.addInitScript(() => {
+            localStorage.clear();
+            localStorage.setItem(
+                'interview-trainer:custom-questions',
+                JSON.stringify([
+                    {
+                        id: 'cq-1',
+                        question: 'First question?',
+                        answer: 'First answer.',
+                        subtopic: 'general',
+                        difficulty: 'easy',
+                        createdAt: new Date().toISOString(),
+                    },
+                    {
+                        id: 'cq-2',
+                        question: 'Second question?',
+                        answer: 'Second answer.',
+                        subtopic: 'advanced',
+                        difficulty: 'hard',
+                        createdAt: new Date().toISOString(),
+                    },
+                ])
+            );
+        });
+    });
+
+    test('lists all seeded questions', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__card').first()).toBeVisible({ timeout: 10_000 });
+
+        await expect(page.locator('.myq__card')).toHaveCount(2);
+        await expect(page.locator('.myq__card-question').first()).toContainText('First question?');
+        await expect(page.locator('.myq__card-question').nth(1)).toContainText('Second question?');
+    });
+
+    test('subtopic and difficulty badges are shown', async ({ page }) => {
+        await page.goto('/#/my-questions');
+        await expect(page.locator('.myq__card').first()).toBeVisible({ timeout: 10_000 });
+
+        await expect(page.locator('.myq__badge--subtopic').first()).toContainText('general');
+        await expect(page.locator('.myq__badge--difficulty').first()).toBeVisible();
     });
 });

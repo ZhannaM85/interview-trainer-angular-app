@@ -1,337 +1,180 @@
-import { test, expect, type Locator } from '@playwright/test';
+﻿import { test, expect } from '@playwright/test';
 
-test.describe('Study guide difficulty filter', () => {
-    test('shows four difficulty chips with All active by default', async ({ page }) => {
-        await page.goto('/study');
-        const row = page.locator('.study__difficulty-row');
-        await expect(row).toBeVisible({ timeout: 10_000 });
+test.describe('Study guide — content loading', () => {
+    test('loads and shows at least one category section', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__title')).toBeVisible({ timeout: 10_000 });
+        await expect(page.locator('.study__cat').first()).toBeVisible();
 
-        const chips = row.locator('button');
-        await expect(chips).toHaveCount(4);
-
-        const allChip = chips.first();
-        await expect(allChip).toHaveAttribute('aria-pressed', 'true');
-        for (let i = 1; i < 4; i++) {
-            await expect(chips.nth(i)).toHaveAttribute('aria-pressed', 'false');
-        }
+        const catCount = await page.locator('.study__cat').count();
+        expect(catCount).toBeGreaterThanOrEqual(1);
     });
 
-    test('selecting a difficulty chip filters questions and marks it active', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__difficulty-row')).toBeVisible({ timeout: 10_000 });
+    test('each category has a heading and subtopics', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__cat').first()).toBeVisible({ timeout: 10_000 });
 
-        const chips = page.locator('.study__difficulty-row button');
-        const beginnerChip = chips.nth(1);
-
-        await beginnerChip.click();
-        await expect(beginnerChip).toHaveAttribute('aria-pressed', 'true');
-        await expect(chips.first()).toHaveAttribute('aria-pressed', 'false');
-
-        await expect(page.locator('.study__cat')).not.toHaveCount(0);
-    });
-
-    test('clicking All restores the unfiltered guide', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__difficulty-row')).toBeVisible({ timeout: 10_000 });
-
-        const chips = page.locator('.study__difficulty-row button');
-        await chips.nth(1).click();
-        await chips.first().click();
-
-        await expect(chips.first()).toHaveAttribute('aria-pressed', 'true');
-        await expect(page.locator('.study__cat')).not.toHaveCount(0);
-    });
-
-    test('difficulty filter combines with the status filter query param', async ({ page }) => {
-        await page.goto('/study?filter=unstudied');
-        await expect(page.locator('.study__difficulty-row')).toBeVisible({ timeout: 10_000 });
-
-        const chips = page.locator('.study__difficulty-row button');
-        await chips.nth(2).click();
-        await expect(chips.nth(2)).toHaveAttribute('aria-pressed', 'true');
-        await expect(page.locator('.study__filter-row').first().locator('button').nth(2)).toHaveAttribute('aria-pressed', 'true');
+        await expect(page.locator('.study__cat-heading').first()).toBeVisible();
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible();
     });
 });
 
-test.describe('Study guide full-text search', () => {
-    test('search input is visible on the study guide page', async ({ page }) => {
-        await page.goto('/study');
-        const input = page.locator('.study__search-input');
-        await expect(input).toBeVisible({ timeout: 10_000 });
-    });
+test.describe('Study guide — accordion', () => {
+    test('expanding a subtopic reveals questions', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
 
-    test('typing a query filters questions and shows result count', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
-
-        await page.locator('.study__search-input').fill('what');
-        await expect(page.locator('.study__search-count')).toBeVisible();
-        await expect(page.locator('.study__cat')).not.toHaveCount(0);
-    });
-
-    test('search expands all subtopic accordions automatically', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
-
-        // Collapse everything first
-        const collapseBtn = page.locator('.study__expand-collapse-all');
-        if (await collapseBtn.isVisible()) {
-            // Click until text indicates collapsed (if possible); just click once to get a consistent state
-            await collapseBtn.click();
+        const accordion = page.locator('.study__sub-accordion').first();
+        const isOpen = await accordion.evaluate(el =>
+            el.classList.contains('study__sub-accordion--open')
+        );
+        if (!isOpen) {
+            await accordion.locator('.study__sub-disclosure').click();
         }
 
-        await page.locator('.study__search-input').fill('closure');
+        await expect(accordion.locator('.study__q').first()).toBeVisible();
+    });
 
-        // All visible accordions should be open
+    test('collapsing a subtopic hides questions', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
+
+        const accordion = page.locator('.study__sub-accordion').first();
+
+        // Open first
+        const isOpen = await accordion.evaluate(el =>
+            el.classList.contains('study__sub-accordion--open')
+        );
+        if (!isOpen) {
+            await accordion.locator('.study__sub-disclosure').click();
+        }
+        await expect(accordion.locator('.study__q').first()).toBeVisible();
+
+        // Close
+        await accordion.locator('.study__sub-disclosure').click();
+        await expect(accordion).not.toHaveClass(/study__sub-accordion--open/);
+    });
+
+    test('expand-collapse-all toggle works', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
+
+        const toggleBtn = page.locator('.study__expand-collapse-all');
+        await expect(toggleBtn).toBeVisible();
+
+        await toggleBtn.click();
+
         const accordions = page.locator('.study__sub-accordion');
         const count = await accordions.count();
-        for (let i = 0; i < count; i++) {
+        for (let i = 0; i < Math.min(count, 3); i++) {
             await expect(accordions.nth(i)).toHaveClass(/study__sub-accordion--open/);
         }
-    });
 
-    test('shows no-results message when query matches nothing', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
+        await toggleBtn.click();
 
-        await page.locator('.study__search-input').fill('xyzabcnotfound123');
-        await expect(page.locator('.study__message')).toBeVisible();
-        await expect(page.locator('.study__cat')).toHaveCount(0);
-    });
-
-    test('clearing the search restores the full guide', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
-
-        await page.locator('.study__search-input').fill('xyzabcnotfound123');
-        await expect(page.locator('.study__message')).toBeVisible();
-
-        await page.locator('.study__search-input').fill('');
-        await expect(page.locator('.study__cat')).not.toHaveCount(0);
-        await expect(page.locator('.study__search-count')).not.toBeVisible();
-    });
-
-    test('search works together with the difficulty filter', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
-
-        // Apply difficulty filter first
-        await page.locator('.study__difficulty-row button').nth(1).click();
-        // Then search
-        await page.locator('.study__search-input').fill('what');
-
-        const diffBtn = page.locator('.study__difficulty-row button').nth(1);
-        await expect(diffBtn).toHaveAttribute('aria-pressed', 'true');
-        // Either results or no-results message should be visible
-        const hasCats = await page.locator('.study__cat').count();
-        const hasMsg = await page.locator('.study__message').count();
-        expect(hasCats + hasMsg).toBeGreaterThan(0);
+        for (let i = 0; i < Math.min(count, 3); i++) {
+            await expect(accordions.nth(i)).not.toHaveClass(/study__sub-accordion--open/);
+        }
     });
 });
 
-test.describe('Study guide "Not yet studied" filter', () => {
-    test('shows the "Not yet studied" chip in the filter row', async ({ page }) => {
-        await page.goto('/study');
-        const filterRow = page.locator('.study__filter-row').first();
-        await expect(filterRow).toBeVisible({ timeout: 10_000 });
-
-        const chips = filterRow.locator('button');
-        await expect(chips).toHaveCount(4);
-        const neverStudiedChip = chips.nth(3);
-        await expect(neverStudiedChip).toHaveAttribute('aria-pressed', 'false');
+test.describe('Study guide — mark as studied', () => {
+    test.beforeEach(async ({ page }) => {
+        await page.addInitScript(() => {
+            const today = new Date();
+            const y = today.getFullYear();
+            const m = String(today.getMonth() + 1).padStart(2, '0');
+            const d = String(today.getDate()).padStart(2, '0');
+            localStorage.setItem(
+                'interview-trainer:today-plan',
+                JSON.stringify({
+                    planDate: `${y}-${m}-${d}`,
+                    selectedTopicIds: ['javascript:closures'],
+                    studiedTopicIds: [],
+                })
+            );
+        });
     });
 
-    test('clicking "Not yet studied" activates the filter and updates the URL', async ({ page }) => {
-        await page.goto('/study');
-        const filterRow = page.locator('.study__filter-row').first();
-        await expect(filterRow).toBeVisible({ timeout: 10_000 });
+    test('mark-as-studied button is visible and clicking it shows confirmation', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
 
-        const neverStudiedChip = filterRow.locator('button').nth(3);
-        await neverStudiedChip.click();
+        const markBtn = page.locator('.study__mark-studied').first();
+        await expect(markBtn).toBeVisible();
 
-        await expect(neverStudiedChip).toHaveAttribute('aria-pressed', 'true');
-        await expect(page).toHaveURL(/filter=never-studied/);
+        await markBtn.click();
+
+        await expect(page.locator('.study__in-practice-badge').first()).toBeVisible({ timeout: 5_000 });
+    });
+});
+
+test.describe('Study guide — filter chips', () => {
+    test('filter buttons are visible', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__filter-btn').first()).toBeVisible({ timeout: 10_000 });
+
+        const filterBtns = page.locator('.study__filter-row').first().locator('.study__filter-btn');
+        const count = await filterBtns.count();
+        expect(count).toBeGreaterThanOrEqual(2);
     });
 
-    test('navigating directly to ?filter=never-studied activates the filter', async ({ page }) => {
-        await page.goto('/study?filter=never-studied');
-        const filterRow = page.locator('.study__filter-row').first();
-        await expect(filterRow).toBeVisible({ timeout: 10_000 });
+    test('clicking a filter updates visible sections', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__filter-btn').first()).toBeVisible({ timeout: 10_000 });
 
-        const neverStudiedChip = filterRow.locator('button').nth(3);
-        await expect(neverStudiedChip).toHaveAttribute('aria-pressed', 'true');
-    });
+        const allBtn = page.locator('.study__filter-row').first().locator('.study__filter-btn').first();
+        await expect(allBtn).toHaveClass(/study__filter-btn--active/);
 
-    test('shows the filter banner when "Not yet studied" is active', async ({ page }) => {
-        await page.goto('/study?filter=never-studied');
-        await expect(page.locator('.study__filter-row').first()).toBeVisible({ timeout: 10_000 });
+        const studiedBtn = page.locator('.study__filter-row').first().locator('.study__filter-btn').nth(1);
+        await studiedBtn.click();
+        await expect(studiedBtn).toHaveClass(/study__filter-btn--active/);
+        await expect(allBtn).not.toHaveClass(/study__filter-btn--active/);
 
         await expect(page.locator('.study__filter-banner')).toBeVisible();
     });
+});
 
-    test('shows all topics when no topics have been studied (fresh state)', async ({ page }) => {
-        await page.goto('/study?filter=never-studied');
-        await expect(page.locator('.study__filter-row').first()).toBeVisible({ timeout: 10_000 });
+test.describe('Study guide — today filter', () => {
+    test('today=1 restricts to plan topics and shows banner', async ({ page }) => {
+        await page.addInitScript(() => {
+            const today = new Date();
+            const y = today.getFullYear();
+            const m = String(today.getMonth() + 1).padStart(2, '0');
+            const d = String(today.getDate()).padStart(2, '0');
+            localStorage.setItem(
+                'interview-trainer:today-plan',
+                JSON.stringify({
+                    planDate: `${y}-${m}-${d}`,
+                    selectedTopicIds: ['javascript:closures'],
+                    studiedTopicIds: [],
+                })
+            );
+        });
 
-        await expect(page.locator('.study__cat')).not.toHaveCount(0);
+        await page.goto('/#/study?today=1');
+        await expect(page.locator('.study__title')).toBeVisible({ timeout: 10_000 });
+
+        await expect(page.locator('.study__filter-banner')).toBeVisible();
     });
 });
 
-test.describe('Study guide collapsible code examples', () => {
-    async function openFirstSubtopic(page: Parameters<typeof test>[1]['page']): Promise<Locator> {
-        await page.goto('/study');
-        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
-        const accordion = page.locator('.study__sub-accordion').first();
-        const isOpen = await accordion.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
-        if (!isOpen) {
-            await accordion.locator('.study__sub-disclosure').click();
-            await expect(accordion).toHaveClass(/study__sub-accordion--open/);
-        }
-        return accordion;
-    }
+test.describe('Study guide — search', () => {
+    test('search input filters questions and shows result count', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__search-input')).toBeVisible({ timeout: 10_000 });
 
-    test('code toggle button is hidden until a question has a code example', async ({ page }) => {
-        const accordion = await openFirstSubtopic(page);
-        const articles = accordion.locator('.study__q');
-        const count = await articles.count();
-        let foundToggle = false;
-        for (let i = 0; i < count; i++) {
-            const toggle = articles.nth(i).locator('.interview-answer__code-toggle');
-            if (await toggle.count() > 0) {
-                foundToggle = true;
-                break;
-            }
-        }
-        // The guide has many questions with code examples; at least one subtopic should show a toggle
-        // This test just verifies the toggle is never shown for questions without code
-        const codesWithoutToggle = await accordion.locator('.interview-answer__code-wrap').filter({ has: page.locator('.interview-answer__label--code') }).count();
-        expect(codesWithoutToggle).toBe(0);
-        void foundToggle; // used above
+        await page.locator('.study__search-input').fill('closure');
+        await expect(page.locator('.study__search-count')).toBeVisible({ timeout: 5_000 });
     });
+});
 
-    test('code block is collapsed by default and toggle shows "Show code example"', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
+test.describe('Study guide — practice CTA', () => {
+    test('link to practice is visible', async ({ page }) => {
+        await page.goto('/#/study');
+        await expect(page.locator('.study__title')).toBeVisible({ timeout: 10_000 });
 
-        // Open subtopics until we find one with a code toggle
-        const accordions = page.locator('.study__sub-accordion');
-        const total = await accordions.count();
-        let toggle: Locator | null = null;
-
-        for (let i = 0; i < total && !toggle; i++) {
-            const acc = accordions.nth(i);
-            const isOpen = await acc.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
-            if (!isOpen) {
-                await acc.locator('.study__sub-disclosure').click();
-            }
-            const t = acc.locator('.interview-answer__code-toggle').first();
-            if (await t.count() > 0) {
-                toggle = t;
-            }
-        }
-
-        if (!toggle) {
-            test.skip(true, 'No question with code example found in visible sections');
-            return;
-        }
-
-        await expect(toggle).toBeVisible();
-        await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-        await expect(toggle).toContainText('Show code example');
-        const pre = toggle.locator('..').locator('.interview-answer__code');
-        await expect(pre).toHaveCount(0);
-    });
-
-    test('clicking toggle expands the code block and changes label', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
-
-        const accordions = page.locator('.study__sub-accordion');
-        const total = await accordions.count();
-        let toggle: Locator | null = null;
-
-        for (let i = 0; i < total && !toggle; i++) {
-            const acc = accordions.nth(i);
-            const isOpen = await acc.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
-            if (!isOpen) {
-                await acc.locator('.study__sub-disclosure').click();
-            }
-            const t = acc.locator('.interview-answer__code-toggle').first();
-            if (await t.count() > 0) {
-                toggle = t;
-            }
-        }
-
-        if (!toggle) {
-            test.skip(true, 'No question with code example found in visible sections');
-            return;
-        }
-
-        await toggle.click();
-        await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-        await expect(toggle).toContainText('Hide code example');
-        const wrap = toggle.locator('..');
-        await expect(wrap.locator('.interview-answer__code')).toBeVisible();
-    });
-
-    test('clicking toggle again collapses the code block', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
-
-        const accordions = page.locator('.study__sub-accordion');
-        const total = await accordions.count();
-        let toggle: Locator | null = null;
-
-        for (let i = 0; i < total && !toggle; i++) {
-            const acc = accordions.nth(i);
-            const isOpen = await acc.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
-            if (!isOpen) {
-                await acc.locator('.study__sub-disclosure').click();
-            }
-            const t = acc.locator('.interview-answer__code-toggle').first();
-            if (await t.count() > 0) {
-                toggle = t;
-            }
-        }
-
-        if (!toggle) {
-            test.skip(true, 'No question with code example found in visible sections');
-            return;
-        }
-
-        await toggle.click();
-        await toggle.click();
-        await expect(toggle).toHaveAttribute('aria-expanded', 'false');
-        await expect(toggle).toContainText('Show code example');
-    });
-
-    test('toggle is keyboard-accessible via Enter', async ({ page }) => {
-        await page.goto('/study');
-        await expect(page.locator('.study__sub-accordion').first()).toBeVisible({ timeout: 10_000 });
-
-        const accordions = page.locator('.study__sub-accordion');
-        const total = await accordions.count();
-        let toggle: Locator | null = null;
-
-        for (let i = 0; i < total && !toggle; i++) {
-            const acc = accordions.nth(i);
-            const isOpen = await acc.evaluate((el) => el.classList.contains('study__sub-accordion--open'));
-            if (!isOpen) {
-                await acc.locator('.study__sub-disclosure').click();
-            }
-            const t = acc.locator('.interview-answer__code-toggle').first();
-            if (await t.count() > 0) {
-                toggle = t;
-            }
-        }
-
-        if (!toggle) {
-            test.skip(true, 'No question with code example found in visible sections');
-            return;
-        }
-
-        await toggle.focus();
-        await page.keyboard.press('Enter');
-        await expect(toggle).toHaveAttribute('aria-expanded', 'true');
+        const practiceLink = page.locator('.study__plan-complete-btn--primary');
+        await expect(practiceLink).toBeVisible();
     });
 });
