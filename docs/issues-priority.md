@@ -80,7 +80,7 @@ Updated 2026-06-21. Based on labels, dependencies, and effort/value assessment.
 | # | Issue | Notes |
 |---|-------|-------|
 | ~~[#69](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/69)~~ | ~~Add comprehensive unit test suite with Jest~~ | ~~Increase coverage across all services/components~~ |
-| [#70](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/70) | Expand e2e test coverage across all user-facing flows (Playwright) | Cover all major user journeys |
+| ~~[#70](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/70)~~ | ~~Expand e2e test coverage across all user-facing flows (Playwright)~~ | ✅ Done |
 
 ---
 

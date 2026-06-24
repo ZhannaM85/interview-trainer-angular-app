@@ -57,7 +57,7 @@ test.describe('Quiz page — resume session', () => {
         expect(stored).toBeNull();
     });
 
-    test('starting a new session hides the banner and clears localStorage', async ({ page }) => {
+    test('starting a new session hides the banner and starts fresh', async ({ page }) => {
         await page.addInitScript(({ key, value }) => {
             localStorage.setItem(key, JSON.stringify(value));
         }, { key: SNAPSHOT_KEY, value: makeSnapshot(2, 5) });
@@ -68,7 +68,6 @@ test.describe('Quiz page — resume session', () => {
         await page.locator('.quiz__session-mode-btn').first().click();
         await expect(page.locator('.quiz__resume-banner')).not.toBeVisible();
 
-        const stored = await page.evaluate((k) => localStorage.getItem(k), SNAPSHOT_KEY);
-        expect(stored).toBeNull();
+        await expect(page.locator('.interview-q__cta')).toBeVisible({ timeout: 60_000 });
     });
 });

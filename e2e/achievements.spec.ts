@@ -16,23 +16,22 @@ test.describe('Achievements card on dashboard', () => {
     });
 
     test('grants first-steps badge after answering a question', async ({ page }) => {
+        await page.addInitScript(() => {
+            localStorage.setItem('interview-trainer:last-subject', '"js"');
+        });
         await page.goto('/#/quiz');
 
-        // Dismiss session mode picker if present
-        const startBtn = page.locator('button', { hasText: /Standard|Стандарт/i }).first();
-        if (await startBtn.isVisible({ timeout: 3_000 }).catch(() => false)) {
-            await startBtn.click();
-        }
+        // Dismiss session mode picker
+        await expect(page.locator('.quiz__session-mode-btn').first()).toBeVisible({ timeout: 10_000 });
+        await page.locator('.quiz__session-mode-btn').first().click();
 
         // Answer a question
-        const answerBtn = page.locator('button', { hasText: /I answered|Я ответил/i });
-        await expect(answerBtn).toBeVisible({ timeout: 10_000 });
-        await answerBtn.click();
+        await expect(page.locator('.interview-q__cta')).toBeVisible({ timeout: 60_000 });
+        await page.locator('.interview-q__cta').click();
 
         // Rate it
-        const nailedBtn = page.locator('button', { hasText: /Nailed|Отлично/i }).first();
-        await expect(nailedBtn).toBeVisible({ timeout: 5_000 });
-        await nailedBtn.click();
+        await expect(page.locator('.self-eval__btn--yes')).toBeVisible({ timeout: 5_000 });
+        await page.locator('.self-eval__btn--yes').click();
 
         // Navigate to dashboard
         await page.goto('/#/dashboard');

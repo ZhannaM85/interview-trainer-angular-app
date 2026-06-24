@@ -115,16 +115,19 @@ test.describe('Plan page — carryover unfinished topics', () => {
     });
 
     test('banner does not reappear after dismissal on page reload', async ({ page }) => {
-        await page.addInitScript((yesterday) => {
-            localStorage.setItem(
-                'interview-trainer:today-plan',
-                JSON.stringify({
-                    planDate: yesterday,
-                    selectedTopicIds: ['javascript:closures'],
-                    studiedTopicIds: []
-                })
-            );
-        }, yesterdayStr());
+        const yesterday = yesterdayStr();
+        await page.addInitScript((yd) => {
+            if (!localStorage.getItem('interview-trainer:today-plan')) {
+                localStorage.setItem(
+                    'interview-trainer:today-plan',
+                    JSON.stringify({
+                        planDate: yd,
+                        selectedTopicIds: ['javascript:closures'],
+                        studiedTopicIds: []
+                    })
+                );
+            }
+        }, yesterday);
 
         await page.goto('/#/plan');
         await expect(page.locator('.plan__carryover')).toBeVisible({ timeout: 10_000 });
