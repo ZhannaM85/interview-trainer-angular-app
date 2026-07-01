@@ -12,6 +12,8 @@ import { firstValueFrom, Observable, of } from 'rxjs';
 
 import { App } from './app';
 import { routes } from './app.routes';
+import { NetworkStatusService } from './core/services/network-status.service';
+import { PwaUpdateService } from './core/services/pwa-update.service';
 import type { ActiveSessionSnapshot } from './shared/models/active-session.model';
 
 const SNAPSHOT_KEY = 'interview-trainer:active-session';
@@ -23,6 +25,38 @@ class AppBrandStubLoader implements TranslateLoader {
             app: {
                 brand: 'Karkas',
                 navAria: 'Main'
+            },
+            nav: {
+                about: 'About',
+                study: 'Study guide',
+                quiz: 'Practice',
+                dashboard: 'Progress'
+            },
+            locale: {
+                selectLabel: 'Language',
+                en: 'English',
+                ru: 'Russian'
+            },
+            resumeSessionBanner: {
+                message: 'You left off at question {{question}} of {{total}} —',
+                continue: 'Continue →',
+                startFresh: 'Start fresh',
+                dismiss: 'Dismiss resume nudge'
+            }
+        } satisfies TranslationObject);
+    }
+}
+
+/** Same as AppBrandStubLoader but also includes offline/update indicator strings. */
+class AppPwaStubLoader implements TranslateLoader {
+    getTranslation(_lang: string): Observable<TranslationObject> {
+        return of({
+            app: {
+                brand: 'Karkas',
+                navAria: 'Main',
+                offlineIndicator: "You're offline — previously loaded content is still available.",
+                updateAvailable: 'A new version is available.',
+                updateReload: 'Reload'
             },
             nav: {
                 about: 'About',
@@ -229,5 +263,91 @@ describe('App — banner dismiss focus management', () => {
         expect(localStorage.getItem(SNAPSHOT_KEY)).toBeNull();
         expect(app['resumeBannerDismissed']()).toBe(true);
         expect(focusSpy).toHaveBeenCalledWith({ preventScroll: true });
+    });
+});
+
+describe('App — offline indicator and update toast', () => {
+    beforeEach(async () => {
+        localStorage.removeItem(SNAPSHOT_KEY);
+        await TestBed.configureTestingModule({
+            imports: [App],
+            providers: [
+                provideHttpClient(),
+                provideRouter(routes),
+                ...provideTranslateService({
+                    fallbackLang: 'en',
+                    loader: { provide: TranslateLoader, useClass: AppPwaStubLoader }
+                }),
+                provideAppInitializer(async () => {
+                    const translate = inject(TranslateService);
+                    await firstValueFrom(translate.use('en'));
+                })
+            ]
+        }).compileComponents();
+    });
+
+    afterEach(() => {
+        localStorage.removeItem(SNAPSHOT_KEY);
+    });
+
+    it('does not show the offline indicator while online', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const compiled = fixture.nativeElement as HTMLElement;
+        expect(compiled.querySelector('.app__offline-indicator')).toBeNull();
+    });
+
+    it('shows the offline indicator when NetworkStatusService reports offline', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        const networkStatus = TestBed.inject(NetworkStatusService);
+        networkStatus.isOnline.set(false);
+        fixture.detectChanges();
+        const compiled = fixture.nativeElement as HTMLElement;
+        expect(compiled.querySelector('.app__offline-indicator-text')?.textContent).toContain("You're offline");
+    });
+
+    it('hides the offline indicator again once back online', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        const networkStatus = TestBed.inject(NetworkStatusService);
+        networkStatus.isOnline.set(false);
+        fixture.detectChanges();
+        networkStatus.isOnline.set(true);
+        fixture.detectChanges();
+        const compiled = fixture.nativeElement as HTMLElement;
+        expect(compiled.querySelector('.app__offline-indicator')).toBeNull();
+    });
+
+    it('does not show the update toast when no update is ready', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        fixture.detectChanges();
+        const compiled = fixture.nativeElement as HTMLElement;
+        expect(compiled.querySelector('.app__update-toast')).toBeNull();
+    });
+
+    it('shows the update toast when PwaUpdateService reports an update is ready', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        const pwaUpdate = TestBed.inject(PwaUpdateService);
+        pwaUpdate.updateReady.set(true);
+        fixture.detectChanges();
+        const compiled = fixture.nativeElement as HTMLElement;
+        expect(compiled.querySelector('.app__update-toast-text')?.textContent).toContain('A new version is available');
+    });
+
+    it('clicking the update toast action calls activateUpdate', async () => {
+        const fixture = TestBed.createComponent(App);
+        await fixture.whenStable();
+        const pwaUpdate = TestBed.inject(PwaUpdateService);
+        const activateSpy = jest.spyOn(pwaUpdate, 'activateUpdate').mockImplementation(() => {});
+        pwaUpdate.updateReady.set(true);
+        fixture.detectChanges();
+        const compiled = fixture.nativeElement as HTMLElement;
+        const button = compiled.querySelector('.app__update-toast-action') as HTMLButtonElement;
+        button.click();
+        expect(activateSpy).toHaveBeenCalled();
     });
 });

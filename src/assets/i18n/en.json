@@ -8,7 +8,10 @@
         "retryBannerLink": "Review in Study guide →",
         "retryBannerClose": "Dismiss suggestion",
         "storageError": "Could not save data — storage quota exceeded. Free up space or clear old data.",
-        "storageErrorClose": "Dismiss"
+        "storageErrorClose": "Dismiss",
+        "offlineIndicator": "You're offline — previously loaded content is still available.",
+        "updateAvailable": "A new version is available.",
+        "updateReload": "Reload"
     },
     "practiceReminder": {
         "message": "You haven't practiced today — keep your streak alive!",

@@ -1,0 +1,24 @@
+{
+  "name": "Karkas — interview prep",
+  "short_name": "Karkas",
+  "description": "Practice technical interview answers with a study guide, timed sessions, and local progress tracking.",
+  "theme_color": "#0f172a",
+  "background_color": "#0f172a",
+  "display": "standalone",
+  "scope": ".",
+  "start_url": ".",
+  "icons": [
+    {
+      "src": "icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ]
+}

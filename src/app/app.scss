@@ -567,6 +567,59 @@
     outline-offset: 2px;
 }
 
+.app__offline-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.4rem 1rem;
+    background: var(--it-panel-muted-bg, rgba(148, 163, 184, 0.16));
+    border-bottom: 1px solid var(--it-border);
+    font-size: 0.82rem;
+    color: var(--it-text-muted);
+}
+
+.app__offline-indicator-icon {
+    font-size: 0.95rem;
+}
+
+.app__update-toast {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    width: 100%;
+    box-sizing: border-box;
+    padding: 0.6rem 1rem;
+    background: var(--it-accent-dim);
+    border-bottom: 1px solid var(--it-heat-1-border);
+    font-size: 0.88rem;
+}
+
+.app__update-toast-text {
+    flex: 1 1 auto;
+    color: var(--it-text);
+    font-weight: 500;
+}
+
+.app__update-toast-action {
+    flex-shrink: 0;
+    padding: 0.3rem 0.75rem;
+    border: none;
+    border-radius: 0.4rem;
+    background: var(--it-accent);
+    color: var(--it-accent-contrast, #fff);
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.app__update-toast-action:focus-visible {
+    outline: 2px solid var(--it-focus);
+    outline-offset: 2px;
+}
+
 .app__main {
     flex: 1;
     padding: 1rem 0 1.25rem;
