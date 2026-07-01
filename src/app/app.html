@@ -221,6 +221,20 @@
             </button>
         </div>
     }
+    @if (!networkStatusService.isOnline()) {
+        <div class="app__offline-indicator" role="status" aria-live="polite">
+            <span class="app__offline-indicator-icon" aria-hidden="true">📡</span>
+            <span class="app__offline-indicator-text">{{ 'app.offlineIndicator' | translate }}</span>
+        </div>
+    }
+    @if (pwaUpdateService.updateReady()) {
+        <div class="app__update-toast" role="status" aria-live="polite">
+            <span class="app__update-toast-text">{{ 'app.updateAvailable' | translate }}</span>
+            <button type="button" class="app__update-toast-action" (click)="pwaUpdateService.activateUpdate()">
+                {{ 'app.updateReload' | translate }}
+            </button>
+        </div>
+    }
     <main class="app__main" tabindex="-1">
         <router-outlet />
     </main>

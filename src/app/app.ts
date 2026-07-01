@@ -10,6 +10,8 @@ import { AchievementService } from './core/services/achievement.service';
 import { ActiveTimeService } from './core/services/active-time.service';
 import { ActivityService } from './core/services/activity.service';
 import { CustomQuestionService } from './core/services/custom-question.service';
+import { NetworkStatusService } from './core/services/network-status.service';
+import { PwaUpdateService } from './core/services/pwa-update.service';
 import { QuestionService } from './core/services/question.service';
 import { StorageService } from './core/services/storage.service';
 import { ThemeService } from './core/services/theme.service';
@@ -47,6 +49,8 @@ export class App {
     private readonly customQuestionService = inject(CustomQuestionService);
     protected readonly storageService = inject(StorageService);
     private readonly achievementService = inject(AchievementService);
+    protected readonly networkStatusService = inject(NetworkStatusService);
+    protected readonly pwaUpdateService = inject(PwaUpdateService);
 
     protected readonly customQuestionCount = computed(() => this.customQuestionService.questions().length);
     private readonly allQuestions = toSignal(this.questionService.getQuestions(), { initialValue: [] });
