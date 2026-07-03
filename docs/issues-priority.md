@@ -89,6 +89,6 @@ Updated 2026-06-21. Based on labels, dependencies, and effort/value assessment.
 | # | Issue | Notes |
 |---|-------|-------|
 | ~~[#71](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/71)~~ | ~~Add Progressive Web App (PWA) support~~ | ✅ Done |
-| [#74](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/74) | Infrastructure: Move from GitHub Pages to dedicated hosting | Prerequisite for backend (#75) |
+| ~~[#74](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/74)~~ | ~~Infrastructure: Move from GitHub Pages to dedicated hosting~~ | ✅ Done |
 | [#75](https://github.com/ZhannaM85/interview-trainer-angular-app/issues/75) | Architecture: Introduce backend service for persistent user data | `backend` `api` `database` — depends on #74 |
 
