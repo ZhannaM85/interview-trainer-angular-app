@@ -6,6 +6,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "build:staging": "ng build --configuration staging",
     "data:code-examples": "node scripts/build-code-examples.mjs",
     "data:read-more-links": "node scripts/merge-read-more-links.mjs",
     "data:i18n-questions": "node scripts/apply-russian-translations.mjs",
