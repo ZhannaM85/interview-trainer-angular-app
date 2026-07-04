@@ -5,10 +5,10 @@ persistent state lives in `localStorage` behind `StorageService` (key prefix
 `interview-trainer:`). The app is bilingual (EN/RU via `@ngx-translate`), uses hash-based
 routing (`withHashLocation()`), ships as a PWA (Angular service worker), and hosts two subject
 areas — the original interview-prep trainer (JavaScript/Angular/RxJS + user questions) and a
-sociology multiple-choice trainer — behind a subject-selector home page. Since issue #74 the
-app deploys to dedicated hosting (Netlify) via `.github/workflows/deploy-hosting.yml`, with
-per-environment configuration in `src/environments/` (see [deployment.md](deployment.md));
-GitHub Pages remains a legacy mirror until the domain cutover completes.
+sociology multiple-choice trainer — behind a subject-selector home page. The app deploys to
+GitHub Pages via `.github/workflows/deploy-pages.yml`, with per-environment configuration in
+`src/environments/` (see [deployment.md](deployment.md)); a Netlify pipeline introduced in
+issue #74 was later removed in favour of Pages.
 
 All components are standalone with `ChangeDetectionStrategy.OnPush`; state is held in
 signals, services are injected with `inject()`, and Observables are bridged with `toSignal()`.
@@ -612,31 +612,20 @@ signals, services are injected with `inject()`, and Observables are bridged with
 
 ### src/environments/environment.staging.ts
 
-**Why it exists:** Production-like configuration for the staging deploy target (Netlify `staging` alias, branch/preview deploys) so pre-release builds are distinguishable from production.
+**Why it exists:** Production-like configuration for pre-release builds (`npm run build:staging`) so they are distinguishable from production. Currently has no hosted deploy target; kept for local production-like builds and any future staging host.
 
 | Export | Purpose |
 |--------|---------|
 | `environment` | `{ production: false, envName: 'staging', apiBaseUrl: '/api' }`. |
 
-### .github/workflows/deploy-hosting.yml
+### .github/workflows/deploy-pages.yml
 
-**Why it exists:** CI/CD pipeline for the dedicated hosting platform (issue #74) — replaces GitHub Pages as the primary deployment target (`deploy-pages.yml` remains until the DNS cutover completes; see [deployment.md](deployment.md)).
-
-| Definition | Purpose |
-|------------|---------|
-| `on: push (master)` | Production build → `netlify-cli deploy --prod`. |
-| `on: workflow_dispatch` | Manual deploy with a `production`/`staging` environment choice; staging deploys to the `staging` alias. |
-| `Generate build.txt` step | Emits name/version/dependencies/environment/timestamp into `dist/karkas/browser/build.txt` for deploy verification. |
-| Secrets `NETLIFY_AUTH_TOKEN`, `NETLIFY_SITE_ID` | Netlify credentials read from GitHub Actions secrets. |
-
-### netlify.toml
-
-**Why it exists:** Host-side configuration for Netlify (issue #74): lets Netlify build directly from the connected repo (CI-driven deploys remain primary) and defines runtime routing/header behavior that cannot live in the app bundle.
+**Why it exists:** The CI/CD pipeline — builds the app and publishes it to GitHub Pages on every push to `master`. (A dedicated Netlify pipeline, `deploy-hosting.yml` + `netlify.toml`, was introduced in issue #74 and later removed in favour of Pages; see [deployment.md](deployment.md).)
 
 | Definition | Purpose |
 |------------|---------|
-| `[build]` | `npm run build` → publish `dist/karkas/browser` (Node 22). |
-| `[context.deploy-preview]` / `[context.branch-deploy]` | Preview/branch deploys use the `staging` build configuration. |
-| SPA redirect (`/* → /index.html`) | Path-style URL fallback for the single-page app. |
-| `[[headers]]` | Security headers for all routes; `no-cache` for `ngsw-worker.js` so service-worker updates are picked up promptly. |
-| Commented `/api/*` proxy | Placeholder for the future backend (issue #75) matching `environment.apiBaseUrl`. |
+| `on: push (master)` / `workflow_dispatch` | Production build → upload Pages artifact → `actions/deploy-pages`. |
+| `--base-href /<repo-name>/` build flag | Pages serves from a repo subpath, so the app's base URL must match. |
+| `404.html` copy step | Copies `index.html` to `404.html` so path-style deep links fall back to the SPA. |
+| `Generate build.txt` step | Emits name/version/dependencies/timestamp into `dist/karkas/browser/build.txt` for deploy verification. |
+| Permissions `pages: write`, `id-token: write` | Deploys with the built-in `GITHUB_TOKEN` — no repository secrets required. |
